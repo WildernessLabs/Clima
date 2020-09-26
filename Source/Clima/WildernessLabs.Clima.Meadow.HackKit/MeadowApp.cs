@@ -3,10 +3,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Clima.Contracts.Models;
 using Meadow;
 using Meadow.Devices;
-using Meadow.Foundation;
-using Meadow.Foundation.Leds;
 using Meadow.Gateway.WiFi;
 
 namespace Clima.Meadow.HackKit
@@ -68,13 +67,29 @@ namespace Clima.Meadow.HackKit
                 try {
                     response.EnsureSuccessStatusCode();
 
-                    //var climateReadings = response.Content.ReadAsAsync<Clima.Contracts.Models.ClimateReading[]>();
+                    //var climateReadings = await response.Content.ReadAsAsync<Clima.Contracts.Models.ClimateReading[]>();
+
+                    // Json.Net (NewtonSoft)
+                    //string jsonStr = await response.Content.ReadAsStringAsync();
+                    //ClimateReading[] climateReadings = Newtonsoft.Json.JsonConvert.DeserializeObject<ClimateReading[]>(jsonStr);
+
+                    // System.Text.Json:
+                    //string json = await response.Content.ReadAsStringAsync();
+                    //ClimateReading[] climateReadings = System.Text.Json.JsonSerializer.Deserialize<ClimateReading[]>(json);
+
                     //foreach (var climateReading in climateReadings) {
                     //    Console.WriteLine($"ClimateReading; TempC:{climateReading?.TempC}");
                     //}
 
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(responseBody);
+                    // System.Json [old skool]
+                    string json = await response.Content.ReadAsStringAsync();
+                    System.Json.JsonArray climateReadings = System.Json.JsonArray.Parse(json) as System.Json.JsonArray;
+                    foreach (var climateReading in climateReadings) {
+                        Console.WriteLine($"ClimateReading; TempC:{climateReading["tempC"]}");
+                    }
+
+                    //string responseBody = await response.Content.ReadAsStringAsync();
+                    //Console.WriteLine(responseBody);
                 } catch (TaskCanceledException) {
                     Console.WriteLine("Request time out.");
                 } catch (Exception e) {
