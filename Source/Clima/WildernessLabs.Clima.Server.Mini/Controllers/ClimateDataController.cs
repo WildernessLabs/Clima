@@ -29,14 +29,12 @@ namespace Clima.Server.Mini.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ClimateReading> Get()
+        public IActionResult Get()
         {
             ClimateReading[] readings = new ClimateReading[ClimateReadings.Keys.Count];
             ClimateReadings.Values.CopyTo(readings, 0);
-            return readings;
 
-            // isn't there an easier way, like thisish?
-            //return _climateReadings.Values.GetEnumerator();
+            return new JsonResult(readings);
         }
 
         [HttpPost]
