@@ -1,24 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Clima.Contracts.Models;
 using Meadow;
 using Meadow.Devices;
+using Meadow.Foundation;
+using Meadow.Foundation.Displays.Tft;
+using Meadow.Foundation.Graphics;
 using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Gateway.WiFi;
+using Meadow.Hardware;
 using Meadow.Peripherals.Sensors.Atmospheric;
 
 namespace Clima.Meadow.HackKit
 {
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
+        // peripherals
         AnalogTemperature analogTemperature;
+        St7789 st7789;
 
+        // other
         string climateDataUri = "http://192.168.0.41:2792/ClimateData";
+        GraphicsLibrary graphics;
 
         public MeadowApp()
         {
@@ -32,6 +37,9 @@ namespace Clima.Meadow.HackKit
 
             //==== new up our peripherals
             Initialize();
+
+            //==== display temp
+            DisplayTemp(25.4m);
 
             //==== connect to wifi
             Console.WriteLine($"Connecting to WiFi Network {Secrets.WIFI_NAME}");
@@ -56,6 +64,9 @@ namespace Clima.Meadow.HackKit
             Console.WriteLine("Fetching the readings agian.");
             FetchReadings().Wait();
 
+            //==== farewell, Batty
+            Console.WriteLine("All those moments will be lost in time, like tears in rain. Time to die.");
+
         }
 
         void Initialize()
@@ -69,6 +80,20 @@ namespace Clima.Meadow.HackKit
                 analogPin: Device.Pins.A00,
                 sensorType: AnalogTemperature.KnownSensorType.LM35
             );
+
+            // display
+            var config = new SpiClockConfiguration(6000, SpiClockConfiguration.Mode.Mode3);
+            st7789 = new St7789
+            (
+                device: Device,
+                spiBus: Device.CreateSpiBus(Device.Pins.SCK, Device.Pins.MOSI, Device.Pins.MISO, config),
+                chipSelectPin: null,
+                dcPin: Device.Pins.D01,
+                resetPin: Device.Pins.D00,
+                width: 240, height: 240
+            );
+
+            graphics = new GraphicsLibrary(st7789);
 
             // WiFi adapter
             Console.WriteLine("Initializaing wifi adapter.");
@@ -129,6 +154,22 @@ namespace Clima.Meadow.HackKit
                 }
             }
 
+        }
+
+        void DisplayTemp(decimal temp)
+        {
+            graphics.Clear(true);
+
+            graphics.Stroke = 1;
+            graphics.DrawRectangle(0, 0, (int)st7789.Width, (int)st7789.Height, Color.White);
+            graphics.DrawRectangle(5, 5, (int)st7789.Width - 10, (int)st7789.Height - 10, Color.White);
+
+            graphics.DrawCircle((int)st7789.Width / 2, (int)st7789.Height / 2, (int)(st7789.Width / 2) - 10, Color.White, true);
+
+            graphics.CurrentFont = new Font12x20();
+            graphics.DrawText((int)(st7789.Width - temp.ToString().Length * 12) / 2, 110, temp.ToString(), Color.Black);
+
+            graphics.Show();
         }
     }
 }

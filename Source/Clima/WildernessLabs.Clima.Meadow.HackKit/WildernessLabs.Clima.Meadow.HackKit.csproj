@@ -9,6 +9,7 @@
     <PackageReference Include="Meadow.Foundation" Version="0.18.0" />
     <PackageReference Include="System.Json" Version="4.7.1" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="Meadow.Foundation.Displays.TftSpi" Version="0.7.14" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration">
