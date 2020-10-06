@@ -27,14 +27,6 @@ namespace Clima.Meadow.HackKit
 
         public MeadowApp()
         {
-            //==== test serialization
-            //SerializationTests.TestJsonDeserializeWeather();
-            //SerializationTests.TestJsonSerializeWeather();
-            //SerializationTests.TestSystemTextJsonDeserializeWeather();
-            //SerializationTests.TestSystemTextJsonSerializeWeather();
-            //SerializationTests.TestSimpleJsonDeserializeWeather();
-            //SerializationTests.TestSystemJsonDeserializeWeather();
-
             //==== new up our peripherals
             Initialize();
 
