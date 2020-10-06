@@ -8,7 +8,7 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
 {
     public static class ClimateServiceFacade
     {
-        // 
+        // TODO: change this IP for your localhost
         static string climateDataUri = "http://192.168.0.41:2792/ClimateData";
 
 

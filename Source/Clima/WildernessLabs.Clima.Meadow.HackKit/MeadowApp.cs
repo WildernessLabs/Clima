@@ -18,10 +18,6 @@ namespace Clima.Meadow.HackKit
         // controllers
         DisplayController displayController;
 
-        // other
-        string climateDataUri = "http://192.168.0.41:2792/ClimateData";
-
-
         public MeadowApp()
         {
             //==== new up our peripherals
