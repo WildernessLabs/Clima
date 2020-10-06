@@ -156,10 +156,12 @@ namespace Clima.Meadow.HackKit
             graphics.DrawRectangle(0, 0, (int)st7789.Width, (int)st7789.Height, Color.White);
             graphics.DrawRectangle(5, 5, (int)st7789.Width - 10, (int)st7789.Height - 10, Color.White);
 
-            graphics.DrawCircle((int)st7789.Width / 2, (int)st7789.Height / 2, (int)(st7789.Width / 2) - 10, Color.White, true);
+            graphics.DrawCircle((int)st7789.Width / 2, (int)st7789.Height / 2, (int)(st7789.Width / 2) - 10, Color.FromHex("#23abe3"), true);
 
             graphics.CurrentFont = new Font12x20();
-            graphics.DrawText((int)(st7789.Width - temp.ToString().Length * 12) / 2, 110, temp.ToString(), Color.Black);
+            graphics.DrawText((int)(st7789.Width - temp.ToString().Length * 12) / 2, 110, temp.ToString(), Color.White);
+
+            graphics.Rotation = GraphicsLibrary.RotationType._270Degrees;
 
             graphics.Show();
         }
