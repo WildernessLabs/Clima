@@ -16,7 +16,7 @@ namespace Clima.Server.Mini.Controllers
         {
             var item = new ClimateReading() {
                 ID = 1,
-                TimeOfReading = DateTime.Now,
+                //TimeOfReading = DateTime.Now,
                 TempC = 22,
                 BarometricPressureMillibarHg = 200,
                 RelativeHumdity = 0.5m
