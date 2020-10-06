@@ -28,5 +28,9 @@
       <HintPath>..\..\..\..\..\..\..\..\Volumes\GoogleDrive\Shared drives\Engineering\B4.0 BCLs\System.Xml.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="ServiceAccessLayer\" />
+  </ItemGroup>
   <Import Project="..\WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems" Label="Shared" Condition="Exists('..\WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems')" />
 </Project>

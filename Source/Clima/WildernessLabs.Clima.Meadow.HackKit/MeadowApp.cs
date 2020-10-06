@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Clima.Contracts.Models;
+using Clima.Meadow.HackKit.Controllers;
+using Clima.Meadow.HackKit.ServiceAccessLayer;
 using Meadow;
 using Meadow.Devices;
-using Meadow.Foundation;
-using Meadow.Foundation.Displays.Tft;
-using Meadow.Foundation.Graphics;
 using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Gateway.WiFi;
-using Meadow.Hardware;
 using Meadow.Peripherals.Sensors.Atmospheric;
 
 namespace Clima.Meadow.HackKit
@@ -19,19 +14,18 @@ namespace Clima.Meadow.HackKit
     {
         // peripherals
         AnalogTemperature analogTemperature;
-        St7789 st7789;
+
+        // controllers
+        DisplayController displayController;
 
         // other
         string climateDataUri = "http://192.168.0.41:2792/ClimateData";
-        GraphicsLibrary graphics;
+
 
         public MeadowApp()
         {
             //==== new up our peripherals
             Initialize();
-
-            //==== display temp
-            DisplayTemp(25.4m);
 
             //==== connect to wifi
             Console.WriteLine($"Connecting to WiFi Network {Secrets.WIFI_NAME}");
@@ -41,29 +35,37 @@ namespace Clima.Meadow.HackKit
             }
             Console.WriteLine($"Connected to {Secrets.WIFI_NAME}.");
 
-            //==== grab the climate readings
-            Console.WriteLine("Fetching climate readings.");
-            FetchReadings().Wait();
-
             //==== take a reading
             var tA = ReadTemp();
             tA.Wait();
             var conditions = tA.Result;
             Console.WriteLine($"Temp Reading: {conditions.Temperature}");
 
+            //==== update the display
+            Console.WriteLine("Updating display.");
+            this.displayController.UpdateDisplay(conditions);
+
+            //==== grab the climate readings
+            Console.WriteLine("Fetching climate readings.");
+            ClimateServiceFacade.FetchReadings().Wait();
+
             //==== post the reading
             Console.WriteLine("Posting the temp reading");
-            PostTempReading((decimal)conditions.Temperature).Wait();
+            ClimateServiceFacade.PostTempReading((decimal)conditions.Temperature).Wait();
+            Console.WriteLine("Posted.");
 
             //==== fetch the readings again
             Console.WriteLine("Fetching the readings agian.");
-            FetchReadings().Wait();
+            ClimateServiceFacade.FetchReadings().Wait();
 
             //==== farewell, Batty
             Console.WriteLine("All those moments will be lost in time, like tears in rain. Time to die.");
 
         }
 
+        /// <summary>
+        /// Initializes the hardware.
+        /// </summary>
         void Initialize()
         {
             Console.WriteLine("Initialize hardware...");
@@ -77,96 +79,22 @@ namespace Clima.Meadow.HackKit
             );
 
             // display
-            var config = new SpiClockConfiguration(6000, SpiClockConfiguration.Mode.Mode3);
-            st7789 = new St7789
-            (
-                device: Device,
-                spiBus: Device.CreateSpiBus(Device.Pins.SCK, Device.Pins.MOSI, Device.Pins.MISO, config),
-                chipSelectPin: null,
-                dcPin: Device.Pins.D01,
-                resetPin: Device.Pins.D00,
-                width: 240, height: 240
-            );
-
-            graphics = new GraphicsLibrary(st7789);
+            this.displayController = new DisplayController();
 
             // WiFi adapter
             Console.WriteLine("Initializaing wifi adapter.");
             Device.InitWiFiAdapter().Wait();
 
-            // display
         }
 
+        /// <summary>
+        /// Performs a one-off reading of the temp sensor.
+        /// </summary>
+        /// <returns></returns>
         protected async Task<AtmosphericConditions> ReadTemp()
         {
             var conditions = await analogTemperature.Read();
-            Console.WriteLine($"Initial temp: { conditions.Temperature }");
             return conditions;
-        }
-
-        protected async Task PostTempReading(decimal tempC)
-        {
-            ClimateReading climateReading = new ClimateReading() { TempC = tempC };
-
-            using (HttpClient client = new HttpClient()) {
-                client.Timeout = new TimeSpan(0, 5, 0);
-
-                string json = System.Text.Json.JsonSerializer.Serialize<ClimateReading>(climateReading);
-
-                HttpResponseMessage response = await client.PostAsync(
-                    climateDataUri, new StringContent(
-                        json, Encoding.UTF8, "application/json"));
-                try {
-                    response.EnsureSuccessStatusCode();
-                } catch (TaskCanceledException) {
-                    Console.WriteLine("Request time out.");
-                } catch (Exception e) {
-                    Console.WriteLine($"Request went sideways: {e.Message}");
-                }
-            }
-        }
-        protected async Task FetchReadings()
-        {
-            using (HttpClient client = new HttpClient()) {
-                client.Timeout = new TimeSpan(0, 5, 0);
-
-                HttpResponseMessage response = await client.GetAsync(climateDataUri);
-
-                try {
-                    response.EnsureSuccessStatusCode();
-
-                    //System.Json[old skool]
-                    string json = await response.Content.ReadAsStringAsync();
-                    System.Json.JsonArray climateReadings = System.Json.JsonArray.Parse(json) as System.Json.JsonArray;
-                    foreach (var climateReading in climateReadings) {
-                        Console.WriteLine($"ClimateReading; TempC:{climateReading["tempC"]}");
-                    }
-
-                } catch (TaskCanceledException) {
-                    Console.WriteLine("Request time out.");
-                } catch (Exception e) {
-                    Console.WriteLine($"Request went sideways: {e.Message}");
-                }
-            }
-
-        }
-
-        void DisplayTemp(decimal temp)
-        {
-            graphics.Clear(true);
-
-            graphics.Stroke = 1;
-            graphics.DrawRectangle(0, 0, (int)st7789.Width, (int)st7789.Height, Color.White);
-            graphics.DrawRectangle(5, 5, (int)st7789.Width - 10, (int)st7789.Height - 10, Color.White);
-
-            graphics.DrawCircle((int)st7789.Width / 2, (int)st7789.Height / 2, (int)(st7789.Width / 2) - 10, Color.FromHex("#23abe3"), true);
-
-            graphics.CurrentFont = new Font12x20();
-            graphics.DrawText((int)(st7789.Width - temp.ToString().Length * 12) / 2, 110, temp.ToString(), Color.White);
-
-            graphics.Rotation = GraphicsLibrary.RotationType._270Degrees;
-
-            graphics.Show();
         }
     }
 }
