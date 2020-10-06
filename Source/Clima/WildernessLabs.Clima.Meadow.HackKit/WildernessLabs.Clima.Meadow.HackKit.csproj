@@ -3,30 +3,28 @@
     <TargetFramework>net472</TargetFramework>
     <OutputType>Exe</OutputType>
     <AssemblyName>App</AssemblyName>
+    <RootNamespace>Clima.Meadow.HackKit</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="WildernessLabs.Meadow.Assemblies" Version="0.3.3" />
-    <PackageReference Include="Meadow" Version="0.16.0" />
+    <PackageReference Include="Meadow.Foundation" Version="0.18.0" />
+    <PackageReference Include="System.Json" Version="4.7.1" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Runtime.Serialization">
-      <HintPath>..\..\..\..\..\..\..\..\Volumes\GoogleDrive\Shared drives\Engineering\B4.0 BCLs\System.Runtime.Serialization.dll</HintPath>
+    <Reference Include="System.Configuration">
+      <HintPath>..\..\..\..\..\..\..\..\Volumes\GoogleDrive\Shared drives\Engineering\B4.0 BCLs\System.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="System.Data">
       <HintPath>..\..\..\..\..\..\..\..\Volumes\GoogleDrive\Shared drives\Engineering\B4.0 BCLs\System.Data.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml">
-      <HintPath>..\..\..\..\..\..\..\..\Volumes\GoogleDrive\Shared drives\Engineering\B4.0 BCLs\System.Xml.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Configuration">
-      <HintPath>..\..\..\..\..\..\..\..\Volumes\GoogleDrive\Shared drives\Engineering\B4.0 BCLs\System.Configuration.dll</HintPath>
-    </Reference>
     <Reference Include="System.Numerics">
       <HintPath>..\..\..\..\..\..\..\..\Volumes\GoogleDrive\Shared drives\Engineering\B4.0 BCLs\System.Numerics.dll</HintPath>
     </Reference>
-    <Reference Include="System.Json">
-      <HintPath>..\..\..\..\..\..\..\..\Volumes\GoogleDrive\Shared drives\Engineering\B4.0 BCLs\System.Json.dll</HintPath>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>..\..\..\..\..\..\..\..\Volumes\GoogleDrive\Shared drives\Engineering\B4.0 BCLs\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <HintPath>..\..\..\..\..\..\..\..\Volumes\GoogleDrive\Shared drives\Engineering\B4.0 BCLs\System.Xml.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="..\WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems" Label="Shared" Condition="Exists('..\WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems')" />

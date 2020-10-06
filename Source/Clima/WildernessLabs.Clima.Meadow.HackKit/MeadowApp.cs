@@ -1,34 +1,60 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Clima.Contracts.Models;
 using Meadow;
 using Meadow.Devices;
+using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Gateway.WiFi;
+using Meadow.Peripherals.Sensors.Atmospheric;
 
 namespace Clima.Meadow.HackKit
 {
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
+        AnalogTemperature analogTemperature;
+
+        string climateDataUri = "http://192.168.0.41:2792/ClimateData";
+
         public MeadowApp()
         {
+            //==== test serialization
+            //SerializationTests.TestJsonDeserializeWeather();
+            //SerializationTests.TestJsonSerializeWeather();
+            //SerializationTests.TestSystemTextJsonDeserializeWeather();
+            //SerializationTests.TestSystemTextJsonSerializeWeather();
+            //SerializationTests.TestSimpleJsonDeserializeWeather();
+            //SerializationTests.TestSystemJsonDeserializeWeather();
+
+            //==== new up our peripherals
             Initialize();
 
-
+            //==== connect to wifi
             Console.WriteLine($"Connecting to WiFi Network {Secrets.WIFI_NAME}");
-
             var result = Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
             if (result.ConnectionStatus != ConnectionStatus.Success) {
                 throw new Exception($"Cannot connect to network: {result.ConnectionStatus}");
             }
-            Console.WriteLine("Connection request completed.");
+            Console.WriteLine($"Connected to {Secrets.WIFI_NAME}.");
 
+            //==== grab the climate readings
+            Console.WriteLine("Fetching climate readings.");
+            FetchReadings().Wait();
 
-            //ScanForAccessPoints();
+            //==== take a reading
+            //AtmosphericConditions conditions = ReadTemp().Wait();
 
-            GetWebPageViaHttpClient("http://192.168.0.41:2792/ClimateData").Wait();
+            //==== post the reading
+            Console.WriteLine("Posting the temp reading");
+            PostTempReading(25.3m).Wait();
+
+            //==== fetch the readings again
+            Console.WriteLine("Fetching the readings agian.");
+            FetchReadings().Wait();
 
         }
 
@@ -36,60 +62,42 @@ namespace Clima.Meadow.HackKit
         {
             Console.WriteLine("Initialize hardware...");
 
+            // Analog Temp Sensor
+            Console.WriteLine("Initializing analog temp sensor");
+            analogTemperature = new AnalogTemperature(
+                device: Device,
+                analogPin: Device.Pins.A00,
+                sensorType: AnalogTemperature.KnownSensorType.LM35
+            );
+
+            // WiFi adapter
+            Console.WriteLine("Initializaing wifi adapter.");
             Device.InitWiFiAdapter().Wait();
+
+            // display
         }
 
-        protected void ScanForAccessPoints()
+        protected async Task<AtmosphericConditions> ReadTemp()
         {
-            Console.WriteLine("Getting list of access points.");
-            Device.WiFiAdapter.Scan();
-            if (Device.WiFiAdapter.Networks.Count > 0) {
-                Console.WriteLine("|-------------------------------------------------------------|---------|");
-                Console.WriteLine("|         Network Name             | RSSI |       BSSID       | Channel |");
-                Console.WriteLine("|-------------------------------------------------------------|---------|");
-                foreach (WifiNetwork accessPoint in Device.WiFiAdapter.Networks) {
-                    Console.WriteLine($"| {accessPoint.Ssid,-32} | {accessPoint.SignalDbStrength,4} | {accessPoint.Bssid,17} |   {accessPoint.ChannelCenterFrequency,3}   |");
-                }
-            } else {
-                Console.WriteLine($"No access points detected.");
-            }
+            var conditions = await analogTemperature.Read();
+            Console.WriteLine($"Initial temp: { conditions.Temperature }");
+            return conditions;
         }
 
-        public async Task GetWebPageViaHttpClient(string uri)
+        protected async Task PostTempReading(decimal tempC)
         {
-            Console.WriteLine($"Requesting {uri}");
+            ClimateReading climateReading = new ClimateReading() { TempC = tempC };
 
             using (HttpClient client = new HttpClient()) {
                 client.Timeout = new TimeSpan(0, 5, 0);
 
-                HttpResponseMessage response = await client.GetAsync(uri);
+                string json = System.Text.Json.JsonSerializer.Serialize<ClimateReading>(climateReading);
 
+                HttpResponseMessage response = await client.PostAsync(
+                    climateDataUri, new StringContent(
+                        json, Encoding.UTF8, "application/json"));
                 try {
                     response.EnsureSuccessStatusCode();
-
-                    //var climateReadings = await response.Content.ReadAsAsync<Clima.Contracts.Models.ClimateReading[]>();
-
-                    // Json.Net (NewtonSoft)
-                    //string jsonStr = await response.Content.ReadAsStringAsync();
-                    //ClimateReading[] climateReadings = Newtonsoft.Json.JsonConvert.DeserializeObject<ClimateReading[]>(jsonStr);
-
-                    // System.Text.Json:
-                    //string json = await response.Content.ReadAsStringAsync();
-                    //ClimateReading[] climateReadings = System.Text.Json.JsonSerializer.Deserialize<ClimateReading[]>(json);
-
-                    //foreach (var climateReading in climateReadings) {
-                    //    Console.WriteLine($"ClimateReading; TempC:{climateReading?.TempC}");
-                    //}
-
-                    // System.Json [old skool]
-                    string json = await response.Content.ReadAsStringAsync();
-                    System.Json.JsonArray climateReadings = System.Json.JsonArray.Parse(json) as System.Json.JsonArray;
-                    foreach (var climateReading in climateReadings) {
-                        Console.WriteLine($"ClimateReading; TempC:{climateReading["tempC"]}");
-                    }
-
-                    //string responseBody = await response.Content.ReadAsStringAsync();
-                    //Console.WriteLine(responseBody);
                 } catch (TaskCanceledException) {
                     Console.WriteLine("Request time out.");
                 } catch (Exception e) {
@@ -97,6 +105,30 @@ namespace Clima.Meadow.HackKit
                 }
             }
         }
+        protected async Task FetchReadings()
+        {
+            using (HttpClient client = new HttpClient()) {
+                client.Timeout = new TimeSpan(0, 5, 0);
 
+                HttpResponseMessage response = await client.GetAsync(climateDataUri);
+
+                try {
+                    response.EnsureSuccessStatusCode();
+
+                    //System.Json[old skool]
+                    string json = await response.Content.ReadAsStringAsync();
+                    System.Json.JsonArray climateReadings = System.Json.JsonArray.Parse(json) as System.Json.JsonArray;
+                    foreach (var climateReading in climateReadings) {
+                        Console.WriteLine($"ClimateReading; TempC:{climateReading["tempC"]}");
+                    }
+
+                } catch (TaskCanceledException) {
+                    Console.WriteLine("Request time out.");
+                } catch (Exception e) {
+                    Console.WriteLine($"Request went sideways: {e.Message}");
+                }
+            }
+
+        }
     }
 }
