@@ -46,11 +46,14 @@ namespace Clima.Meadow.HackKit
             FetchReadings().Wait();
 
             //==== take a reading
-            //AtmosphericConditions conditions = ReadTemp().Wait();
+            var tA = ReadTemp();
+            tA.Wait();
+            var conditions = tA.Result;
+            Console.WriteLine($"Temp Reading: {conditions.Temperature}");
 
             //==== post the reading
             Console.WriteLine("Posting the temp reading");
-            PostTempReading(25.3m).Wait();
+            PostTempReading((decimal)conditions.Temperature).Wait();
 
             //==== fetch the readings again
             Console.WriteLine("Fetching the readings agian.");
