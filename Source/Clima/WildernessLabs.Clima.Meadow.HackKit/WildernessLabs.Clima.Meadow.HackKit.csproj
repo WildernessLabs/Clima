@@ -1,4 +1,4 @@
-<Project Sdk="Meadow.Sdk/1.1.0">
+﻿<Project Sdk="Meadow.Sdk/1.1.0">
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <OutputType>Exe</OutputType>
@@ -6,7 +6,14 @@
     <RootNamespace>Clima.Meadow.HackKit</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="meadow.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="meadow.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Meadow.Foundation" Version="0.18.0" />
+    <PackageReference Include="SimpleJpegDecoder" Version="0.2.0" />
     <PackageReference Include="System.Json" Version="4.7.1" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
     <PackageReference Include="Meadow.Foundation.Displays.TftSpi" Version="0.7.14" />

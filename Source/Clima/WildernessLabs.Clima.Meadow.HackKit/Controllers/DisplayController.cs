@@ -1,9 +1,12 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Meadow.Foundation;
 using Meadow.Foundation.Displays.Tft;
 using Meadow.Foundation.Graphics;
 using Meadow.Hardware;
 using Meadow.Peripherals.Sensors.Atmospheric;
+using SimpleJpegDecoder;
 
 namespace Clima.Meadow.HackKit.Controllers
 {
@@ -88,8 +91,17 @@ namespace Clima.Meadow.HackKit.Controllers
 
             graphics.DrawCircle((int)display.Width / 2, (int)display.Height / 2, (int)(display.Width / 2) - 10, Color.FromHex("#23abe3"), true);
 
+            DisplayJPG();
+
+            string text = $"{conditions.Temperature?.ToString("##.#")}°C";
+
             graphics.CurrentFont = new Font12x20();
-            graphics.DrawText((int)(display.Width - conditions.Temperature.ToString().Length * 12) / 2, 110, conditions.Temperature.ToString(), Color.White);
+            graphics.DrawText(
+                x: (int)(display.Width - text.Length * 24) / 2, 
+                y: 140, 
+                text: text, 
+                color: Color.Black, 
+                scaleFactor: GraphicsLibrary.ScaleFactor.X2);
 
             graphics.Rotation = GraphicsLibrary.RotationType._270Degrees;
 
@@ -101,5 +113,48 @@ namespace Clima.Meadow.HackKit.Controllers
 
         }
 
+        protected void DisplayJPG()
+        {
+            var jpgData = LoadResource("meadow.jpg");
+            var decoder = new JpegDecoder();
+            var jpg = decoder.DecodeJpeg(jpgData);
+
+            int x = 0;
+            int y = 0;
+            byte r, g, b;
+
+            for (int i = 0; i < jpg.Length; i += 3)
+            {
+                r = jpg[i];
+                g = jpg[i + 1];
+                b = jpg[i + 2];
+
+                graphics.DrawPixel(x + 55, y + 40, Color.FromRgb(r, g, b));
+
+                x++;
+                if (x % decoder.Width == 0)
+                {
+                    y++;
+                    x = 0;
+                }
+            }
+
+            display.Show();
+        }
+
+        protected byte[] LoadResource(string filename)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = $"Clima.Meadow.HackKit.{filename}";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (var ms = new MemoryStream())
+                {
+                    stream.CopyTo(ms);
+                    return ms.ToArray();
+                }
+            }
+        }
     }
 }

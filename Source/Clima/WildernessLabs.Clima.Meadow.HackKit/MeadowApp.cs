@@ -4,6 +4,7 @@ using Clima.Meadow.HackKit.Controllers;
 using Clima.Meadow.HackKit.ServiceAccessLayer;
 using Meadow;
 using Meadow.Devices;
+using Meadow.Foundation.Leds;
 using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Gateway.WiFi;
 using Meadow.Peripherals.Sensors.Atmospheric;
@@ -64,6 +65,14 @@ namespace Clima.Meadow.HackKit
         /// </summary>
         void Initialize()
         {
+            var rgbLed = new RgbLed(
+                Device, 
+                Device.Pins.OnboardLedRed, 
+                Device.Pins.OnboardLedGreen, 
+                Device.Pins.OnboardLedBlue
+            );
+            rgbLed.SetColor(RgbLed.Colors.Red);
+
             Console.WriteLine("Initialize hardware...");
 
             // Analog Temp Sensor
@@ -81,6 +90,7 @@ namespace Clima.Meadow.HackKit
             Console.WriteLine("Initializaing wifi adapter.");
             Device.InitWiFiAdapter().Wait();
 
+            rgbLed.SetColor(RgbLed.Colors.Green);
         }
 
         /// <summary>
