@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Json;
 using System.Text;
 using Clima.Contracts.Models;
 
@@ -10,19 +11,45 @@ namespace Clima.Meadow.HackKit
         {
         }
 
+        public static void TestSystemTextJson()
+        {
+            //works
+          //  var json = "{\"ID\":1, \"TempC\":22, \"BarometricPressureMillibarHg\":200, \"RelativeHumidity\":0.5}";
+
+            var json = "[{\"id\":1, \"tempC\":22, \"barometricPressureMillibarHg\":200, \"relativeHumidity\":0.5}]";
+
+            var stuff = System.Text.Json.JsonSerializer.Deserialize(json, typeof(ClimateReading[]));
+
+            Console.WriteLine("deserialized to object");
+
+            var reading = stuff as ClimateReading[];
+
+            Console.WriteLine($"Temp: {reading[0].TempC}");
+        }
+
         public static void TestSystemJsonDeserializeWeather()
         {
-            string json = @"[
-                {
-                    id: 1,
-                    tempC: 22,
-                    barometricPressureMillibarHg: 200,
-                    relativeHumdity: 0.5
-                }
-            ]";
+            //works
+            var json = "[{\"id\":1, \"tempC\":22, \"barometricPressureMillibarHg\": 200, \"relativeHumidity\" : 0.5}]";
+
+            /*  string json = @"[ 
+                  {
+                      id: 1,
+                      tempC: 22,
+                      barometricPressureMillibarHg: 200,
+                      relativeHumdity: 0.5
+                  }
+              ]"; */
+
+
+            Console.WriteLine($"Json: {json}");
+
             //timeOfReading: '2020 - 10 - 05T14: 23:35.760476 - 07:00',
 
-            System.Json.JsonArray climateReadings = System.Json.JsonArray.Parse(json) as System.Json.JsonArray;
+            JsonArray climateReadings = JsonArray.Parse(json) as System.Json.JsonArray;
+
+            Console.WriteLine("read");
+
             foreach (var climateReading in climateReadings) {
                 Console.WriteLine($"ClimateReading; TempC:{climateReading["tempC"]}");
             }

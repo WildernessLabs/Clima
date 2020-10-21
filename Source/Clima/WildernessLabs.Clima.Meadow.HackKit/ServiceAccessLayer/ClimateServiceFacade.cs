@@ -9,7 +9,7 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
     public static class ClimateServiceFacade
     {
         // TODO: change this IP for your localhost
-        static string climateDataUri = "http://192.168.0.41:2792/ClimateData";
+        static string climateDataUri = "http://192.168.86.53:2792/ClimateData";
 
 
         static ClimateServiceFacade()
@@ -59,10 +59,22 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
 
                     //System.Json[old skool]
                     string json = await response.Content.ReadAsStringAsync();
+
+                    Console.WriteLine(json);
+
+                    var stuff = System.Text.Json.JsonSerializer.Deserialize(json, typeof(ClimateReading[]));
+
+                    Console.WriteLine("deserialized to object");
+
+                    var reading = stuff as ClimateReading[];
+
+                    Console.WriteLine($"Temp: {reading[0].TempC}");
+
+                    /*
                     System.Json.JsonArray climateReadings = System.Json.JsonArray.Parse(json) as System.Json.JsonArray;
                     foreach (var climateReading in climateReadings) {
                         Console.WriteLine($"ClimateReading; TempC:{climateReading["tempC"]}");
-                    }
+                    } */
 
                 } catch (TaskCanceledException) {
                     Console.WriteLine("Request time out.");
