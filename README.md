@@ -2,7 +2,17 @@
 
 A simple, Meadow-powered climate station. Includes basic versions that you can build with a [Hack Kit](https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro) and has more advanced versions planned.
 
+<img src="Clima.jpg" 
+    style="width: 60%; display: block; margin-left: auto; margin-right: auto;" />
+
 Also includes an ASP.NET Core Web API application to test against.
+
+## Meadow Clima Circuit
+
+With an LM35 Analog Temperature sensor, and a TFT SPI ST7789 display (both included in the Hack Kit), wire your board like the following Fritzing Diagram:
+
+<img src="Clima_Fritzing_Diagram.png" 
+    style="width: 60%; display: block; margin-left: auto; margin-right: auto;" />
 
 ## Projects
 
@@ -10,6 +20,8 @@ Also includes an ASP.NET Core Web API application to test against.
 * **WildernessLabs.Clima.Meadow.HackKit** - A client Meadow application that can be built with the components in the Hack Kit.
 * **WildernessLabs.Clima.Server.Mini.Tests** - A console application used to test the Mini server.
 * **WildernessLabs.Clima.Server.Mini** - A very basic local test Web API server written in ASP.NET Core.
+
+
 
 ## Server Web API
 
