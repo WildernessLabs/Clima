@@ -1,15 +1,25 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WildernessLabs.Clima.Server.Mini", "WildernessLabs.Clima.Server.Mini\WildernessLabs.Clima.Server.Mini.csproj", "{D07BAD01-1F7A-4F79-A6FA-DBC86BE26DBA}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WildernessLabs.Clima.Server.Mini", "WildernessLabs.Clima.Server.Mini\WildernessLabs.Clima.Server.Mini.csproj", "{D07BAD01-1F7A-4F79-A6FA-DBC86BE26DBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WildernessLabs.Clima.Meadow.HackKit", "WildernessLabs.Clima.Meadow.HackKit\WildernessLabs.Clima.Meadow.HackKit.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WildernessLabs.Clima.Meadow.HackKit", "WildernessLabs.Clima.Meadow.HackKit\WildernessLabs.Clima.Meadow.HackKit.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WildernessLabs.Clima.Contracts", "WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.shproj", "{567267B3-ED96-4FEA-B555-2EE203372EA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WildernessLabs.Clima.Server.Mini.Tests", "WildernessLabs.Clima.Server.Mini.Tests\WildernessLabs.Clima.Server.Mini.Tests.csproj", "{533927CB-DC68-4D9F-9623-E43B605B7B04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WildernessLabs.Clima.Server.Mini.Tests", "WildernessLabs.Clima.Server.Mini.Tests\WildernessLabs.Clima.Server.Mini.Tests.csproj", "{533927CB-DC68-4D9F-9623-E43B605B7B04}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WildernessLabs.Clima.Meadow.Pro", "WildernessLabs.Clima.Meadow.Pro\WildernessLabs.Clima.Meadow.Pro.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{533927cb-dc68-4d9f-9623-e43b605b7b04}*SharedItemsImports = 5
+		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{567267b3-ed96-4fea-b555-2ee203372ea4}*SharedItemsImports = 13
+		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{9b08a0ce-df94-4c59-98d4-b96212e78498}*SharedItemsImports = 5
+		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{d07bad01-1f7a-4f79-a6fa-dbc86be26dba}*SharedItemsImports = 5
+		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{e753b478-f501-45a8-8ccb-67970f131033}*SharedItemsImports = 5
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -27,5 +37,17 @@ Global
 		{533927CB-DC68-4D9F-9623-E43B605B7B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{533927CB-DC68-4D9F-9623-E43B605B7B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{533927CB-DC68-4D9F-9623-E43B605B7B04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA61E123-F783-4CB3-8EB2-099EE930ADD4}
 	EndGlobalSection
 EndGlobal
