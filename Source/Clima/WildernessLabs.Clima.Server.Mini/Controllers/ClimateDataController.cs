@@ -61,17 +61,5 @@ namespace Clima.Server.Mini.Controllers
                 return NotFound();
             }
         }
-
-        //protected long? SaveReading(ClimateReading item)
-        //{
-        //    if (item.ID != null && _climateReadings.ContainsKey((long)item.ID)) {
-        //        return null;
-        //    }
-        //    // generate an ID
-        //    item.ID = _climateReadings.Count;
-        //    // save the item
-        //    _climateReadings.Add((long)(item?.ID), item);
-        //    return item.ID;
-        //}
     }
 }
