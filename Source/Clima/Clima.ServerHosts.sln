@@ -1,11 +1,16 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WildernessLabs.Clima.Server.Mini", "WildernessLabs.Clima.Server.Mini\WildernessLabs.Clima.Server.Mini.csproj", "{073FEA29-0F03-4B3A-AAA5-967F0BF6317A}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WildernessLabs.Clima.Server.Mini", "WildernessLabs.Clima.Server.Mini\WildernessLabs.Clima.Server.Mini.csproj", "{073FEA29-0F03-4B3A-AAA5-967F0BF6317A}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WildernessLabs.Clima.Contracts", "WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.shproj", "{567267B3-ED96-4FEA-B555-2EE203372EA4}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{073fea29-0f03-4b3a-aaa5-967f0bf6317a}*SharedItemsImports = 5
+		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{567267b3-ed96-4fea-b555-2ee203372ea4}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -15,5 +20,11 @@ Global
 		{073FEA29-0F03-4B3A-AAA5-967F0BF6317A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{073FEA29-0F03-4B3A-AAA5-967F0BF6317A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{073FEA29-0F03-4B3A-AAA5-967F0BF6317A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {33E590E1-4E3C-4A50-AFA3-450B5322A44F}
 	EndGlobalSection
 EndGlobal
