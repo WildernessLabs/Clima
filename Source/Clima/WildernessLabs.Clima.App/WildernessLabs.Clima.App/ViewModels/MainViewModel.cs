@@ -31,17 +31,16 @@ namespace WildernessLabs.Clima.App
 
         public MainViewModel() 
         {
-            ClimateList = new ObservableCollection<ClimaModel>();
-
-            IpAddress = "192.168.1.74";
+            ClimateList = new ObservableCollection<ClimaModel>();            
 
             GetHumidityCommand = new Command(async (s) => await GetReadingsAsync());
-
-            GetReadingsAsync();
         }
 
         async Task GetReadingsAsync()
         {
+            if (string.IsNullOrEmpty(IpAddress))
+                throw new InvalidEnumArgumentException("You must enter a valid IP address.");
+
             ClimateList.Clear();
 
             var response = await NetworkManager.GetAsync(IpAddress);

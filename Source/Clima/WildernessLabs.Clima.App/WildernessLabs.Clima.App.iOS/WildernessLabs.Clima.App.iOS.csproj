@@ -134,15 +134,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\bg%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\bg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\bg%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BundleResource Include="Resources\splash_logo%402x.png" />
   </ItemGroup>
   <ItemGroup>
