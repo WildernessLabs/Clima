@@ -33,7 +33,7 @@ namespace WildernessLabs.Clima.App
         {
             ClimateList = new ObservableCollection<ClimaModel>();
 
-            IpAddress = "192.168.1.67";
+            IpAddress = "192.168.1.74";
 
             GetHumidityCommand = new Command(async (s) => await GetReadingsAsync());
 
@@ -53,7 +53,7 @@ namespace WildernessLabs.Clima.App
 
                 foreach (ClimateReading value in values)
                 {
-                    ClimateList.Add(new ClimaModel() { Id = value.ID, Temperature = value.TempC });
+                    ClimateList.Add(new ClimaModel() { Date = value.TimeOfReading.ToString(), Temperature = value.TempC });
                 }                
             }
 

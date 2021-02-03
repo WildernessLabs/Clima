@@ -61,6 +61,39 @@ namespace Clima.Meadow.HackKit.Controllers
             //Render();
         }
 
+        public void ShowSplashScreen() 
+        {
+            graphics.Clear();
+
+            graphics.Stroke = 1;
+            graphics.DrawRectangle(0, 0, (int)display.Width, (int)display.Height, Color.White);
+            graphics.DrawRectangle(5, 5, (int)display.Width - 10, (int)display.Height - 10, Color.White);
+
+            graphics.DrawCircle((int)display.Width / 2, (int)display.Height / 2, (int)(display.Width / 2) - 10, Color.FromHex("#23abe3"), true);
+
+            DisplayJPG();
+
+            graphics.Show();
+        }
+
+        public void ShowTextLine1(string message) 
+        {
+            graphics.DrawRectangle(48, 130, 144, 71, Color.FromHex("#23abe3"), true);
+
+            graphics.CurrentFont = new Font12x16();            
+            graphics.DrawText(((int)display.Width - message.Length * 12) / 2, 139, message, Color.Black);
+
+            graphics.Show();
+        }
+
+        public void ShowTextLine2(string message)
+        {
+            graphics.CurrentFont = new Font12x20();
+            graphics.DrawText(((int)display.Width - message.Length * 12) / 2, 169, message, Color.Black);
+
+            graphics.Show();
+        }
+
         public void UpdateDisplay(AtmosphericConditions conditions) {
             this.conditions = conditions;
             this.Render();  

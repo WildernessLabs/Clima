@@ -3,18 +3,17 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Clima.Contracts.Models;
+using Clima.Meadow.HackKit.Utils;
+using Meadow.Foundation;
 
 namespace Clima.Meadow.HackKit.ServiceAccessLayer
 {
     public static class ClimateServiceFacade
     {
         // TODO: change this IP for your localhost 
-        static string climateDataUri = "http://192.168.0.24:2792/ClimateData";
+        static string climateDataUri = "http://192.168.1.74:2792/ClimateData";
 
-
-        static ClimateServiceFacade()
-        {
-        }
+        static ClimateServiceFacade() { }
 
         /// <summary>
         /// Posts a temperature reading to the web API endpoint
@@ -23,21 +22,32 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
         /// <returns></returns>
         public static async Task PostTempReading(decimal tempC)
         {
+            LedIndicator.StartPulse(Color.Magenta);
+
             ClimateReading climateReading = new ClimateReading() { TempC = tempC };
 
-            using (HttpClient client = new HttpClient()) {
-                client.Timeout = new TimeSpan(0, 5, 0);
+            using (HttpClient client = new HttpClient()) 
+            {
+                try
+                {
+                    client.Timeout = new TimeSpan(0, 5, 0);
 
-                string json = System.Text.Json.JsonSerializer.Serialize<ClimateReading>(climateReading);
+                    string json = System.Text.Json.JsonSerializer.Serialize<ClimateReading>(climateReading);
 
-                HttpResponseMessage response = await client.PostAsync(
-                    climateDataUri, new StringContent(
-                        json, Encoding.UTF8, "application/json"));
-                try {
+                    HttpResponseMessage response = await client.PostAsync(
+                        climateDataUri, new StringContent(
+                            json, Encoding.UTF8, "application/json"));
+                
                     response.EnsureSuccessStatusCode();
-                } catch (TaskCanceledException) {
+                } 
+                catch (TaskCanceledException) 
+                {
+                    LedIndicator.StartBlink(Color.OrangeRed);
                     Console.WriteLine("Request time out.");
-                } catch (Exception e) {
+                } 
+                catch (Exception e) 
+                {
+                    LedIndicator.StartBlink(Color.OrangeRed);
                     Console.WriteLine($"Request went sideways: {e.Message}");
                 }
             }
@@ -49,12 +59,16 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
         /// <returns></returns>
         public static async Task FetchReadings()
         {
-            using (HttpClient client = new HttpClient()) {
-                client.Timeout = new TimeSpan(0, 5, 0);
+            LedIndicator.StartPulse(Color.Magenta);
 
-                HttpResponseMessage response = await client.GetAsync(climateDataUri);
+            using (HttpClient client = new HttpClient()) 
+            {
+                try
+                {
+                    client.Timeout = new TimeSpan(0, 5, 0);
 
-                try {
+                    HttpResponseMessage response = await client.GetAsync(climateDataUri);
+                
                     response.EnsureSuccessStatusCode();
 
                     string json = await response.Content.ReadAsStringAsync();
@@ -68,9 +82,15 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
                     var reading = stuff as ClimateReading[];
 
                     Console.WriteLine($"Temp: {reading[0].TempC}");
-                } catch (TaskCanceledException) {
+                } 
+                catch (TaskCanceledException) 
+                {
+                    LedIndicator.StartBlink(Color.OrangeRed);
                     Console.WriteLine("Request time out.");
-                } catch (Exception e) {
+                } 
+                catch (Exception e) 
+                {
+                    LedIndicator.StartBlink(Color.OrangeRed);
                     Console.WriteLine($"Request went sideways: {e.Message}");
                 }
             }

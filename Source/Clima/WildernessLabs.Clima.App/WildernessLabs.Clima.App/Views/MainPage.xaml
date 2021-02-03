@@ -36,7 +36,7 @@
                                 <ViewCell>
                                     <Frame HasShadow="false" Margin="0,2,0,2" Padding="10,0" BackgroundColor="#23ABE3">
                                         <Grid>
-                                            <Label Text="{Binding Id, StringFormat='ID {0}'}" TextColor="White" FontSize="Large" VerticalOptions="Center" />
+                                            <Label Text="{Binding Date}" TextColor="White" FontSize="Medium" VerticalOptions="Center" />
                                             <Label Text="{Binding Temperature, StringFormat='{0}°C'}" TextColor="White" FontSize="Large"
                                                 FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="End" />
                                         </Grid>

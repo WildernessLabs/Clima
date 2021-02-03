@@ -6,7 +6,6 @@ namespace WildernessLabs.Clima.App
 {
     public static class NetworkManager
     {
-
         static NetworkManager() { }
 
         /// <summary>
