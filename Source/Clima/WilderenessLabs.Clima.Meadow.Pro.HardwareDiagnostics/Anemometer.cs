@@ -8,7 +8,7 @@ namespace WilderenessLabs.Clima.Meadow
 {
     public partial class Anemometer : FilterableChangeObservableBase<AnemometerChangeResult, float>
     {
-        public event EventHandler<AnemometerChangeResult> SpeedUpdated = delegate {};
+        public event EventHandler<AnemometerChangeResult> Updated = delegate {};
 
         public float LastRecordedWindSpeed { get; protected set; } = 0f;
 
@@ -37,21 +37,24 @@ namespace WilderenessLabs.Clima.Meadow
             inputPort.Subscribe(new FilterableChangeObserver<DigitalInputPortEventArgs, DateTime>(
                 result => {
                     float newSpeed = SwitchIntervalToKmh(result.Delta);
-                    RaiseWindSpeedChangedEvent(newSpeed);
+                    RaiseUpdated(newSpeed);
                     this.LastRecordedWindSpeed = newSpeed;
                 },
                 filter: null
                 ));
         }
 
-        protected void RaiseWindSpeedChangedEvent(float newSpeed)
+        protected void RaiseUpdated(float newSpeed)
         {
             AnemometerChangeResult result = new AnemometerChangeResult() {
                 Old = this.LastRecordedWindSpeed,
                 New = newSpeed
             };
 
-            SpeedUpdated?.Invoke(this, result);
+            Console.WriteLine($"1) Result.Old: {result.Old}, New: {result.New}");
+            Console.WriteLine($"2) Delta: {result.Delta}");
+
+            Updated?.Invoke(this, result);
             base.NotifyObservers(result);
         }
 

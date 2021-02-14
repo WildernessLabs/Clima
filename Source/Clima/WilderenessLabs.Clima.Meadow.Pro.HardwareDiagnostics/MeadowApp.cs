@@ -62,15 +62,18 @@ namespace MeadowApp
                     Console.WriteLine($"new speed: {result.New}, old: {result.Old}");
                 },
                 // only notify if it's change more than 0.1kmh:
-                //filter: result => result.Delta > 0.1
-                null
+                filter: result => {
+                    Console.WriteLine($"delta: {result.Delta}");
+                    return result.Delta > 0.1;
+                    }
+                //null
             ));
 
             // init the windvane
             windVane = Device.CreateAnalogInputPort(Device.Pins.A00);
             windVane.Subscribe(new FilterableChangeObserver<FloatChangeResult, float>(
                 handler: result => {
-                    Console.WriteLine($"WindVane voltage: {result.New}");
+                    //Console.WriteLine($"WindVane voltage: {result.New}");
                 },
                 null
                 ));
