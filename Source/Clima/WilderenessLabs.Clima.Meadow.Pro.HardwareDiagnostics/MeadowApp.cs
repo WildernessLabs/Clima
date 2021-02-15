@@ -5,6 +5,7 @@ using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Leds;
 using Meadow.Hardware;
+using Meadow.Units;
 using WilderenessLabs.Clima.Meadow;
 
 namespace MeadowApp
@@ -12,10 +13,11 @@ namespace MeadowApp
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
         RgbPwmLed onboardLed;
-        //IAnalogInputPort anemometer;
-        IAnalogInputPort windVane;
+        //IAnalogInputPort windVane;
         //IDigitalInputPort anemometer;
         Anemometer anemometer;
+
+        WindVane windVane;
 
         public MeadowApp()
         {
@@ -33,15 +35,6 @@ namespace MeadowApp
                 bluePwmPin: Device.Pins.OnboardLedBlue,
                 3.3f, 3.3f, 3.3f,
                 Meadow.Peripherals.Leds.IRgbLed.CommonType.CommonAnode);
-
-            //// init anemometer
-            //anemometer = Device.CreateAnalogInputPort(Device.Pins.A01);
-            //anemometer.Subscribe(new FilterableChangeObserver<FloatChangeResult, float>(
-            //    OutputWindSpeed,
-            //    null //filter: result => (result.Delta > 0.01)
-            //    ));
-            //// sample every half a second, and do automatic oversampling.
-            //anemometer.StartSampling(standbyDuration: 500);
 
             //anemometer = Device.CreateDigitalInputPort(Device.Pins.A01, InterruptMode.EdgeFalling, ResistorMode.InternalPullUp, 20, 20);
             //anemometer.Subscribe(new FilterableChangeObserver<DigitalInputPortEventArgs, DateTime>(
@@ -62,23 +55,30 @@ namespace MeadowApp
                     Console.WriteLine($"new speed: {result.New}, old: {result.Old}");
                 },
                 // only notify if it's change more than 0.1kmh:
-                filter: result => {
-                    Console.WriteLine($"delta: {result.Delta}");
-                    return result.Delta > 0.1;
-                    }
-                //null
+                //filter: result => {
+                //    Console.WriteLine($"delta: {result.Delta}");
+                //    return result.Delta > 0.1;
+                //    }
+                null
             ));
 
-            // init the windvane
-            windVane = Device.CreateAnalogInputPort(Device.Pins.A00);
-            windVane.Subscribe(new FilterableChangeObserver<FloatChangeResult, float>(
-                handler: result => {
-                    //Console.WriteLine($"WindVane voltage: {result.New}");
-                },
-                null
-                ));
-            // sample every half a second, and do automatic oversampling.
-            windVane.StartSampling(standbyDuration: 1000);
+            //// init the windvane
+            //windVane = Device.CreateAnalogInputPort(Device.Pins.A00);
+            //windVane.Subscribe(new FilterableChangeObserver<FloatChangeResult, float>(
+            //    handler: result => {
+            //        //Console.WriteLine($"WindVane voltage: {result.New}");
+            //    },
+            //    null
+            //    ));
+            //// sample every half a second, and do automatic oversampling.
+            //windVane.StartSampling(standbyDuration: 1000);
+
+            windVane = new WindVane(Device, Device.Pins.A00);
+            windVane.Subscribe(new FilterableChangeObserver<WindVane.WindVaneChangeResult, Azimuth>(
+                handler: result => { Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"); },
+                filter: null
+            ));
+
 
             Console.WriteLine("Initialization complete.");
         }
