@@ -8,25 +8,58 @@ using static WilderenessLabs.Clima.Meadow.WindVane;
 
 namespace WilderenessLabs.Clima.Meadow
 {
+    // TODO: Need to consider how best to allow consumer to start and stop updating.
+    // do we just expose the `StartUpdating` and `StopUpdating` methods on the
+    // analog input port?
+
+    /// <summary>
+    /// Driver for a wind vane that outputs variable voltage, based on the
+    /// azimuth of the wind. Matches the input voltage to the `AzimuthVoltages`
+    /// dictionary lookup and returns the nearest azimuth to the voltage specified.
+    ///
+    /// By default it will use look ups that match voltage outputs from the windvane
+    /// in the Sparkfun/Shenzen Fine Offset Electronics with a voltage divider of
+    /// 4.7kΩ / 1kΩ, as can be found in the SparkFun weather shield, or Wilderness
+    /// Labs Clima Pro board.
+    /// </summary>
     public partial class WindVane : FilterableChangeObservableBase<WindVaneChangeResult, Azimuth>
     {
+        /// <summary>
+        /// Raised when the azimuth of the wind changes.
+        /// </summary>
         public event EventHandler<WindVaneChangeResult> Updated = delegate { };
 
+        /// <summary>
+        /// The last recorded azimuth of the wind.
+        /// </summary>
         public Azimuth LastRecordedWindAzimuth { get; protected set; } = 0;
 
         // TODO: consider making an `ImmutableDictionary` (need to add package
         /// <summary>
-        /// Azimuth voltage lookup.
+        /// Voltage -> wind azimuth lookup dictionary.
         /// </summary>
         public IDictionary<float, Azimuth> AzimuthVoltages { get; protected set; }
 
         protected IAnalogInputPort inputPort;
 
+        /// <summary>
+        /// Creates a new `WindVane` on the specified IO Device's analog input.
+        /// Optionally, with a custom voltage to azimuth lookup.
+        /// </summary>
+        /// <param name="device">The IO Device.</param>
+        /// <param name="analogInputPin">The analog input pin.</param>
+        /// <param name="azimuthVoltages">Optional. Supply if you have custom azimuth voltages.</param>
         public WindVane(IIODevice device, IPin analogInputPin, IDictionary<float, Azimuth> azimuthVoltages = null)
             : this(device.CreateAnalogInputPort(analogInputPin), azimuthVoltages)
         {
         }
 
+        /// <summary>
+        /// Creates a new `WindVane` on the specified input port. Optionally,
+        /// with a custom voltage to azimuth lookup.
+        /// </summary>
+        /// <param name="inputPort">The analog input.</param>
+        /// <param name="azimuthVoltages">Optional. Supply if you have custom azimuth voltages.</param>
         public WindVane(IAnalogInputPort inputPort, IDictionary<float, Azimuth> azimuthVoltages = null)
         {
             this.AzimuthVoltages = azimuthVoltages;
@@ -51,21 +84,26 @@ namespace WilderenessLabs.Clima.Meadow
             inputPort.StartSampling(standbyDuration: 500);
         }
 
-
+        /// <summary>
+        /// Thread and inheritance safe way to raise the event and notify subs
+        /// </summary>
+        /// <param name="windAzimuth"></param>
         protected void RaiseUpdated(Azimuth windAzimuth)
         {
             WindVaneChangeResult result = new WindVaneChangeResult() {
                 Old = this.LastRecordedWindAzimuth,
                 New = windAzimuth
             };
-
-            Console.WriteLine($"1) Result.Old: {result.Old}, New: {result.New}");
-            Console.WriteLine($"2) Delta: {result.Delta}");
-
             Updated?.Invoke(this, result);
             base.NotifyObservers(result);
         }
 
+        /// <summary>
+        /// Finds the closest wind azimuth that matches the passed in voltage,
+        /// based on the `AziumuthVoltages`.
+        /// </summary>
+        /// <param name="voltage"></param>
+        /// <returns></returns>
         protected Azimuth LookupWindDirection(float voltage)
         {
             Tuple<Azimuth, double> closestFit = null;
@@ -85,6 +123,10 @@ namespace WilderenessLabs.Clima.Meadow
             return closestFit.Item1;
         }
 
+        /// <summary>
+        /// Loads a default set of voltage -> azimuth lookup values based on
+        /// a 4.7kΩ / 1kΩ voltage divider.
+        /// </summary>
         protected void LoadDefaultAzimuthVoltages()
         {
             Console.WriteLine("Loading default azimuth voltages");
