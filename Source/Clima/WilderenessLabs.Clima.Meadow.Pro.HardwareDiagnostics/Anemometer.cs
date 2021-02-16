@@ -6,6 +6,8 @@ using static WilderenessLabs.Clima.Meadow.Anemometer;
 
 namespace WilderenessLabs.Clima.Meadow
 {
+    //Todo: rename this to SwitchingAnemometer, maybe? to distinguish from the
+    // adafruit one that outputs a voltage.
     public partial class Anemometer : FilterableChangeObservableBase<AnemometerChangeResult, float>
     {
         public event EventHandler<AnemometerChangeResult> Updated = delegate {};
