@@ -78,7 +78,7 @@ namespace MeadowApp
                 handler: result => { Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"); },
                 filter: null
             ));
-
+            windVane.StartUpdating();
 
             Console.WriteLine("Initialization complete.");
         }
