@@ -78,6 +78,11 @@ namespace MeadowApp
                 handler: result => { Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"); },
                 filter: null
             ));
+
+            // get initial reading, just to test the API
+            Azimuth azi = windVane.Read().Result;
+            Console.WriteLine($"Initial azimuth: {azi.Compass16PointCardinalName}");
+
             windVane.StartUpdating();
 
             Console.WriteLine("Initialization complete.");

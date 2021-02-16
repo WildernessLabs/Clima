@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace WilderenessLabs.Clima.Meadow
 {
-    // TODO: Need to add startupdating/stop updating stuff.
-
     /// <summary>
     /// Driver for a wind vane that outputs variable voltage, based on the
     /// azimuth of the wind. Matches the input voltage to the `AzimuthVoltages`
