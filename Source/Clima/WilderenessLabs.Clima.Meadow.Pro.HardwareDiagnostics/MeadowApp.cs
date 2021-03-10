@@ -4,6 +4,7 @@ using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Leds;
+using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
 using Meadow.Units;
 using WilderenessLabs.Clima.Meadow;
@@ -13,10 +14,10 @@ namespace MeadowApp
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
         RgbPwmLed onboardLed;
-        //IAnalogInputPort windVane;
         //IDigitalInputPort anemometer;
         Anemometer anemometer;
 
+        //IAnalogInputPort windVaneAnalog;
         WindVane windVane;
 
         public MeadowApp()
@@ -35,6 +36,8 @@ namespace MeadowApp
                 bluePwmPin: Device.Pins.OnboardLedBlue,
                 3.3f, 3.3f, 3.3f,
                 Meadow.Peripherals.Leds.IRgbLed.CommonType.CommonAnode);
+
+            Console.WriteLine("RgbPwmLed up");
 
             //anemometer = Device.CreateDigitalInputPort(Device.Pins.A01, InterruptMode.EdgeFalling, ResistorMode.InternalPullUp, 20, 20);
             //anemometer.Subscribe(new FilterableChangeObserver<DigitalInputPortEventArgs, DateTime>(
@@ -62,17 +65,19 @@ namespace MeadowApp
                 null
             ));
 
+            //==== to test the analog port for the wind vane, uncomment this section
             //// init the windvane
-            //windVane = Device.CreateAnalogInputPort(Device.Pins.A00);
-            //windVane.Subscribe(new FilterableChangeObserver<FloatChangeResult, float>(
+            //windVaneAnalog = Device.CreateAnalogInputPort(Device.Pins.A00);
+            //windVaneAnalog.Subscribe(new FilterableChangeObserver<FloatChangeResult, float>(
             //    handler: result => {
             //        //Console.WriteLine($"WindVane voltage: {result.New}");
             //    },
             //    null
             //    ));
             //// sample every half a second, and do automatic oversampling.
-            //windVane.StartSampling(standbyDuration: 1000);
+            //windVaneAnalog.StartSampling(standbyDuration: 1000);
 
+            //==== to test the windvane driver use this
             windVane = new WindVane(Device, Device.Pins.A00);
             windVane.Subscribe(new FilterableChangeObserver<WindVane.WindVaneChangeResult, Azimuth>(
                 handler: result => { Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"); },
@@ -85,6 +90,8 @@ namespace MeadowApp
 
             windVane.StartUpdating();
 
+
+            // done.
             Console.WriteLine("Initialization complete.");
         }
 
