@@ -7,7 +7,7 @@ using Meadow.Foundation.Leds;
 using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
 using Meadow.Units;
-using WilderenessLabs.Clima.Meadow;
+using Meadow.Foundation.Sensors.Atmospheric;
 
 namespace MeadowApp
 {
@@ -15,14 +15,16 @@ namespace MeadowApp
     {
         RgbPwmLed onboardLed;
         //IDigitalInputPort anemometer;
-        Anemometer anemometer;
-
-        //IAnalogInputPort windVaneAnalog;
+        SwitchingAnemometer anemometer;
         WindVane windVane;
+        Bme280 bme280;
+        II2cBus i2cBus;
 
         public MeadowApp()
         {
             Initialize();
+
+            bme280.StartUpdating();
         }
 
         void Initialize()
@@ -47,13 +49,13 @@ namespace MeadowApp
             //    filter: null
             //    ));
 
-            anemometer = new Anemometer(Device, Device.Pins.A01);
+            anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
             // classic event
-            //anemometer.SpeedUpdated += (object sender, Anemometer.AnemometerChangeResult e) => {
+            //anemometer.WindSpeedUpdated += (object sender, SwitchingAnemometer.AnemometerChangeResult e) => {
             //    Console.WriteLine($"new speed: {e.New}, old: {e.Old}");
             //};
             // iobservable
-            anemometer.Subscribe(new FilterableChangeObserver<Anemometer.AnemometerChangeResult, float>(
+            SwitchingAnemometer.CreateObserver(
                 handler: result => {
                     Console.WriteLine($"new speed: {result.New}, old: {result.Old}");
                 },
@@ -63,7 +65,9 @@ namespace MeadowApp
                 //    return result.Delta > 0.1;
                 //    }
                 null
-            ));
+            );
+
+            anemometer.StartUpdating();
 
             //==== to test the analog port for the wind vane, uncomment this section
             //// init the windvane
@@ -77,19 +81,32 @@ namespace MeadowApp
             //// sample every half a second, and do automatic oversampling.
             //windVaneAnalog.StartSampling(standbyDuration: 1000);
 
-            //==== to test the windvane driver use this
-            windVane = new WindVane(Device, Device.Pins.A00);
-            windVane.Subscribe(new FilterableChangeObserver<WindVane.WindVaneChangeResult, Azimuth>(
-                handler: result => { Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"); },
-                filter: null
-            ));
+            ////==== to test the windvane driver use this
+            //windVane = new WindVane(Device, Device.Pins.A00);
+            //windVane.Subscribe(new FilterableChangeObserver<WindVane.WindVaneChangeResult, Azimuth>(
+            //    handler: result => { Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"); },
+            //    filter: null
+            //));
 
-            // get initial reading, just to test the API
-            Azimuth azi = windVane.Read().Result;
-            Console.WriteLine($"Initial azimuth: {azi.Compass16PointCardinalName}");
+            //// get initial reading, just to test the API
+            //Azimuth azi = windVane.Read().Result;
+            //Console.WriteLine($"Initial azimuth: {azi.Compass16PointCardinalName}");
 
-            windVane.StartUpdating();
+            //windVane.StartUpdating();
 
+            //==== I2C Bus
+            i2cBus = Device.CreateI2cBus();
+            Console.WriteLine("I2C up.");
+
+            //==== BME280
+            bme280 = new Bme280(i2cBus, Bme280.I2cAddress.Adddress0x76);
+            var bmeObserver = Bme280.CreateObserver(
+                handler: result => { Console.WriteLine($"Temp: {result.New.Value.Unit1.Fahrenheit:n2}, Humidity: {result.New.Value.Unit2:n2}%"); },
+                filter: result => true);
+            bme280.Subscribe(bmeObserver);
+            Console.WriteLine("BME280 up.");
+
+            //ReadConditions().Wait();
 
             // done.
             Console.WriteLine("Initialization complete.");

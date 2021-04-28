@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Clima.Contracts.Models;
 
-namespace Clima.Meadow.HackKit.ServiceAccessLayer
+namespace Clima.Meadow.Pro.ServiceAccessLayer
 {
     public static class ClimateServiceFacade
     {
