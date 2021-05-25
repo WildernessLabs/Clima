@@ -21,6 +21,10 @@
   <ItemGroup>
     <PackageReference Include="SimpleJpegDecoder" Version="0.2.0" />
     <PackageReference Include="System.Text.Json" Version="5.0.1" />
+    <PackageReference Include="Meadow.Foundation" Version="0.25.0" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Weather.SwitchingAnemometer" Version="0.1.4" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Weather.WindVane" Version="0.1.9" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Atmospheric.Bme280" Version="0.5.43" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -29,13 +33,6 @@
     <Folder Include="Server\Web\" />
     <Folder Include="Server\Bluetooth\" />
     <Folder Include="Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Meadow.Core\source\Meadow.Core\Meadow.Core.csproj" />
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Core\Meadow.Foundation.Core.csproj" />
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Weather.SwitchingAnemometer\Driver\Sensors.Weather.SwitchingAnemometer\Sensors.Weather.SwitchingAnemometer.csproj" />
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Weather.WindVane\Driver\Sensors.Weather.WindVane\Sensors.Weather.WindVane.csproj" />
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Atmospheric.Bme280\Driver\Sensors.Atmospheric.Bme280\Sensors.Atmospheric.Bme280.csproj" />
   </ItemGroup>
   <Import Project="..\WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems" Label="Shared" Condition="Exists('..\WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems')" />
 </Project>

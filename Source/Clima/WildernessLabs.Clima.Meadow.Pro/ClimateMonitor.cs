@@ -53,7 +53,7 @@ namespace Clima.Meadow.Pro
             anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
             var anemometerObserver = SwitchingAnemometer.CreateObserver(
                 handler: result => {
-                    Console.WriteLine($"new speed: {result.New}, old: {result.Old}");
+                    Console.WriteLine($"new speed: {result.New:n2}, old: {result.Old:n2}");
                 },
                 null
             );
@@ -89,20 +89,20 @@ namespace Clima.Meadow.Pro
         {
             var conditions = await bme280.Read();
             Console.WriteLine("Initial Readings:");
-            Console.WriteLine($"  Temperature: {conditions.Temperature.Celsius}°C");
-            Console.WriteLine($"  Pressure: {conditions.Pressure.Pascal}hPa");
+            Console.WriteLine($"  Temperature: {conditions.Temperature?.Celsius}°C");
+            Console.WriteLine($"  Pressure: {conditions.Pressure?.Pascal}hPa");
             Console.WriteLine($"  Relative Humidity: {conditions.Humidity}%");
         }
 
-        protected void HandleBmeUpdate(CompositeChangeResult<Temperature, RelativeHumidity, Pressure> result)
+        protected void HandleBmeUpdate(IChangeResult<(Temperature? Temperature, RelativeHumidity? Humidity, Pressure? Pressure)> result)
         {
-            Console.WriteLine($"Temp: {result.New.Value.Unit1.Fahrenheit:n2}, Humidity: {result.New.Value.Unit2:n2}%");
+            Console.WriteLine($"Temp: {result.New.Temperature?.Fahrenheit:n2}, Humidity: {result.New.Humidity?.Percent:n2}%");
 
             // Null check
             ClimateConditions ??= new ClimateConditions();
 
             // temp
-            if(result.New.Value.Unit1 is { } temp) {
+            if(result.New.Temperature is { } temp) {
                 ClimateConditions.Old ??= new Climate();
                 if(ClimateConditions.New != null) {
                     ClimateConditions.Old.Temperature = ClimateConditions.New.Temperature;
@@ -112,7 +112,7 @@ namespace Clima.Meadow.Pro
             }
 
             // humidity
-            if (result.New.Value.Unit2 is { } humidity) {
+            if (result.New.Humidity is { } humidity) {
                 ClimateConditions.Old ??= new Climate();
                 if (ClimateConditions.New != null) {
                     ClimateConditions.Old.Humidity = ClimateConditions.New.Humidity;
@@ -122,7 +122,7 @@ namespace Clima.Meadow.Pro
             }
 
             // pressure
-            if (result.New.Value.Unit3 is { } pressure) {
+            if (result.New.Pressure is { } pressure) {
                 ClimateConditions.Old ??= new Climate();
                 if (ClimateConditions.New != null) {
                     ClimateConditions.Old.Pressure = ClimateConditions.New.Pressure;
