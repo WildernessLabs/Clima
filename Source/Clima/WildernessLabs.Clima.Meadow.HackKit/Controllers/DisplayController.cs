@@ -1,36 +1,35 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using Meadow.Foundation;
-using Meadow.Foundation.Displays.Tft;
+﻿using Meadow.Foundation;
+using Meadow.Foundation.Displays.TftSpi;
 using Meadow.Foundation.Graphics;
 using Meadow.Hardware;
-using Meadow.Peripherals.Sensors.Atmospheric;
+using Meadow.Units;
 using SimpleJpegDecoder;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Clima.Meadow.HackKit.Controllers
 {
     public class DisplayController
     {
-        // internals
-        protected St7789 display;
-        protected GraphicsLibrary graphics;
-        protected AtmosphericConditions conditions;
+        protected Temperature conditions;
 
-        // rendering state and lock
+        protected St7789 display;
+        protected GraphicsLibrary graphics;        
+
         protected bool isRendering = false;
         protected object renderLock = new object();
 
         public DisplayController()
         {
-            InitializeDisplay();
+            Initialize();
         }
 
         /// <summary>
         /// intializes the physical display peripheral, as well as the backing
         /// graphics library.
         /// </summary>
-        protected void InitializeDisplay()
+        protected void Initialize()
         {
             // our display needs mode3
             var config = new SpiClockConfiguration(6000, SpiClockConfiguration.Mode.Mode3);
@@ -66,10 +65,10 @@ namespace Clima.Meadow.HackKit.Controllers
             graphics.Clear();
 
             graphics.Stroke = 1;
-            graphics.DrawRectangle(0, 0, (int)display.Width, (int)display.Height, Color.White);
-            graphics.DrawRectangle(5, 5, (int)display.Width - 10, (int)display.Height - 10, Color.White);
+            graphics.DrawRectangle(0, 0, display.Width, display.Height, Color.White);
+            graphics.DrawRectangle(5, 5, display.Width - 10, display.Height - 10, Color.White);
 
-            graphics.DrawCircle((int)display.Width / 2, (int)display.Height / 2, (int)(display.Width / 2) - 10, Color.FromHex("#23abe3"), true);
+            graphics.DrawCircle(display.Width / 2, display.Height / 2, (display.Width / 2) - 10, Color.FromHex("#23abe3"), true);
 
             DisplayJPG();
 
@@ -81,7 +80,7 @@ namespace Clima.Meadow.HackKit.Controllers
             graphics.DrawRectangle(48, 130, 144, 71, Color.FromHex("#23abe3"), true);
 
             graphics.CurrentFont = new Font12x16();            
-            graphics.DrawText(((int)display.Width - message.Length * 12) / 2, 139, message, Color.Black);
+            graphics.DrawText((display.Width - message.Length * 12) / 2, 139, message, Color.Black);
 
             graphics.Show();
         }
@@ -89,12 +88,13 @@ namespace Clima.Meadow.HackKit.Controllers
         public void ShowTextLine2(string message)
         {
             graphics.CurrentFont = new Font12x20();
-            graphics.DrawText(((int)display.Width - message.Length * 12) / 2, 169, message, Color.Black);
+            graphics.DrawText((display.Width - message.Length * 12) / 2, 169, message, Color.Black);
 
             graphics.Show();
         }
 
-        public void UpdateDisplay(AtmosphericConditions conditions) {
+        public void UpdateDisplay(Temperature conditions) 
+        {
             this.conditions = conditions;
             this.Render();  
         }
@@ -107,8 +107,11 @@ namespace Clima.Meadow.HackKit.Controllers
         {
             Console.WriteLine($"Render() - is rendering: {isRendering}");
 
-            lock (renderLock) {   // if we're already rendering, bail out.
-                if (isRendering) {
+            lock (renderLock) 
+            {   
+                // if we're already rendering, bail out.
+                if (isRendering) 
+                {
                     Console.WriteLine("Already in a rendering loop, bailing out.");
                     return;
                 }
@@ -119,18 +122,18 @@ namespace Clima.Meadow.HackKit.Controllers
             graphics.Clear(true);
 
             graphics.Stroke = 1;
-            graphics.DrawRectangle(0, 0, (int)display.Width, (int)display.Height, Color.White);
-            graphics.DrawRectangle(5, 5, (int)display.Width - 10, (int)display.Height - 10, Color.White);
+            graphics.DrawRectangle(0, 0, display.Width, display.Height, Color.White);
+            graphics.DrawRectangle(5, 5, display.Width - 10, display.Height - 10, Color.White);
 
-            graphics.DrawCircle((int)display.Width / 2, (int)display.Height / 2, (int)(display.Width / 2) - 10, Color.FromHex("#23abe3"), true);
+            graphics.DrawCircle(display.Width / 2, display.Height / 2, (display.Width / 2) - 10, Color.FromHex("#23abe3"), true);
 
             DisplayJPG();
 
-            string text = $"{conditions.Temperature?.ToString("##.#")}°C";
+            string text = $"{conditions.Celsius.ToString("##.#")}°C";
 
             graphics.CurrentFont = new Font12x20();
             graphics.DrawText(
-                x: (int)(display.Width - text.Length * 24) / 2, 
+                x: (display.Width - text.Length * 24) / 2, 
                 y: 140, 
                 text: text, 
                 color: Color.Black, 

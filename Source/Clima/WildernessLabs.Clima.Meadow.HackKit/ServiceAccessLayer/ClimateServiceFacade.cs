@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Clima.Contracts.DTUs;
+using Clima.Meadow.HackKit.Utils;
+using Json.Net;
+using Meadow.Foundation;
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Clima.Contracts.Models;
-using Clima.Meadow.HackKit.Utils;
-using Meadow.Foundation;
 
 namespace Clima.Meadow.HackKit.ServiceAccessLayer
 {
@@ -24,7 +25,7 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
         {
             LedIndicator.StartPulse(Color.Magenta);
 
-            ClimateReading climateReading = new ClimateReading() { TempC = tempC };
+            var climateReading = new ClimateReadingEntity() { tempC = tempC };
 
             using (HttpClient client = new HttpClient()) 
             {
@@ -32,7 +33,7 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
                 {
                     client.Timeout = new TimeSpan(0, 5, 0);
 
-                    string json = System.Text.Json.JsonSerializer.Serialize<ClimateReading>(climateReading);
+                    string json = JsonNet.Serialize(climateReading);
 
                     HttpResponseMessage response = await client.PostAsync(
                         climateDataUri, new StringContent(
@@ -67,7 +68,7 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
                 {
                     client.Timeout = new TimeSpan(0, 5, 0);
 
-                    HttpResponseMessage response = await client.GetAsync(climateDataUri);
+                    var response = await client.GetAsync(climateDataUri);
                 
                     response.EnsureSuccessStatusCode();
 
@@ -75,13 +76,9 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
 
                     Console.WriteLine(json);
 
-                    var stuff = System.Text.Json.JsonSerializer.Deserialize(json, typeof(ClimateReading[]));
+                    var readingStuffs = JsonNet.Deserialize<ClimateReadingEntity[]>(json);                   
 
-                    Console.WriteLine("deserialized to object");
-
-                    var reading = stuff as ClimateReading[];
-
-                    Console.WriteLine($"Temp: {reading[0].TempC}");
+                    Console.WriteLine($"Temp: {readingStuffs[0].tempC}");
                 } 
                 catch (TaskCanceledException) 
                 {

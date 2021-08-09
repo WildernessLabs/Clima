@@ -6,7 +6,6 @@ using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Gateway.WiFi;
-using Meadow.Peripherals.Sensors.Atmospheric;
 using System;
 using System.Threading.Tasks;
 
@@ -19,30 +18,20 @@ namespace Clima.Meadow.HackKit
 
         public MeadowApp()
         {
-            Initialize();
+            Initialize().Wait();
 
-            var tA = ReadTemp();
-            tA.Wait();
-            var conditions = tA.Result;
-
-            //displayController.UpdateDisplay(conditions);
-
-            //ClimateServiceFacade.FetchReadings().Wait();
-
-            //ClimateServiceFacade.PostTempReading((decimal)conditions.Temperature).Wait();
-
-            //ClimateServiceFacade.FetchReadings().Wait();
+            Start().Wait();
         }
 
         /// <summary>
         /// Initializes the hardware.
         /// </summary>
-        void Initialize()
+        async Task Initialize()
         {
             LedIndicator.Initialize(
-                Device, 
-                Device.Pins.OnboardLedRed, 
-                Device.Pins.OnboardLedGreen, 
+                Device,
+                Device.Pins.OnboardLedRed,
+                Device.Pins.OnboardLedGreen,
                 Device.Pins.OnboardLedBlue
             );
             LedIndicator.SetColor(Color.Red);
@@ -63,7 +52,7 @@ namespace Clima.Meadow.HackKit
             LedIndicator.SetColor(Color.Blue);
 
             displayController.ShowTextLine1("JOIN NETWORK");
-            var result = Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
+            var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
             if (result.ConnectionStatus != ConnectionStatus.Success)
             {
                 throw new Exception($"Cannot connect to network: {result.ConnectionStatus}");
@@ -73,10 +62,17 @@ namespace Clima.Meadow.HackKit
             LedIndicator.SetColor(Color.Green);
         }
 
-        async Task<AtmosphericConditions> ReadTemp()
+        async Task Start() 
         {
             var conditions = await analogTemperature.Read();
-            return conditions;
+
+            displayController.UpdateDisplay(conditions);
+
+            ClimateServiceFacade.FetchReadings().Wait();
+
+            ClimateServiceFacade.PostTempReading((decimal)conditions.Celsius).Wait();
+
+            ClimateServiceFacade.FetchReadings().Wait();
         }
     }
 }

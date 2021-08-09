@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Text.Json.Serialization;
+//using System.Text.Json.Serialization;
 
 namespace Clima.Contracts.Models
 {
     public class ClimateReading
     {
-        [JsonPropertyName("id")]
+        //[JsonPropertyName("id")]
         public long? ID { get; set; }
 
-        [JsonPropertyName("date")]
+        //[JsonPropertyName("date")]
         public DateTime? TimeOfReading { get; set; }
 
-        [JsonPropertyName("tempC")]
+        //[JsonPropertyName("tempC")]
         public decimal? TempC { get; set; }
 
-        [JsonPropertyName("barometricPressureMillibarHg")]
+        //[JsonPropertyName("barometricPressureMillibarHg")]
         public decimal? BarometricPressureMillibarHg { get; set; }
 
-        [JsonPropertyName("relativeHumdity")]
+        //[JsonPropertyName("relativeHumdity")]
         public decimal? RelativeHumdity { get; set; }
     }
 }

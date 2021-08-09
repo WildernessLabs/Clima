@@ -12,6 +12,7 @@
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)DTUs\ClimateReadingEntity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ClimateReading.cs" />
   </ItemGroup>
 </Project>
