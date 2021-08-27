@@ -13,6 +13,11 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Server\Web\**" />
+    <EmbeddedResource Remove="Server\Web\**" />
+    <None Remove="Server\Web\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="meadow.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -30,7 +35,6 @@
     <Folder Include="Controllers\" />
     <Folder Include="ServiceAccessLayer\" />
     <Folder Include="Server\" />
-    <Folder Include="Server\Web\" />
     <Folder Include="Server\Bluetooth\" />
     <Folder Include="Models\" />
   </ItemGroup>

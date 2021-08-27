@@ -35,19 +35,7 @@ namespace MeadowApp
             onboardLed = new RgbPwmLed(device: Device,
                 redPwmPin: Device.Pins.OnboardLedRed,
                 greenPwmPin: Device.Pins.OnboardLedGreen,
-                bluePwmPin: Device.Pins.OnboardLedBlue,
-                3.3f, 3.3f, 3.3f,
-                Meadow.Peripherals.Leds.IRgbLed.CommonType.CommonAnode);
-
-            Console.WriteLine("RgbPwmLed up");
-
-            //anemometer = Device.CreateDigitalInputPort(Device.Pins.A01, InterruptMode.EdgeFalling, ResistorMode.InternalPullUp, 20, 20);
-            //anemometer.Subscribe(new FilterableChangeObserver<DigitalInputPortEventArgs, DateTime>(
-            //    result => {
-            //        Console.WriteLine($"wind event delta: {result.Delta}");
-            //    },
-            //    filter: null
-            //    ));
+                bluePwmPin: Device.Pins.OnboardLedBlue);
 
             anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
             // classic event
@@ -99,9 +87,9 @@ namespace MeadowApp
             Console.WriteLine("I2C up.");
 
             //==== BME280
-            bme280 = new Bme280(i2cBus, Bme280.I2cAddress.Adddress0x76);
+            bme280 = new Bme280(i2cBus);
             var bmeObserver = Bme280.CreateObserver(
-                handler: result => { Console.WriteLine($"Temp: {result.New.Value.Unit1.Fahrenheit:n2}, Humidity: {result.New.Value.Unit2:n2}%"); },
+                handler: result => { Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"); },
                 filter: result => true);
             bme280.Subscribe(bmeObserver);
             Console.WriteLine("BME280 up.");
@@ -112,29 +100,14 @@ namespace MeadowApp
             Console.WriteLine("Initialization complete.");
         }
 
-        void OutputWindSpeed(FloatChangeResult result)
+        void OutputWindSpeed(Speed windspeed)
         {
-            //Console.WriteLine($"Anemometer voltage: {result.New}");
-
-            // `0.0` - `0.2`
-            int r = (int)Map(result.New, 0f, 0.2f, 0f, 255f);
-            int b = (int)Map(result.New, 0f, 0.2f, 255f, 0f);
-
-            //Console.WriteLine($"r: {r}, b: {b}");
+            // `0.0` - `10kmh`
+            int r = (int)windspeed.KilometersPerHour.Map(0f, 10f, 0f, 255f);
+            int b = (int)windspeed.KilometersPerHour.Map(0f, 10f, 255f, 0f);
 
             var wspeedColor = Color.FromRgb(r, 0, b);
-            ShowColor(wspeedColor);
-        }
-
-
-        float Map( float value, float fromSource, float toSource, float fromTarget, float toTarget)
-        {
-            return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
-        }
-
-        void ShowColor(Color color)
-        {
-            onboardLed.SetColor(color);
+            onboardLed.SetColor(wspeedColor);
         }
     }
 }
