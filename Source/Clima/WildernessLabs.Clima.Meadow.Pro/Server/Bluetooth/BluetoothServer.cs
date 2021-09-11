@@ -10,9 +10,10 @@ namespace Clima.Meadow.Pro.Server.Bluetooth
         CharacteristicString tempCharacteristic;
         CharacteristicString pressureCharacteristic;
         CharacteristicString humidityCharacteristic;
+        CharacteristicString windDirectionCharacteristic;
 
         //==== controllers and such
-        ClimateMonitor climateMonitor;
+        //ClimateMonitorAgent climateMonitorAgent = ClimateMonitorAgent.Instance;
 
         //==== singleton stuff
         private static readonly Lazy<BluetoothServer> instance =
@@ -30,13 +31,12 @@ namespace Clima.Meadow.Pro.Server.Bluetooth
 
         protected void Initialize()
         {
-            climateMonitor = ClimateMonitor.Instance;
             bleTreeDefinition = GetDefinition();
 
-            climateMonitor.ClimateConditionsUpdated += ClimateMonitor_ClimateConditionsUpdated;
+            ClimateMonitorAgent.Instance.ClimateConditionsUpdated += ClimateConditionsUpdated;
         }
 
-        private void ClimateMonitor_ClimateConditionsUpdated(object sender, Models.ClimateConditions climateConditions)
+        private void ClimateConditionsUpdated(object sender, Models.ClimateConditions climateConditions)
         {
             Console.WriteLine("New climate data, setting BLE characteristics.");
             if(climateConditions.New?.Temperature is { } temp) {
@@ -47,6 +47,9 @@ namespace Clima.Meadow.Pro.Server.Bluetooth
             }
             if (climateConditions.New?.Humidity is { } humidity) {
                 humidityCharacteristic.SetValue($"{ humidity:N2}%");
+            }
+            if (climateConditions.New?.WindDirection is { } windDirection) {
+                windDirectionCharacteristic.SetValue($"{ windDirection.DecimalDegrees:N2}%");
             }
         }
 
@@ -77,6 +80,21 @@ namespace Clima.Meadow.Pro.Server.Bluetooth
                     properties: CharacteristicProperty.Read,
                     maxLength: 32
                 );
+            // wind direction
+            windDirectionCharacteristic = new CharacteristicString(
+                    "Humidity",
+                    uuid: "b54aa605-c1ae-47cd-b4e1-0c5ff6af735c",
+                    permissions: CharacteristicPermission.Read,
+                    properties: CharacteristicProperty.Read,
+                    maxLength: 32
+                );
+
+            ICharacteristic[] characteristics = {
+                    tempCharacteristic,
+                    pressureCharacteristic,
+                    humidityCharacteristic,
+                    windDirectionCharacteristic
+            };
 
             //==== BLE Tree Definition
             var definition = new Definition(
@@ -84,9 +102,7 @@ namespace Clima.Meadow.Pro.Server.Bluetooth
                 new Service(
                     "Weather_Conditions",
                     896,
-                    tempCharacteristic,
-                    pressureCharacteristic,
-                    humidityCharacteristic
+                    characteristics
                 ));
             return definition;
         }

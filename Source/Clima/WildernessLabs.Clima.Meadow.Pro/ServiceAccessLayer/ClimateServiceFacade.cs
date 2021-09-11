@@ -1,87 +1,87 @@
-﻿using System;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Clima.Contracts.Models;
+﻿//using System;
+//using System.Net.Http;
+//using System.Text;
+//using System.Threading.Tasks;
+//using Clima.Contracts.Models;
 
-namespace Clima.Meadow.Pro.ServiceAccessLayer
-{
-    public static class ClimateServiceFacade
-    {
-        // TODO: change this IP for your localhost
-        static string climateDataUri = "http://192.168.86.53:2792/ClimateData";
+//namespace Clima.Meadow.Pro.ServiceAccessLayer
+//{
+//    public static class ClimateServiceFacade
+//    {
+//        // TODO: change this IP for your localhost
+//        static string climateDataUri = "http://192.168.86.53:2792/ClimateData";
 
 
-        static ClimateServiceFacade()
-        {
-        }
+//        static ClimateServiceFacade()
+//        {
+//        }
 
-        /// <summary>
-        /// Posts a temperature reading to the web API endpoint
-        /// </summary>
-        /// <param name="tempC"></param>
-        /// <returns></returns>
-        public static async Task PostTempReading(decimal tempC)
-        {
-            ClimateReading climateReading = new ClimateReading() { TempC = tempC };
+//        /// <summary>
+//        /// Posts a temperature reading to the web API endpoint
+//        /// </summary>
+//        /// <param name="tempC"></param>
+//        /// <returns></returns>
+//        public static async Task PostTempReading(decimal tempC)
+//        {
+//            ClimateReading climateReading = new ClimateReading() { TempC = tempC };
 
-            using (HttpClient client = new HttpClient()) {
-                client.Timeout = new TimeSpan(0, 5, 0);
+//            using (HttpClient client = new HttpClient()) {
+//                client.Timeout = new TimeSpan(0, 5, 0);
 
-                string json = System.Text.Json.JsonSerializer.Serialize<ClimateReading>(climateReading);
+//                string json = System.Text.Json.JsonSerializer.Serialize<ClimateReading>(climateReading);
 
-                HttpResponseMessage response = await client.PostAsync(
-                    climateDataUri, new StringContent(
-                        json, Encoding.UTF8, "application/json"));
-                try {
-                    response.EnsureSuccessStatusCode();
-                } catch (TaskCanceledException) {
-                    Console.WriteLine("Request time out.");
-                } catch (Exception e) {
-                    Console.WriteLine($"Request went sideways: {e.Message}");
-                }
-            }
-        }
+//                HttpResponseMessage response = await client.PostAsync(
+//                    climateDataUri, new StringContent(
+//                        json, Encoding.UTF8, "application/json"));
+//                try {
+//                    response.EnsureSuccessStatusCode();
+//                } catch (TaskCanceledException) {
+//                    Console.WriteLine("Request time out.");
+//                } catch (Exception e) {
+//                    Console.WriteLine($"Request went sideways: {e.Message}");
+//                }
+//            }
+//        }
 
-        /// <summary>
-        /// Fetches the climate readings from the Web API Endpoint
-        /// </summary>
-        /// <returns></returns>
-        public static async Task FetchReadings()
-        {
-            using (HttpClient client = new HttpClient()) {
-                client.Timeout = new TimeSpan(0, 5, 0);
+//        /// <summary>
+//        /// Fetches the climate readings from the Web API Endpoint
+//        /// </summary>
+//        /// <returns></returns>
+//        public static async Task FetchReadings()
+//        {
+//            using (HttpClient client = new HttpClient()) {
+//                client.Timeout = new TimeSpan(0, 5, 0);
 
-                HttpResponseMessage response = await client.GetAsync(climateDataUri);
+//                HttpResponseMessage response = await client.GetAsync(climateDataUri);
 
-                try {
-                    response.EnsureSuccessStatusCode();
+//                try {
+//                    response.EnsureSuccessStatusCode();
 
-                    //System.Json[old skool]
-                    string json = await response.Content.ReadAsStringAsync();
+//                    //System.Json[old skool]
+//                    string json = await response.Content.ReadAsStringAsync();
 
-                    Console.WriteLine(json);
+//                    Console.WriteLine(json);
 
-                    var stuff = System.Text.Json.JsonSerializer.Deserialize(json, typeof(ClimateReading[]));
+//                    var stuff = System.Text.Json.JsonSerializer.Deserialize(json, typeof(ClimateReading[]));
 
-                    Console.WriteLine("deserialized to object");
+//                    Console.WriteLine("deserialized to object");
 
-                    var reading = stuff as ClimateReading[];
+//                    var reading = stuff as ClimateReading[];
 
-                    Console.WriteLine($"Temp: {reading[0].TempC}");
+//                    Console.WriteLine($"Temp: {reading[0].TempC}");
 
-                    /*
-                    System.Json.JsonArray climateReadings = System.Json.JsonArray.Parse(json) as System.Json.JsonArray;
-                    foreach (var climateReading in climateReadings) {
-                        Console.WriteLine($"ClimateReading; TempC:{climateReading["tempC"]}");
-                    } */
+//                    /*
+//                    System.Json.JsonArray climateReadings = System.Json.JsonArray.Parse(json) as System.Json.JsonArray;
+//                    foreach (var climateReading in climateReadings) {
+//                        Console.WriteLine($"ClimateReading; TempC:{climateReading["tempC"]}");
+//                    } */
 
-                } catch (TaskCanceledException) {
-                    Console.WriteLine("Request time out.");
-                } catch (Exception e) {
-                    Console.WriteLine($"Request went sideways: {e.Message}");
-                }
-            }
-        }
-    }
-}
+//                } catch (TaskCanceledException) {
+//                    Console.WriteLine("Request time out.");
+//                } catch (Exception e) {
+//                    Console.WriteLine($"Request went sideways: {e.Message}");
+//                }
+//            }
+//        }
+//    }
+//}

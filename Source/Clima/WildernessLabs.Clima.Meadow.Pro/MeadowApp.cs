@@ -9,6 +9,9 @@ using Meadow.Foundation.Sensors.Weather;
 using Meadow.Gateway.WiFi;
 using Meadow.Hardware;
 using Meadow.Peripherals.Leds;
+using Clima.Meadow.Pro.DataAccessLayer;
+using Meadow.Foundation;
+using Clima.Meadow.Pro.Models;
 
 namespace Clima.Meadow.Pro
 {
@@ -18,17 +21,19 @@ namespace Clima.Meadow.Pro
         RgbPwmLed onboardLed;
 
         //==== controllers and such
-        ClimateMonitor climateMonitor;
-        BluetoothServer bluetoothServer;
-
-        // controllers
-        //DisplayController displayController;
 
         public MeadowApp()
         {
             //==== new up our peripherals
-            Initialize();
+            Initialize().Wait();
 
+            ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s,e) => { DebugOut(e); };
+
+            // start our sensor updating
+            Console.WriteLine("Here");
+            ClimateMonitorAgent.Instance.StartUpdating(TimeSpan.FromSeconds(10));
+
+            Console.WriteLine("MeadowApp finished ctor.");
         }
 
         /// <summary>
@@ -49,9 +54,6 @@ namespace Clima.Meadow.Pro
             Console.WriteLine("RgbPwmLed up");
             onboardLed.SetColor(WildernessLabsColors.ChileanFire);
 
-            //==== cache the display controller
-            //this.displayController = new DisplayController();
-
             //==== coprocessor (WiFi and Bluetooth)
             Console.WriteLine("Initializaing coprocessor.");
             Device.InitCoprocessor().Wait();
@@ -59,28 +61,27 @@ namespace Clima.Meadow.Pro
 
             //==== connect to wifi
             Console.WriteLine($"Connecting to WiFi Network {Secrets.WIFI_NAME}");
-            var connectionResult = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
-            if (connectionResult.ConnectionStatus != ConnectionStatus.Success) {
-                throw new Exception($"Cannot connect to network: {connectionResult.ConnectionStatus}");
+            try {
+                var connectionResult = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
+                if (connectionResult.ConnectionStatus != ConnectionStatus.Success) {
+                    throw new Exception($"Cannot connect to network: {connectionResult.ConnectionStatus}");
+                }
+                Console.WriteLine($"Connected to {Secrets.WIFI_NAME}.");
+                onboardLed.SetColor(WildernessLabsColors.AzureBlue);
+            } catch (Exception e) {
+                Console.WriteLine($"Err when connecting to WiFi: {e.Message}");
             }
-            Console.WriteLine($"Connected to {Secrets.WIFI_NAME}.");
-            onboardLed.SetColor(WildernessLabsColors.AzureBlue);
-
-            //==== singleton references
-            climateMonitor = ClimateMonitor.Instance;
-            bluetoothServer = BluetoothServer.Instance;
 
             Console.WriteLine("Hardware initialization complete.");
         }
 
-        ///// <summary>
-        ///// Performs a one-off reading of the temp sensor.
-        ///// </summary>
-        ///// <returns></returns>
-        //protected async Task<AtmosphericConditions> ReadTemp()
-        //{
-        //    var conditions = await analogTemperature.Read();
-        //    return conditions;
-        //}
+        protected void DebugOut(ClimateConditions conditions)
+        {
+            Console.WriteLine("New climate reading:");
+            Console.WriteLine($"Temperature: {conditions.New?.Temperature?.Celsius:N2}C");
+            Console.WriteLine($"Pressure: {conditions.New?.Pressure?.Millibar:N2}millibar");
+            Console.WriteLine($"Humidity: {conditions.New?.Humidity:N2}%");
+            Console.WriteLine($"Wind Direction: {conditions.New?.WindDirection?.Compass16PointCardinalName}");
+        }
     }
 }
