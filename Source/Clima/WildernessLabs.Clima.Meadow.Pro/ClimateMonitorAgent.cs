@@ -3,11 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Clima.Meadow.Pro.Models;
 using Meadow;
-using Meadow.Devices;
+using Meadow.Units;
 using Meadow.Foundation.Sensors.Atmospheric;
 using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
-using Meadow.Units;
 
 namespace Clima.Meadow.Pro
 {
@@ -138,7 +137,7 @@ namespace Clima.Meadow.Pro
                         oldClimate = Climate;
 
                         // read
-                        Climate = await Read();
+                        Climate = await Read().ConfigureAwait(false);
 
                         // build a new result with the old and new conditions
                         var result = new ClimateConditions(Climate, oldClimate);
@@ -149,7 +148,7 @@ namespace Clima.Meadow.Pro
                         RaiseEventsAndNotify(result);
 
                         // sleep for the appropriate interval
-                        await Task.Delay(updateInterval);
+                        await Task.Delay(updateInterval).ConfigureAwait(false);
                     }
                 }, SamplingTokenSource.Token);
             }
@@ -179,52 +178,31 @@ namespace Clima.Meadow.Pro
         {
             Console.WriteLine("ClimateMonitorAgent.Read()");
 
-            // TODO: does it crash here??? or is it crashing somewhere else?
-
             // setup our initial climate stuff
             var climate = new Climate();
 
             Console.WriteLine("ClimateMonitorAgent.Read.1");
             climate.DateTime = DateTime.Now;
 
+            //==== create all the read tasks
+            var bmeTask = bme280.Read();
+            var windVaneTask = windVane.Read();
+
             Console.WriteLine("ClimateMonitorAgent.Read.2");
 
-            //==== create all the read tasks
-            //---- Bme280
-            var bmeTask = new Task(async () => {
-                Console.WriteLine("Reading from BME280");
-                var bmeRead = await bme280.Read();
-
-                Console.WriteLine("BME280 read finished.");
-
-                climate.Humidity = bmeRead.Humidity;
-                climate.Temperature = bmeRead.Temperature;
-                climate.Pressure = bmeRead.Pressure;
-            });
-            //---- WindVane
-            var windVaneTask = new Task(async () => {
-                Console.WriteLine("Reading from windvane");
-                var reading = await windVane.Read();
-
-                Console.WriteLine("windvane read finished.");
-
-                climate.WindDirection = reading;
-            });
-
-            Console.WriteLine("ClimateMonitorAgent.Read.3");
-
             //==== run them all 
-            await Task.WhenAll(
-                bmeTask,
-                windVaneTask
-                );
-
+            await Task.WhenAll(bmeTask, windVaneTask);
+         
             Console.WriteLine("ClimateMonitorAgent: All reads finished.");
+
+            climate.Humidity = bmeTask.Result.Humidity;
+            climate.Temperature = bmeTask.Result.Temperature;
+            climate.Pressure = bmeTask.Result.Pressure;
+
+            climate.WindDirection = windVaneTask.Result;
 
             return climate;
         }
-
-
 
         //protected void HandleAnemometerUpdate(IChangeResult<Speed> result)
         //{

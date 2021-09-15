@@ -36,6 +36,7 @@ namespace Clima.Meadow.Pro.DataAccessLayer
         protected void ConfigureDatabase()
         {
             // add table(s)
+            Console.WriteLine("ConfigureDatabase");
             Database.CreateTable<Climate>();
         }
 
@@ -61,6 +62,11 @@ namespace Clima.Meadow.Pro.DataAccessLayer
         public Climate GetClimateReading(int id)
         {
             return Database.Get<Climate>(id);
+        }
+
+        public void StartUpdating()
+        {
+            //this requires accessing the Instance property which will instantiate the class
         }
     }
 }
