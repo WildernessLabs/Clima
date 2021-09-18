@@ -23,17 +23,23 @@ namespace Clima.Meadow.Pro
             //==== new up our peripherals
             Initialize().Wait();
 
-            ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s,e) => { DebugOut(e); };
-
             // start our sensor updating
             Console.WriteLine("Here");
-            ClimateMonitorAgent.Instance.StartUpdating(TimeSpan.FromSeconds(10));
 
             // subscribe to climate updates and save them to the database
             ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s, e) => {
                 // start the DbManager
-                LocalDbManager.Instance.SaveUpdateReading(e);
+                Console.WriteLine("Update data");
+                DebugOut(e.New);
+                LocalDbManager.Instance.SaveReading(e);
+
+                Console.WriteLine("Get reading from DB");
+                var reading = LocalDbManager.Instance.GetClimateReading(0);
+                Console.WriteLine("Got data");
+                DebugOut(reading);
             };
+
+            ClimateMonitorAgent.Instance.StartUpdating(TimeSpan.FromSeconds(10));
 
             Console.WriteLine("MeadowApp finished ctor.");
         }
@@ -56,9 +62,11 @@ namespace Clima.Meadow.Pro
             Console.WriteLine("RgbPwmLed up");
             onboardLed.SetColor(WildernessLabsColors.ChileanFire);
 
+            /*
+
             //==== coprocessor (WiFi and Bluetooth)
             Console.WriteLine("Initializaing coprocessor.");
-            Device.InitCoprocessor().Wait();
+            await Device.InitCoprocessor();
             onboardLed.SetColor(WildernessLabsColors.PearGreen);
 
             //==== connect to wifi
@@ -74,16 +82,18 @@ namespace Clima.Meadow.Pro
                 Console.WriteLine($"Err when connecting to WiFi: {e.Message}");
             }
 
+            */
+
             Console.WriteLine("Hardware initialization complete.");
         }
 
-        protected void DebugOut(ClimateConditions conditions)
+        protected void DebugOut(Climate climate)
         {
             Console.WriteLine("New climate reading:");
-            Console.WriteLine($"Temperature: {conditions.New?.Temperature?.Celsius:N2}C");
-            Console.WriteLine($"Pressure: {conditions.New?.Pressure?.Millibar:N2}millibar");
-            Console.WriteLine($"Humidity: {conditions.New?.Humidity:N2}%");
-            Console.WriteLine($"Wind Direction: {conditions.New?.WindDirection?.Compass16PointCardinalName}");
+            Console.WriteLine($"Temperature: {climate.Temperature?.Celsius:N2}C");
+            Console.WriteLine($"Pressure: {climate.Pressure?.Millibar:N2}millibar");
+            Console.WriteLine($"Humidity: {climate.Humidity:N2}%");
+            Console.WriteLine($"Wind Direction: {climate.WindDirection?.Compass16PointCardinalName}");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Clima.Meadow.Pro.Models;
 using Meadow;
@@ -28,35 +29,60 @@ namespace Clima.Meadow.Pro.DataAccessLayer
             ConfigureDatabase();
         }
 
+        bool isConfigured = false;
         protected void ConfigureDatabase()
         {
             // add table(s)
             Console.WriteLine("ConfigureDatabase");
+            Database.DropTable<Climate>(); //convenience while we work on the model object
             Database.CreateTable<Climate>();
+            Console.WriteLine("Table created");
+            isConfigured = true;
         }
 
-        public int SaveUpdateReading(ClimateConditions conditions)
+        public bool SaveReading(ClimateConditions conditions)
         {
-            Console.WriteLine("Saving climate reading to DB.");
-
-            int rowID;
-
-            // if it has an ID, update it.
-            if (conditions.New?.ID is { } id) {
-                Database.Update(conditions.New);
-                rowID = id;
-            } else { // otherwise, insert
-                rowID = Database.Insert(conditions.New);
+            if(isConfigured == false)
+            {
+                Console.WriteLine("SaveUpdateReading: DB not ready");
+                return false;
             }
 
-            Console.WriteLine($"Successfully saved to database, row ID {rowID}");
+            if(conditions == null)
+            {
+                Console.WriteLine("SaveUpdateReading: Conditions is null");
+                return false;
+            }
 
-            return rowID;
+            if (conditions.New == null)
+            {
+                Console.WriteLine("SaveUpdateReading: Conditions.New is null");
+                return false;
+            }
+
+            Console.WriteLine("Saving climate reading to DB");
+
+            Database.Insert(conditions.New);
+
+            Console.WriteLine($"Successfully saved to database");
+
+            return true;
         }
 
         public Climate GetClimateReading(int id)
         {
-            return Database.Get<Climate>(id);
+            var climate = Database.Table<Climate>().First();
+
+            Console.WriteLine($"ID is {climate.ID.Value}");
+
+            return climate;
+
+          //  return Database.Get<Climate>(id);
+        }
+
+        public List<Climate> GetAllClimateReadings()
+        {
+            return Database.Table<Climate>().ToList();
         }
     }
 }

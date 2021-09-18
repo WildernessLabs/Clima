@@ -115,8 +115,10 @@ namespace Clima.Meadow.Pro
 
                 Climate oldClimate;
 
+                int count = 0;
+
                 Task.Factory.StartNew(async () => {
-                    while (true) {
+                    while (count++ < 2 /* true */) {
 
                         Console.WriteLine("ClimateMonitorAgent: About to do a reading.");
 
