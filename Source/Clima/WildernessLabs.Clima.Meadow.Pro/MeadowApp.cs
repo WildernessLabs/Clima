@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Clima.Meadow.Pro.Server.Bluetooth;
 using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation.Leds;
-using Meadow.Foundation.Sensors.Atmospheric;
-using Meadow.Foundation.Sensors.Weather;
 using Meadow.Gateway.WiFi;
-using Meadow.Hardware;
 using Meadow.Peripherals.Leds;
 using Clima.Meadow.Pro.DataAccessLayer;
 using Meadow.Foundation;
