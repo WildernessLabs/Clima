@@ -26,11 +26,6 @@ namespace Clima.Meadow.Pro.DataAccessLayer
             Database = new SQLite.SQLiteConnection(databasePath);
 
             ConfigureDatabase();
-
-            // subscribe to climate updates and save them to the database
-            ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s, e) => {
-                SaveUpdateReading(e);
-            };
         }
 
         protected void ConfigureDatabase()
@@ -62,11 +57,6 @@ namespace Clima.Meadow.Pro.DataAccessLayer
         public Climate GetClimateReading(int id)
         {
             return Database.Get<Climate>(id);
-        }
-
-        public void StartUpdating()
-        {
-            //this requires accessing the Instance property which will instantiate the class
         }
     }
 }

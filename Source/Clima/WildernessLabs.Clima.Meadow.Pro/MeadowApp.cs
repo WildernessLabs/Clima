@@ -33,8 +33,11 @@ namespace Clima.Meadow.Pro
             Console.WriteLine("Here");
             ClimateMonitorAgent.Instance.StartUpdating(TimeSpan.FromSeconds(10));
 
-            // start the DbManager
-            LocalDbManager.Instance.StartUpdating();
+            // subscribe to climate updates and save them to the database
+            ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s, e) => {
+                // start the DbManager
+                LocalDbManager.Instance.SaveUpdateReading(e);
+            };
 
             Console.WriteLine("MeadowApp finished ctor.");
         }
