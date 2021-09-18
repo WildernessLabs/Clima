@@ -23,25 +23,16 @@ namespace Clima.Meadow.Pro
             //==== new up our peripherals
             Initialize().Wait();
 
-            // start our sensor updating
-            Console.WriteLine("Here");
-
             // subscribe to climate updates and save them to the database
-            ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s, e) => {
-                // start the DbManager
-                Console.WriteLine("Update data");
+            ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s, e) =>
+            {
                 DebugOut(e.New);
-                LocalDbManager.Instance.SaveReading(e);
-
-                Console.WriteLine("Get reading from DB");
-                var reading = LocalDbManager.Instance.GetClimateReading(0);
-                Console.WriteLine("Got data");
-                DebugOut(reading);
+                LocalDbManager.Instance.SaveReading(e.New);
             };
 
             ClimateMonitorAgent.Instance.StartUpdating(TimeSpan.FromSeconds(10));
 
-            Console.WriteLine("MeadowApp finished ctor.");
+            Console.WriteLine("MeadowApp finished ctor");
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace Clima.Meadow.Pro.Models
         public double? HumidityValue
         {
             get => Humidity?.Percent;
-            set => new MU.RelativeHumidity(value.Value, MU.RelativeHumidity.UnitType.Percent);
+            set => Humidity = new MU.RelativeHumidity(value.Value, MU.RelativeHumidity.UnitType.Percent);
         }
 
         public double? WindDirectionValue

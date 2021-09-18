@@ -50,12 +50,14 @@ namespace Clima.Meadow.Pro
         //==== singleton stuff
         private static readonly Lazy<ClimateMonitorAgent> instance =
             new Lazy<ClimateMonitorAgent>(() => new ClimateMonitorAgent());
-        public static ClimateMonitorAgent Instance {
+        public static ClimateMonitorAgent Instance
+        {
             get { return instance.Value; }
         }
 
         // only invoked via the singleton instance 
-        private ClimateMonitorAgent() {
+        private ClimateMonitorAgent()
+        {
             Initialize();
         }
 
@@ -105,7 +107,8 @@ namespace Clima.Meadow.Pro
             Console.WriteLine("ClimateMonitorAgent.StartUpdating()");
 
             // thread safety
-            lock (samplingLock) {
+            lock (samplingLock)
+            {
                 if (IsSampling) return;
 
                 IsSampling = true;
@@ -115,16 +118,15 @@ namespace Clima.Meadow.Pro
 
                 Climate oldClimate;
 
-                int count = 0;
-
-                Task.Factory.StartNew(async () => {
-                    while (count++ < 2 /* true */) {
-
+                Task.Factory.StartNew(async () =>
+                {
+                    while (true)
+                    {
                         Console.WriteLine("ClimateMonitorAgent: About to do a reading.");
 
                         // cleanup
-                        if (ct.IsCancellationRequested) {
-                            // do task clean up here
+                        if (ct.IsCancellationRequested)
+                        {   // do task clean up here
                             //observers.ForEach(x => x.OnCompleted());
                             IsSampling = false;
                             break;
@@ -156,12 +158,13 @@ namespace Clima.Meadow.Pro
         /// </summary>
         public virtual void StopUpdating()
         {
-            lock (samplingLock) {
+            lock (samplingLock)
+            {
                 if (!IsSampling) return;
 
                 SamplingTokenSource?.Cancel();
 
-                // state muh-cheen
+                // state machine
                 IsSampling = false;
             }
         }
@@ -173,89 +176,24 @@ namespace Clima.Meadow.Pro
 
         public virtual async Task<Climate> Read()
         {
-            Console.WriteLine("ClimateMonitorAgent.Read()");
-
-            // setup our initial climate stuff
-            var climate = new Climate();
-
-            climate.DateTime = DateTime.Now;
-
-            //==== create all the read tasks
+            //==== create the read tasks
             var bmeTask = bme280.Read();
             var windVaneTask = windVane.Read();
 
-            //==== run them all 
+            //==== await until all tasks complete 
             await Task.WhenAll(bmeTask, windVaneTask);
-         
-            Console.WriteLine("ClimateMonitorAgent: All reads finished.");
 
-            climate.Humidity = bmeTask.Result.Humidity;
-            climate.Temperature = bmeTask.Result.Temperature;
-            climate.Pressure = bmeTask.Result.Pressure;
-
-            climate.WindDirection = windVaneTask.Result;
+            var climate = new Climate()
+            {
+                DateTime = DateTime.Now,
+                Humidity = bmeTask.Result.Humidity,
+                Temperature = bmeTask.Result.Temperature,
+                Pressure = bmeTask.Result.Pressure,
+                WindDirection = windVaneTask.Result,
+                WindSpeed = anemometer.WindSpeed,
+            };
 
             return climate;
         }
-
-        //protected void HandleAnemometerUpdate(IChangeResult<Speed> result)
-        //{
-        //    Console.WriteLine($"new speed: {result.New:n2}, old: {result.Old:n2}");
-        //    // Null check
-        //    ClimateConditions ??= new ClimateConditions();
-
-        //    // save the last wind speed to the old
-        //    if(ClimateConditions.Old is null) { ClimateConditions.Old = new Climate(); }
-        //    ClimateConditions.Old.Windspeed = ClimateConditions.New?.Windspeed;
-
-        //    // save the new
-        //    //ClimateConditions.New
-
-        //}
-
-        //protected void HandleBmeUpdate(IChangeResult<(Temperature? Temperature, RelativeHumidity? Humidity, Pressure? Pressure)> result)
-        //{
-        //    Console.WriteLine($"Temp: {result.New.Temperature?.Fahrenheit:n2}, Humidity: {result.New.Humidity?.Percent:n2}%");
-
-        //    // Null check
-        //    ClimateConditions ??= new ClimateConditions();
-
-        //    // temp
-        //    if(result.New.Temperature is { } temp) {
-        //        ClimateConditions.Old ??= new Climate();
-        //        if(ClimateConditions.New != null) {
-        //            ClimateConditions.Old.Temperature = ClimateConditions.New.Temperature;
-        //        }
-        //        ClimateConditions.New ??= new Climate();
-        //        ClimateConditions.New.Temperature = temp;
-        //    }
-
-        //    // humidity
-        //    if (result.New.Humidity is { } humidity) {
-        //        ClimateConditions.Old ??= new Climate();
-        //        if (ClimateConditions.New != null) {
-        //            ClimateConditions.Old.Humidity = ClimateConditions.New.Humidity;
-        //        }
-        //        ClimateConditions.New ??= new Climate();
-        //        ClimateConditions.New.Humidity = humidity;
-        //    }
-
-        //    // pressure
-        //    if (result.New.Pressure is { } pressure) {
-        //        ClimateConditions.Old ??= new Climate();
-        //        if (ClimateConditions.New != null) {
-        //            ClimateConditions.Old.Pressure = ClimateConditions.New.Pressure;
-        //        }
-        //        ClimateConditions.New ??= new Climate();
-        //        ClimateConditions.New.Pressure = pressure;
-        //    }
-
-        //    this.RaiseClimateConditionsUpdated(ClimateConditions);
-        //}
-
-        //protected void RaiseClimateConditionsUpdated(ClimateConditions conditions)
-        //{
-        //    this.ClimateConditionsUpdated?.Invoke(this, ClimateConditions);
-        //}
     }
 }

@@ -40,7 +40,7 @@ namespace Clima.Meadow.Pro.DataAccessLayer
             isConfigured = true;
         }
 
-        public bool SaveReading(ClimateConditions conditions)
+        public bool SaveReading(Climate climate)
         {
             if(isConfigured == false)
             {
@@ -48,21 +48,15 @@ namespace Clima.Meadow.Pro.DataAccessLayer
                 return false;
             }
 
-            if(conditions == null)
+            if(climate == null)
             {
                 Console.WriteLine("SaveUpdateReading: Conditions is null");
                 return false;
             }
 
-            if (conditions.New == null)
-            {
-                Console.WriteLine("SaveUpdateReading: Conditions.New is null");
-                return false;
-            }
-
             Console.WriteLine("Saving climate reading to DB");
 
-            Database.Insert(conditions.New);
+            Database.Insert(climate);
 
             Console.WriteLine($"Successfully saved to database");
 
@@ -71,13 +65,7 @@ namespace Clima.Meadow.Pro.DataAccessLayer
 
         public Climate GetClimateReading(int id)
         {
-            var climate = Database.Table<Climate>().First();
-
-            Console.WriteLine($"ID is {climate.ID.Value}");
-
-            return climate;
-
-          //  return Database.Get<Climate>(id);
+            return Database.Get<Climate>(id);
         }
 
         public List<Climate> GetAllClimateReadings()
