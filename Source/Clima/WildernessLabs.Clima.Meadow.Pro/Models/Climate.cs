@@ -31,6 +31,6 @@ namespace Clima.Meadow.Pro.Models
         /// <summary>
         /// Whether or not this particular reading has been uploaded to the cloud.
         /// </summary>
-        public bool Synchronzied { get; set; }
+        public bool Synchronized { get; set; }
     }
 }
