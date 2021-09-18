@@ -108,17 +108,12 @@ namespace Clima.Meadow.Pro
             lock (samplingLock) {
                 if (IsSampling) return;
 
-                Console.WriteLine("ClimateMonitorAgent.1");
-
                 IsSampling = true;
 
                 SamplingTokenSource = new CancellationTokenSource();
                 CancellationToken ct = SamplingTokenSource.Token;
 
                 Climate oldClimate;
-
-                Console.WriteLine("ClimateMonitorAgent.2");
-
 
                 Task.Factory.StartNew(async () => {
                     while (true) {
@@ -181,14 +176,11 @@ namespace Clima.Meadow.Pro
             // setup our initial climate stuff
             var climate = new Climate();
 
-            Console.WriteLine("ClimateMonitorAgent.Read.1");
             climate.DateTime = DateTime.Now;
 
             //==== create all the read tasks
             var bmeTask = bme280.Read();
             var windVaneTask = windVane.Read();
-
-            Console.WriteLine("ClimateMonitorAgent.Read.2");
 
             //==== run them all 
             await Task.WhenAll(bmeTask, windVaneTask);
