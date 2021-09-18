@@ -15,9 +15,5 @@
     <PackageReference Include="SimpleJpegDecoder" Version="0.*" />    
     <PackageReference Include="Meadow.Foundation.Displays.TftSpi" Version="0.*" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="ServiceAccessLayer\" />
-  </ItemGroup>
   <Import Project="..\WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems" Label="Shared" Condition="Exists('..\WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems')" />
 </Project>
