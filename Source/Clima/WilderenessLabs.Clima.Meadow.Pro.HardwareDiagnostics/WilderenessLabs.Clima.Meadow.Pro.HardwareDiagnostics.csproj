@@ -4,15 +4,16 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <OutputType>Exe</OutputType>
     <AssemblyName>App</AssemblyName>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Meadow.F7" Version="0.27.1" />
-    <PackageReference Include="Meadow.Foundation" Version="0.29.0" />
-    <PackageReference Include="Meadow.Foundation.Sensors.Atmospheric.Bme280" Version="0.5.46" />
-    <PackageReference Include="Meadow.Foundation.Sensors.Weather.SwitchingAnemometer" Version="0.1.7" />
-    <PackageReference Include="Meadow.Foundation.Sensors.Weather.WindVane" Version="0.1.12" />
+    <PackageReference Include="Meadow.F7" Version="0.*" />
+    <PackageReference Include="Meadow.Foundation" Version="0.*" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Weather.SwitchingAnemometer" Version="0.*" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Weather.WindVane" Version="0.*" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Atmospheric.Bme280" Version="0.*" />
   </ItemGroup>
 </Project>
