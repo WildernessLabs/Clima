@@ -14,7 +14,6 @@ namespace MeadowApp
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
         RgbPwmLed onboardLed;
-        //IDigitalInputPort anemometer;
         SwitchingAnemometer anemometer;
         WindVane windVane;
         Bme280 bme280;
