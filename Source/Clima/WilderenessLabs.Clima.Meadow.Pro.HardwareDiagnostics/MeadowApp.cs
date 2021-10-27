@@ -1,59 +1,40 @@
-﻿using System;
-using System.Threading;
-using Meadow;
+﻿using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Leds;
-using Meadow.Foundation.Sensors.Weather;
-using Meadow.Hardware;
-using Meadow.Units;
 using Meadow.Foundation.Sensors.Atmospheric;
+using Meadow.Foundation.Sensors.Weather;
+using Meadow.Units;
+using System;
 
-namespace MeadowApp
+namespace ClimaHardwareDiagnostics
 {
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
+        Bme280 bme280;
+        WindVane windVane;
         RgbPwmLed onboardLed;
         SwitchingAnemometer anemometer;
-        WindVane windVane;
-        Bme280 bme280;
-        II2cBus i2cBus;
 
         public MeadowApp()
         {
             Initialize();
-
-            bme280.StartUpdating();
         }
 
         void Initialize()
         {
-            Console.WriteLine("Initialize hardware...");
-
-            // RGB onboard LED
             onboardLed = new RgbPwmLed(device: Device,
                 redPwmPin: Device.Pins.OnboardLedRed,
                 greenPwmPin: Device.Pins.OnboardLedGreen,
                 bluePwmPin: Device.Pins.OnboardLedBlue);
+            onboardLed.SetColor(Color.Red);
 
             anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
-            // classic event
-            //anemometer.WindSpeedUpdated += (object sender, SwitchingAnemometer.AnemometerChangeResult e) => {
-            //    Console.WriteLine($"new speed: {e.New}, old: {e.Old}");
-            //};
-            // iobservable
-            SwitchingAnemometer.CreateObserver(
-                handler: result => {
-                    Console.WriteLine($"new speed: {result.New}, old: {result.Old}");
-                },
-                // only notify if it's change more than 0.1kmh:
-                //filter: result => {
-                //    Console.WriteLine($"delta: {result.Delta}");
-                //    return result.Delta > 0.1;
-                //    }
-                null
+            var anemometerObserver = SwitchingAnemometer.CreateObserver(
+                handler: result => { Console.WriteLine($"new speed: {result.New}, old: {result.Old}"); },
+                filter: null
             );
-
+            anemometer.Subscribe(anemometerObserver);
             anemometer.StartUpdating();
 
             //==== to test the analog port for the wind vane, uncomment this section
@@ -69,34 +50,22 @@ namespace MeadowApp
             //windVaneAnalog.StartSampling(standbyDuration: 1000);
 
             ////==== to test the windvane driver use this
-            //windVane = new WindVane(Device, Device.Pins.A00);
-            //windVane.Subscribe(new FilterableChangeObserver<WindVane.WindVaneChangeResult, Azimuth>(
-            //    handler: result => { Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"); },
-            //    filter: null
-            //));
+            windVane = new WindVane(Device, Device.Pins.A00);
+            var observer = WindVane.CreateObserver(
+                handler: result => { Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"); },
+                filter: null
+            );
+            windVane.Subscribe(observer);
+            windVane.StartUpdating(TimeSpan.FromSeconds(1));
 
-            //// get initial reading, just to test the API
-            //Azimuth azi = windVane.Read().Result;
-            //Console.WriteLine($"Initial azimuth: {azi.Compass16PointCardinalName}");
-
-            //windVane.StartUpdating();
-
-            //==== I2C Bus
-            i2cBus = Device.CreateI2cBus();
-            Console.WriteLine("I2C up.");
-
-            //==== BME280
-            bme280 = new Bme280(i2cBus);
+            bme280 = new Bme280(Device.CreateI2cBus());
             var bmeObserver = Bme280.CreateObserver(
                 handler: result => { Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"); },
                 filter: result => true);
             bme280.Subscribe(bmeObserver);
-            Console.WriteLine("BME280 up.");
+            bme280.StartUpdating();
 
-            //ReadConditions().Wait();
-
-            // done.
-            Console.WriteLine("Initialization complete.");
+            onboardLed.SetColor(Color.Green);
         }
 
         void OutputWindSpeed(Speed windspeed)
