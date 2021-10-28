@@ -16,7 +16,7 @@ namespace Clima.Meadow.Pro
     ///
     /// ## Design considerations:
     ///
-    /// we can probably get rid of the StartUpdating and StopUdpating stuff
+    /// we can probably get rid of the StartUpdating and StopUppating stuff
     /// in favor of managing the lifecycle elsewhere for sleep purposes. but we may
     /// not need to, depending on how we design the sleep APIs
     ///
@@ -31,15 +31,14 @@ namespace Clima.Meadow.Pro
 
         //==== internals
         IF7MeadowDevice Device => MeadowApp.Device;
-        protected object samplingLock = new object();
-        protected CancellationTokenSource? SamplingTokenSource { get; set; }
-        bool IsSampling { get; set; } = false;
+        object samplingLock = new object();
+        CancellationTokenSource? SamplingTokenSource;
+        bool IsSampling = false;
 
         //==== peripherals
-        II2cBus i2cBus;
-        SwitchingAnemometer anemometer;
-        WindVane windVane;
         Bme280 bme280;
+        WindVane windVane;
+        SwitchingAnemometer anemometer;
 
         //==== properties
         /// <summary>
@@ -52,10 +51,10 @@ namespace Clima.Meadow.Pro
             new Lazy<ClimateMonitorAgent>(() => new ClimateMonitorAgent());
         public static ClimateMonitorAgent Instance
         {
-            get { return instance.Value; }
+            get => instance.Value;
         }
 
-        // only invoked via the singleton instance 
+        // Only invoked via the singleton instance 
         private ClimateMonitorAgent()
         {
             Initialize();
@@ -65,39 +64,14 @@ namespace Clima.Meadow.Pro
         {
             Console.WriteLine("ClimateMonitor initializing.");
 
-            //==== Anemometer
             anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
-            //var anemometerObserver = SwitchingAnemometer.CreateObserver(
-            //    handler: HandleAnemometerUpdate,
-            //    //result => {
-            //    //    Console.WriteLine($"new speed: {result.New:n2}, old: {result.Old:n2}");
-            //    //},
-            //    null
-            //);
-            //anemometer.Subscribe(anemometerObserver);
             Console.WriteLine("Anemometer up.");
 
-            //==== WindVane
             windVane = new WindVane(Device, Device.Pins.A00);
-            //var windVaneObserver = WindVane.CreateObserver(
-            //    handler: result => { Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"); },
-            //    filter: null
-            //);
-            //windVane.Subscribe(windVaneObserver);
             Console.WriteLine("WindVane up.");
 
-            //==== I2C Bus
-            i2cBus = Device.CreateI2cBus();
-            Console.WriteLine("I2C up.");
-
-            //==== BME280
-            bme280 = new Bme280(i2cBus, Bme280.DEFAULT_ADDRESS);
-            //var bmeObserver = Bme280.CreateObserver(
-            //    handler: HandleBmeUpdate,
-            //    filter: result => true);
-            //bme280.Subscribe(bmeObserver);
+            bme280 = new Bme280(Device.CreateI2cBus(), Bme280.DEFAULT_ADDRESS);
             Console.WriteLine("BME280 up.");
-            //ReadConditions().Wait();
 
             Console.WriteLine("ClimateMonitor initialized.");
         }
@@ -156,7 +130,7 @@ namespace Clima.Meadow.Pro
         /// <summary>
         /// Stops sampling the sensor.
         /// </summary>
-        public virtual void StopUpdating()
+        public void StopUpdating()
         {
             lock (samplingLock)
             {

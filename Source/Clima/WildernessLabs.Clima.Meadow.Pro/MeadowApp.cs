@@ -1,80 +1,69 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Clima.Meadow.Pro.DataAccessLayer;
+using Clima.Meadow.Pro.Models;
 using Meadow;
 using Meadow.Devices;
+using Meadow.Foundation;
 using Meadow.Foundation.Leds;
 using Meadow.Gateway.WiFi;
-using Meadow.Peripherals.Leds;
-using Clima.Meadow.Pro.DataAccessLayer;
-using Meadow.Foundation;
-using Clima.Meadow.Pro.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace Clima.Meadow.Pro
 {
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
-        //==== peripherals
-        RgbPwmLed onboardLed;
-
-        //==== controllers and such
-
+        //==== Controllers and such
         public MeadowApp()
         {
+            Console.WriteLine("MeadowApp constructor started.");
+
             //==== new up our peripherals
             Initialize().Wait();
 
-            // subscribe to climate updates and save them to the database
+            //==== subscribe to climate updates and save them to the database
             ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s, e) =>
             {
                 DebugOut(e.New);
                 LocalDbManager.Instance.SaveReading(e.New);
             };
-
             ClimateMonitorAgent.Instance.StartUpdating(TimeSpan.FromSeconds(10));
 
-            Console.WriteLine("MeadowApp finished ctor");
+            Console.WriteLine("MeadowApp constructor finished.");
         }
 
-        /// <summary>
-        /// Initializes the hardware.
-        /// </summary>
+        //==== Initializes the hardware.
         async Task Initialize()
         {
-            Console.WriteLine("Initialize hardware...");
-
-            //==== onboard LED
-            onboardLed = new RgbPwmLed(device: Device,
+            Console.WriteLine("Hardware initialization started.");
+            var onboardLed = new RgbPwmLed(device: Device,
                 redPwmPin: Device.Pins.OnboardLedRed,
                 greenPwmPin: Device.Pins.OnboardLedGreen,
-                bluePwmPin: Device.Pins.OnboardLedBlue,
-                3.3f, 3.3f, 3.3f,
-                IRgbLed.CommonType.CommonAnode);
-
-            Console.WriteLine("RgbPwmLed up");
-            onboardLed.SetColor(WildernessLabsColors.ChileanFire);
-
-            /*
+                bluePwmPin: Device.Pins.OnboardLedBlue);
+            onboardLed.SetColor(Color.Red);
 
             //==== coprocessor (WiFi and Bluetooth)
             Console.WriteLine("Initializaing coprocessor.");
             await Device.InitCoprocessor();
-            onboardLed.SetColor(WildernessLabsColors.PearGreen);
+            onboardLed.SetColor(WildernessLabsColors.ChileanFire);
 
             //==== connect to wifi
             Console.WriteLine($"Connecting to WiFi Network {Secrets.WIFI_NAME}");
-            try {
+            try 
+            {
                 var connectionResult = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
-                if (connectionResult.ConnectionStatus != ConnectionStatus.Success) {
+                if (connectionResult.ConnectionStatus != ConnectionStatus.Success) 
+                {
                     throw new Exception($"Cannot connect to network: {connectionResult.ConnectionStatus}");
                 }
                 Console.WriteLine($"Connected to {Secrets.WIFI_NAME}.");
                 onboardLed.SetColor(WildernessLabsColors.AzureBlue);
-            } catch (Exception e) {
+            } 
+            catch (Exception e) 
+            {
                 Console.WriteLine($"Err when connecting to WiFi: {e.Message}");
             }
 
-            */
-
+            onboardLed.SetColor(Color.Green);
             Console.WriteLine("Hardware initialization complete.");
         }
 
