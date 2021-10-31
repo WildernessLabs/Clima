@@ -39,11 +39,7 @@ namespace Clima.Meadow.Pro
                 redPwmPin: Device.Pins.OnboardLedRed,
                 greenPwmPin: Device.Pins.OnboardLedGreen,
                 bluePwmPin: Device.Pins.OnboardLedBlue);
-            onboardLed.SetColor(Color.Red);
 
-            //==== coprocessor (WiFi and Bluetooth)
-            Console.WriteLine("Initializaing coprocessor.");
-            await Device.InitCoprocessor();
             onboardLed.SetColor(WildernessLabsColors.ChileanFire);
 
             //==== connect to wifi

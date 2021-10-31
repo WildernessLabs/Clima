@@ -49,12 +49,14 @@ namespace Clima.Meadow.HackKit
             displayController = new DisplayController();
             displayController.ShowSplashScreen();
 
+            /*
             displayController.ShowTextLine1("WIFI ADAPTER");
             Device.InitWiFiAdapter().Wait();
             displayController.ShowTextLine2("READY!");
+            */            
 
             LedIndicator.SetColor(Color.Blue);
-            /*
+            
             displayController.ShowTextLine1("JOIN NETWORK");
             var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
             if (result.ConnectionStatus != ConnectionStatus.Success)
@@ -62,7 +64,6 @@ namespace Clima.Meadow.HackKit
                 throw new Exception($"Cannot connect to network: {result.ConnectionStatus}");
             }
             displayController.ShowTextLine2("CONNECTED!");
-            */
 
             buttonUp = new PushButton(Device, Device.Pins.D03);
             buttonDown = new PushButton(Device, Device.Pins.D02);
