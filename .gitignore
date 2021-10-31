@@ -356,3 +356,4 @@ MigrationBackup/
 # secrets
 **/Secrets.cs
 Source/Clima/WildernessLabs.Clima.App/WildernessLabs.Clima.App.Android/Resources/Resource.designer.cs
+Source/Clima/WildernessLabs.Clima.Client/WildernessLabs.Clima.Client.Android/Resources/Resource.designer.cs

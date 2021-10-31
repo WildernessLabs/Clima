@@ -1,4 +1,5 @@
 ﻿using Meadow.Foundation;
+using Meadow.Foundation.Displays.TextDisplayMenu;
 using Meadow.Foundation.Displays.TftSpi;
 using Meadow.Foundation.Graphics;
 using Meadow.Hardware;
@@ -15,10 +16,11 @@ namespace Clima.Meadow.HackKit.Controllers
         protected Temperature conditions;
 
         protected St7789 display;
-        protected GraphicsLibrary graphics;        
+        protected GraphicsLibrary graphics;
+        protected Menu menu;
 
+        protected bool isCelcius = true;
         protected bool isRendering = false;
-        protected object renderLock = new object();
 
         public DisplayController()
         {
@@ -32,13 +34,13 @@ namespace Clima.Meadow.HackKit.Controllers
         protected void Initialize()
         {
             // our display needs mode3
-            var config = new SpiClockConfiguration(6000, SpiClockConfiguration.Mode.Mode3);
-
+            var config = new SpiClockConfiguration(24000, SpiClockConfiguration.Mode.Mode3);
+            var spiBus = MeadowApp.Device.CreateSpiBus(MeadowApp.Device.Pins.SCK, MeadowApp.Device.Pins.MOSI, MeadowApp.Device.Pins.MISO, config);
             // new up the actual display on the SPI bus
             display = new St7789
             (
                 device: MeadowApp.Device,
-                spiBus: MeadowApp.Device.CreateSpiBus(MeadowApp.Device.Pins.SCK, MeadowApp.Device.Pins.MOSI, MeadowApp.Device.Pins.MISO, config),
+                spiBus: spiBus,
                 chipSelectPin: null,
                 dcPin: MeadowApp.Device.Pins.D01,
                 resetPin: MeadowApp.Device.Pins.D00,
@@ -47,10 +49,20 @@ namespace Clima.Meadow.HackKit.Controllers
 
             // create our graphics surface that we'll draw onto and then blit
             // to the display with.
-            graphics = new GraphicsLibrary(display) {   // my display is upside down
+            graphics = new GraphicsLibrary(display) 
+            {   // my display is upside down
                 // Rotation = GraphicsLibrary.RotationType._180Degrees,
                 CurrentFont = new Font12x20(),
             };
+
+            var menuItems = new MenuItem[]
+            {
+                new MenuItem("Celcius", command: "setCelcius"),
+                new MenuItem("Fahrenheit ", command: "setFahrenheit "),
+            };
+
+            menu = new Menu(graphics, menuItems, false);
+            menu.Selected += Menu_Selected;
 
             Console.WriteLine("Clear display");
 
@@ -60,7 +72,26 @@ namespace Clima.Meadow.HackKit.Controllers
             //Render();
         }
 
+        private void Menu_Selected(object sender, MenuSelectedEventArgs e)
+        {
+            Console.WriteLine("MenuSelected: " + e.Command);
+
+            isCelcius = (e.Command == "setCelcius");
+               
+            //hide the menu after a selection
+            menu.Disable();
+            //and update the display
+            Render();
+        }
+
         public void ShowSplashScreen() 
+        {
+            DrawBackground();
+
+            graphics.Show();
+        }
+
+        protected void DrawBackground()
         {
             graphics.Clear();
 
@@ -70,25 +101,22 @@ namespace Clima.Meadow.HackKit.Controllers
 
             graphics.DrawCircle(display.Width / 2, display.Height / 2, (display.Width / 2) - 10, Color.FromHex("#23abe3"), true);
 
-            DisplayJPG();
-
-            graphics.Show();
+            DisplayJpeg();
         }
 
         public void ShowTextLine1(string message) 
         {
+            //drawing a rect to erase previous text ....
             graphics.DrawRectangle(48, 130, 144, 71, Color.FromHex("#23abe3"), true);
 
-            graphics.CurrentFont = new Font12x16();            
-            graphics.DrawText((display.Width - message.Length * 12) / 2, 139, message, Color.Black);
+            graphics.DrawText(display.Width / 2, 139, message, Color.Black, alignment: GraphicsLibrary.TextAlignment.Center);
 
             graphics.Show();
         }
 
         public void ShowTextLine2(string message)
         {
-            graphics.CurrentFont = new Font12x20();
-            graphics.DrawText((display.Width - message.Length * 12) / 2, 169, message, Color.Black);
+            graphics.DrawText(display.Width / 2, 169, message, Color.Black, alignment: GraphicsLibrary.TextAlignment.Center);
 
             graphics.Show();
         }
@@ -96,7 +124,38 @@ namespace Clima.Meadow.HackKit.Controllers
         public void UpdateDisplay(Temperature conditions) 
         {
             this.conditions = conditions;
-            this.Render();  
+
+            if(menu.IsEnabled == false)
+            {
+                Render();
+            }
+        }
+
+        public void ShowMenu()
+        {
+            menu.Enable();
+        }
+
+        public void Up()
+        {
+            menu.Previous();
+        }
+
+        public void Down()
+        {
+            menu.Next();
+        }
+
+        public void Select()
+        {
+            if(menu.IsEnabled == false)
+            {
+                menu.Enable();
+            }
+            else
+            {
+                menu.Select();
+            }
         }
 
         /// <summary>
@@ -105,70 +164,71 @@ namespace Clima.Meadow.HackKit.Controllers
         /// </summary>
         protected void Render()
         {
-            Console.WriteLine($"Render() - is rendering: {isRendering}");
-
-            lock (renderLock) 
-            {   
-                // if we're already rendering, bail out.
-                if (isRendering) 
-                {
-                    Console.WriteLine("Already in a rendering loop, bailing out.");
-                    return;
-                }
-
-                isRendering = true;
+            // if we're already rendering, bail out.
+            if (isRendering) 
+            {
+                Console.WriteLine("Already in a rendering loop, bailing out.");
+                return;
             }
 
-            graphics.Clear(true);
+            isRendering = true;
 
-            graphics.Stroke = 1;
-            graphics.DrawRectangle(0, 0, display.Width, display.Height, Color.White);
-            graphics.DrawRectangle(5, 5, display.Width - 10, display.Height - 10, Color.White);
+            DrawBackground();
 
-            graphics.DrawCircle(display.Width / 2, display.Height / 2, (display.Width / 2) - 10, Color.FromHex("#23abe3"), true);
-
-            DisplayJPG();
-
-            string text = $"{conditions.Celsius.ToString("##.#")}°C";
-
-            graphics.CurrentFont = new Font12x20();
+            string tempText;
+            if(isCelcius)
+            {
+                tempText = $"{conditions.Celsius.ToString("##.#")}°C";
+            }
+            else
+            {
+                tempText = $"{conditions.Fahrenheit.ToString("##.#")}°F";
+            }
+            
             graphics.DrawText(
-                x: (display.Width - text.Length * 24) / 2, 
+                x: display.Width/2,
                 y: 140, 
-                text: text, 
+                text: tempText, 
                 color: Color.Black, 
-                scaleFactor: GraphicsLibrary.ScaleFactor.X2);
-
-            graphics.Rotation = GraphicsLibrary.RotationType._270Degrees;
+                scaleFactor: GraphicsLibrary.ScaleFactor.X2,
+                alignment: GraphicsLibrary.TextAlignment.Center);
 
             graphics.Show();
 
-            Console.WriteLine("Show complete");
-
             isRendering = false;
-
         }
 
-        protected void DisplayJPG()
+        byte[] backgroundJpegData;
+        int backgroundWidth;
+        protected void LoadJpeg()
         {
             var jpgData = LoadResource("meadow.jpg");
             var decoder = new JpegDecoder();
-            var jpg = decoder.DecodeJpeg(jpgData);
+            backgroundJpegData = decoder.DecodeJpeg(jpgData);
+            backgroundWidth = decoder.Width;
+        }
+
+        protected void DisplayJpeg()
+        {
+            if (backgroundJpegData == null)
+            {
+                LoadJpeg();
+            }
 
             int x = 0;
             int y = 0;
             byte r, g, b;
 
-            for (int i = 0; i < jpg.Length; i += 3)
+            for (int i = 0; i < backgroundJpegData.Length; i += 3)
             {
-                r = jpg[i];
-                g = jpg[i + 1];
-                b = jpg[i + 2];
+                r = backgroundJpegData[i];
+                g = backgroundJpegData[i + 1];
+                b = backgroundJpegData[i + 2];
 
                 graphics.DrawPixel(x + 55, y + 40, Color.FromRgb(r, g, b));
 
                 x++;
-                if (x % decoder.Width == 0)
+                if (x % backgroundWidth == 0)
                 {
                     y++;
                     x = 0;
@@ -181,7 +241,7 @@ namespace Clima.Meadow.HackKit.Controllers
         protected byte[] LoadResource(string filename)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = $"Clima.Meadow.HackKit.{filename}";
+            var resourceName = $"WildernessLabs.Clima.Meadow.HackKit.{filename}";
 
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
