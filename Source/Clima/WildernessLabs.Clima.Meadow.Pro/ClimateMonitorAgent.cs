@@ -70,7 +70,7 @@ namespace Clima.Meadow.Pro
             windVane = new WindVane(Device, Device.Pins.A00);
             Console.WriteLine("WindVane up.");
 
-            bme280 = new Bme280(Device.CreateI2cBus(), Bme280.Addresses.Default);
+            bme280 = new Bme280(Device.CreateI2cBus(), (byte)Bme280.Addresses.Default);
             Console.WriteLine("BME280 up.");
 
             Console.WriteLine("ClimateMonitor initialized.");

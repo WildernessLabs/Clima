@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Clima.Meadow.HackKit.ServiceAccessLayer
 {
-    public static class ClimateServiceFacade
+    public static class ClimateService
     {
         // TODO: change this IP for your localhost 
         static string climateDataUri = "http://192.168.1.74:2792/ClimateData";
 
-        static ClimateServiceFacade() { }
+        static ClimateService() { }
 
         /// <summary>
         /// Posts a temperature reading to the web API endpoint
