@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WildernessLabs.Clima.Client
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WildernessLabs.Clima.Client", "WildernessLabs.Clima.Client\WildernessLabs.Clima.Client\WildernessLabs.Clima.Client.csproj", "{0A88B701-120A-491C-B823-7ECD2F7BD24E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WilderenessLabs.Clima.Meadow.Pro.HardwareDiagnostics", "WilderenessLabs.Clima.Meadow.Pro.HardwareDiagnostics\WilderenessLabs.Clima.Meadow.Pro.HardwareDiagnostics.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WildernessLabs.Clima.Meadow.Pro.HardwareDiagnostics", "WilderenessLabs.Clima.Meadow.Pro.HardwareDiagnostics\WildernessLabs.Clima.Meadow.Pro.HardwareDiagnostics.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project References", "Project References", "{17C90722-DF40-46BB-BAEA-BCE864279AF5}"
 EndProject

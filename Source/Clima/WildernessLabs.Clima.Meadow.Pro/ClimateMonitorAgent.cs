@@ -3,10 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Clima.Meadow.Pro.Models;
 using Meadow;
-using Meadow.Units;
 using Meadow.Foundation.Sensors.Atmospheric;
 using Meadow.Foundation.Sensors.Weather;
-using Meadow.Hardware;
 
 namespace Clima.Meadow.Pro
 {
