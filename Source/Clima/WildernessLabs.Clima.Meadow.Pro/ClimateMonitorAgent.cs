@@ -34,23 +34,21 @@ namespace Clima.Meadow.Pro
         bool IsSampling = false;
 
         //==== peripherals
-        Bme280 bme280;
-        WindVane windVane;
-        SwitchingAnemometer anemometer;
+        Bme280? bme280;
+        WindVane? windVane;
+        SwitchingAnemometer? anemometer;
 
         //==== properties
         /// <summary>
         /// The last read conditions.
         /// </summary>
-        public Climate Climate { get; set; }
+        public Climate? Climate { get; set; }
 
-        //==== singleton stuff
+        //==== singleton
         private static readonly Lazy<ClimateMonitorAgent> instance =
             new Lazy<ClimateMonitorAgent>(() => new ClimateMonitorAgent());
-        public static ClimateMonitorAgent Instance
-        {
-            get => instance.Value;
-        }
+
+        public static ClimateMonitorAgent Instance => instance.Value;
 
         // Only invoked via the singleton instance 
         private ClimateMonitorAgent()
@@ -105,7 +103,7 @@ namespace Clima.Meadow.Pro
                         }
 
                         // capture history
-                        oldClimate = Climate;
+                        oldClimate = Climate ?? new Climate();
 
                         // read
                         Climate = await Read().ConfigureAwait(false);
@@ -130,13 +128,12 @@ namespace Clima.Meadow.Pro
         /// </summary>
         public void StopUpdating()
         {
+            if (!IsSampling) return;
+
             lock (samplingLock)
             {
-                if (!IsSampling) return;
-
                 SamplingTokenSource?.Cancel();
 
-                // state machine
                 IsSampling = false;
             }
         }
@@ -149,20 +146,20 @@ namespace Clima.Meadow.Pro
         public virtual async Task<Climate> Read()
         {
             //==== create the read tasks
-            var bmeTask = bme280.Read();
-            var windVaneTask = windVane.Read();
-
+            var bmeTask = bme280?.Read();
+            var windVaneTask = windVane?.Read();
+ 
             //==== await until all tasks complete 
             await Task.WhenAll(bmeTask, windVaneTask);
 
             var climate = new Climate()
             {
                 DateTime = DateTime.Now,
-                Humidity = bmeTask.Result.Humidity,
-                Temperature = bmeTask.Result.Temperature,
-                Pressure = bmeTask.Result.Pressure,
-                WindDirection = windVaneTask.Result,
-                WindSpeed = anemometer.WindSpeed,
+                Humidity = bmeTask?.Result.Humidity,
+                Temperature = bmeTask?.Result.Temperature,
+                Pressure = bmeTask?.Result.Pressure,
+                WindDirection = windVaneTask?.Result,
+                WindSpeed = anemometer?.WindSpeed,
             };
 
             return climate;
