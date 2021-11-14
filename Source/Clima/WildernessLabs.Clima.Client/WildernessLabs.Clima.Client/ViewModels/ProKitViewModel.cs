@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WildernessLabs.Clima.Client.Utils;
 using Xamarin.Forms;
 
 namespace WildernessLabs.Clima.Client.ViewModels
@@ -16,10 +17,16 @@ namespace WildernessLabs.Clima.Client.ViewModels
     {
         int listenTimeout = 5000;
 
-        protected ushort DEVICE_ID = 253;
+        ushort DEVICE_ID = 896;
 
-        protected IAdapter adapter;
-        protected IService service;
+        IAdapter adapter;
+        IService service;
+
+        ICharacteristic tempCharacteristic;
+        ICharacteristic pressureCharacteristic;
+        ICharacteristic humidityCharacteristic;
+        ICharacteristic windSpeedCharacteristic;
+        ICharacteristic windDirectionCharacteristic;
 
         public ObservableCollection<IDevice> DeviceList { get; set; }
 
@@ -51,9 +58,46 @@ namespace WildernessLabs.Clima.Client.ViewModels
             set { isDeviceListEmpty = value; OnPropertyChanged(nameof(IsDeviceListEmpty)); }
         }
 
+        string temperatureValue;
+        public string TemperatureValue
+        {
+            get => temperatureValue;
+            set { temperatureValue = value; OnPropertyChanged(nameof(TemperatureValue)); }
+        }
+
+        string pressureValue;
+        public string PressureValue
+        {
+            get => pressureValue;
+            set { pressureValue = value; OnPropertyChanged(nameof(PressureValue)); }
+        }
+
+        string humidityValue;
+        public string HumidityValue
+        {
+            get => humidityValue;
+            set { humidityValue = value; OnPropertyChanged(nameof(HumidityValue)); }
+        }
+
+        string windSpeedValue;
+        public string WindSpeedValue
+        {
+            get => windSpeedValue;
+            set { windSpeedValue = value; OnPropertyChanged(nameof(WindSpeedValue)); }
+        }
+
+        string windDirectionValue;
+        public string WindDirectionValue
+        {
+            get => windDirectionValue;
+            set { windDirectionValue = value; OnPropertyChanged(nameof(WindDirectionValue)); }
+        }
+
         public ICommand CmdToggleConnection { get; set; }
 
         public ICommand CmdSearchForDevices { get; set; }
+
+        public ICommand CmdGetClimaStatus { get; set; }
 
         public ProKitViewModel()
         {
@@ -62,18 +106,43 @@ namespace WildernessLabs.Clima.Client.ViewModels
             adapter = CrossBluetoothLE.Current.Adapter;
             adapter.ScanTimeout = listenTimeout;
             adapter.ScanMode = ScanMode.LowLatency;
+            adapter.DeviceConnected += AdapterDeviceConnected;
             adapter.DeviceDiscovered += AdapterDeviceDiscovered;
+            adapter.DeviceDisconnected += AdapterDeviceDisconnected;
 
             CmdToggleConnection = new Command(async () => await ToggleConnection());
 
             CmdSearchForDevices = new Command(async () => await DiscoverDevices());
+
+            CmdGetClimaStatus = new Command(async () => await GetClimaStatus());
         }
 
-        async Task ScanTimeoutTask()
+        void AdapterDeviceDisconnected(object sender, DeviceEventArgs e)
         {
-            await Task.Delay(listenTimeout);
-            await adapter.StopScanningForDevicesAsync();
-            IsScanning = false;
+            IsConnected = false;
+        }
+
+        async void AdapterDeviceConnected(object sender, DeviceEventArgs e)
+        {
+            IsConnected = true;
+
+            IDevice device = e.Device;
+
+            var services = await device.GetServicesAsync();
+
+            foreach (var serviceItem in services)
+            {
+                if (UuidToUshort(serviceItem.Id.ToString()) == DEVICE_ID)
+                {
+                    service = serviceItem;
+                }
+            }
+
+            tempCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.TEMPERATURE));
+            pressureCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.PRESSURE));
+            humidityCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.HUMIDITY));
+            windSpeedCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.WIND_SPEED));
+            windDirectionCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.WIND_DIRECTION));
         }
 
         async void AdapterDeviceDiscovered(object sender, DeviceEventArgs e)
@@ -90,6 +159,13 @@ namespace WildernessLabs.Clima.Client.ViewModels
                 IsDeviceListEmpty = false;
                 DeviceSelected = e.Device;
             }
+        }
+
+        async Task ScanTimeoutTask()
+        {
+            await Task.Delay(listenTimeout);
+            await adapter.StopScanningForDevicesAsync();
+            IsScanning = false;
         }
 
         async Task DiscoverDevices()
@@ -139,6 +215,17 @@ namespace WildernessLabs.Clima.Client.ViewModels
             {
                 Debug.WriteLine(ex.Message);
             }
+        }
+
+        async Task GetClimaStatus() 
+        {
+            var bytes = await tempCharacteristic.ReadAsync();
+
+            TemperatureValue = System.Text.Encoding.Default.GetString(await tempCharacteristic.ReadAsync());
+            PressureValue = System.Text.Encoding.Default.GetString(await pressureCharacteristic.ReadAsync());
+            HumidityValue = System.Text.Encoding.Default.GetString(await humidityCharacteristic.ReadAsync());
+            WindSpeedValue = System.Text.Encoding.Default.GetString(await windSpeedCharacteristic.ReadAsync());
+            WindDirectionValue = System.Text.Encoding.Default.GetString(await windDirectionCharacteristic.ReadAsync());
         }
 
         protected int UuidToUshort(string uuid)

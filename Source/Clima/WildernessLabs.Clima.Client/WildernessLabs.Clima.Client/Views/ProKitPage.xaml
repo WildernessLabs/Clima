@@ -17,8 +17,6 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Text="Bluetooth devices:" FontSize="Medium" TextColor="Black" />
@@ -72,46 +70,34 @@
                     </Grid>
                 </Frame>
 
-                <Label Grid.Row="2" Text="Choose a command:" TextColor="Black" FontSize="Medium" Margin="0,5" />
+                <Label Grid.Row="2" Text="Current Status:" TextColor="Black" FontSize="Medium" Margin="0,5" />
 
-                <Button Grid.Row="4" Text="Set Color" Style="{StaticResource ButtonStyle}" BackgroundColor="#23ABE3"
-                    Command="{Binding CmdSetColor}" IsEnabled="{Binding IsConnected}" />
+                <Grid Grid.Row="3" BackgroundColor="#80000000">
+                    <Frame HorizontalOptions="Center" VerticalOptions="Center">
+                        <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="*,*">
+                            <Label Grid.Column="0" Grid.Row="0" Text="Temperature" />
+                            <Label Grid.Column="1" Grid.Row="0" Text="{Binding TemperatureValue}" HorizontalOptions="End" />
 
-                <Button Grid.Row="5" Style="{StaticResource ButtonStyle}" BackgroundColor="#23ABE3"
-                    Command="{Binding CmdToggle}" IsEnabled="{Binding IsConnected}">
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsLedOn}" Value="True">
-                            <Setter Property="Text" Value="Turn Off" />
-                        </DataTrigger>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsLedOn}" Value="False">
-                            <Setter Property="Text" Value="Turn On" />
-                        </DataTrigger>
-                    </Button.Triggers>
-                </Button>
+                            <Label Grid.Column="0" Grid.Row="1" Text="Pressure" />
+                            <Label Grid.Column="1" Grid.Row="1" Text="{Binding PressureValue}" HorizontalOptions="End" />
 
-                <Label Grid.Row="6" Text="By Wilderness Labs" TextColor="Black" 
+                            <Label Grid.Column="0" Grid.Row="2" Text="Humidity" />
+                            <Label Grid.Column="1" Grid.Row="2" Text="{Binding HumidityValue}" HorizontalOptions="End" />
+
+                            <Label Grid.Column="0" Grid.Row="3" Text="Wind Speed" />
+                            <Label Grid.Column="1" Grid.Row="3" Text="{Binding WindSpeedValue}" HorizontalOptions="End" />
+
+                            <Label Grid.Column="0" Grid.Row="4" Text="Wind Direction" />
+                            <Label Grid.Column="1" Grid.Row="4" Text="{Binding WindDirectionValue}" HorizontalOptions="End" />
+
+                            <Button Grid.ColumnSpan="2" Grid.Row="5" Text="Update" Command="{Binding CmdGetClimaStatus}"
+                                HeightRequest="40" BackgroundColor="#23ABE3" TextColor="White" />
+                        </Grid>
+                    </Frame>
+                </Grid>
+
+                <Label Grid.Row="4" Text="By Wilderness Labs" TextColor="Black" 
                     HorizontalOptions="Center" VerticalOptions="EndAndExpand" />
-            </Grid>
-
-            <Grid BackgroundColor="#80000000">
-                <Frame HorizontalOptions="Center" VerticalOptions="Center">
-                    <Grid RowDefinitions="Auto" ColumnDefinitions="*,*">
-                        <Label Grid.Column="0" Grid.Row="0" Text="Temperature" />
-                        <Label Grid.Column="1" Grid.Row="0" Text="22*C" HorizontalOptions="End" />
-
-                        <Label Grid.Column="0" Grid.Row="1" Text="Pressure" />
-                        <Label Grid.Column="1" Grid.Row="1" Text="1,008.93millibar" HorizontalOptions="End" />
-
-                        <Label Grid.Column="0" Grid.Row="2" Text="Humidity" />
-                        <Label Grid.Column="1" Grid.Row="2" Text="27.00%" HorizontalOptions="End" />
-
-                        <Label Grid.Column="0" Grid.Row="3" Text="Wind Speed" />
-                        <Label Grid.Column="1" Grid.Row="3" Text="27.00%" HorizontalOptions="End" />
-
-                        <Label Grid.Column="0" Grid.Row="4" Text="Wind Direction" />
-                        <Label Grid.Column="1" Grid.Row="4" Text="W" HorizontalOptions="End" />
-                    </Grid>
-                </Frame>
             </Grid>
         </Grid>
     </ContentPage.Content>

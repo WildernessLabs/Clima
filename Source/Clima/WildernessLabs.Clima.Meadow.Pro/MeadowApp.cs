@@ -19,7 +19,7 @@ namespace Clima.Meadow.Pro
             Console.WriteLine("MeadowApp constructor started.");
 
             //==== new up our peripherals
-            Initialize().Wait();
+            Initialize();
 
             //==== subscribe to climate updates and save them to the database
             ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s, e) =>
