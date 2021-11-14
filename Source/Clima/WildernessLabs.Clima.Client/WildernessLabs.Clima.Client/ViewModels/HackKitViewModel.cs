@@ -5,11 +5,12 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WildernessLabs.Clima.App.Models;
+using WildernessLabs.Clima.Client.ViewModels;
 using Xamarin.Forms;
 
 namespace WildernessLabs.Clima.App
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class HackKitViewModel : BaseViewModel
     {
         public ObservableCollection<ClimaModel> ClimateList { get; set; }
 
@@ -29,7 +30,7 @@ namespace WildernessLabs.Clima.App
 
         public Command GetHumidityCommand { private set; get; }
 
-        public MainViewModel() 
+        public HackKitViewModel() 
         {
             ClimateList = new ObservableCollection<ClimaModel>();            
 
@@ -53,7 +54,7 @@ namespace WildernessLabs.Clima.App
                 foreach (ClimateReading value in values)
                 {
                     ClimateList.Add(new ClimaModel() { Date = value.TimeOfReading.ToString(), Temperature = value.TempC });
-                }                
+                }
             }
 
             IsRefreshing = false;
