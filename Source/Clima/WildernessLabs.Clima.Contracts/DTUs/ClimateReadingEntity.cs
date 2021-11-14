@@ -6,8 +6,8 @@ namespace Clima.Contracts.DTUs
     {
         public long? id { get; set; }
         public DateTime? date { get; set; }
-        public decimal? tempC { get; set; }
-        public decimal? barometricPressureMillibarHg { get; set; }
-        public decimal? relativeHumdity { get; set; }
+        public double? tempC { get; set; }
+        public double? barometricPressureMillibarHg { get; set; }
+        public double? relativeHumdity { get; set; }
     }
 }

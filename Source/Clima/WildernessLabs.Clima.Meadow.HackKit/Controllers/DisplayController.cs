@@ -21,6 +21,8 @@ namespace Clima.Meadow.HackKit.Controllers
         protected Menu menu;
         protected BufferRgb888 logo;
 
+        static Color backgroundColor = Color.FromHex("#23abe3");
+
         protected bool isCelcius = true;
         protected bool isRendering = false;
 
@@ -46,21 +48,23 @@ namespace Clima.Meadow.HackKit.Controllers
                 chipSelectPin: null,
                 dcPin: MeadowApp.Device.Pins.D01,
                 resetPin: MeadowApp.Device.Pins.D00,
-                width: 240, height: 240
+                width: 240, height: 240,
+                displayColorMode: ColorType.Format16bppRgb565
             );
 
             // create our graphics surface that we'll draw onto and then blit to the display
             graphics = new GraphicsLibrary(display) 
             {   
                 CurrentFont = new Font12x20(),
-            };
+                Stroke = 3,
+        };
             graphics.DisplayConfig.FontScale = 2;
 
             //create the menu for TextDisplayMenu
             var menuItems = new MenuItem[]
             {
-                new MenuItem("Celcius", command: "setCelcius"),
-                new MenuItem("Fahrenheit", command: "setFahrenheit"),
+                new MenuItem("°C", command: "setCelcius"),
+                new MenuItem("°F", command: "setFahrenheit"),
             };
 
             menu = new Menu(graphics, menuItems, false);
@@ -94,34 +98,43 @@ namespace Clima.Meadow.HackKit.Controllers
             graphics.Show();
         }
 
+        
         protected void DrawBackground()
         {
-            graphics.Clear(Color.FromHex("#23abe3"));
+            //clear the buffer to a single color
+            graphics.Clear(backgroundColor); 
 
+            //draw the jpeg logo
             graphics.DrawBuffer(
                 x: graphics.Width / 2 - logo.Width / 2,
                 y: 40,
                 buffer: logo);
 
-            graphics.Stroke = 2;
-            graphics.DrawCircle(display.Width / 2, display.Height / 2, (display.Width / 2) - 10, Color.Black, false);
+            //draw the circle
+            graphics.DrawCircle(
+                centerX: display.Width / 2, 
+                centerY: display.Height / 2, 
+                radius: (display.Width / 2) - 10, 
+                color: Color.Black, 
+                filled: false);
         }
 
-        public void ShowTextLine1(string message) 
+        public void UpdateStatusText(string line1, string line2)
         {
-            //drawing a rect to erase previous text ....
-            graphics.DrawRectangle(48, 130, 144, 71, Color.FromHex("#23abe3"), true);
+            if (isRendering) return;
 
-            graphics.DrawText(display.Width / 2, 139, message, Color.Black, alignment: GraphicsLibrary.TextAlignment.Center);
+            //we'll do a partial update
+            Rect rect = new Rect(40, 140, 200, 190);
+            graphics.DrawRectangle(rect.Left, rect.Top, rect.Width, rect.Height, 
+                backgroundColor, true);
 
-            graphics.Show();
-        }
+            graphics.DrawText(display.Width / 2, 140, line1, Color.Black, 
+                alignment: GraphicsLibrary.TextAlignment.Center);
 
-        public void ShowTextLine2(string message)
-        {
-            graphics.DrawText(display.Width / 2, 169, message, Color.Black, alignment: GraphicsLibrary.TextAlignment.Center);
+            graphics.DrawText(display.Width / 2, 170, line2, Color.Black, 
+                alignment: GraphicsLibrary.TextAlignment.Center);
 
-            graphics.Show();
+            graphics.Show(rect);
         }
 
         public void UpdateDisplay(Temperature conditions) 
@@ -140,10 +153,8 @@ namespace Clima.Meadow.HackKit.Controllers
         /// </summary>
         protected void Render()
         {
-            if (menu.IsEnabled)
-            {
-                return;
-            }
+            //if the menu is enabled, it's responsible for drawing the screen
+            if (menu.IsEnabled) { return; }
 
             // if we're already rendering, bail out.
             if (isRendering)

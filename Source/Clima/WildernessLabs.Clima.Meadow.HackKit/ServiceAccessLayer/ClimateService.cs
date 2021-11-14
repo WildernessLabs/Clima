@@ -2,6 +2,7 @@
 using Clima.Meadow.HackKit.Utils;
 using Json.Net;
 using Meadow.Foundation;
+using Meadow.Units;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -21,11 +22,11 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
         /// </summary>
         /// <param name="tempC"></param>
         /// <returns></returns>
-        public static async Task PostTempReading(decimal tempC)
+        public static async Task PostTempReading(Temperature temperature)
         {
             LedIndicator.StartPulse(Color.Magenta);
 
-            var climateReading = new ClimateReadingEntity() { tempC = tempC };
+            var climateReading = new ClimateReadingEntity() { tempC = temperature.Celsius };
 
             using (HttpClient client = new HttpClient()) 
             {
