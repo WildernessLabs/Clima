@@ -42,23 +42,23 @@ namespace Clima.Meadow.Pro.Server.Bluetooth
             Console.WriteLine("New climate data, setting BLE characteristics.");
             if(climateConditions.New?.Temperature is { } temperature)
             {
-                tempCharacteristic.SetValue($"{ temperature.Fahrenheit:N2}°F");
+                tempCharacteristic.SetValue($"{ temperature.Fahrenheit:N2}°F;");
             }
             if (climateConditions.New?.Pressure is { } pressure)
             {
-                pressureCharacteristic.SetValue($"{ pressure.Pascal:N2}hPa");
+                pressureCharacteristic.SetValue($"{ pressure.Pascal:N2}hPa;");
             }
             if (climateConditions.New?.Humidity is { } humidity)
             {
-                humidityCharacteristic.SetValue($"{ humidity:N2}%");
+                humidityCharacteristic.SetValue($"{ humidity:N2}%;");
             }
             if (climateConditions.New?.WindSpeed is { } windSpeed)
             {
-                windSpeedCharacteristic.SetValue($"{ windSpeed.KilometersPerHour:N2}%");
+                windSpeedCharacteristic.SetValue($"{ windSpeed.KilometersPerHour:N2};");
             }
             if (climateConditions.New?.WindDirection is { } windDirection)
             {
-                windDirectionCharacteristic.SetValue($"{ windDirection.DecimalDegrees:N2}%");
+                windDirectionCharacteristic.SetValue($"{ windDirection.DecimalDegrees:N2};");
             }
         }
 

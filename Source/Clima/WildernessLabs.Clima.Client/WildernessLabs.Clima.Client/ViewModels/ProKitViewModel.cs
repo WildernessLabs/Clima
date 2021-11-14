@@ -221,11 +221,11 @@ namespace WildernessLabs.Clima.Client.ViewModels
         {
             var bytes = await tempCharacteristic.ReadAsync();
 
-            TemperatureValue = System.Text.Encoding.Default.GetString(await tempCharacteristic.ReadAsync());
-            PressureValue = System.Text.Encoding.Default.GetString(await pressureCharacteristic.ReadAsync());
-            HumidityValue = System.Text.Encoding.Default.GetString(await humidityCharacteristic.ReadAsync());
-            WindSpeedValue = System.Text.Encoding.Default.GetString(await windSpeedCharacteristic.ReadAsync());
-            WindDirectionValue = System.Text.Encoding.Default.GetString(await windDirectionCharacteristic.ReadAsync());
+            TemperatureValue = System.Text.Encoding.Default.GetString(await tempCharacteristic.ReadAsync()).Split(';')[0];
+            PressureValue = System.Text.Encoding.Default.GetString(await pressureCharacteristic.ReadAsync()).Split(';')[0];
+            HumidityValue = System.Text.Encoding.Default.GetString(await humidityCharacteristic.ReadAsync()).Split(';')[0];
+            WindSpeedValue = System.Text.Encoding.Default.GetString(await windSpeedCharacteristic.ReadAsync()).Split(';')[0];
+            WindDirectionValue = System.Text.Encoding.Default.GetString(await windDirectionCharacteristic.ReadAsync()).Split(';')[0];
         }
 
         protected int UuidToUshort(string uuid)
