@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using WildernessLabs.Clima.Client.ViewModels;
+using Xamarin.Forms;
 
 namespace WildernessLabs.Clima.Client.Views
 {
@@ -7,6 +8,13 @@ namespace WildernessLabs.Clima.Client.Views
         public ProKitPage()
         {
             InitializeComponent();
+            BindingContext = new ProKitViewModel();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            (BindingContext as ProKitViewModel).CmdSearchForDevices.Execute(null);
         }
     }
 }

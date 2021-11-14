@@ -21,7 +21,7 @@
             <Button Text="Hack Kit version" Clicked="BtnHackKitClicked" HeightRequest="60"
                 TextColor="White" BackgroundColor="{StaticResource ButtonActive}" />
 
-            <Button Text="Full Kit version" Clicked="BtnProKitClicked" HeightRequest="60"
+            <Button Text="Pro Kit version" Clicked="BtnProKitClicked" HeightRequest="60"
                 TextColor="White" BackgroundColor="{StaticResource ButtonActive}" />
 
             <Label Text="By Wilderness Labs" TextColor="Black" 

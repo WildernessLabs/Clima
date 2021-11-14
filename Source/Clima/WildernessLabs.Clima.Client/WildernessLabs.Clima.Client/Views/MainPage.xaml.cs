@@ -11,7 +11,7 @@ namespace WildernessLabs.Clima.Client.Views
 
         void BtnHackKitClicked(object sender, System.EventArgs e)
         {
-
+            Navigation.PushAsync(new HackKitPage());
         }
 
         void BtnProKitClicked(object sender, System.EventArgs e)
