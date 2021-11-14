@@ -1,5 +1,6 @@
 ﻿using Clima.Meadow.Pro.DataAccessLayer;
 using Clima.Meadow.Pro.Models;
+using Clima.Meadow.Pro.Server.Bluetooth;
 using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
@@ -32,7 +33,7 @@ namespace Clima.Meadow.Pro
         }
 
         //==== Initializes the hardware.
-        async Task Initialize()
+        protected void Initialize()
         {
             Console.WriteLine("Hardware initialization started.");
             var onboardLed = new RgbPwmLed(device: Device,
@@ -42,22 +43,7 @@ namespace Clima.Meadow.Pro
 
             onboardLed.SetColor(WildernessLabsColors.ChileanFire);
 
-            //==== connect to wifi
-            Console.WriteLine($"Connecting to WiFi Network {Secrets.WIFI_NAME}");
-            try 
-            {
-                var connectionResult = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
-                if (connectionResult.ConnectionStatus != ConnectionStatus.Success) 
-                {
-                    throw new Exception($"Cannot connect to network: {connectionResult.ConnectionStatus}");
-                }
-                Console.WriteLine($"Connected to {Secrets.WIFI_NAME}.");
-                onboardLed.SetColor(WildernessLabsColors.AzureBlue);
-            } 
-            catch (Exception e) 
-            {
-                Console.WriteLine($"Err when connecting to WiFi: {e.Message}");
-            }
+            BluetoothServer.Instance.Initialize();
 
             onboardLed.SetColor(Color.Green);
             Console.WriteLine("Hardware initialization complete.");
@@ -69,6 +55,7 @@ namespace Clima.Meadow.Pro
             Console.WriteLine($"Temperature: {climate.Temperature?.Celsius:N2}C");
             Console.WriteLine($"Pressure: {climate.Pressure?.Millibar:N2}millibar");
             Console.WriteLine($"Humidity: {climate.Humidity:N2}%");
+            Console.WriteLine($"Wind Speed: {climate.WindSpeed?.KilometersPerHour}");
             Console.WriteLine($"Wind Direction: {climate.WindDirection?.Compass16PointCardinalName}");
         }
     }

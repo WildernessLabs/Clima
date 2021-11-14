@@ -84,7 +84,7 @@ namespace WildernessLabs.Clima.Client.ViewModels
                 DeviceList.Add(e.Device);
             }
 
-            if (e.Device.Name == "MeadowRGB")
+            if (e.Device.Name == "Meadow Clima")
             {
                 await adapter.StopScanningForDevicesAsync();
                 IsDeviceListEmpty = false;

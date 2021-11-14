@@ -61,6 +61,8 @@ namespace Clima.Meadow.Pro
             Console.WriteLine("ClimateMonitor initializing.");
 
             anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
+            anemometer.UpdateInterval = TimeSpan.FromSeconds(10);
+            anemometer.StartUpdating();
             Console.WriteLine("Anemometer up.");
 
             windVane = new WindVane(Device, Device.Pins.A00);
@@ -97,9 +99,9 @@ namespace Clima.Meadow.Pro
                         // cleanup
                         if (ct.IsCancellationRequested)
                         {   // do task clean up here
-                            //observers.ForEach(x => x.OnCompleted());
-                            IsSampling = false;
-                            break;
+                        //observers.ForEach(x => x.OnCompleted());
+                        IsSampling = false;
+                        break;
                         }
 
                         // capture history
@@ -147,7 +149,7 @@ namespace Clima.Meadow.Pro
         {
             //==== create the read tasks
             var bmeTask = bme280?.Read();
-            var windVaneTask = windVane?.Read();
+            var windVaneTask = windVane?.Read(); 
  
             //==== await until all tasks complete 
             await Task.WhenAll(bmeTask, windVaneTask);

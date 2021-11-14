@@ -92,6 +92,27 @@
                 <Label Grid.Row="6" Text="By Wilderness Labs" TextColor="Black" 
                     HorizontalOptions="Center" VerticalOptions="EndAndExpand" />
             </Grid>
+
+            <Grid BackgroundColor="#80000000">
+                <Frame HorizontalOptions="Center" VerticalOptions="Center">
+                    <Grid RowDefinitions="Auto" ColumnDefinitions="*,*">
+                        <Label Grid.Column="0" Grid.Row="0" Text="Temperature" />
+                        <Label Grid.Column="1" Grid.Row="0" Text="22*C" HorizontalOptions="End" />
+
+                        <Label Grid.Column="0" Grid.Row="1" Text="Pressure" />
+                        <Label Grid.Column="1" Grid.Row="1" Text="1,008.93millibar" HorizontalOptions="End" />
+
+                        <Label Grid.Column="0" Grid.Row="2" Text="Humidity" />
+                        <Label Grid.Column="1" Grid.Row="2" Text="27.00%" HorizontalOptions="End" />
+
+                        <Label Grid.Column="0" Grid.Row="3" Text="Wind Speed" />
+                        <Label Grid.Column="1" Grid.Row="3" Text="27.00%" HorizontalOptions="End" />
+
+                        <Label Grid.Column="0" Grid.Row="4" Text="Wind Direction" />
+                        <Label Grid.Column="1" Grid.Row="4" Text="W" HorizontalOptions="End" />
+                    </Grid>
+                </Frame>
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
