@@ -143,6 +143,8 @@ namespace WildernessLabs.Clima.Client.ViewModels
             humidityCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.HUMIDITY));
             windSpeedCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.WIND_SPEED));
             windDirectionCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.WIND_DIRECTION));
+
+            await GetClimaStatus();
         }
 
         async void AdapterDeviceDiscovered(object sender, DeviceEventArgs e)
@@ -219,8 +221,6 @@ namespace WildernessLabs.Clima.Client.ViewModels
 
         async Task GetClimaStatus() 
         {
-            var bytes = await tempCharacteristic.ReadAsync();
-
             TemperatureValue = System.Text.Encoding.Default.GetString(await tempCharacteristic.ReadAsync()).Split(';')[0];
             PressureValue = System.Text.Encoding.Default.GetString(await pressureCharacteristic.ReadAsync()).Split(';')[0];
             HumidityValue = System.Text.Encoding.Default.GetString(await humidityCharacteristic.ReadAsync()).Split(';')[0];

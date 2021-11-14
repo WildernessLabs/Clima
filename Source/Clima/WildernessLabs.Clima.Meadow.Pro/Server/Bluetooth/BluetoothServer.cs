@@ -54,11 +54,11 @@ namespace Clima.Meadow.Pro.Server.Bluetooth
             }
             if (climateConditions.New?.WindSpeed is { } windSpeed)
             {
-                windSpeedCharacteristic.SetValue($"{ windSpeed.KilometersPerHour:N2};");
+                windSpeedCharacteristic.SetValue($"{ windSpeed.KilometersPerHour:N2}Kmph;");
             }
             if (climateConditions.New?.WindDirection is { } windDirection)
             {
-                windDirectionCharacteristic.SetValue($"{ windDirection.DecimalDegrees:N2};");
+                windDirectionCharacteristic.SetValue($"{ windDirection.Compass16PointCardinalName};");
             }
         }
 
