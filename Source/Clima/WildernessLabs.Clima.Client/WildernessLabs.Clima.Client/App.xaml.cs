@@ -9,7 +9,7 @@ namespace WildernessLabs.Clima.Client
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new ProKitPage())
+            MainPage = new NavigationPage(new MainPage())
                 { BarTextColor = Color.White, BarBackgroundColor = (Color)Current.Resources["ButtonActive"] };
         }
 

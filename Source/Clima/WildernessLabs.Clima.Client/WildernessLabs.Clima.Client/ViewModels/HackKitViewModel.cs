@@ -1,9 +1,11 @@
-﻿using Clima.Contracts.Models;
+﻿using Meadow.Foundation.Maple.Web.Client;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WildernessLabs.Clima.App.Models;
 using WildernessLabs.Clima.Client.ViewModels;
 using Xamarin.Forms;
@@ -12,60 +14,183 @@ namespace WildernessLabs.Clima.App
 {
     public class HackKitViewModel : BaseViewModel
     {
-        public ObservableCollection<ClimaModel> ClimateList { get; set; }
+        public MapleClient client { get; private set; }
 
-        string ipAddress;
-        public string IpAddress 
+        public ObservableCollection<ClimaModel> TemperatureLog { get; set; }
+
+        int _serverPort;
+        public int ServerPort
         {
-            get => ipAddress;
-            set { ipAddress = value; OnPropertyChanged(nameof(IpAddress)); } 
+            get => _serverPort;
+            set { _serverPort = value; OnPropertyChanged(nameof(ServerPort)); }
         }
 
-        bool isRefreshing;
-        public bool IsRefreshing
+        bool _isBusy;
+        public bool IsBusy
         {
-            get => isRefreshing;
-            set { isRefreshing = value; OnPropertyChanged(nameof(IsRefreshing)); }
+            get => _isBusy;
+            set { _isBusy = value; OnPropertyChanged(nameof(IsBusy)); }
         }
 
-        public Command GetHumidityCommand { private set; get; }
-
-        public HackKitViewModel() 
+        bool _isServerListEmpty;
+        public bool IsServerListEmpty
         {
-            ClimateList = new ObservableCollection<ClimaModel>();            
-
-            GetHumidityCommand = new Command(async (s) => await GetReadingsAsync());
+            get => _isServerListEmpty;
+            set { _isServerListEmpty = value; OnPropertyChanged(nameof(IsServerListEmpty)); }
         }
 
-        async Task GetReadingsAsync()
+        ServerModel _selectedServer;
+        public ServerModel SelectedServer
         {
-            if (string.IsNullOrEmpty(IpAddress))
-                throw new InvalidEnumArgumentException("You must enter a valid IP address.");
-
-            ClimateList.Clear();
-
-            var response = await NetworkManager.GetAsync(IpAddress);
-
-            if (response != null)
+            get => _selectedServer;
+            set
             {
-                string json = await response.Content.ReadAsStringAsync();
-                var values = (List<ClimateReading>)System.Text.Json.JsonSerializer.Deserialize(json, typeof(List<ClimateReading>));
+                if (value == null) return;
+                _selectedServer = value;
+                OnPropertyChanged(nameof(SelectedServer));
+            }
+        }
 
-                foreach (ClimateReading value in values)
+        public ObservableCollection<ServerModel> HostList { get; set; }
+
+        public ICommand SendCommand { set; get; }
+
+        public ICommand SearchServersCommand { set; get; }
+
+        public HackKitViewModel()
+        {
+            HostList = new ObservableCollection<ServerModel>();
+            //HostList.Add(new ServerModel() { Name="Meadow (192.168.1.73)", IpAddress="192.168.1.73" });
+
+            ServerPort = 5417;
+
+            client = new MapleClient();
+            client.Servers.CollectionChanged += ServersCollectionChanged;
+
+            SearchServersCommand = new Command(async () => await GetServers());
+        }
+
+        async Task GetTemperatureLogs()
+        {
+            var response = await client.GetAsync(SelectedServer.IpAddress, ServerPort, "GetTemperatureLogs", null, null);
+            var values = JsonConvert.DeserializeObject<List<ClimaModel>>(response);
+
+            foreach (var value in values)
+            {
+                TemperatureLog.Add(value);
+            }
+        }
+
+        async Task GetServers()
+        {
+            if (IsBusy)
+                return;
+            IsBusy = true;
+
+            try
+            {
+                IsServerListEmpty = false;
+
+                await client.StartScanningForAdvertisingServers();
+
+                if (HostList.Count == 0)
                 {
-                    ClimateList.Add(new ClimaModel() { Date = value.TimeOfReading.ToString(), Temperature = value.TempC });
+                    IsServerListEmpty = true;
+                }
+                else
+                {
+                    IsServerListEmpty = false;
+                    SelectedServer = HostList[0];
                 }
             }
-
-            IsRefreshing = false;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
-        #region INotifyPropertyChanged Implementation
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string name = null)
+        public async Task LoadData()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            await GetServers();
+
+            if (SelectedServer != null)
+            {
+                await GetTemperatureLogs();
+            }
         }
-        #endregion
+
+        void ServersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    foreach (ServerModel server in e.NewItems)
+                    {
+                        HostList.Add(new ServerModel() { Name = $"{server.Name} ({server.IpAddress})", IpAddress = server.IpAddress });
+                        Console.WriteLine($"'{server.Name}' @ ip:[{server.IpAddress}]");
+                    }
+                    break;
+            }
+        }
+
+        //public ObservableCollection<ClimaModel> ClimateList { get; set; }
+
+        //string ipAddress;
+        //public string IpAddress 
+        //{
+        //    get => ipAddress;
+        //    set { ipAddress = value; OnPropertyChanged(nameof(IpAddress)); } 
+        //}
+
+        //bool isRefreshing;
+        //public bool IsRefreshing
+        //{
+        //    get => isRefreshing;
+        //    set { isRefreshing = value; OnPropertyChanged(nameof(IsRefreshing)); }
+        //}
+
+        //public Command GetHumidityCommand { private set; get; }
+
+        //public HackKitViewModel() 
+        //{
+        //    ClimateList = new ObservableCollection<ClimaModel>();            
+
+        //    GetHumidityCommand = new Command(async (s) => await GetReadingsAsync());
+        //}
+
+        //async Task GetReadingsAsync()
+        //{
+        //    if (string.IsNullOrEmpty(IpAddress))
+        //        throw new InvalidEnumArgumentException("You must enter a valid IP address.");
+
+        //    ClimateList.Clear();
+
+        //    var response = await NetworkManager.GetAsync(IpAddress);
+
+        //    if (response != null)
+        //    {
+        //        string json = await response.Content.ReadAsStringAsync();
+        //        var values = (List<ClimateReading>)System.Text.Json.JsonSerializer.Deserialize(json, typeof(List<ClimateReading>));
+
+        //        foreach (ClimateReading value in values)
+        //        {
+        //            ClimateList.Add(new ClimaModel() { Date = value.TimeOfReading.ToString(), Temperature = value.TempC });
+        //        }
+        //    }
+
+        //    IsRefreshing = false;
+        //}
+
+        //#region INotifyPropertyChanged Implementation
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //public void OnPropertyChanged([CallerMemberName] string name = null)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        //}
+        //#endregion
     }
 }

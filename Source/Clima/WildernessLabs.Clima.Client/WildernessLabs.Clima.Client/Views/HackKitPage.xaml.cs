@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using WildernessLabs.Clima.App;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace WildernessLabs.Clima.Client.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HackKitPage : ContentPage
     {
         public HackKitPage()
         {
             InitializeComponent();
+            BindingContext = new HackKitViewModel();
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            await (BindingContext as HackKitViewModel).LoadData();
         }
     }
 }
