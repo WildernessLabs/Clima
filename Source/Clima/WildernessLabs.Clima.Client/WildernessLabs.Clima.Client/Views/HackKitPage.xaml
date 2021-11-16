@@ -38,7 +38,19 @@
 
                         <Grid Grid.Column="1" WidthRequest="50" HeightRequest="50">
                             <Button Command="{Binding SearchServersCommand}" BackgroundColor="Transparent" CornerRadius="5" />
-                            <Image Source="icon_search.png" Margin="10" InputTransparent="True" />
+                            <Image Source="icon_search.png" Margin="10" InputTransparent="True">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsScanning}" Value="True">
+                                        <Setter Property="IsVisible" Value="False" />
+                                        <Setter Property="InputTransparent" Value="False" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsScanning}" Value="False">
+                                        <Setter Property="IsVisible" Value="True" />
+                                        <Setter Property="InputTransparent" Value="True" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                            <ActivityIndicator Color="White" IsRunning="True" IsVisible="{Binding IsScanning}" Margin="7" />
                         </Grid>
                     </Grid>
                 </Frame>
@@ -115,11 +127,27 @@
 
                 <Label Grid.Row="3" Text="Temperature Logs:" TextColor="Black" FontSize="Medium" Margin="0,5" />
 
-                <Grid Grid.Row="4" BackgroundColor="#80000000">
-                    <ListView BackgroundColor="Red">
-                        
-                    </ListView>
-                </Grid>
+                <Frame Grid.Row="4" BackgroundColor="#F5F5F5" HasShadow="False" Padding="0">
+                    <Grid>
+                        <ListView ItemsSource="{Binding TemperatureLog}" SeparatorVisibility="None" BackgroundColor="Transparent" RowHeight="50"
+                            IsPullToRefreshEnabled="True" RefreshCommand="{Binding CmdReloadTemperatureLog}" IsRefreshing="{Binding IsRefreshing}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Frame BackgroundColor="#23ABE3" HasShadow="False" Padding="10,0" Margin="0,0,0,5">
+                                            <Grid>
+                                                <Label Text="{Binding DateTime}" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Text="{Binding Path=Temperature, StringFormat='{0}°C'}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+                                            </Grid>
+                                        </Frame>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Frame>
 
                 <Label Grid.Row="5" Text="By Wilderness Labs" TextColor="Black" 
                     HorizontalOptions="Center" VerticalOptions="EndAndExpand" />

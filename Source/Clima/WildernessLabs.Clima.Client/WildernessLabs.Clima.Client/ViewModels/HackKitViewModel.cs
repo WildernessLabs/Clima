@@ -32,6 +32,13 @@ namespace WildernessLabs.Clima.App
             set { _isBusy = value; OnPropertyChanged(nameof(IsBusy)); }
         }
 
+        bool _isScanning;
+        public bool IsScanning 
+        {
+            get => _isScanning;
+            set { _isScanning = value; OnPropertyChanged(nameof(IsScanning)); }
+        }
+
         bool _isServerListEmpty;
         public bool IsServerListEmpty
         {
@@ -83,9 +90,9 @@ namespace WildernessLabs.Clima.App
 
         async Task GetServers()
         {
-            if (IsBusy)
+            if (IsScanning)
                 return;
-            IsBusy = true;
+            IsScanning = true;
 
             try
             {
@@ -109,7 +116,7 @@ namespace WildernessLabs.Clima.App
             }
             finally
             {
-                IsBusy = false;
+                IsScanning = false;
             }
         }
 
