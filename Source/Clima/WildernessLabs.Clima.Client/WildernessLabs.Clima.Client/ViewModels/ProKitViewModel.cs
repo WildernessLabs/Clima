@@ -233,7 +233,7 @@ namespace WildernessLabs.Clima.Client.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);                
+                Console.WriteLine(ex.Message);
             }
             finally 
             {

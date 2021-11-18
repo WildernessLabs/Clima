@@ -1,7 +1,6 @@
 ﻿using Meadow.Foundation.Maple.Web.Client;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
@@ -25,18 +24,18 @@ namespace WildernessLabs.Clima.App
             set { _serverPort = value; OnPropertyChanged(nameof(ServerPort)); }
         }
 
-        bool _isBusy;
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set { _isBusy = value; OnPropertyChanged(nameof(IsBusy)); }
-        }
-
         bool _isScanning;
         public bool IsScanning 
         {
             get => _isScanning;
             set { _isScanning = value; OnPropertyChanged(nameof(IsScanning)); }
+        }
+
+        bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get => isRefreshing;
+            set { isRefreshing = value; OnPropertyChanged(nameof(IsRefreshing)); }
         }
 
         bool _isServerListEmpty;
@@ -68,19 +67,27 @@ namespace WildernessLabs.Clima.App
 
         public ObservableCollection<ServerModel> HostList { get; set; }
 
-        public ICommand SendCommand { set; get; }
-
         public ICommand SearchServersCommand { set; get; }
+
+        public ICommand CmdReloadTemperatureLog { get; private set; }
 
         public HackKitViewModel()
         {
-            HostList = new ObservableCollection<ServerModel>();
-            //HostList.Add(new ServerModel() { Name="Meadow (192.168.1.73)", IpAddress="192.168.1.73" });
+            TemperatureLog = new ObservableCollection<ClimaModel>();
+
+            HostList = new ObservableCollection<ServerModel>();            
 
             ServerPort = 5417;
 
             client = new MapleClient();
             client.Servers.CollectionChanged += ServersCollectionChanged;
+
+            CmdReloadTemperatureLog = new Command(async () =>
+            {
+                await GetTemperatureLogs();
+
+                IsRefreshing = false;
+            });
 
             SearchServersCommand = new Command(async () => await GetServers());
         }
@@ -101,12 +108,15 @@ namespace WildernessLabs.Clima.App
 
         async Task GetTemperatureLogs()
         {
-            var response = await client.GetAsync(SelectedServer != null ? SelectedServer.IpAddress : IpAddress, ServerPort, "GetTemperatureLogs", null, null);
-            var values = JsonConvert.DeserializeObject<List<ClimaModel>>(response);
-
-            foreach (var value in values)
+            try
             {
+                var response = await client.GetAsync(SelectedServer != null ? SelectedServer.IpAddress : IpAddress, ServerPort, "GetTemperature", null, null);
+                var value = JsonConvert.DeserializeObject<ClimaModel>(response);
                 TemperatureLog.Add(value);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -121,6 +131,8 @@ namespace WildernessLabs.Clima.App
                 IsServerListEmpty = false;
 
                 await client.StartScanningForAdvertisingServers();
+
+                HostList.Add(new ServerModel() { Name = "Meadow (192.168.1.85)", IpAddress = "192.168.1.85" });
 
                 if (HostList.Count == 0)
                 {

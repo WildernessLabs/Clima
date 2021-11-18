@@ -5,18 +5,20 @@ using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Buttons;
-using Meadow.Foundation.Sensors.Temperature;
+using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Gateway.WiFi;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using WildernessLabs.Clima.Meadow.HackKit.Controllers;
+using WildernessLabs.Clima.Meadow.HackKit.ServiceAccessLayer;
 
 namespace Clima.Meadow.HackKit
 {
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
-        AnalogTemperature analogTemperature;
         DisplayController displayController;
+        MapleServer mapleServer;
 
         PushButton buttonUp, buttonDown, buttonMenu;
 
@@ -29,6 +31,9 @@ namespace Clima.Meadow.HackKit
             InitializeWiFi().Wait();
             LedIndicator.SetColor(Color.Green);
 
+            mapleServer = new MapleServer(Device.WiFiAdapter.IpAddress, 5417, false);
+            mapleServer.Start();
+
             _ = StartUpdates();
         }
 
@@ -38,31 +43,20 @@ namespace Clima.Meadow.HackKit
         void Initialize()
         {
             Console.WriteLine("Init RGB");
-            LedIndicator.Initialize(
-                Device,
-                Device.Pins.OnboardLedRed,
-                Device.Pins.OnboardLedGreen,
-                Device.Pins.OnboardLedBlue
-            );
+            LedIndicator.Initialize();
             LedIndicator.SetColor(Color.Red);
 
             Console.WriteLine("Init analog temperature sensor");
-            analogTemperature = new AnalogTemperature(
-                device: Device,
-                analogPin: Device.Pins.A00,
-                sensorType: AnalogTemperature.KnownSensorType.LM35
-            );
+            TemperatureController.Initialize();
 
             Console.WriteLine("Init display controller");
             displayController = new DisplayController();
             
             Console.WriteLine("Init buttons");
-            //initialize physical buttons
             buttonUp = new PushButton(Device, Device.Pins.D03);
             buttonDown = new PushButton(Device, Device.Pins.D02);
             buttonMenu = new PushButton(Device, Device.Pins.D04);
 
-            //subscribe to button clicked events to control menu
             buttonUp.Clicked += (s, e) => displayController.MenuUp();
             buttonDown.Clicked += (s, e) => displayController.MenuDown();
             buttonMenu.Clicked += (s, e) => displayController.MenuSelect();
@@ -102,15 +96,25 @@ namespace Clima.Meadow.HackKit
             }
             else
             {
+                var dateTime = await DateTimeService.GetTimeAsync();
+
+                Device.SetClock(new DateTime(
+                    year: dateTime.Year,
+                    month: dateTime.Month,
+                    day: dateTime.Day,
+                    hour: dateTime.Hour,
+                    minute: dateTime.Minute,
+                    second: dateTime.Second));
+
                 displayController.UpdateStatusText("WiFi", "Connected!");
             }
         }
 
-        async Task StartUpdates() 
+        async Task StartUpdates()
         {
-            while(true)
-            {
-                var conditions = await analogTemperature.Read();
+            //while(true)
+            //{
+                var conditions = TemperatureController.TemperatureValue.Value;
 
                 displayController.UpdateDisplay(conditions);
 
@@ -118,8 +122,8 @@ namespace Clima.Meadow.HackKit
 
                 await ClimateService.PostTempReading(conditions);
 
-                await Task.Delay(5000);
-            }
+            //    await Task.Delay(TimeSpan.FromSeconds(10));
+            //}
         }
     }
 }

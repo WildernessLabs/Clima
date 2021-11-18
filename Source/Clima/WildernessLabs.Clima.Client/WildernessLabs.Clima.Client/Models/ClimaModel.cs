@@ -4,13 +4,10 @@ namespace WildernessLabs.Clima.App.Models
 {
     public class ClimaModel
     {
-        [JsonProperty("id")]
-        public long? Id { get; set; }
+        [JsonProperty("DateTime")]
+        public string DateTime { get; set; }
 
-        [JsonProperty("date")]
-        public string Date { get; set; }
-
-        [JsonProperty("temperature")]
+        [JsonProperty("Temperature")]
         public decimal? Temperature { get; set; }
     }
 }

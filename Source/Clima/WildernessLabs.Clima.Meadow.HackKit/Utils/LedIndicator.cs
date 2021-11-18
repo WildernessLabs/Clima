@@ -1,8 +1,5 @@
-﻿using Meadow.Devices;
-using Meadow.Foundation;
+﻿using Meadow.Foundation;
 using Meadow.Foundation.Leds;
-using Meadow.Hardware;
-using Meadow.Peripherals.Leds;
 
 namespace Clima.Meadow.HackKit.Utils
 {
@@ -12,9 +9,14 @@ namespace Clima.Meadow.HackKit.Utils
 
         static LedIndicator() { }
 
-        public static void Initialize(IMeadowDevice device, IPin redPin, IPin greenPin, IPin bluePin) 
+        public static void Initialize()
         {
-            led = new RgbPwmLed(device, redPin, greenPin, bluePin, 3.3f, 3.3f, 3.3f, IRgbLed.CommonType.CommonAnode);
+            led = new RgbPwmLed(
+                MeadowApp.Device,
+                MeadowApp.Device.Pins.OnboardLedRed,
+                MeadowApp.Device.Pins.OnboardLedGreen,
+                MeadowApp.Device.Pins.OnboardLedBlue
+            );
         }
 
         public static void SetColor(Color color)
