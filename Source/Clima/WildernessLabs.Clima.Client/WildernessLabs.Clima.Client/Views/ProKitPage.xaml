@@ -73,10 +73,12 @@
                 <Label Grid.Row="2" Text="Current Status:" TextColor="Black" FontSize="Medium" Margin="0,5" />
 
                 <Grid Grid.Row="3" BackgroundColor="#80000000">
-                    <Frame HorizontalOptions="Center" VerticalOptions="Center">
-                        <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="*,*">
+                    <Frame Margin="50" VerticalOptions="Center">
+                        <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="*,Auto">
                             <Label Grid.ColumnSpan="2" Grid.Row="0" Text="Current Status" FontAttributes="Bold"
-                                HorizontalOptions="Center" FontSize="Large" Margin="0,0,0,10" />
+                                FontSize="Large" Margin="0,0,0,10" />
+                            <ActivityIndicator Grid.Row="0" Grid.Column="1" WidthRequest="25" HeightRequest="25" Margin="0,0,0,10"
+                                Color="#80000000" IsRunning="True" IsVisible="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="End" />
 
                             <Label Grid.Column="0" Grid.Row="1" Text="Temperature" />
                             <Label Grid.Column="1" Grid.Row="1" Text="{Binding TemperatureValue}" HorizontalOptions="End" />

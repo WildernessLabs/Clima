@@ -5,6 +5,13 @@ namespace WildernessLabs.Clima.Client.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        bool isBusy;
+        public bool IsBusy
+        {
+            get => isBusy;
+            set { isBusy = value; OnPropertyChanged(nameof(IsBusy)); }
+        }
+
         #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string name = null)

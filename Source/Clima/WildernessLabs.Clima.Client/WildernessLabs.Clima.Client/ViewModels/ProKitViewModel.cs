@@ -143,8 +143,6 @@ namespace WildernessLabs.Clima.Client.ViewModels
             humidityCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.HUMIDITY));
             windSpeedCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.WIND_SPEED));
             windDirectionCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.WIND_DIRECTION));
-
-            await GetClimaStatus();
         }
 
         async void AdapterDeviceDiscovered(object sender, DeviceEventArgs e)
@@ -221,11 +219,26 @@ namespace WildernessLabs.Clima.Client.ViewModels
 
         async Task GetClimaStatus() 
         {
-            TemperatureValue = System.Text.Encoding.Default.GetString(await tempCharacteristic.ReadAsync()).Split(';')[0];
-            PressureValue = System.Text.Encoding.Default.GetString(await pressureCharacteristic.ReadAsync()).Split(';')[0];
-            HumidityValue = System.Text.Encoding.Default.GetString(await humidityCharacteristic.ReadAsync()).Split(';')[0];
-            WindSpeedValue = System.Text.Encoding.Default.GetString(await windSpeedCharacteristic.ReadAsync()).Split(';')[0];
-            WindDirectionValue = System.Text.Encoding.Default.GetString(await windDirectionCharacteristic.ReadAsync()).Split(';')[0];
+            if (IsBusy)
+                return;
+            IsBusy = true;
+
+            try
+            {
+                TemperatureValue = System.Text.Encoding.Default.GetString(await tempCharacteristic.ReadAsync()).Split(';')[0];
+                PressureValue = System.Text.Encoding.Default.GetString(await pressureCharacteristic.ReadAsync()).Split(';')[0];
+                HumidityValue = System.Text.Encoding.Default.GetString(await humidityCharacteristic.ReadAsync()).Split(';')[0];
+                WindSpeedValue = System.Text.Encoding.Default.GetString(await windSpeedCharacteristic.ReadAsync()).Split(';')[0];
+                WindDirectionValue = System.Text.Encoding.Default.GetString(await windDirectionCharacteristic.ReadAsync()).Split(';')[0];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);                
+            }
+            finally 
+            {
+                IsBusy = false;
+            }
         }
 
         protected int UuidToUshort(string uuid)
