@@ -1,6 +1,9 @@
 # Clima
 
-A simple, Meadow-powered climate station. Includes basic versions that you can build with a [Hack Kit](https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro) and has more advanced versions planned.
+A simple, Meadow-powered climate station. Includes basic versions that you can build with a [Hack Kit](https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro) and a Pro version with a complete climate station.
+
+<img src="ClimaPro.png" 
+    style="width: 60%; display: block; margin-left: auto; margin-right: auto;" />
 
 <img src="Clima.jpg" 
     style="width: 60%; display: block; margin-left: auto; margin-right: auto;" />
@@ -17,10 +20,11 @@ With an LM35 Analog Temperature sensor, and a TFT SPI ST7789 display (both inclu
 ## Projects
 
 * **WildernessLabs.Clima.Contracts** - Shared project with the data models that are shared amongs the various projects.
-* **WildernessLabs.Clima.Meadow.HackKit** - A client Meadow application that can be built with the components in the Hack Kit.
+* **WildernessLabs.Clima.Meadow.Pro** - A client Meadow application to use with the Clima Pro climate station hardware.
+* **WildernessLabs.Clima.Meadow.HackKit** 
+built with the components in the Hack Kit.
 * **WildernessLabs.Clima.Server.Mini.Tests** - A console application used to test the Mini server.
 * **WildernessLabs.Clima.Server.Mini** - A very basic local test Web API server written in ASP.NET Core.
-
 
 
 ## Server Web API
