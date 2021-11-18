@@ -46,6 +46,13 @@ namespace WildernessLabs.Clima.App
             set { _isServerListEmpty = value; OnPropertyChanged(nameof(IsServerListEmpty)); }
         }
 
+        string ipAddress;
+        public string IpAddress
+        {
+            get => ipAddress;
+            set { ipAddress = value; OnPropertyChanged(nameof(IpAddress)); }
+        }
+
         ServerModel _selectedServer;
         public ServerModel SelectedServer
         {
@@ -54,6 +61,7 @@ namespace WildernessLabs.Clima.App
             {
                 if (value == null) return;
                 _selectedServer = value;
+                IpAddress = _selectedServer.IpAddress;
                 OnPropertyChanged(nameof(SelectedServer));
             }
         }
@@ -77,9 +85,23 @@ namespace WildernessLabs.Clima.App
             SearchServersCommand = new Command(async () => await GetServers());
         }
 
+        void ServersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    foreach (ServerModel server in e.NewItems)
+                    {
+                        HostList.Add(new ServerModel() { Name = $"{server.Name} ({server.IpAddress})", IpAddress = server.IpAddress });
+                        Console.WriteLine($"'{server.Name}' @ ip:[{server.IpAddress}]");
+                    }
+                    break;
+            }
+        }
+
         async Task GetTemperatureLogs()
         {
-            var response = await client.GetAsync(SelectedServer.IpAddress, ServerPort, "GetTemperatureLogs", null, null);
+            var response = await client.GetAsync(SelectedServer != null ? SelectedServer.IpAddress : IpAddress, ServerPort, "GetTemperatureLogs", null, null);
             var values = JsonConvert.DeserializeObject<List<ClimaModel>>(response);
 
             foreach (var value in values)
@@ -129,75 +151,5 @@ namespace WildernessLabs.Clima.App
                 await GetTemperatureLogs();
             }
         }
-
-        void ServersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (ServerModel server in e.NewItems)
-                    {
-                        HostList.Add(new ServerModel() { Name = $"{server.Name} ({server.IpAddress})", IpAddress = server.IpAddress });
-                        Console.WriteLine($"'{server.Name}' @ ip:[{server.IpAddress}]");
-                    }
-                    break;
-            }
-        }
-
-        //public ObservableCollection<ClimaModel> ClimateList { get; set; }
-
-        //string ipAddress;
-        //public string IpAddress 
-        //{
-        //    get => ipAddress;
-        //    set { ipAddress = value; OnPropertyChanged(nameof(IpAddress)); } 
-        //}
-
-        //bool isRefreshing;
-        //public bool IsRefreshing
-        //{
-        //    get => isRefreshing;
-        //    set { isRefreshing = value; OnPropertyChanged(nameof(IsRefreshing)); }
-        //}
-
-        //public Command GetHumidityCommand { private set; get; }
-
-        //public HackKitViewModel() 
-        //{
-        //    ClimateList = new ObservableCollection<ClimaModel>();            
-
-        //    GetHumidityCommand = new Command(async (s) => await GetReadingsAsync());
-        //}
-
-        //async Task GetReadingsAsync()
-        //{
-        //    if (string.IsNullOrEmpty(IpAddress))
-        //        throw new InvalidEnumArgumentException("You must enter a valid IP address.");
-
-        //    ClimateList.Clear();
-
-        //    var response = await NetworkManager.GetAsync(IpAddress);
-
-        //    if (response != null)
-        //    {
-        //        string json = await response.Content.ReadAsStringAsync();
-        //        var values = (List<ClimateReading>)System.Text.Json.JsonSerializer.Deserialize(json, typeof(List<ClimateReading>));
-
-        //        foreach (ClimateReading value in values)
-        //        {
-        //            ClimateList.Add(new ClimaModel() { Date = value.TimeOfReading.ToString(), Temperature = value.TempC });
-        //        }
-        //    }
-
-        //    IsRefreshing = false;
-        //}
-
-        //#region INotifyPropertyChanged Implementation
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //public void OnPropertyChanged([CallerMemberName] string name = null)
-        //{
-        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        //}
-        //#endregion
     }
 }

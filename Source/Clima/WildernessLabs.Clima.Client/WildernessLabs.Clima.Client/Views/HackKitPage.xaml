@@ -66,7 +66,7 @@
 
                         <Label Grid.Column="0" Text="IP:" TextColor="White" FontSize="Medium"  FontAttributes="Bold" VerticalOptions="Center"/>
 
-                        <Entry Grid.Column="1" Text="{Binding SelectedServer.IpAddress}" TextColor="White" FontSize="Medium" 
+                        <Entry Grid.Column="1" Text="{Binding IpAddress}" TextColor="White" FontSize="Medium" 
                             BackgroundColor="#AB5D30" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
 
                         <Label Grid.Column="2" Text="Port:" TextColor="White" FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center"  />
