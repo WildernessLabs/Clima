@@ -23,10 +23,7 @@ namespace Clima.Meadow.Pro.Server.Bluetooth
             get => instance.Value;
         }
 
-        private BluetoothServer()
-        {
-            //Initialize();
-        }
+        private BluetoothServer() { }
 
         public void Initialize()
         {

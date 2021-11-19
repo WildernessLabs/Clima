@@ -12,42 +12,46 @@ using System.Threading;
 using System.Threading.Tasks;
 using WildernessLabs.Clima.Meadow.HackKit.Controllers;
 using WildernessLabs.Clima.Meadow.HackKit.ServiceAccessLayer;
+using WildernessLabs.Clima.Meadow.HackKit.Entities;
 
 namespace Clima.Meadow.HackKit
 {
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
-        DisplayController displayController;
         MapleServer mapleServer;
-
+        DisplayController displayController;
+        TemperatureController temperatureController;
         PushButton buttonUp, buttonDown, buttonMenu;
+
+        public TemperatureModel CurrentReading { get; set; }
 
         public MeadowApp()
         {
             Initialize();
+
+            mapleServer = new MapleServer(Device.WiFiAdapter.IpAddress, 5417, false);
+            mapleServer.Start();
+        }
+
+        void Initialize() 
+        {
+            InitializeHardware();
             LedIndicator.SetColor(Color.Blue);
             displayController.ShowSplashScreen();
 
             InitializeWiFi().Wait();
             LedIndicator.SetColor(Color.Green);
 
-            mapleServer = new MapleServer(Device.WiFiAdapter.IpAddress, 5417, false);
-            mapleServer.Start();
-
-            _ = StartUpdates();
+            temperatureController.Updated += TemperatureControllerUpdated;
         }
 
-        /// <summary>
-        /// Initializes the hardware.
-        /// </summary>
-        void Initialize()
+        void InitializeHardware()
         {
-            Console.WriteLine("Init RGB");
             LedIndicator.Initialize();
             LedIndicator.SetColor(Color.Red);
 
             Console.WriteLine("Init analog temperature sensor");
-            TemperatureController.Initialize();
+            temperatureController = new TemperatureController();            
 
             Console.WriteLine("Init display controller");
             displayController = new DisplayController();
@@ -96,34 +100,20 @@ namespace Clima.Meadow.HackKit
             }
             else
             {
-                var dateTime = await DateTimeService.GetTimeAsync();
-
-                Device.SetClock(new DateTime(
-                    year: dateTime.Year,
-                    month: dateTime.Month,
-                    day: dateTime.Day,
-                    hour: dateTime.Hour,
-                    minute: dateTime.Minute,
-                    second: dateTime.Second));
-
+                await DateTimeService.GetTimeAsync();
                 displayController.UpdateStatusText("WiFi", "Connected!");
             }
         }
 
-        async Task StartUpdates()
+        async void TemperatureControllerUpdated(object sender, TemperatureModel e)
         {
-            //while(true)
-            //{
-                var conditions = TemperatureController.TemperatureValue.Value;
+            CurrentReading = e;
 
-                displayController.UpdateDisplay(conditions);
+            displayController.UpdateDisplay(e.Temperature);
 
-                await ClimateService.FetchReadings();
+            await ClimateService.FetchReadings();
 
-                await ClimateService.PostTempReading(conditions);
-
-            //    await Task.Delay(TimeSpan.FromSeconds(10));
-            //}
+            await ClimateService.PostTempReading(e.Temperature);
         }
     }
 }

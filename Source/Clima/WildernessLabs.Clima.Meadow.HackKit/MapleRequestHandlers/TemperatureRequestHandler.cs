@@ -1,10 +1,9 @@
-﻿using Clima.Meadow.HackKit.Utils;
+﻿using Clima.Meadow.HackKit;
+using Clima.Meadow.HackKit.Utils;
 using Meadow.Foundation;
 using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Foundation.Web.Maple.Server.Routing;
 using System;
-using WildernessLabs.Clima.Meadow.HackKit.Controllers;
-using WildernessLabs.Clima.Meadow.HackKit.Entities;
 
 namespace WildernessLabs.Clima.Meadow.HackKit.MapleRequestHandlers
 {
@@ -15,11 +14,11 @@ namespace WildernessLabs.Clima.Meadow.HackKit.MapleRequestHandlers
         [HttpGet]
         public void GetTemperature()
         {
-            LedIndicator.SetColor(Color.Magenta);
+            LedIndicator.SetColor(Color.Magenta); 
 
-            var data = new TemperatureLogEntity()
+            var data = new 
             {
-                Temperature = TemperatureController.TemperatureValue.Value.Celsius.ToString("##.#"),
+                Temperature = MeadowApp.Current.CurrentReading.Temperature.Celsius.ToString("##.#"),
                 DateTime = DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss tt")
             };
 

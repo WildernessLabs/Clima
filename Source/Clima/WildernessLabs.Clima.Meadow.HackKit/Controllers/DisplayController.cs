@@ -16,10 +16,10 @@ namespace Clima.Meadow.HackKit.Controllers
     {
         protected Temperature conditions;
 
-        protected St7789 display;
-        protected GraphicsLibrary graphics;
         protected Menu menu;
+        protected St7789 display;
         protected BufferRgb888 logo;
+        protected GraphicsLibrary graphics;
 
         static Color backgroundColor = Color.FromHex("#23abe3");
 
@@ -31,11 +31,7 @@ namespace Clima.Meadow.HackKit.Controllers
             Initialize();
         }
 
-        /// <summary>
-        /// intializes the physical display peripheral, as well as the backing
-        /// graphics library.
-        /// </summary>
-        protected void Initialize()
+        void Initialize()
         {
             // our display needs mode3
             var config = new SpiClockConfiguration(24000, SpiClockConfiguration.Mode.Mode3);
@@ -57,7 +53,7 @@ namespace Clima.Meadow.HackKit.Controllers
             {   
                 CurrentFont = new Font12x20(),
                 Stroke = 3,
-        };
+            };
             graphics.DisplayConfig.FontScale = 2;
 
             //create the menu for TextDisplayMenu
@@ -68,7 +64,7 @@ namespace Clima.Meadow.HackKit.Controllers
             };
 
             menu = new Menu(graphics, menuItems, false);
-            menu.Selected += Menu_Selected;
+            menu.Selected += MenuSelected;
 
             Console.WriteLine("Clear display");
 
@@ -79,7 +75,7 @@ namespace Clima.Meadow.HackKit.Controllers
             LoadJpeg();
         }
 
-        private void Menu_Selected(object sender, MenuSelectedEventArgs e)
+        void MenuSelected(object sender, MenuSelectedEventArgs e)
         {
             Console.WriteLine("MenuSelected: " + e.Command);
 
@@ -90,16 +86,8 @@ namespace Clima.Meadow.HackKit.Controllers
             //and update the display
             Render();
         }
-
-        public void ShowSplashScreen() 
-        {
-            DrawBackground();
-
-            graphics.Show();
-        }
-
         
-        protected void DrawBackground()
+        void DrawBackground()
         {
             //clear the buffer to a single color
             graphics.Clear(backgroundColor); 
@@ -147,6 +135,59 @@ namespace Clima.Meadow.HackKit.Controllers
             }
         }
 
+        public void MenuUp()
+        {
+            menu.Previous();
+        }
+
+        public void MenuDown()
+        {
+            menu.Next();
+        }
+
+        public void MenuSelect()
+        {
+            if(menu.IsEnabled == false)
+            {
+                menu.Enable();
+            }
+            else
+            {
+                menu.Select();
+            }
+        }
+
+        public void ShowSplashScreen()
+        {
+            DrawBackground();
+
+            graphics.Show();
+        }
+
+        protected void LoadJpeg()
+        {
+            var jpgData = LoadResource("meadow.jpg");
+            var decoder = new JpegDecoder();
+            decoder.DecodeJpeg(jpgData);
+
+            logo = new BufferRgb888(decoder.Width, decoder.Height, decoder.GetImageData());
+        }
+
+        protected byte[] LoadResource(string filename)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = $"WildernessLabs.Clima.Meadow.HackKit.{filename}";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (var ms = new MemoryStream())
+                {
+                    stream.CopyTo(ms);
+                    return ms.ToArray();
+                }
+            }
+        }
+
         /// <summary>
         /// Does the actual rendering. If it's already rendering, it'll bail out,
         /// so render requests don't stack up.
@@ -188,52 +229,6 @@ namespace Clima.Meadow.HackKit.Controllers
             graphics.Show();
 
             isRendering = false;
-        }
-
-        public void MenuUp()
-        {
-            menu.Previous();
-        }
-
-        public void MenuDown()
-        {
-            menu.Next();
-        }
-
-        public void MenuSelect()
-        {
-            if(menu.IsEnabled == false)
-            {
-                menu.Enable();
-            }
-            else
-            {
-                menu.Select();
-            }
-        }
-
-        protected void LoadJpeg()
-        {
-            var jpgData = LoadResource("meadow.jpg");
-            var decoder = new JpegDecoder();
-            decoder.DecodeJpeg(jpgData);
-
-            logo = new BufferRgb888(decoder.Width, decoder.Height, decoder.GetImageData());
-        }
-
-        protected byte[] LoadResource(string filename)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = $"WildernessLabs.Clima.Meadow.HackKit.{filename}";
-
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            {
-                using (var ms = new MemoryStream())
-                {
-                    stream.CopyTo(ms);
-                    return ms.ToArray();
-                }
-            }
         }
     }
 }

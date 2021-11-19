@@ -2,25 +2,39 @@
 using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Units;
 using System;
+using WildernessLabs.Clima.Meadow.HackKit.Entities;
 
 namespace WildernessLabs.Clima.Meadow.HackKit.Controllers
 {
-    public static class TemperatureController
+    public class TemperatureController
     {
-        static AnalogTemperature analogTemperature;
+        AnalogTemperature analogTemperature;
 
-        public static Temperature? TemperatureValue => analogTemperature.Temperature;
+        public event EventHandler<TemperatureModel> Updated = delegate { };
 
-        static TemperatureController() { }
+        public Temperature? TemperatureValue => analogTemperature.Temperature;
 
-        public static void Initialize()
+        public TemperatureController()
         {
-            analogTemperature = new AnalogTemperature(
-                device: MeadowApp.Device,
-                analogPin: MeadowApp.Device.Pins.A00,
-                sensorType: AnalogTemperature.KnownSensorType.LM35
-            );
+            Initialize();
+        }
+
+        void Initialize()
+        {
+            analogTemperature = new AnalogTemperature(MeadowApp.Device, MeadowApp.Device.Pins.A00, AnalogTemperature.KnownSensorType.LM35);
             analogTemperature.StartUpdating(TimeSpan.FromSeconds(30));
+            analogTemperature.Updated += AnalogTemperatureUpdated;
+        }
+
+        void AnalogTemperatureUpdated(object sender, global::Meadow.IChangeResult<Temperature> e)
+        {
+            var reading = new TemperatureModel()
+            {
+                Temperature = e.New,
+                DateTime = DateTime.Now
+            };
+
+            Updated(this, reading);
         }
     }
 }
