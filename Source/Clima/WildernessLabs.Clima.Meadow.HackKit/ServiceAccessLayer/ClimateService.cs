@@ -24,7 +24,7 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
         /// <returns></returns>
         public static async Task PostTempReading(Temperature temperature)
         {
-            LedIndicator.StartPulse(Color.Magenta);
+            LedController.Instance.SetColor(Color.Magenta);
 
             var climateReading = new ClimateReadingEntity() { tempC = temperature.Celsius };
 
@@ -44,12 +44,12 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
                 } 
                 catch (TaskCanceledException) 
                 {
-                    LedIndicator.StartBlink(Color.OrangeRed);
+                    LedController.Instance.StartBlink(Color.OrangeRed);
                     Console.WriteLine("Request time out.");
                 } 
                 catch (Exception e) 
                 {
-                    LedIndicator.StartBlink(Color.OrangeRed);
+                    LedController.Instance.StartBlink(Color.OrangeRed);
                     Console.WriteLine($"Request went sideways: {e.Message}");
                 }
             }
@@ -61,7 +61,7 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
         /// <returns></returns>
         public static async Task FetchReadings()
         {
-            LedIndicator.StartPulse(Color.Magenta);
+            LedController.Instance.SetColor(Color.Magenta);
 
             using (HttpClient client = new HttpClient()) 
             {
@@ -83,12 +83,12 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
                 } 
                 catch (TaskCanceledException) 
                 {
-                    LedIndicator.StartBlink(Color.OrangeRed);
+                    LedController.Instance.StartBlink(Color.OrangeRed);
                     Console.WriteLine("Request time out.");
                 } 
                 catch (Exception e) 
                 {
-                    LedIndicator.StartBlink(Color.OrangeRed);
+                    LedController.Instance.StartBlink(Color.OrangeRed);
                     Console.WriteLine($"Request went sideways: {e.Message}");
                 }
             }

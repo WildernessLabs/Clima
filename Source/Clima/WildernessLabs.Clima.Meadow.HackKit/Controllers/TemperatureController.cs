@@ -1,4 +1,6 @@
 ﻿using Clima.Meadow.HackKit;
+using Clima.Meadow.HackKit.Utils;
+using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Units;
 using System;
@@ -14,7 +16,11 @@ namespace WildernessLabs.Clima.Meadow.HackKit.Controllers
 
         public Temperature? TemperatureValue => analogTemperature.Temperature;
 
-        public TemperatureController()
+        private static readonly Lazy<TemperatureController> instance =
+            new Lazy<TemperatureController>(() => new TemperatureController());
+        public static TemperatureController Instance => instance.Value;
+
+        private TemperatureController()
         {
             Initialize();
         }
@@ -28,6 +34,8 @@ namespace WildernessLabs.Clima.Meadow.HackKit.Controllers
 
         void AnalogTemperatureUpdated(object sender, global::Meadow.IChangeResult<Temperature> e)
         {
+            LedController.Instance.SetColor(Color.Cyan);
+
             var reading = new TemperatureModel()
             {
                 Temperature = e.New,
@@ -35,6 +43,8 @@ namespace WildernessLabs.Clima.Meadow.HackKit.Controllers
             };
 
             Updated(this, reading);
+
+            LedController.Instance.SetColor(Color.Green);
         }
     }
 }

@@ -26,12 +26,16 @@ namespace Clima.Meadow.HackKit.Controllers
         protected bool isCelcius = true;
         protected bool isRendering = false;
 
-        public DisplayController()
+        private static readonly Lazy<DisplayController> instance =
+            new Lazy<DisplayController>(() => new DisplayController());
+        public static DisplayController Instance => instance.Value;
+
+        private DisplayController()
         {
             Initialize();
         }
 
-        void Initialize()
+        public void Initialize()
         {
             // our display needs mode3
             var config = new SpiClockConfiguration(24000, SpiClockConfiguration.Mode.Mode3);

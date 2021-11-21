@@ -14,7 +14,7 @@ namespace WildernessLabs.Clima.Meadow.HackKit.MapleRequestHandlers
         [HttpGet]
         public void GetTemperature()
         {
-            LedIndicator.SetColor(Color.Magenta); 
+            LedController.Instance.SetColor(Color.Magenta); 
 
             var data = new 
             {
@@ -26,7 +26,7 @@ namespace WildernessLabs.Clima.Meadow.HackKit.MapleRequestHandlers
             Context.Response.StatusCode = 200;
             Send(data).Wait();
 
-            LedIndicator.SetColor(Color.Green);
+            LedController.Instance.SetColor(Color.Green);
         }
     }
 }
