@@ -2,6 +2,7 @@
 using Clima.Meadow.HackKit.Utils;
 using Json.Net;
 using Meadow.Foundation;
+using Meadow.Units;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -9,23 +10,23 @@ using System.Threading.Tasks;
 
 namespace Clima.Meadow.HackKit.ServiceAccessLayer
 {
-    public static class ClimateServiceFacade
+    public static class ClimateService
     {
         // TODO: change this IP for your localhost 
         static string climateDataUri = "http://192.168.1.74:2792/ClimateData";
 
-        static ClimateServiceFacade() { }
+        static ClimateService() { }
 
         /// <summary>
         /// Posts a temperature reading to the web API endpoint
         /// </summary>
         /// <param name="tempC"></param>
         /// <returns></returns>
-        public static async Task PostTempReading(decimal tempC)
+        public static async Task PostTempReading(Temperature temperature)
         {
-            LedIndicator.StartPulse(Color.Magenta);
+            LedController.Instance.SetColor(Color.Magenta);
 
-            var climateReading = new ClimateReadingEntity() { tempC = tempC };
+            var climateReading = new ClimateReadingEntity() { tempC = temperature.Celsius };
 
             using (HttpClient client = new HttpClient()) 
             {
@@ -43,12 +44,12 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
                 } 
                 catch (TaskCanceledException) 
                 {
-                    LedIndicator.StartBlink(Color.OrangeRed);
+                    LedController.Instance.StartBlink(Color.OrangeRed);
                     Console.WriteLine("Request time out.");
                 } 
                 catch (Exception e) 
                 {
-                    LedIndicator.StartBlink(Color.OrangeRed);
+                    LedController.Instance.StartBlink(Color.OrangeRed);
                     Console.WriteLine($"Request went sideways: {e.Message}");
                 }
             }
@@ -60,7 +61,7 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
         /// <returns></returns>
         public static async Task FetchReadings()
         {
-            LedIndicator.StartPulse(Color.Magenta);
+            LedController.Instance.SetColor(Color.Magenta);
 
             using (HttpClient client = new HttpClient()) 
             {
@@ -82,12 +83,12 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
                 } 
                 catch (TaskCanceledException) 
                 {
-                    LedIndicator.StartBlink(Color.OrangeRed);
+                    LedController.Instance.StartBlink(Color.OrangeRed);
                     Console.WriteLine("Request time out.");
                 } 
                 catch (Exception e) 
                 {
-                    LedIndicator.StartBlink(Color.OrangeRed);
+                    LedController.Instance.StartBlink(Color.OrangeRed);
                     Console.WriteLine($"Request went sideways: {e.Message}");
                 }
             }

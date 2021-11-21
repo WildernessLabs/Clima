@@ -1,96 +1,115 @@
 ﻿using Clima.Meadow.HackKit.Controllers;
-using Clima.Meadow.HackKit.ServiceAccessLayer;
 using Clima.Meadow.HackKit.Utils;
 using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Buttons;
-using Meadow.Foundation.Sensors.Temperature;
+using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Gateway.WiFi;
-using Meadow.Peripherals.Sensors.Buttons;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using WildernessLabs.Clima.Meadow.HackKit.Controllers;
+using WildernessLabs.Clima.Meadow.HackKit.Entities;
+using WildernessLabs.Clima.Meadow.HackKit.ServiceAccessLayer;
 
 namespace Clima.Meadow.HackKit
 {
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
-        AnalogTemperature analogTemperature;
-        DisplayController displayController;
-
+        MapleServer mapleServer;
         PushButton buttonUp, buttonDown, buttonMenu;
+
+        CancellationTokenSource token;
+
+        public TemperatureModel CurrentReading { get; set; }
 
         public MeadowApp()
         {
-            Initialize().Wait();
-
-            Start().Wait();
+            Initialize();
         }
 
-        /// <summary>
-        /// Initializes the hardware.
-        /// </summary>
-        async Task Initialize()
+        void Initialize() 
         {
-            LedIndicator.Initialize(
-                Device,
-                Device.Pins.OnboardLedRed,
-                Device.Pins.OnboardLedGreen,
-                Device.Pins.OnboardLedBlue
-            );
-            LedIndicator.SetColor(Color.Red);
+            InitializeHardware();
+            LedController.Instance.SetColor(Color.Blue);
+            DisplayController.Instance.ShowSplashScreen();
 
-            analogTemperature = new AnalogTemperature(
-                device: Device,
-                analogPin: Device.Pins.A00,
-                sensorType: AnalogTemperature.KnownSensorType.LM35
-            );
+            InitializeWiFi().Wait();
+            LedController.Instance.SetColor(Color.Green);
 
-            displayController = new DisplayController();
-            displayController.ShowSplashScreen();
+            TemperatureController.Instance.Updated += TemperatureControllerUpdated;
+        }
 
-            displayController.ShowTextLine1("WIFI ADAPTER");
-            Device.InitWiFiAdapter().Wait();
-            displayController.ShowTextLine2("READY!");
-
-            LedIndicator.SetColor(Color.Blue);
-            /*
-            displayController.ShowTextLine1("JOIN NETWORK");
-            var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
-            if (result.ConnectionStatus != ConnectionStatus.Success)
-            {
-                throw new Exception($"Cannot connect to network: {result.ConnectionStatus}");
-            }
-            displayController.ShowTextLine2("CONNECTED!");
-            */
-
+        void InitializeHardware()
+        {
+            LedController.Instance.SetColor(Color.Red);
+            
+            Console.WriteLine("Init buttons");
             buttonUp = new PushButton(Device, Device.Pins.D03);
             buttonDown = new PushButton(Device, Device.Pins.D02);
             buttonMenu = new PushButton(Device, Device.Pins.D04);
 
-            buttonUp.Clicked += (s, e) => displayController.Up();
-            buttonDown.Clicked += (s, e) => displayController.Down();
-            buttonMenu.Clicked += (s, e) => displayController.Select();
-
-            LedIndicator.SetColor(Color.Green);
+            buttonUp.Clicked += (s, e) => DisplayController.Instance.MenuUp();
+            buttonDown.Clicked += (s, e) => DisplayController.Instance.MenuDown();
+            buttonMenu.Clicked += (s, e) => DisplayController.Instance.MenuSelect();
         }
 
-        async Task Start() 
+        async Task InitializeWiFi()
         {
-            while(true)
+            //token = new CancellationTokenSource();
+
+            //_ = Task.Run(async () =>
+            //{
+            //    string ellipsis;
+            //    int count = 0;
+            //    while (token.IsCancellationRequested == false)
+            //    {
+            //        ellipsis = (count++ % 4) switch
+            //        {
+            //            0 => "   ",
+            //            1 => ".  ",
+            //            2 => ".. ",
+            //            _ => "...",
+            //        };
+
+            //        DisplayController.Instance.UpdateStatusText("WiFi", "Connecting" + ellipsis);
+            //        await Task.Delay(500);
+            //    }
+
+            //}, token.Token);
+
+            Device.WiFiAdapter.WiFiConnected += WiFiConnected;
+            var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
+
+            if (result.ConnectionStatus != ConnectionStatus.Success)
             {
-                var conditions = await analogTemperature.Read();
-
-                displayController.UpdateDisplay(conditions);
-                /*
-                ClimateServiceFacade.FetchReadings().Wait();
-
-                ClimateServiceFacade.PostTempReading((decimal)conditions.Celsius).Wait();
-
-                ClimateServiceFacade.FetchReadings().Wait();*/
-
-                await Task.Delay(2000);
+                DisplayController.Instance.UpdateStatusText("WiFi", "Failed");
             }
+            else
+            {
+                await DateTimeService.GetTimeAsync();
+                DisplayController.Instance.UpdateStatusText("WiFi", "Connected!");
+            }
+        }
+
+        async void WiFiConnected(object sender, EventArgs e)
+        {
+            //token.Cancel(); //stop the ellipsis task above
+            await DateTimeService.GetTimeAsync();
+
+            mapleServer = new MapleServer(Device.WiFiAdapter.IpAddress, 5417, false);
+            mapleServer.Start();
+
+            DisplayController.Instance.UpdateStatusText("WiFi", "Connected!");
+        }
+
+        void TemperatureControllerUpdated(object sender, TemperatureModel e)
+        {
+            CurrentReading = e;
+            DisplayController.Instance.UpdateDisplay(e.Temperature);
+            //await ClimateService.FetchReadings();
+            //await ClimateService.PostTempReading(e.Temperature);
         }
     }
 }

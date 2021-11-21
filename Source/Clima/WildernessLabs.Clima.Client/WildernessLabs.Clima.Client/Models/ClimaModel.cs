@@ -1,9 +1,13 @@
-﻿namespace WildernessLabs.Clima.App.Models
+﻿using Newtonsoft.Json;
+
+namespace WildernessLabs.Clima.App.Models
 {
     public class ClimaModel
     {
-        public long? Id { get; set; }
-        public string Date { get; set; }
+        [JsonProperty("DateTime")]
+        public string DateTime { get; set; }
+
+        [JsonProperty("Temperature")]
         public decimal? Temperature { get; set; }
     }
 }

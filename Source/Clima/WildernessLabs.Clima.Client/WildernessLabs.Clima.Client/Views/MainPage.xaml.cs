@@ -1,13 +1,22 @@
 ﻿using Xamarin.Forms;
 
-namespace WildernessLabs.Clima.App
+namespace WildernessLabs.Clima.Client.Views
 {
     public partial class MainPage : ContentPage
     {
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = new MainViewModel();
+        }
+
+        void BtnHackKitClicked(object sender, System.EventArgs e)
+        {
+            Navigation.PushAsync(new HackKitPage());
+        }
+
+        void BtnProKitClicked(object sender, System.EventArgs e)
+        {
+            Navigation.PushAsync(new ProKitPage());
         }
     }
 }

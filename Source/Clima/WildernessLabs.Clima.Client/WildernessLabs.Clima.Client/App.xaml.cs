@@ -1,8 +1,7 @@
-﻿using System;
+﻿using WildernessLabs.Clima.Client.Views;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
-namespace WildernessLabs.Clima.App
+namespace WildernessLabs.Clima.Client
 {
     public partial class App : Application
     {
@@ -10,7 +9,8 @@ namespace WildernessLabs.Clima.App
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage())
+                { BarTextColor = Color.White, BarBackgroundColor = (Color)Current.Resources["ButtonActive"] };
         }
 
         protected override void OnStart()
