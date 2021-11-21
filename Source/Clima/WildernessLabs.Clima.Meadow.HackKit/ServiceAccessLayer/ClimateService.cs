@@ -1,6 +1,6 @@
 ﻿using Clima.Contracts.DTUs;
 using Clima.Meadow.HackKit.Utils;
-using Json.Net;
+using System.Text.Json;
 using Meadow.Foundation;
 using Meadow.Units;
 using System;
@@ -34,7 +34,7 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
                 {
                     client.Timeout = new TimeSpan(0, 5, 0);
 
-                    string json = JsonNet.Serialize(climateReading);
+                    string json = JsonSerializer.Serialize(climateReading);
 
                     HttpResponseMessage response = await client.PostAsync(
                         climateDataUri, new StringContent(
@@ -77,7 +77,7 @@ namespace Clima.Meadow.HackKit.ServiceAccessLayer
 
                     Console.WriteLine(json);
 
-                    var readingStuffs = JsonNet.Deserialize<ClimateReadingEntity[]>(json);                   
+                    var readingStuffs = JsonSerializer.Deserialize<ClimateReadingEntity[]>(json);                   
 
                     Console.WriteLine($"Temp: {readingStuffs[0].tempC}");
                 } 
