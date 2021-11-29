@@ -121,10 +121,10 @@ namespace Clima.Meadow.HackKit.Controllers
                 backgroundColor, true);
 
             graphics.DrawText(display.Width / 2, 140, line1, Color.Black, 
-                alignment: MicroGraphics.TextAlignment.Center);
+                alignment: TextAlignment.Center);
 
             graphics.DrawText(display.Width / 2, 170, line2, Color.Black, 
-                alignment: MicroGraphics.TextAlignment.Center);
+                alignment: TextAlignment.Center);
 
             graphics.Show(rect);
         }
@@ -182,14 +182,10 @@ namespace Clima.Meadow.HackKit.Controllers
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = $"WildernessLabs.Clima.Meadow.HackKit.{filename}";
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            {
-                using (var ms = new MemoryStream())
-                {
-                    stream.CopyTo(ms);
-                    return ms.ToArray();
-                }
-            }
+            using Stream stream = assembly.GetManifestResourceStream(resourceName);
+            using var ms = new MemoryStream();
+            stream.CopyTo(ms);
+            return ms.ToArray();
         }
 
         /// <summary>
@@ -215,11 +211,11 @@ namespace Clima.Meadow.HackKit.Controllers
             string tempText;
             if (isCelcius)
             {
-                tempText = $"{conditions.Celsius.ToString("##.#")}°C";
+                tempText = $"{conditions.Celsius:##.#}°C";
             }
             else
             {
-                tempText = $"{conditions.Fahrenheit.ToString("##.#")}°F";
+                tempText = $"{conditions.Fahrenheit:##.#}°F";
             }
 
             graphics.DrawText(
@@ -227,8 +223,8 @@ namespace Clima.Meadow.HackKit.Controllers
                 y: 140,
                 text: tempText,
                 color: Color.Black,
-                scaleFactor: MicroGraphics.ScaleFactor.X2,
-                alignment: MicroGraphics.TextAlignment.Center);
+                scaleFactor: ScaleFactor.X2,
+                alignment: TextAlignment.Center);
 
             graphics.Show();
 
