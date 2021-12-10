@@ -1,6 +1,6 @@
 # Clima
 
-A simple, Meadow-powered climate station. Includes basic versions that you can build with a [Hack Kit](https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro) and a [Pro version](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) with a complete climate station.
+A simple, Meadow-powered climate station. Includes basic versions that you can build with a [Hack Kit](https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro) and a [Pro Version](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) with a complete climate station.
 
 <img src="ClimaPro.png" 
     style="width: 60%; display: block; margin-left: auto; margin-right: auto;" />
