@@ -6,12 +6,12 @@ Clima is a solar-powered, custom embedded-IoT solution that tracks climate from 
 
 We offer clima in two options, a full dedicated kit that it's fully solar powered build and ideal to measure weather outdoors, or a much simplified version that you can build with our Hack Kits:
 
-<table>
+<table width="100%">
     <tr>
-        <td>
+        <td width="50%">
             <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit">Complete Version</a></strong>
         </td>
-        <td>
+        <td width="50%">
             <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro">Hack Kit Version</a></strong></td>
     </tr>
     <tr>
