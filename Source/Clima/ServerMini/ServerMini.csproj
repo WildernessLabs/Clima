@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Clima.Server.Mini</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'WildernessLabs.Clima.Server.Mini' " />
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+  <Import Project="..\WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems" Label="Shared" Condition="Exists('..\WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems')" />
+  <Import Project="..\CommonContracts\CommonContracts.projitems" Label="Shared" />
+</Project>

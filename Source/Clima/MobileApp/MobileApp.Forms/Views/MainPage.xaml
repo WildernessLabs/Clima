@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="true"
+    x:Class="MobileApp.Views.MainPage"
+    BackgroundColor="White"
+    Title="Clima">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="TextColor">#555</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Padding="20" Spacing="10">
+            <Label Text="Select a device:" TextColor="Black" FontSize="Medium" Margin="0,0,0,10" />
+
+            <Button Text="Hack Kit version" Clicked="BtnHackKitClicked" HeightRequest="60"
+                TextColor="White" BackgroundColor="{StaticResource ButtonActive}" />
+
+            <Button Text="Pro Kit version" Clicked="BtnProKitClicked" HeightRequest="60"
+                TextColor="White" BackgroundColor="{StaticResource ButtonActive}" />
+
+            <Label Text="By Wilderness Labs" TextColor="Black" 
+                HorizontalOptions="Center" VerticalOptions="EndAndExpand" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

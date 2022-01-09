@@ -2,31 +2,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerMini", "WildernessLabs.Clima.Server.Mini\ServerMini.csproj", "{D07BAD01-1F7A-4F79-A6FA-DBC86BE26DBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerMini", "ServerMini\ServerMini.csproj", "{D07BAD01-1F7A-4F79-A6FA-DBC86BE26DBA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowHackKit", "WildernessLabs.Clima.Meadow.HackKit\MeadowHackKit.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowHackKit", "MeadowHackKit\MeadowHackKit.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonContracts", "WildernessLabs.Clima.Contracts\CommonContracts.shproj", "{567267B3-ED96-4FEA-B555-2EE203372EA4}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonContracts", "CommonContracts\CommonContracts.shproj", "{567267B3-ED96-4FEA-B555-2EE203372EA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerMini.Tests", "WildernessLabs.Clima.Server.Mini.Tests\ServerMini.Tests.csproj", "{533927CB-DC68-4D9F-9623-E43B605B7B04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerMini.Tests", "ServerMini.Tests\ServerMini.Tests.csproj", "{533927CB-DC68-4D9F-9623-E43B605B7B04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowProKit", "WildernessLabs.Clima.Meadow.Pro\MeadowProKit.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaKit", "MeadowClimaKit\MeadowClimaKit.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.Android", "WildernessLabs.Clima.Client\WildernessLabs.Clima.Client.Android\MobileApp.Android.csproj", "{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.Android", "MobileApp\MobileApp.Android\MobileApp.Android.csproj", "{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.iOS", "WildernessLabs.Clima.Client\WildernessLabs.Clima.Client.iOS\MobileApp.iOS.csproj", "{FAD5E344-A87A-49C4-B3EA-67665D5F3421}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.iOS", "MobileApp\MobileApp.iOS\MobileApp.iOS.csproj", "{FAD5E344-A87A-49C4-B3EA-67665D5F3421}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileApp.Forms", "WildernessLabs.Clima.Client\WildernessLabs.Clima.Client\MobileApp.Forms.csproj", "{0A88B701-120A-491C-B823-7ECD2F7BD24E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileApp.Forms", "MobileApp\MobileApp.Forms\MobileApp.Forms.csproj", "{0A88B701-120A-491C-B823-7ECD2F7BD24E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowProKit.Tests", "WilderenessLabs.Clima.Meadow.Pro.HardwareDiagnostics\MeadowProKit.Tests.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaKit.Tests", "MeadowClimaKit.Tests\MeadowClimaKit.Tests.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{0a88b701-120a-491c-b823-7ecd2f7bd24e}*SharedItemsImports = 5
-		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{533927cb-dc68-4d9f-9623-e43b605b7b04}*SharedItemsImports = 5
-		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{567267b3-ed96-4fea-b555-2ee203372ea4}*SharedItemsImports = 13
-		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{d07bad01-1f7a-4f79-a6fa-dbc86be26dba}*SharedItemsImports = 5
-		WildernessLabs.Clima.Contracts\WildernessLabs.Clima.Contracts.projitems*{e753b478-f501-45a8-8ccb-67970f131033}*SharedItemsImports = 5
+		CommonContracts\CommonContracts.projitems*{0a88b701-120a-491c-b823-7ecd2f7bd24e}*SharedItemsImports = 5
+		CommonContracts\CommonContracts.projitems*{533927cb-dc68-4d9f-9623-e43b605b7b04}*SharedItemsImports = 5
+		CommonContracts\CommonContracts.projitems*{567267b3-ed96-4fea-b555-2ee203372ea4}*SharedItemsImports = 13
+		CommonContracts\CommonContracts.projitems*{d07bad01-1f7a-4f79-a6fa-dbc86be26dba}*SharedItemsImports = 5
+		CommonContracts\CommonContracts.projitems*{e753b478-f501-45a8-8ccb-67970f131033}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
