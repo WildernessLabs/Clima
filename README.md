@@ -16,7 +16,7 @@ We offer clima in two options, a full dedicated kit that it's fully solar powere
     </tr>
     <tr>
         <td>
-            <img src="Image_Assets/ClimaPro.JPG" />
+            <img src="Image_Assets/ClimaPro.jpg" />
         </td>
         <td>
             <img src="Image_Assets/Clima.jpg" /> 
