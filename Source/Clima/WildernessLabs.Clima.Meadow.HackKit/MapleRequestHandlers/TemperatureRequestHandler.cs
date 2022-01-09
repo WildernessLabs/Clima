@@ -1,11 +1,11 @@
-﻿using Clima.Meadow.HackKit;
-using Clima.Meadow.HackKit.Utils;
+﻿using MeadowHackKit;
+using MeadowHackKit.Utils;
 using Meadow.Foundation;
 using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Foundation.Web.Maple.Server.Routing;
 using System;
 
-namespace WildernessLabs.Clima.Meadow.HackKit.MapleRequestHandlers
+namespace WildernessLabs.MeadowHackKit.MapleRequestHandlers
 {
     public class TemperatureRequestHandler : RequestHandlerBase
     {

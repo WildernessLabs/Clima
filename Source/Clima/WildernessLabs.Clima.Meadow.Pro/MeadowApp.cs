@@ -1,6 +1,6 @@
-﻿using Clima.Meadow.Pro.DataAccessLayer;
-using Clima.Meadow.Pro.Models;
-using Clima.Meadow.Pro.Server.Bluetooth;
+﻿using MeadowProKit.DataAccessLayer;
+using MeadowProKit.Models;
+using MeadowProKit.Server.Bluetooth;
 using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
@@ -9,7 +9,7 @@ using Meadow.Gateway.WiFi;
 using System;
 using System.Threading.Tasks;
 
-namespace Clima.Meadow.Pro
+namespace MeadowProKit
 {
     public class MeadowApp : App<F7MicroV2, MeadowApp>
     {

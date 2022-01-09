@@ -1,5 +1,5 @@
 ﻿using Clima.Contracts.DTUs;
-using Clima.Meadow.HackKit.Utils;
+using MeadowHackKit.Utils;
 using System.Text.Json;
 using Meadow.Foundation;
 using Meadow.Units;
@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Clima.Meadow.HackKit.ServiceAccessLayer
+namespace MeadowHackKit.ServiceAccessLayer
 {
     public static class ClimateService
     {

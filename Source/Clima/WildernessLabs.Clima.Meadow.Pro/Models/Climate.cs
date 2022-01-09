@@ -2,7 +2,7 @@
 using MU = Meadow.Units; 
 using SQLite;
 
-namespace Clima.Meadow.Pro.Models
+namespace MeadowProKit.Models
 {
     public class ClimateConditions
     {

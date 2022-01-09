@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Clima.Meadow.Pro.Models;
+using MeadowProKit.Models;
 using Meadow;
 using Meadow.Foundation.Sensors.Atmospheric;
 using Meadow.Foundation.Sensors.Weather;
 
-namespace Clima.Meadow.Pro
+namespace MeadowProKit
 {
     /// <summary>
     /// Basically combines all the sensors into one and enables the whole system

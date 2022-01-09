@@ -84,9 +84,9 @@
     <AndroidResource Include="Resources\xml\network_security_config.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WildernessLabs.Clima.Client\WildernessLabs.Clima.Client.csproj">
+    <ProjectReference Include="..\WildernessLabs.Clima.Client\MobileApp.Forms.csproj">
       <Project>{0A88B701-120A-491C-B823-7ECD2F7BD24E}</Project>
-      <Name>WildernessLabs.Clima.Client</Name>
+      <Name>MobileApp.Forms</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

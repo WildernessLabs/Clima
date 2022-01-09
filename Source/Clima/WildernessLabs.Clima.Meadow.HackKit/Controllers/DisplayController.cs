@@ -10,7 +10,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Clima.Meadow.HackKit.Controllers
+namespace MeadowHackKit.Controllers
 {
     public class DisplayController
     {
@@ -38,7 +38,7 @@ namespace Clima.Meadow.HackKit.Controllers
         public void Initialize()
         {
             // our display needs mode3
-            var config = new SpiClockConfiguration(24000, SpiClockConfiguration.Mode.Mode3);
+            var config = new SpiClockConfiguration(new Frequency(24000, Frequency.UnitType.Kilohertz), SpiClockConfiguration.Mode.Mode3);
             var spiBus = MeadowApp.Device.CreateSpiBus(MeadowApp.Device.Pins.SCK, MeadowApp.Device.Pins.MOSI, MeadowApp.Device.Pins.MISO, config);
             // new up the actual display on the SPI bus
             display = new St7789
@@ -180,7 +180,7 @@ namespace Clima.Meadow.HackKit.Controllers
         protected byte[] LoadResource(string filename)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = $"WildernessLabs.Clima.Meadow.HackKit.{filename}";
+            var resourceName = $"WildernessLabs.MeadowHackKit.{filename}";
 
             using Stream stream = assembly.GetManifestResourceStream(resourceName);
             using var ms = new MemoryStream();

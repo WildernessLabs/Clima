@@ -1,7 +1,7 @@
 ﻿using System;
 using Meadow.Gateways.Bluetooth;
 
-namespace Clima.Meadow.Pro.Server.Bluetooth
+namespace MeadowProKit.Server.Bluetooth
 {
     public class BluetoothServer
     {

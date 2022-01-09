@@ -1,11 +1,11 @@
-﻿using Clima.Meadow.HackKit;
+﻿using MeadowHackKit;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace WildernessLabs.Clima.Meadow.HackKit.ServiceAccessLayer
+namespace WildernessLabs.MeadowHackKit.ServiceAccessLayer
 {
     public static class DateTimeService
     {

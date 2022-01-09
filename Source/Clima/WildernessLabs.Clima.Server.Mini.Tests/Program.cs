@@ -114,6 +114,5 @@ namespace WildernessLabs.Clima.Server.Mini.Tests
                 }
             }
         }
-
     }
 }
