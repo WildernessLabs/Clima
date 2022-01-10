@@ -4,12 +4,14 @@ Clima is a solar-powered, custom embedded-IoT solution that tracks climate from 
 
 ## Clima Options
 
-We offer clima in two options, a full dedicated kit that it's fully solar powered build and ideal to measure weather outdoors, or a much simplified version that you can build with our Hack Kits:
+We offer clima in two options, a full dedicated kit that it's fully solar powered build and ideal to measure weather outdoors, or a much simplified version that you can build with our Hack Kits.
+
+Both versions are 100% open source, including all of the enclosure design files, and PCB design of the pro version.
 
 <table width="100%">
     <tr>
         <td width="50%">
-            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit">Complete Version</a></strong>
+            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit">Pro Version</a></strong>
         </td>
         <td width="50%">
             <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro">Hack Kit Version</a></strong></td>
@@ -24,6 +26,14 @@ We offer clima in two options, a full dedicated kit that it's fully solar powere
     </tr>
     <tr>
         <td>
+            ### Sourcing
+            
+            A complete kit of the Pro version of Clima can be found on the [Wilderness Labs Store](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit).
+
+            The store version is 100% kit complete, including the option to include the 3D printed enclosure, and a meadow.
+
+            You can also source all of the components yourself. For a list of components see the [Clima Pro Bill of Material (BoM)](/Docs/Clima.Pro/Bill_of_Materials.md)
+
             With this kit, the sensors included are:
             <ul>
                 <li>Anemometer to measure wind speed</li>
