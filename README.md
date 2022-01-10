@@ -59,6 +59,10 @@ You can also source all of the components yourself. For a list of components see
 
 Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
 
+## Known Issues
+
+The Meadow.OS Power and Sleep APIs haven't been released yet, so Clima can't go to sleep to conserve power. For that reason, it'll need to be plugged into USB. We're hoping to have the first sleep APIs available in b6.2.
+
 # Clima Hack Kit Version
 
 Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
