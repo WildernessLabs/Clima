@@ -31,7 +31,7 @@ Both versions are 100% open source, including all of the enclosure design files,
                 <li>Anemometer to measure wind speed</li>
                 <li>WindVane to check wind direction</li>
                 <li>Rain meter to measure precipitation</li>
-                <li>BME280 to measure ambient temperature, pressure and humidity </li>
+                <li>BME680 to measure ambient temperature, pressure and humidity </li>
             </ul>
         </td>
         <td> 
@@ -53,7 +53,6 @@ You can also source all of the components yourself. For a list of components see
 ## Assembly
 
 Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
-
 
 # Clima Hack Kit Version
 
