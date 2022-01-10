@@ -26,7 +26,7 @@ Both versions are 100% open source, including all of the enclosure design files,
     </tr>
     <tr>
         <td>
-            ### Sourcing
+            **Sourcing**
             
             A complete kit of the Pro version of Clima can be found on the [Wilderness Labs Store](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit).
 
