@@ -26,6 +26,8 @@ The enclosure can be 3D printed, but should be printed using PETG or some other 
 
 If you're printing the enclosure yourself, you'll also need a [soldering iron](https://www.amazon.com/dp/B00B3SG6UQ) and [heat-set insert tips](https://www.amazon.com/dp/B08B17VQLD) to install the heat-set inserts.
 
+All of the enclosure files can be found in the [/Industrial_Design folder](/Industrial_Design/Enclosure/).
+
 ## Clima.Pro PCB
 
 The Clima.Pro PCB was created in EasyEDA, and the source files as well as component BoM can be found on [OSHW Lab](https://oshwlab.com/bryan_6020/wilderness-labs-clima).
