@@ -7,7 +7,7 @@ Complete Clima.Pro kits can be purchased at the [Wilderness Labs Store](https://
 |-----|-------------------------|-----------|
 | 1   | [Shenzen Fine-Offset Electronics Weather Sensor Kit](https://www.sparkfun.com/products/15901) | $ 79.95 |
 | 1   |	Clima PCB (see below)   | ~$ 25.00 | 
-| 1   | 3d Printed Enclosure and Pipe Mount | $ 3.00 |
+| 1   | 3d Printed Enclosure and Pipe Mount (see below) | $ 3.00 |
 | 1   | [18650 LiIon Battery](https://www.amazon.com/s?k=18650+battery) | $ 5.00 |
 | 8   | [M3 Heat Inserts](https://www.amazon.com/gp/product/B087NBYF65) | $ 5.00 |
 | 8   | [M3x12 Hex Head Screws](https://www.amazon.com/gp/product/B01LZPZL3W) | $ 5.00 |   
