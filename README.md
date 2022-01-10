@@ -26,14 +26,6 @@ Both versions are 100% open source, including all of the enclosure design files,
     </tr>
     <tr>
         <td>
-            <strong>Sourcing</strong>
-            
-            A complete kit of the Pro version of Clima can be found on the [Wilderness Labs Store](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit).
-
-            The store version is 100% kit complete, including the option to include the 3D printed enclosure, and a meadow.
-
-            You can also source all of the components yourself. For a list of components see the [Clima Pro Bill of Material (BoM)](/Docs/Clima.Pro/Bill_of_Materials.md)
-
             With this kit, the sensors included are:
             <ul>
                 <li>Anemometer to measure wind speed</li>
@@ -47,6 +39,16 @@ Both versions are 100% open source, including all of the enclosure design files,
         </td>
     </tr>
 </table>
+
+## Clima.Pro Sourcing
+
+A complete kit of the Pro version of Clima can be found on the [Wilderness Labs Store](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit).
+
+The store version is 100% kit complete, including the option to include the 3D printed enclosure, and a meadow.
+
+You can also source all of the components yourself. For a list of components see the [Clima Pro Bill of Material (BoM)](/Docs/Clima.Pro/Bill_of_Materials.md)
+
+
 
 Also includes an ASP.NET Core Web API application to test against.
 
