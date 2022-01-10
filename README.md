@@ -40,19 +40,25 @@ Both versions are 100% open source, including all of the enclosure design files,
     </tr>
 </table>
 
-## Clima.Pro Sourcing
+# Clima.Pro Kit 
+
+## Sourcing
 
 A complete kit of the Pro version of Clima can be found on the [Wilderness Labs Store](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit).
 
 The store version is 100% kit complete, including the option to include the 3D printed enclosure, and a meadow.
 
 You can also source all of the components yourself. For a list of components see the [Clima Pro Bill of Material (BoM)](/Docs/Clima.Pro/Bill_of_Materials.md)
+ 
+## Assembly
 
+Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
 
+## [what]
 
 Also includes an ASP.NET Core Web API application to test against.
 
-## Clima Hack Kit Circuit
+# Clima Hack Kit Circuit
 
 With an LM35 Analog Temperature sensor, a TFT SPI ST7789 display and three push buttons (all included in the Hack Kit), wire your board like the following Fritzing Diagram:
 
