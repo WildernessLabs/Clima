@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Meadow;
 
-namespace ClimaHardwareDiagnostics
+namespace MeadowClimaHackKit
 {
     class Program
     {

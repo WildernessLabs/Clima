@@ -1,4 +1,4 @@
-﻿namespace MeadowHackKit
+﻿namespace MeadowClimaHackKit
 {
     public class Secrets
     {

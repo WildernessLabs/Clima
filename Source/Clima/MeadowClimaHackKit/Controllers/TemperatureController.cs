@@ -1,12 +1,12 @@
-﻿using MeadowHackKit;
-using MeadowHackKit.Utils;
+﻿using MeadowClimaHackKit;
+using MeadowClimaHackKit.Utils;
 using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Units;
 using System;
-using WildernessLabs.MeadowHackKit.Entities;
+using WildernessLabs.MeadowClimaHackKit.Entities;
 
-namespace WildernessLabs.MeadowHackKit.Controllers
+namespace WildernessLabs.MeadowClimaHackKit.Controllers
 {
     public class TemperatureController
     {

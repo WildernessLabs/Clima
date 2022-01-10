@@ -4,13 +4,13 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerMini", "ServerMini\ServerMini.csproj", "{D07BAD01-1F7A-4F79-A6FA-DBC86BE26DBA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowHackKit", "MeadowHackKit\MeadowHackKit.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaHackKit", "MeadowClimaHackKit\MeadowClimaHackKit.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonContracts", "CommonContracts\CommonContracts.shproj", "{567267B3-ED96-4FEA-B555-2EE203372EA4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerMini.Tests", "ServerMini.Tests\ServerMini.Tests.csproj", "{533927CB-DC68-4D9F-9623-E43B605B7B04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaKit", "MeadowClimaKit\MeadowClimaKit.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaProKit", "MeadowClimaProKit\MeadowClimaProKit.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.Android", "MobileApp\MobileApp.Android\MobileApp.Android.csproj", "{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}"
 EndProject
@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.iOS", "MobileApp\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileApp.Forms", "MobileApp\MobileApp.Forms\MobileApp.Forms.csproj", "{0A88B701-120A-491C-B823-7ECD2F7BD24E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaKit.Tests", "MeadowClimaKit.Tests\MeadowClimaKit.Tests.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaProKit.Tests", "MeadowClimaProKit.Tests\MeadowClimaProKit.Tests.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

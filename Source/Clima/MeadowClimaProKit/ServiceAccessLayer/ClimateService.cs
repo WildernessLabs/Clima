@@ -2,9 +2,9 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using MeadowProKit.Models;
+using MeadowClimaProKit.Models;
 
-namespace MeadowProKit.ServiceAccessLayer
+namespace MeadowClimaProKit.ServiceAccessLayer
 {
     public static class ClimateService
     {

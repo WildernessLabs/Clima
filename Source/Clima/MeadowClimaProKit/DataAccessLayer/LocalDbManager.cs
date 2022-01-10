@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using MeadowProKit.Models;
+using MeadowClimaProKit.Models;
 using Meadow;
 using SQLite;
 
-namespace MeadowProKit.DataAccessLayer
+namespace MeadowClimaProKit.DataAccessLayer
 {
     public class LocalDbManager
     {

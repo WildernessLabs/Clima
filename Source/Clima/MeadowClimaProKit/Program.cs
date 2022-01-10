@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Meadow;
 
-namespace MeadowProKit
+namespace MeadowClimaProKit
 {
     class Program
     {

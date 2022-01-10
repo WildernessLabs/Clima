@@ -1,7 +1,7 @@
 ﻿using Meadow.Units;
 using System;
 
-namespace WildernessLabs.MeadowHackKit.Entities
+namespace WildernessLabs.MeadowClimaHackKit.Entities
 {
     public class TemperatureModel
     {

@@ -7,7 +7,7 @@ using Meadow.Foundation.Sensors.Weather;
 using Meadow.Units;
 using System;
 
-namespace ClimaHardwareDiagnostics
+namespace MeadowClimaProKit.Tests
 {
     public class MeadowApp : App<F7Micro, MeadowApp>
     {

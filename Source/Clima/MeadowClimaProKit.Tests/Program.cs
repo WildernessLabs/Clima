@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Meadow;
 
-namespace MeadowHackKit
+namespace MeadowClimaProKit.Tests
 {
     class Program
     {

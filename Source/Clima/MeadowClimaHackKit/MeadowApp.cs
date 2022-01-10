@@ -1,5 +1,5 @@
-﻿using MeadowHackKit.Controllers;
-using MeadowHackKit.Utils;
+﻿using MeadowClimaHackKit.Controllers;
+using MeadowClimaHackKit.Utils;
 using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
@@ -9,11 +9,11 @@ using Meadow.Gateway.WiFi;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using WildernessLabs.MeadowHackKit.Controllers;
-using WildernessLabs.MeadowHackKit.Entities;
-using WildernessLabs.MeadowHackKit.ServiceAccessLayer;
+using WildernessLabs.MeadowClimaHackKit.Controllers;
+using WildernessLabs.MeadowClimaHackKit.Entities;
+using WildernessLabs.MeadowClimaHackKit.ServiceAccessLayer;
 
-namespace MeadowHackKit
+namespace MeadowClimaHackKit
 {
     public class MeadowApp : App<F7Micro, MeadowApp>
     {

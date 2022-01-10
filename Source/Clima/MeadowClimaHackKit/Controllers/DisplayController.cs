@@ -10,7 +10,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace MeadowHackKit.Controllers
+namespace MeadowClimaHackKit.Controllers
 {
     public class DisplayController
     {
@@ -180,7 +180,7 @@ namespace MeadowHackKit.Controllers
         protected byte[] LoadResource(string filename)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = $"WildernessLabs.MeadowHackKit.{filename}";
+            var resourceName = $"WildernessLabs.MeadowClimaHackKit.{filename}";
 
             using Stream stream = assembly.GetManifestResourceStream(resourceName);
             using var ms = new MemoryStream();
