@@ -59,7 +59,7 @@ Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructi
 
 Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
 
-# Clima Project Solution
+# Clima Application Source
 
 The source code for the Clima applications can be found in the [source](/Source) folder.
 
