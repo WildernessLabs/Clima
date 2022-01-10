@@ -71,25 +71,4 @@ In there is a `clima.sln` file with the following projects in it:
 * **WildernessLabs.Clima.Server.Mini.Tests** - A console application used to test the Mini server.
 * **WildernessLabs.Clima.Server.Mini** - A very basic local test Web API server written in ASP.NET Core.
 
-## Local Server Web API
-
-The mini Clima server stores `ClimateReading` objects in memory will populate itself with a sample reading on start so there is always some dummy data in there.
-
-### Getting a List of Climate Readings
-
-**Get** - http://localhost:[port]/ClimateData
-
-### Posting a new Reading
-
-**Post** - http://localhost:[port]/ClimateData
-
-Sample body payload:
-
-```json
-{
-    "timeOfReading": "2020-09-23T17:43:00-07:00",
-    "tempC": 23,
-    "barometricPressureMillibarHg": 250,
-    "relativeHumdity": 0.7
-}
-```
+For more information on the application source code, please see the [source code readme](/Source/readme.md).
