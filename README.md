@@ -40,7 +40,12 @@ Both versions are 100% open source, including all of the enclosure design files,
     </tr>
 </table>
 
-# Clima.Pro Kit 
+# Getting Started with the Clima.Pro Kit 
+
+1) [Buy](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) or [Source](/Docs/Clima.Pro/Bill_of_Materials.md) a kit.
+2) [Assemble it](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
+3) [Build and Deploy the Meadow Clima.Pro App to it].
+4) Optionally, build and deploy the [companion mobile app].
 
 ## Sourcing
 
