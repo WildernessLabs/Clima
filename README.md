@@ -54,25 +54,24 @@ You can also source all of the components yourself. For a list of components see
 
 Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
 
-## [what]
 
-Also includes an ASP.NET Core Web API application to test against.
-
-# Clima Hack Kit Circuit
+# Clima Hack Kit Version
 
 Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
 
-## Projects
+# Clima Project Solution
+
+The source code for the Clima applications can be found in the [source](/Source) folder.
+
+In there is a `clima.sln` file with the following projects in it:
 
 * **WildernessLabs.Clima.Contracts** - Shared project with the data models that are shared amongs the various projects.
-* **WildernessLabs.Clima.Meadow.Pro** - A client Meadow application to use with the Clima Pro climate station hardware.
-* **WildernessLabs.Clima.Meadow.HackKit** 
-built with the components in the Hack Kit.
+* **WildernessLabs.Clima.Meadow.Pro** - A Meadow application to use with the Clima Pro climate station hardware.
+* **WildernessLabs.Clima.Meadow.HackKit** - Meadow application for the Hack Kit version of Clima.
 * **WildernessLabs.Clima.Server.Mini.Tests** - A console application used to test the Mini server.
 * **WildernessLabs.Clima.Server.Mini** - A very basic local test Web API server written in ASP.NET Core.
 
-
-## Server Web API
+## Local Server Web API
 
 The mini Clima server stores `ClimateReading` objects in memory will populate itself with a sample reading on start so there is always some dummy data in there.
 
