@@ -169,4 +169,22 @@
   <ItemGroup>
     <BundleResource Include="Resources\icon_disconnected%402x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\img_clima_pro.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\img_clima_pro%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\img_clima_pro%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\img_clima_hack_kit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\img_clima_hack_kit%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\img_clima_hack_kit%403x.png" />
+  </ItemGroup>
 </Project>

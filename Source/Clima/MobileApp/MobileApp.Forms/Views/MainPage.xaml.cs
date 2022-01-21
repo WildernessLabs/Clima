@@ -9,14 +9,14 @@ namespace MobileApp.Views
             InitializeComponent();
         }
 
-        void BtnHackKitClicked(object sender, System.EventArgs e)
-        {
-            Navigation.PushAsync(new HackKitPage());
-        }
-
         void BtnProKitClicked(object sender, System.EventArgs e)
         {
             Navigation.PushAsync(new ProKitPage());
+        }
+
+        void BtnHackKitClicked(object sender, System.EventArgs e)
+        {
+            Navigation.PushAsync(new HackKitPage());
         }
     }
 }

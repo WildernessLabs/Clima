@@ -16,4 +16,5 @@
     <PackageReference Include="Meadow.Foundation.Sensors.Weather.WindVane" Version="0.*" />
     <PackageReference Include="Meadow.Foundation.Sensors.Atmospheric.Bme280" Version="0.*" />
   </ItemGroup>
+  <Import Project="..\CommonContracts\CommonContracts.projitems" Label="Shared" />
 </Project>
