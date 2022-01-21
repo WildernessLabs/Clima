@@ -111,6 +111,10 @@ namespace WildernessLabs.Clima.App
             try
             {
                 var response = await client.GetAsync(SelectedServer != null ? SelectedServer.IpAddress : IpAddress, ServerPort, "GetTemperature", null, null);
+
+                if (response == null) 
+                    return;
+
                 var value = JsonConvert.DeserializeObject<ClimaModel>(response);
                 TemperatureLog.Add(value);
             }
@@ -132,7 +136,7 @@ namespace WildernessLabs.Clima.App
 
                 await client.StartScanningForAdvertisingServers();
 
-                HostList.Add(new ServerModel() { Name = "Meadow (192.168.1.85)", IpAddress = "192.168.1.85" });
+                //HostList.Add(new ServerModel() { Name = "Meadow (192.168.1.85)", IpAddress = "192.168.1.85" });
 
                 if (HostList.Count == 0)
                 {
