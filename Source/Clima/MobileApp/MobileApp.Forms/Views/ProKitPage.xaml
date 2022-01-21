@@ -6,7 +6,7 @@
     ios:Page.UseSafeArea="true"
     x:Class="MobileApp.Views.ProKitPage"
     BackgroundColor="White"
-    Title="Clima Pro Kit">
+    Title="Clima.Pro">
     
     <ContentPage.Content>
         <Grid>

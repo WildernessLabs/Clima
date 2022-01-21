@@ -40,7 +40,9 @@ Both versions are 100% open source, including all of the enclosure design files,
     </tr>
 </table>
 
-# Getting Started with the Clima.Pro Kit 
+# Clima.Pro Kit 
+
+## Getting Started
 
 1) [Buy](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) or [Source](/Docs/Clima.Pro/Bill_of_Materials.md) a kit.
 2) [Assemble it](/Docs/Clima.Pro/Assembly_Instructions/readme.md).

@@ -6,7 +6,7 @@
     ios:Page.UseSafeArea="true"
     x:Class="MobileApp.Views.HackKitPage"
     BackgroundColor="White"
-    Title="Clima Hack Kit">
+    Title="Clima.HackKit">
     
     <ContentPage.Content>
         <Grid>
