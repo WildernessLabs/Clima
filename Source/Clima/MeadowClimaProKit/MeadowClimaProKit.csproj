@@ -18,4 +18,5 @@
     <PackageReference Include="sqlite-net-static" Version="1.*" />
     <PackageReference Include="System.Text.Json" Version="6.0.0" />
   </ItemGroup>
+  <Import Project="..\CommonContracts\CommonContracts.projitems" Label="Shared" />
 </Project>

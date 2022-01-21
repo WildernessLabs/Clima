@@ -23,8 +23,10 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		CommonContracts\CommonContracts.projitems*{0a88b701-120a-491c-b823-7ecd2f7bd24e}*SharedItemsImports = 5
+		CommonContracts\CommonContracts.projitems*{50b2cba1-2053-42d6-9783-184802980f4b}*SharedItemsImports = 5
 		CommonContracts\CommonContracts.projitems*{533927cb-dc68-4d9f-9623-e43b605b7b04}*SharedItemsImports = 5
 		CommonContracts\CommonContracts.projitems*{567267b3-ed96-4fea-b555-2ee203372ea4}*SharedItemsImports = 13
+		CommonContracts\CommonContracts.projitems*{9b08a0ce-df94-4c59-98d4-b96212e78498}*SharedItemsImports = 5
 		CommonContracts\CommonContracts.projitems*{d07bad01-1f7a-4f79-a6fa-dbc86be26dba}*SharedItemsImports = 5
 		CommonContracts\CommonContracts.projitems*{e753b478-f501-45a8-8ccb-67970f131033}*SharedItemsImports = 5
 	EndGlobalSection
