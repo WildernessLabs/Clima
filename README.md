@@ -81,10 +81,14 @@ The source code for the Clima applications can be found in the [source](/Source)
 
 In there is a `clima.sln` file with the following projects in it:
 
-* **WildernessLabs.Clima.Contracts** - Shared project with the data models that are shared amongs the various projects.
-* **WildernessLabs.Clima.Meadow.Pro** - A Meadow application to use with the Clima Pro climate station hardware.
-* **WildernessLabs.Clima.Meadow.HackKit** - Meadow application for the Hack Kit version of Clima.
-* **WildernessLabs.Clima.Server.Mini.Tests** - A console application used to test the Mini server.
-* **WildernessLabs.Clima.Server.Mini** - A very basic local test Web API server written in ASP.NET Core.
+* **CommonContracts** - Shared project with the data models that are shared amongs the various projects.
+* **MeadowClimaHackKit** - A Meadow application to use with the Clima Pro climate station hardware.
+* **MeadowClimaProKit** - Meadow application for the Hack Kit version of Clima.
+* **MeadowClimaProKit.Tests** - A console application used to test the Mini server.
+* **MobileApp** - A console application used to test the Mini server.
+* **MobileApp.Android** - A console application used to test the Mini server.
+* **MobileApp.iOS** - A console application used to test the Mini server.
+* **ServerMini** - A very basic local test Web API server written in ASP.NET Core.
+* **ServerMini.Tests** - A very basic local test Web API server written in ASP.NET Core.
 
 For more information on the application source code, please see the [source code readme](/Source/readme.md).
