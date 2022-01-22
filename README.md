@@ -11,10 +11,10 @@ Both versions are 100% open source, including all of the enclosure design files,
 <table width="100%">
     <tr>
         <td width="50%">
-            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit">Pro Version</a></strong>
+            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit">Clima.Pro Version</a></strong>
         </td>
         <td width="50%">
-            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro">Hack Kit Version</a></strong></td>
+            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro">Clima.HackKit Version</a></strong></td>
     </tr>
     <tr>
         <td>
@@ -68,6 +68,12 @@ The Meadow.OS Power and Sleep APIs haven't been released yet, so Clima can't go 
 # Clima Hack Kit Version
 
 Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
+
+# Clima Phone Companion App
+
+This project also comes with a Xamarin.Forms Clima companion app (on Android and iOS) that shows you how to communicate with your Meadow device using [Bluetooth](http://developer.wildernesslabs.co/Meadow/Meadow.OS/Bluetooth/) on the Pro version and [Maple](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Libraries_and_Frameworks/Maple.Server/) for the Hack Kit version.
+
+![Clima companion app](/Image_Assets/Clima_Android.png)
 
 # Clima Application Source
 
