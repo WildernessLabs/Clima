@@ -5,9 +5,7 @@ using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Leds;
-using Meadow.Gateway.WiFi;
 using System;
-using System.Threading.Tasks;
 
 namespace Clima.Meadow.Pro
 {
@@ -20,7 +18,7 @@ namespace Clima.Meadow.Pro
 
             //==== new up our peripherals
             Initialize();
-
+        
             //==== subscribe to climate updates and save them to the database
             ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s, e) =>
             {
