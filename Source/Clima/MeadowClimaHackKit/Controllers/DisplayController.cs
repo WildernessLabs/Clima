@@ -180,7 +180,7 @@ namespace MeadowClimaHackKit.Controllers
         protected byte[] LoadResource(string filename)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = $"WildernessLabs.MeadowClimaHackKit.{filename}";
+            var resourceName = $"MeadowClimaHackKit.{filename}";
 
             using Stream stream = assembly.GetManifestResourceStream(resourceName);
             using var ms = new MemoryStream();
