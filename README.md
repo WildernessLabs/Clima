@@ -73,7 +73,7 @@ Instructions on how to assemble the Clima Hack Kit Version can be found [here](/
 
 This project also comes with a Xamarin.Forms Clima companion app (on Android and iOS) that shows you how to communicate with your Meadow device using [Bluetooth](http://developer.wildernesslabs.co/Meadow/Meadow.OS/Bluetooth/) on the Pro version and [Maple](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Libraries_and_Frameworks/Maple.Server/) for the Hack Kit version.
 
-![Clima companion app](/Image_Assets/Clima_Android.png)
+![Clima companion app](Image_Assets/Clima_Android.png)
 
 # Clima Application Source
 
