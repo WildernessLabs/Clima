@@ -11,10 +11,11 @@ namespace ClimaHardwareDiagnostics
 {
     public class MeadowApp : App<F7Micro, MeadowApp>
     {
-        Bme280 bme280;
+        Bme680 bme680;
         WindVane windVane;
         RgbPwmLed onboardLed;
         SwitchingAnemometer anemometer;
+        SwitchingRainGauge rainGauge;
 
         public MeadowApp()
         {
@@ -23,47 +24,47 @@ namespace ClimaHardwareDiagnostics
 
         void Initialize()
         {
+            Console.WriteLine("Initialize RGB Led");
             onboardLed = new RgbPwmLed(device: Device,
                 redPwmPin: Device.Pins.OnboardLedRed,
                 greenPwmPin: Device.Pins.OnboardLedGreen,
                 bluePwmPin: Device.Pins.OnboardLedBlue);
             onboardLed.SetColor(Color.Red);
 
+            Console.WriteLine("Initialize SwitchingRainGauge");
+            rainGauge = new SwitchingRainGauge(Device, Device.Pins.D15);
+            var rainGaugeObserver = SwitchingRainGauge.CreateObserver(
+                handler: result => Console.WriteLine($"Rain depth: {result.New.Millimeters}mm"),
+                filter: null
+            );
+            rainGauge.Subscribe(rainGaugeObserver);
+            rainGauge.StartUpdating();
+
+            Console.WriteLine("Initialize SwitchingAnemometer");
             anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
             var anemometerObserver = SwitchingAnemometer.CreateObserver(
-                handler: result => { Console.WriteLine($"new speed: {result.New}, old: {result.Old}"); },
+                handler: result => Console.WriteLine($"new speed: {result.New}, old: {result.Old}"),
                 filter: null
             );
             anemometer.Subscribe(anemometerObserver);
             anemometer.StartUpdating();
 
-            //==== to test the analog port for the wind vane, uncomment this section
-            //// init the windvane
-            //windVaneAnalog = Device.CreateAnalogInputPort(Device.Pins.A00);
-            //windVaneAnalog.Subscribe(new FilterableChangeObserver<FloatChangeResult, float>(
-            //    handler: result => {
-            //        //Console.WriteLine($"WindVane voltage: {result.New}");
-            //    },
-            //    null
-            //    ));
-            //// sample every half a second, and do automatic oversampling.
-            //windVaneAnalog.StartSampling(standbyDuration: 1000);
-
-            ////==== to test the windvane driver use this
+            Console.WriteLine("Initialize WindVane");
             windVane = new WindVane(Device, Device.Pins.A00);
             var observer = WindVane.CreateObserver(
-                handler: result => { Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"); },
+                handler: result => Console.WriteLine($"Wind Direction: {result.New.Compass16PointCardinalName}"),
                 filter: null
             );
             windVane.Subscribe(observer);
             windVane.StartUpdating(TimeSpan.FromSeconds(1));
 
-            bme280 = new Bme280(Device.CreateI2cBus());
-            var bmeObserver = Bme280.CreateObserver(
-                handler: result => { Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"); },
+            Console.WriteLine("Initialize Bme680");
+            bme680 = new Bme680(Device.CreateI2cBus());
+            var bmeObserver = Bme680.CreateObserver(
+                handler: result => Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"),
                 filter: result => true);
-            bme280.Subscribe(bmeObserver);
-            bme280.StartUpdating();
+            bme680.Subscribe(bmeObserver);
+            bme680.StartUpdating();
 
             onboardLed.SetColor(Color.Green);
         }
