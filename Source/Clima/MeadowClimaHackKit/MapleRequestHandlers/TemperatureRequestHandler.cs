@@ -11,7 +11,7 @@ namespace WildernessLabs.MeadowClimaHackKit.MapleRequestHandlers
     {
         public TemperatureRequestHandler() { }
 
-        [HttpGet]
+        [HttpGet("/gettemperature")]
         public void GetTemperature()
         {
             LedController.Instance.SetColor(Color.Magenta); 
