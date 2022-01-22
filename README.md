@@ -65,17 +65,17 @@ Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructi
 
 The Meadow.OS Power and Sleep APIs haven't been released yet, so Clima can't go to sleep to conserve power. For that reason, it'll need to be plugged into USB. We're hoping to have the first sleep APIs available in b6.2.
 
-# Clima Hack Kit Version
+# Clima.HackKit
 
 Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
 
-# Clima Phone Companion App
+# Companion Phone App
 
 This project also comes with a Xamarin.Forms Clima companion app (on Android and iOS) that shows you how to communicate with your Meadow device using [Bluetooth](http://developer.wildernesslabs.co/Meadow/Meadow.OS/Bluetooth/) on the Pro version and [Maple](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Libraries_and_Frameworks/Maple.Server/) for the Hack Kit version.
 
 ![Clima companion app](Image_Assets/Clima_android.png)
 
-# Clima Application Source
+# Solution Structure
 
 The source code for the Clima applications can be found in the [source](/Source) folder.
 
