@@ -1,51 +1,94 @@
-# Clima
+<img src="Image_Assets/clima-banner.jpg" style="margin-bottom:10px" />
 
-A simple, Meadow-powered climate station. Includes basic versions that you can build with a [Hack Kit](https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro) and a Pro version with a complete climate station.
+Clima is a solar-powered, custom embedded-IoT solution that tracks climate from a suite of sensors, saves data locally for access via Bluetooth, uses a RESTful Web API, and synchronizes data to the cloud.
 
-<img src="ClimaPro.png" 
-    style="width: 60%; display: block; margin-left: auto; margin-right: auto;" />
+## Clima Options
 
-<img src="Clima.jpg" 
-    style="width: 60%; display: block; margin-left: auto; margin-right: auto;" />
+We offer clima in two options, a full dedicated kit that it's fully solar powered build and ideal to measure weather outdoors, or a much simplified version that you can build with our Hack Kits.
 
-Also includes an ASP.NET Core Web API application to test against.
+Both versions are 100% open source, including all of the enclosure design files, and PCB design of the pro version.
 
-## Meadow Clima Circuit
+<table width="100%">
+    <tr>
+        <td width="50%">
+            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit">Clima.Pro Version</a></strong>
+        </td>
+        <td width="50%">
+            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro">Clima.HackKit Version</a></strong></td>
+    </tr>
+    <tr>
+        <td>
+            <img src="Image_Assets/ClimaPro.jpg" />
+        </td>
+        <td>
+            <img src="Image_Assets/Clima.jpg" /> 
+        </td>
+    </tr>
+    <tr>
+        <td>
+            With this kit, the sensors included are:
+            <ul>
+                <li>Anemometer to measure wind speed</li>
+                <li>WindVane to check wind direction</li>
+                <li>Rain meter to measure precipitation</li>
+                <li>BME680 to measure ambient temperature, pressure and humidity </li>
+            </ul>
+        </td>
+        <td> 
+            With the Hack Kit, you can build this project to measure indoor room temperature with an analog temperature sensor, use a 240x240 TFT Spi display and three push buttons to build a simple UI using MicroGraphics to do things like change temperature units, and more.
+        </td>
+    </tr>
+</table>
 
-With an LM35 Analog Temperature sensor, and a TFT SPI ST7789 display (both included in the Hack Kit), wire your board like the following Fritzing Diagram:
+# Clima.Pro Kit 
 
-<img src="Clima_Fritzing_Diagram.png" 
-    style="width: 60%; display: block; margin-left: auto; margin-right: auto;" />
+## Getting Started
 
-## Projects
+1) [Buy](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) or [Source](/Docs/Clima.Pro/Bill_of_Materials.md) a kit.
+2) [Assemble it](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
+3) [Build and Deploy the Meadow Clima.Pro App to it].
+4) Optionally, build and deploy the [companion mobile app].
 
-* **WildernessLabs.Clima.Contracts** - Shared project with the data models that are shared amongs the various projects.
-* **WildernessLabs.Clima.Meadow.Pro** - A client Meadow application to use with the Clima Pro climate station hardware.
-* **WildernessLabs.Clima.Meadow.HackKit** 
-built with the components in the Hack Kit.
-* **WildernessLabs.Clima.Server.Mini.Tests** - A console application used to test the Mini server.
-* **WildernessLabs.Clima.Server.Mini** - A very basic local test Web API server written in ASP.NET Core.
+## Sourcing
 
+A complete kit of the Pro version of Clima can be found on the [Wilderness Labs Store](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit).
 
-## Server Web API
+The store version is 100% kit complete, including the option to include the 3D printed enclosure, and a meadow.
 
-The mini Clima server stores `ClimateReading` objects in memory will populate itself with a sample reading on start so there is always some dummy data in there.
+You can also source all of the components yourself. For a list of components see the [Clima Pro Bill of Material (BoM)](/Docs/Clima.Pro/Bill_of_Materials.md)
+ 
+## Assembly
 
-### Getting a List of Climate Readings
+Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
 
-**Get** - http://localhost:[port]/ClimateData
+## Known Issues
 
-### Posting a new Reading
+The Meadow.OS Power and Sleep APIs haven't been released yet, so Clima can't go to sleep to conserve power. For that reason, it'll need to be plugged into USB. We're hoping to have the first sleep APIs available in b6.2.
 
-**Post** - http://localhost:[port]/ClimateData
+# Clima.HackKit
 
-Sample body payload:
+Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
 
-```json
-{
-    "timeOfReading": "2020-09-23T17:43:00-07:00",
-    "tempC": 23,
-    "barometricPressureMillibarHg": 250,
-    "relativeHumdity": 0.7
-}
-```
+# Companion Phone App
+
+This project also comes with a Xamarin.Forms Clima companion app (on Android and iOS) that shows you how to communicate with your Meadow device using [Bluetooth](http://developer.wildernesslabs.co/Meadow/Meadow.OS/Bluetooth/) on the Pro version and [Maple](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Libraries_and_Frameworks/Maple.Server/) for the Hack Kit version.
+
+![Clima companion app](Image_Assets/Clima_android.png)
+
+# Solution Structure
+
+The source code for the Clima applications can be found in the [source](/Source) folder.
+
+In there is a `clima.sln` file with the following projects in it:
+
+* **CommonContracts** - Shared project with the data models that are shared amongs the various projects.
+* **MeadowClimaHackKit** - A Meadow application to use with the Clima Pro climate station hardware.
+* **MeadowClimaProKit** - Meadow application for the Hack Kit version of Clima.
+* **MeadowClimaProKit.Tests** - A console application used to test the Mini server.
+* **MobileApp** - A console application used to test the Mini server.
+* **MobileApp.Android** - A console application used to test the Mini server.
+* **MobileApp.iOS** - A console application used to test the Mini server.
+* **ServerMini** - A very basic local test Web API server written in ASP.NET Core.
+* **ServerMini.Tests** - A very basic local test Web API server written in ASP.NET Core.
+
+For more information on the application source code, please see the [source code readme](/Source/readme.md).
