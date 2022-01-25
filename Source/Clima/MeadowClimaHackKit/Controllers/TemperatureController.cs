@@ -1,20 +1,14 @@
-﻿using MeadowClimaHackKit;
-using MeadowClimaHackKit.Utils;
-using Meadow.Foundation;
+﻿using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Units;
+using MeadowClimaHackKit.Database;
 using System;
-using WildernessLabs.MeadowClimaHackKit.Entities;
 
-namespace WildernessLabs.MeadowClimaHackKit.Controllers
+namespace MeadowClimaHackKit.Controllers
 {
     public class TemperatureController
     {
         AnalogTemperature analogTemperature;
-
-        public event EventHandler<TemperatureModel> Updated = delegate { };
-
-        public Temperature? TemperatureValue => analogTemperature.Temperature;
 
         private static readonly Lazy<TemperatureController> instance =
             new Lazy<TemperatureController>(() => new TemperatureController());
@@ -25,24 +19,24 @@ namespace WildernessLabs.MeadowClimaHackKit.Controllers
             Initialize();
         }
 
-        void Initialize()
+        public void Initialize()
         {
-            analogTemperature = new AnalogTemperature(MeadowApp.Device, MeadowApp.Device.Pins.A00, AnalogTemperature.KnownSensorType.LM35);
+            analogTemperature = new AnalogTemperature(MeadowApp.Device,
+                MeadowApp.Device.Pins.A01, AnalogTemperature.KnownSensorType.LM35);
             analogTemperature.StartUpdating(TimeSpan.FromSeconds(30));
-            analogTemperature.Updated += AnalogTemperatureUpdated;
+            analogTemperature.TemperatureUpdated += AnalogTemperatureUpdated;
         }
 
-        void AnalogTemperatureUpdated(object sender, global::Meadow.IChangeResult<Temperature> e)
+        void AnalogTemperatureUpdated(object sender, Meadow.IChangeResult<Temperature> e)
         {
             LedController.Instance.SetColor(Color.Cyan);
-
-            var reading = new TemperatureModel()
+            
+            var reading = new TemperatureTable()
             {
-                Temperature = e.New,
+                TemperatureValue = e.New,
                 DateTime = DateTime.Now
             };
-
-            Updated(this, reading);
+            DatabaseManager.Instance.SaveReading(reading);
 
             LedController.Instance.SetColor(Color.Green);
         }

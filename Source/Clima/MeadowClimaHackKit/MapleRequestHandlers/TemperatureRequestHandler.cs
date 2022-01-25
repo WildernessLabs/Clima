@@ -1,9 +1,10 @@
-﻿using MeadowClimaHackKit;
-using MeadowClimaHackKit.Utils;
-using Meadow.Foundation;
+﻿using Meadow.Foundation;
 using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Foundation.Web.Maple.Server.Routing;
-using System;
+using MeadowClimaHackKit.Controllers;
+using MeadowClimaHackKit.Database;
+using MeadowClimaHackKit.Models;
+using System.Collections.Generic;
 
 namespace WildernessLabs.MeadowClimaHackKit.MapleRequestHandlers
 {
@@ -12,21 +13,25 @@ namespace WildernessLabs.MeadowClimaHackKit.MapleRequestHandlers
         public TemperatureRequestHandler() { }
 
         [HttpGet("/gettemperature")]
-        public void GetTemperature()
+        public IActionResult GetTemperature()
         {
-            LedController.Instance.SetColor(Color.Magenta); 
+            LedController.Instance.SetColor(Color.Magenta);
 
-            var data = new 
+            var logs = DatabaseManager.Instance.GetTemperatureReadings();
+
+            var data = new List<TemperatureModel>();
+            foreach (var log in logs)
             {
-                Temperature = MeadowApp.Current.CurrentReading.Temperature.Celsius.ToString("##.#"),
-                DateTime = DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss tt")
-            };
-
-            Context.Response.ContentType = ContentTypes.Application_Json;
-            Context.Response.StatusCode = 200;
-            Send(data).Wait();
+                data.Add(new TemperatureModel()
+                {
+                    Temperature = log.TemperatureCelcius?.ToString("00"),
+                    DateTime = log.DateTime.ToString("yyyy-mm-dd hh:mm:ss tt")
+                });
+            }
 
             LedController.Instance.SetColor(Color.Green);
+
+            return new JsonResult(data);
         }
     }
 }

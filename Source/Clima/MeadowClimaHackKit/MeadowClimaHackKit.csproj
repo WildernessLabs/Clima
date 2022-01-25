@@ -4,19 +4,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <OutputType>Exe</OutputType>
     <AssemblyName>App</AssemblyName>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Remove="meadow.config.yaml" />
-    <None Remove="wifi.config.yaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="meadow.config.yaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="wifi.config.yaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>  
+  </PropertyGroup>  
   <ItemGroup>
     <EmbeddedResource Include="meadow.jpg" />
   </ItemGroup>
@@ -27,6 +15,7 @@
     <PackageReference Include="Meadow.Foundation.Displays.TftSpi" Version="0.*" />
     <PackageReference Include="Meadow.Foundation.Web.Maple.Server" Version="0.*" />
     <PackageReference Include="SimpleJpegDecoder" Version="0.*" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
     <PackageReference Include="System.Text.Json" Version="6.0.0" />
   </ItemGroup>
   <Import Project="..\CommonContracts\CommonContracts.projitems" Label="Shared" />
