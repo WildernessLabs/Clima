@@ -63,7 +63,7 @@ Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructi
 
 ## Known Issues
 
-The Meadow.OS Power and Sleep APIs haven't been released yet, so Clima can't go to sleep to conserve power. For that reason, it'll need to be plugged into USB. We're hoping to have the first sleep APIs available in b6.2.
+The Meadow.OS Power and Sleep APIs haven't been released yet, so Clima can't go to sleep to conserve power. For that reason, it'll need to be plugged into USB. We're hoping to have the first sleep APIs available in b6.4.
 
 # Clima.HackKit
 
