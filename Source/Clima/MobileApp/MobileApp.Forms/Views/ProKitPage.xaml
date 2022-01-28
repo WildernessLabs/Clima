@@ -26,13 +26,13 @@
                         <Grid Grid.Column="0">
                             <Picker TextColor="White" FontSize="Medium" BackgroundColor="Transparent"
                                 ItemsSource="{Binding DeviceList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding DeviceSelected}"/>
-                            <Label IsVisible="{Binding IsDeviceListEmpty}" Text="Pick a device" 
+                            <Label Text="Meadow Clima.Pro" 
                                 FontSize="Medium" TextColor="White" VerticalOptions="Center" />
                         </Grid>
 
                         <Grid Grid.Column="1" WidthRequest="50" HeightRequest="50">
                             <Button Command="{Binding CmdToggleConnection}" BackgroundColor="Transparent" CornerRadius="5" />
-                            <Image Margin="10" HorizontalOptions="Center">
+                            <Image Margin="10" HorizontalOptions="Center" Source="icon_connected">
                                 <Image.Triggers>
                                     <DataTrigger TargetType="Image" Binding="{Binding IsDeviceListEmpty}" Value="True">
                                         <Setter Property="Opacity" Value="0.5" />
@@ -70,9 +70,61 @@
                     </Grid>
                 </Frame>
 
-                <Label Grid.Row="2" Text="Current Status:" TextColor="Black" FontSize="Medium" Margin="0,5" />
+                <Label Grid.Row="2" Text="Climate Logs:" TextColor="Black" FontSize="Medium" Margin="0,5" />
 
-                <Grid Grid.Row="3" BackgroundColor="#80000000">
+                <Frame Grid.Row="3" BackgroundColor="#F5F5F5" HasShadow="False" Padding="0">
+                    <Grid>
+                        <ListView ItemsSource="{Binding ClimateLogs}" SeparatorVisibility="None" BackgroundColor="Transparent" HasUnevenRows="True"
+                            IsPullToRefreshEnabled="True" RefreshCommand="{Binding CmdReloadTemperatureLog}" IsRefreshing="{Binding IsRefreshing}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Frame BackgroundColor="#23ABE3" HasShadow="False" Padding="10" Margin="0,0,0,5">
+                                            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto" RowSpacing="0">
+                                                <Label Grid.Row="0" Grid.Column="0" Text="Date" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Date}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="1" Grid.Column="0" Text="Temperature" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Temperature}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="2" Grid.Column="0" Text="Pressure" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Pressure}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="3" Grid.Column="0" Text="Humidity" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="3" Grid.Column="1" Text="{Binding Humidity}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="4" Grid.Column="0" Text="WindSpeed" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="4" Grid.Column="1" Text="{Binding WindSpeed}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="5" Grid.Column="0" Text="Wind Direction" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="5" Grid.Column="1" Text="{Binding WindDirection}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="6" Grid.Column="0" Text="Rain Volume" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="6" Grid.Column="1" Text="{Binding RainVolume}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+                                            </Grid>
+                                        </Frame>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Frame>
+                
+                <!--<Grid Grid.Row="3" BackgroundColor="#80000000">
                     <Frame Margin="50" VerticalOptions="Center">
                         <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="*,Auto">
                             <Label Grid.ColumnSpan="2" Grid.Row="0" Text="Current Status" FontAttributes="Bold"
@@ -99,7 +151,7 @@
                                 HeightRequest="40" Margin="0,10,0,0" BackgroundColor="#23ABE3" TextColor="White" />
                         </Grid>
                     </Frame>
-                </Grid>
+                </Grid>-->
 
                 <Label Grid.Row="4" Text="By Wilderness Labs" TextColor="Black" 
                     HorizontalOptions="Center" VerticalOptions="EndAndExpand" />

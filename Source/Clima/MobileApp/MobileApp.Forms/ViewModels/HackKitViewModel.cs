@@ -74,6 +74,12 @@ namespace WildernessLabs.Clima.App
         public HackKitViewModel()
         {
             TemperatureLog = new ObservableCollection<ClimaModel>();
+            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 10:00:00 AM", Temperature = (decimal?) 18 });
+            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 11:00:00 AM", Temperature = (decimal?) 19 });
+            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 12:00:00 PM", Temperature = (decimal?) 19.6 });
+            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 1:00:00 PM",  Temperature = (decimal?) 20.1 });
+            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 2:00:00 PM",  Temperature = (decimal?) 20.5 });
+            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 3:00:00 PM",  Temperature = (decimal?) 21.2 });
 
             HostList = new ObservableCollection<ServerModel>();            
 
@@ -116,7 +122,7 @@ namespace WildernessLabs.Clima.App
                     return;
 
                 var value = JsonConvert.DeserializeObject<ClimaModel>(response);
-                TemperatureLog.Add(value);
+                //TemperatureLog.Add(value);
             }
             catch (Exception ex)
             {
@@ -136,7 +142,7 @@ namespace WildernessLabs.Clima.App
 
                 await client.StartScanningForAdvertisingServers();
 
-                //HostList.Add(new ServerModel() { Name = "Meadow (192.168.1.85)", IpAddress = "192.168.1.85" });
+                HostList.Add(new ServerModel() { Name = "Meadow (192.168.1.81)", IpAddress = "192.168.1.81" });
 
                 if (HostList.Count == 0)
                 {

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MobileApp.Utils;
 using Xamarin.Forms;
+using Clima.Contracts.Models;
 
 namespace MobileApp.ViewModels
 {
@@ -29,6 +30,8 @@ namespace MobileApp.ViewModels
         ICharacteristic windDirectionCharacteristic;
 
         public ObservableCollection<IDevice> DeviceList { get; set; }
+
+        public ObservableCollection<ssss> ClimateLogs { get; set; }
 
         IDevice deviceSelected;
         public IDevice DeviceSelected
@@ -109,6 +112,38 @@ namespace MobileApp.ViewModels
             adapter.DeviceConnected += AdapterDeviceConnected;
             adapter.DeviceDiscovered += AdapterDeviceDiscovered;
             adapter.DeviceDisconnected += AdapterDeviceDisconnected;
+
+            ClimateLogs = new ObservableCollection<ssss>();
+            ClimateLogs.Add(new ssss() 
+            { 
+                Date = "2022-01-21 10:00:00 AM",
+                Temperature = "10°C",
+                Pressure = "1035mB",
+                Humidity = "93%",
+                WindSpeed = "6Kmh",
+                WindDirection = "N",
+                RainVolume = "1mm"
+            });
+            ClimateLogs.Add(new ssss()
+            {
+                Date = "2022-01-21 11:00:00 AM",
+                Temperature = "12°C",
+                Pressure = "1040mB",
+                Humidity = "94%",
+                WindSpeed = "7Kmh",
+                WindDirection = "N",
+                RainVolume = "1mm"
+            });
+            ClimateLogs.Add(new ssss()
+            {
+                Date = "2022-01-21 12:00:00 PM",
+                Temperature = "14°C",
+                Pressure = "1045mB",
+                Humidity = "95%",
+                WindSpeed = "5Kmh",
+                WindDirection = "N",
+                RainVolume = "1mm"
+            });
 
             CmdToggleConnection = new Command(async () => await ToggleConnection());
 
@@ -245,5 +280,16 @@ namespace MobileApp.ViewModels
         {
             return int.Parse(uuid.Substring(4, 4), System.Globalization.NumberStyles.HexNumber); ;
         }
+    }
+
+    public class ssss 
+    { 
+        public string Date          { get; set; }
+        public string Temperature   { get; set; }
+        public string Pressure      { get; set; }
+        public string Humidity      { get; set; }
+        public string WindSpeed     { get; set; }
+        public string WindDirection { get; set; }
+        public string RainVolume    { get; set; }
     }
 }
