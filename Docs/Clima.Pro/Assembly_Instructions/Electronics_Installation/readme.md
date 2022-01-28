@@ -32,4 +32,4 @@ Using the remaining (4) M2x6 screws, install the cover:
 
 ![](Cover_Install.png)
 
-## [Next - Mount the Enclosure](../Enclosure_Mounting/index.md)
+## [Next - Mount the Enclosure](../Enclosure_Mounting/readme.md)

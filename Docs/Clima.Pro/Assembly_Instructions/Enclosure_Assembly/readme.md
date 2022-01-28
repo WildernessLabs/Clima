@@ -46,4 +46,4 @@ Finally, install the M2 heat-set inserts for the lid into the enclosure body:
 
 **TODO: Picture**
 
-## [Next - Electronics Installation](../Electronics_Installation/index.md)
+## [Next - Electronics Installation](../Electronics_Installation/readme.md)
