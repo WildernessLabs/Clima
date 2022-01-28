@@ -1,5 +1,7 @@
 ## Clima.Pro Assembly Instructions
 
+![](/Image_Assets/ClimaPro.jpg)
+
 * **[Part 1 - Sensor Assembly](Weather_Sensors/readme.md)** - Assembling the weather gauges and pole.
 * **[Part 2 - 3D Printed Enclosure Assembly](Enclosure_Assembly/readme.md)** - Skip this step unless you're printing at home.
 * **[Part 3 - Electronics Installation](Electronics_Installation/ireadmendex.md)** - Installing the PCB, antenna, etc., into the enclosure.
