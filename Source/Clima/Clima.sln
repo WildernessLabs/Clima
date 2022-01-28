@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32106.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaHackKit", "MeadowClimaHackKit\MeadowClimaHackKit.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
 EndProject
@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.Android", "Mobile
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.iOS", "MobileApp\MobileApp.iOS\MobileApp.iOS.csproj", "{FAD5E344-A87A-49C4-B3EA-67665D5F3421}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileApp.Forms", "MobileApp\MobileApp.Forms\MobileApp.Forms.csproj", "{0A88B701-120A-491C-B823-7ECD2F7BD24E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileApp", "MobileApp\MobileApp\MobileApp.csproj", "{0A88B701-120A-491C-B823-7ECD2F7BD24E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaProKit.Tests", "MeadowClimaProKit.Tests\MeadowClimaProKit.Tests.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
 EndProject
