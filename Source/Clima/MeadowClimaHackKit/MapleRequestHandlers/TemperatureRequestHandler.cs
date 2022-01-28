@@ -1,9 +1,9 @@
-﻿using Meadow.Foundation;
+﻿using CommonContracts.Models;
+using Meadow.Foundation;
 using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Foundation.Web.Maple.Server.Routing;
 using MeadowClimaHackKit.Controllers;
 using MeadowClimaHackKit.Database;
-using MeadowClimaHackKit.Models;
 using System.Collections.Generic;
 
 namespace WildernessLabs.MeadowClimaHackKit.MapleRequestHandlers
@@ -25,7 +25,7 @@ namespace WildernessLabs.MeadowClimaHackKit.MapleRequestHandlers
                 data.Add(new TemperatureModel()
                 {
                     Temperature = log.TemperatureCelcius?.ToString("00"),
-                    DateTime = log.DateTime.ToString("yyyy-mm-dd hh:mm:ss tt")
+                    DateTime = log.DateTime
                 });
             }
 

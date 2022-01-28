@@ -3,6 +3,7 @@ using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Leds;
 using MeadowClimaProKit.DataAccessLayer;
+using MeadowClimaProKit.Database;
 using MeadowClimaProKit.Models;
 using MeadowClimaProKit.Server.Bluetooth;
 using System;
@@ -23,7 +24,7 @@ namespace MeadowClimaProKit
             ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s, e) =>
             {
                 DebugOut(e.New);
-                LocalDbManager.Instance.SaveReading(e.New);
+                DatabaseManager.Instance.SaveReading(e.New);
             };
             ClimateMonitorAgent.Instance.StartUpdating(TimeSpan.FromSeconds(10));
 
@@ -47,7 +48,7 @@ namespace MeadowClimaProKit
             Console.WriteLine("Hardware initialization complete.");
         }
 
-        protected void DebugOut(Climate climate)
+        protected void DebugOut(ClimateReading climate)
         {
             Console.WriteLine("New climate reading:");
             Console.WriteLine($"Temperature: {climate.Temperature?.Celsius:N2}C");

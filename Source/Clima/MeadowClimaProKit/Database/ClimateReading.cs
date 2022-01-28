@@ -1,24 +1,11 @@
 ﻿using System;
-using MU = Meadow.Units; 
 using SQLite;
+using MU = Meadow.Units;
 
-namespace MeadowClimaProKit.Models
+namespace MeadowClimaProKit.Database
 {
-    public class ClimateConditions
-    {
-        public Climate? New { get; set; }
-        public Climate? Old { get; set; }
-
-        public ClimateConditions() { }
-        public ClimateConditions(Climate newClimate, Climate oldClimate)
-        {
-            New = newClimate;
-            Old = oldClimate;
-        }
-    }
-
     [Table("ClimateReadings")]
-    public class Climate
+    public class ClimateReading
     {
         [PrimaryKey, AutoIncrement]
         public int? ID { get; set; }

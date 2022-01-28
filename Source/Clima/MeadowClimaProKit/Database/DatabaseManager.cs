@@ -4,22 +4,23 @@ using System.IO;
 using MeadowClimaProKit.Models;
 using Meadow;
 using SQLite;
+using MeadowClimaProKit.Database;
 
 namespace MeadowClimaProKit.DataAccessLayer
 {
-    public class LocalDbManager
+    public class DatabaseManager
     {
         //==== internals
         SQLiteConnection Database { get; set; }
 
         //==== singleton stuff
-        private static readonly Lazy<LocalDbManager> instance =
-            new Lazy<LocalDbManager>(() => new LocalDbManager());
-        public static LocalDbManager Instance {
+        private static readonly Lazy<DatabaseManager> instance =
+            new Lazy<DatabaseManager>(() => new DatabaseManager());
+        public static DatabaseManager Instance {
             get { return instance.Value; }
         }
 
-        private LocalDbManager()
+        private DatabaseManager()
         {
             // database files should go in the `DataDirectory`
             var databasePath = Path.Combine(MeadowOS.FileSystem.DataDirectory, "ClimateReadings.db");
@@ -34,13 +35,13 @@ namespace MeadowClimaProKit.DataAccessLayer
         {
             // add table(s)
             Console.WriteLine("ConfigureDatabase");
-            Database.DropTable<Climate>(); //convenience while we work on the model object
-            Database.CreateTable<Climate>();
+            Database.DropTable<ClimateReading>(); //convenience while we work on the model object
+            Database.CreateTable<ClimateReading>();
             Console.WriteLine("Table created");
             isConfigured = true;
         }
 
-        public bool SaveReading(Climate climate)
+        public bool SaveReading(ClimateReading climate)
         {
             if(isConfigured == false)
             {
@@ -63,14 +64,14 @@ namespace MeadowClimaProKit.DataAccessLayer
             return true;
         }
 
-        public Climate GetClimateReading(int id)
+        public ClimateReading GetClimateReading(int id)
         {
-            return Database.Get<Climate>(id);
+            return Database.Get<ClimateReading>(id);
         }
 
-        public List<Climate> GetAllClimateReadings()
+        public List<ClimateReading> GetAllClimateReadings()
         {
-            return Database.Table<Climate>().ToList();
+            return Database.Table<ClimateReading>().ToList();
         }
     }
 }

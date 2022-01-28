@@ -9,10 +9,7 @@
     <Import_RootNamespace>Clima.Contracts</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)DTUs\ClimateReadingEntity.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\ClimateReading.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\WeatherModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TemperatureModel.cs" />
   </ItemGroup>
 </Project>

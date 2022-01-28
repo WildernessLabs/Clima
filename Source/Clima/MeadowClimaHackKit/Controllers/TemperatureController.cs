@@ -31,7 +31,7 @@ namespace MeadowClimaHackKit.Controllers
         {
             LedController.Instance.SetColor(Color.Cyan);
             
-            var reading = new TemperatureTable()
+            var reading = new TemperatureReading()
             {
                 TemperatureValue = e.New,
                 DateTime = DateTime.Now

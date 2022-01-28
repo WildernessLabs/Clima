@@ -5,6 +5,7 @@ using MeadowClimaProKit.Models;
 using Meadow;
 using Meadow.Foundation.Sensors.Atmospheric;
 using Meadow.Foundation.Sensors.Weather;
+using MeadowClimaProKit.Database;
 
 namespace MeadowClimaProKit
 {
@@ -42,7 +43,7 @@ namespace MeadowClimaProKit
         /// <summary>
         /// The last read conditions.
         /// </summary>
-        public Climate? Climate { get; set; }
+        public ClimateReading? Climate { get; set; }
 
         //==== singleton
         private static readonly Lazy<ClimateMonitorAgent> instance =
@@ -88,7 +89,7 @@ namespace MeadowClimaProKit
                 SamplingTokenSource = new CancellationTokenSource();
                 CancellationToken ct = SamplingTokenSource.Token;
 
-                Climate oldClimate;
+                ClimateReading oldClimate;
 
                 Task.Factory.StartNew(async () =>
                 {
@@ -105,7 +106,7 @@ namespace MeadowClimaProKit
                         }
 
                         // capture history
-                        oldClimate = Climate ?? new Climate();
+                        oldClimate = Climate ?? new ClimateReading();
 
                         // read
                         Climate = await Read().ConfigureAwait(false);
@@ -145,7 +146,7 @@ namespace MeadowClimaProKit
             ClimateConditionsUpdated.Invoke(this, changeResult);
         }
 
-        public virtual async Task<Climate> Read()
+        public virtual async Task<ClimateReading> Read()
         {
             //==== create the read tasks
             var bmeTask = bme280?.Read();
@@ -154,7 +155,7 @@ namespace MeadowClimaProKit
             //==== await until all tasks complete 
             await Task.WhenAll(bmeTask, windVaneTask);
 
-            var climate = new Climate()
+            var climate = new ClimateReading()
             {
                 DateTime = DateTime.Now,
                 Humidity = bmeTask?.Result.Humidity,

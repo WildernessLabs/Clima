@@ -1,13 +1,12 @@
 ﻿using Meadow.Foundation.Web.Maple.Client;
-using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using WildernessLabs.Clima.App.Models;
 using MobileApp.ViewModels;
 using Xamarin.Forms;
+using CommonContracts.Models;
 
 namespace WildernessLabs.Clima.App
 {
@@ -15,7 +14,7 @@ namespace WildernessLabs.Clima.App
     {
         public MapleClient client { get; private set; }
 
-        public ObservableCollection<ClimaModel> TemperatureLog { get; set; }
+        public ObservableCollection<TemperatureModel> TemperatureLog { get; set; }
 
         int _serverPort;
         public int ServerPort
@@ -73,13 +72,7 @@ namespace WildernessLabs.Clima.App
 
         public HackKitViewModel()
         {
-            TemperatureLog = new ObservableCollection<ClimaModel>();
-            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 10:00:00 AM", Temperature = (decimal?) 18 });
-            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 11:00:00 AM", Temperature = (decimal?) 19 });
-            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 12:00:00 PM", Temperature = (decimal?) 19.6 });
-            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 1:00:00 PM",  Temperature = (decimal?) 20.1 });
-            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 2:00:00 PM",  Temperature = (decimal?) 20.5 });
-            TemperatureLog.Add(new ClimaModel() { DateTime = "2022-01-21 3:00:00 PM",  Temperature = (decimal?) 21.2 });
+            TemperatureLog = new ObservableCollection<TemperatureModel>();            
 
             HostList = new ObservableCollection<ServerModel>();            
 
@@ -121,7 +114,7 @@ namespace WildernessLabs.Clima.App
                 if (response == null) 
                     return;
 
-                var value = JsonConvert.DeserializeObject<ClimaModel>(response);
+                var value = System.Text.Json.JsonSerializer.Deserialize<TemperatureModel>(response);
                 //TemperatureLog.Add(value);
             }
             catch (Exception ex)

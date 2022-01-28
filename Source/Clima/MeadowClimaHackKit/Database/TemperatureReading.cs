@@ -1,11 +1,10 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using Meadow.Units;
+using SQLite;
 
 namespace MeadowClimaHackKit.Database
 {
-    [Table("TemperatureReadings")]
-    public class TemperatureTable
+    public class TemperatureReading
     {
         [PrimaryKey, AutoIncrement]
         public int? ID { get; set; }

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MobileApp.Utils;
 using Xamarin.Forms;
-using Clima.Contracts.Models;
 
 namespace MobileApp.ViewModels
 {
