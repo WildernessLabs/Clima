@@ -12,12 +12,12 @@ namespace CommonContracts.Models
         public DateTime? TimeOfReading { get; set; }
 
         [JsonPropertyName("tempC")]
-        public decimal? TempC { get; set; }
+        public double? TempC { get; set; }
 
         [JsonPropertyName("barometricPressureMillibarHg")]
-        public decimal? BarometricPressureMillibarHg { get; set; }
+        public double? BarometricPressureMillibarHg { get; set; }
 
         [JsonPropertyName("relativeHumdity")]
-        public decimal? RelativeHumdity { get; set; }
+        public double? RelativeHumdity { get; set; }
     }
 }

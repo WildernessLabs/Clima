@@ -8,9 +8,9 @@ using System.Collections.Generic;
 
 namespace WildernessLabs.MeadowClimaHackKit.MapleRequestHandlers
 {
-    public class TemperatureRequestHandler : RequestHandlerBase
+    public class MapleRequestHandler : RequestHandlerBase
     {
-        public TemperatureRequestHandler() { }
+        public MapleRequestHandler() { }
 
         [HttpGet("/gettemperature")]
         public IActionResult GetTemperature()
