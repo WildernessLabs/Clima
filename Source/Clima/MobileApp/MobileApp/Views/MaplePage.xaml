@@ -2,9 +2,10 @@
 <ContentPage 
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:MobileApp.Converters"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"    
     ios:Page.UseSafeArea="true"
-    x:Class="MobileApp.Views.HackKitPage"
+    x:Class="MobileApp.Views.MaplePage"
     BackgroundColor="White"
     Title="Clima.HackKit">
     
@@ -81,7 +82,8 @@
                 <Frame Grid.Row="4" BackgroundColor="#F5F5F5" HasShadow="False" Padding="0">
                     <Grid>
                         <ListView ItemsSource="{Binding TemperatureLog}" SeparatorVisibility="None" BackgroundColor="Transparent" RowHeight="50"
-                            IsPullToRefreshEnabled="True" RefreshCommand="{Binding CmdReloadTemperatureLog}" IsRefreshing="{Binding IsRefreshing}">
+                            IsPullToRefreshEnabled="True" RefreshCommand="{Binding CmdReloadTemperatureLog}" IsRefreshing="{Binding IsRefreshing}"
+                            IsVisible="{Binding IsClimaPro, Converter={converters:InverseBoolConverter}}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
@@ -90,6 +92,55 @@
                                                 <Label Text="{Binding DateTime}" FontSize="Medium"
                                                     TextColor="White" VerticalOptions="Center" />
                                                 <Label Text="{Binding Path=Temperature, StringFormat='{0}°C'}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+                                            </Grid>
+                                        </Frame>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <ListView ItemsSource="{Binding WeatherLog}" SeparatorVisibility="None" BackgroundColor="Transparent" HasUnevenRows="True"
+                            IsPullToRefreshEnabled="True" RefreshCommand="{Binding CmdReloadTemperatureLog}" IsRefreshing="{Binding IsRefreshing}"
+                            IsVisible="{Binding IsClimaPro}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Frame BackgroundColor="#23ABE3" HasShadow="False" Padding="10" Margin="0,0,0,5">
+                                            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto" RowSpacing="0">
+                                                <Label Grid.Row="0" Grid.Column="0" Text="Date" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Date}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="1" Grid.Column="0" Text="Temperature" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Temperature}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="2" Grid.Column="0" Text="Pressure" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Pressure}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="3" Grid.Column="0" Text="Humidity" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="3" Grid.Column="1" Text="{Binding Humidity}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="4" Grid.Column="0" Text="WindSpeed" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="4" Grid.Column="1" Text="{Binding WindSpeed}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="5" Grid.Column="0" Text="Wind Direction" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="5" Grid.Column="1" Text="{Binding WindDirection}" FontSize="Medium"
+                                                    TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
+
+                                                <Label Grid.Row="6" Grid.Column="0" Text="Rain Volume" FontSize="Medium"
+                                                    TextColor="White" VerticalOptions="Center" />
+                                                <Label Grid.Row="6" Grid.Column="1" Text="{Binding Rain}" FontSize="Medium"
                                                     TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
                                             </Grid>
                                         </Frame>

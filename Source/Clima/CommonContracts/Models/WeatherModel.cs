@@ -5,19 +5,25 @@ namespace CommonContracts.Models
 {
     public class WeatherModel
     {
-        [JsonPropertyName("id")]
-        public long? ID { get; set; }
-
         [JsonPropertyName("date")]
-        public DateTime? TimeOfReading { get; set; }
+        public string Date { get; set; }
 
-        [JsonPropertyName("tempC")]
-        public double? TempC { get; set; }
+        [JsonPropertyName("temperature")]
+        public string Temperature { get; set; }
 
-        [JsonPropertyName("barometricPressureMillibarHg")]
-        public double? BarometricPressureMillibarHg { get; set; }
+        [JsonPropertyName("pressure")]
+        public string Pressure { get; set; }
 
-        [JsonPropertyName("relativeHumdity")]
-        public double? RelativeHumdity { get; set; }
+        [JsonPropertyName("humdity")]
+        public string Humidity { get; set; }
+
+        [JsonPropertyName("rain")]
+        public string Rain { get; set; }
+
+        [JsonPropertyName("windspeed")]
+        public string WindSpeed { get; set; }
+
+        [JsonPropertyName("winddirection")]
+        public string WindDirection { get; set; }
     }
 }

@@ -10,11 +10,13 @@ using CommonContracts.Models;
 
 namespace WildernessLabs.Clima.App
 {
-    public class HackKitViewModel : BaseViewModel
+    public class MapleViewModel : BaseViewModel
     {
         public MapleClient client { get; private set; }
 
         public ObservableCollection<TemperatureModel> TemperatureLog { get; set; }
+
+        public ObservableCollection<WeatherModel> WeatherLog { get; set; }
 
         int _serverPort;
         public int ServerPort
@@ -70,9 +72,68 @@ namespace WildernessLabs.Clima.App
 
         public ICommand CmdReloadTemperatureLog { get; private set; }
 
-        public HackKitViewModel()
+        public MapleViewModel(bool isClimaPro)
         {
-            TemperatureLog = new ObservableCollection<TemperatureModel>();            
+            IsClimaPro = isClimaPro;
+
+            if (isClimaPro)
+            {
+                WeatherLog = new ObservableCollection<WeatherModel>();
+                WeatherLog.Add(new WeatherModel()
+                {
+                    Date = "2022-01-21 10:00:00 AM",
+                    Temperature = "10°C",
+                    Pressure = "1035mB",
+                    Humidity = "93%",
+                    WindSpeed = "6Kmh",
+                    WindDirection = "N",
+                    Rain = "1mm"
+                });
+                WeatherLog.Add(new WeatherModel()
+                {
+                    Date = "2022-01-21 11:00:00 AM",
+                    Temperature = "12°C",
+                    Pressure = "1040mB",
+                    Humidity = "94%",
+                    WindSpeed = "7Kmh",
+                    WindDirection = "N",
+                    Rain = "1mm"
+                });
+                WeatherLog.Add(new WeatherModel()
+                {
+                    Date = "2022-01-21 12:00:00 PM",
+                    Temperature = "14°C",
+                    Pressure = "1045mB",
+                    Humidity = "95%",
+                    WindSpeed = "5Kmh",
+                    WindDirection = "N",
+                    Rain = "1mm"
+                });
+            }
+            else
+            {
+                TemperatureLog = new ObservableCollection<TemperatureModel>();
+                TemperatureLog.Add(new TemperatureModel() 
+                { 
+                    DateTime = DateTime.Now,
+                    Temperature = "20 C"
+                });
+                TemperatureLog.Add(new TemperatureModel()
+                {
+                    DateTime = DateTime.Now,
+                    Temperature = "22 C"
+                });
+                TemperatureLog.Add(new TemperatureModel()
+                {
+                    DateTime = DateTime.Now,
+                    Temperature = "21 C"
+                });
+                TemperatureLog.Add(new TemperatureModel()
+                {
+                    DateTime = DateTime.Now,
+                    Temperature = "24 C"
+                });
+            }
 
             HostList = new ObservableCollection<ServerModel>();            
 

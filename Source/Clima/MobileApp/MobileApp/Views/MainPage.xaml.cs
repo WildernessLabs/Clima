@@ -9,14 +9,24 @@ namespace MobileApp.Views
             InitializeComponent();
         }
 
-        void BtnProKitClicked(object sender, System.EventArgs e)
+        void BtnProBluetoothClicked(object sender, System.EventArgs e)
         {
-            Navigation.PushAsync(new ProKitPage());
+            Navigation.PushAsync(new BluetoothPage(true));
         }
 
-        void BtnHackKitClicked(object sender, System.EventArgs e)
+        void BtnProMapleClicked(object sender, System.EventArgs e)
         {
-            Navigation.PushAsync(new HackKitPage());
+            Navigation.PushAsync(new MaplePage(true));
+        }
+
+        void BtnHackKitBluetoothClicked(object sender, System.EventArgs e)
+        {
+            Navigation.PushAsync(new BluetoothPage(false));
+        }
+
+        void BtnHackKitMapleClicked(object sender, System.EventArgs e)
+        {
+            Navigation.PushAsync(new MaplePage(false));
         }
     }
 }

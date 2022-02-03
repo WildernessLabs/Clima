@@ -3,19 +3,19 @@ using Xamarin.Forms;
 
 namespace MobileApp.Views
 {
-    public partial class HackKitPage : ContentPage
+    public partial class MaplePage : ContentPage
     {
-        public HackKitPage()
+        public MaplePage(bool isClimaPro)
         {
             InitializeComponent();
-            BindingContext = new HackKitViewModel();
+            BindingContext = new MapleViewModel(isClimaPro);
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            await (BindingContext as HackKitViewModel).LoadData();
+            await (BindingContext as MapleViewModel).LoadData();
         }
     }
 }
