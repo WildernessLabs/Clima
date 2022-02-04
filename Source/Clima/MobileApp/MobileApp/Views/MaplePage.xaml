@@ -6,8 +6,7 @@
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"    
     ios:Page.UseSafeArea="true"
     x:Class="MobileApp.Views.MaplePage"
-    BackgroundColor="White"
-    Title="Clima.HackKit">
+    BackgroundColor="White">
     
     <ContentPage.Content>
         <Grid>

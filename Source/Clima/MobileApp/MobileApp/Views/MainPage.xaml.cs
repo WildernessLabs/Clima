@@ -11,22 +11,34 @@ namespace MobileApp.Views
 
         void BtnProBluetoothClicked(object sender, System.EventArgs e)
         {
-            Navigation.PushAsync(new BluetoothPage(true));
+            Navigation.PushAsync(new BluetoothPage(true) 
+            { 
+                Title = "Clima.Pro"
+            });
         }
 
         void BtnProMapleClicked(object sender, System.EventArgs e)
         {
-            Navigation.PushAsync(new MaplePage(true));
+            Navigation.PushAsync(new MaplePage(true)
+            {
+                Title = "Clima.Pro"
+            });
         }
 
         void BtnHackKitBluetoothClicked(object sender, System.EventArgs e)
         {
-            Navigation.PushAsync(new BluetoothPage(false));
+            Navigation.PushAsync(new BluetoothPage(false)
+            {
+                Title = "Clima.HackKit"
+            });
         }
 
         void BtnHackKitMapleClicked(object sender, System.EventArgs e)
         {
-            Navigation.PushAsync(new MaplePage(false));
+            Navigation.PushAsync(new MaplePage(false)
+            {
+                Title = "Clima.HackKit"
+            });
         }
     }
 }
