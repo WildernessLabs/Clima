@@ -99,8 +99,10 @@ namespace MobileApp.ViewModels
 
         public ICommand CmdGetClimaStatus { get; set; }
 
-        public BluetoothViewModel()
+        public BluetoothViewModel(bool isClimaPro)
         {
+            IsClimaPro = isClimaPro;
+
             DeviceList = new ObservableCollection<IDevice>();
 
             adapter = CrossBluetoothLE.Current.Adapter;

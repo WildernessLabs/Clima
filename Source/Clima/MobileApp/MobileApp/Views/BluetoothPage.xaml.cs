@@ -8,7 +8,7 @@ namespace MobileApp.Views
         public BluetoothPage(bool isClimaPro)
         {
             InitializeComponent();
-            BindingContext = new BluetoothViewModel() { IsClimaPro = isClimaPro };
+            BindingContext = new BluetoothViewModel(isClimaPro);
         }
 
         protected override void OnAppearing()

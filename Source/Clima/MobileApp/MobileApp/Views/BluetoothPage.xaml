@@ -2,6 +2,7 @@
 <ContentPage 
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:MobileApp.Converters"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"    
     ios:Page.UseSafeArea="true"
     x:Class="MobileApp.Views.BluetoothPage"
@@ -25,8 +26,8 @@
                         <Grid Grid.Column="0">
                             <Picker TextColor="White" FontSize="Medium" BackgroundColor="Transparent"
                                 ItemsSource="{Binding DeviceList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding DeviceSelected}"/>
-                            <Label Text="Meadow Clima.Pro" 
-                                FontSize="Medium" TextColor="White" VerticalOptions="Center" />
+                            <!--<Label Text="Meadow Clima.Pro" 
+                                FontSize="Medium" TextColor="White" VerticalOptions="Center" />-->
                         </Grid>
 
                         <Grid Grid.Column="1" WidthRequest="50" HeightRequest="50">
@@ -73,16 +74,16 @@
 
                 <Frame Grid.Row="3" BackgroundColor="#23ABE3" HasShadow="False" Padding="10">
                     <Grid RowDefinitions="*,Auto" RowSpacing="0">
-                        <StackLayout Grid.Row="0" IsVisible="false">
+                        <StackLayout Grid.Row="0" IsVisible="{Binding IsClimaPro, Converter={converters:InverseBoolConverter}}">
                             <Grid>
-                                <Label Grid.Row="0" Text="Temperature" FontSize="Medium"
-                                    TextColor="White" VerticalOptions="Center" />
-                                <Label Grid.Row="0" Grid.Column="1" Text="Binding Temperature}" FontSize="Medium"
+                                <Label Text="Temperature" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding Temperature}" FontSize="Medium"
                                     TextColor="White" HorizontalOptions="End" />
                             </Grid>
                         </StackLayout>
 
-                        <StackLayout Grid.Row="0" Spacing="25">
+                        <StackLayout Grid.Row="0" IsVisible="{Binding IsClimaPro}" Spacing="25">
                             <Grid>
                                 <Label Text="Date" FontSize="Medium"
                                     TextColor="White" />
