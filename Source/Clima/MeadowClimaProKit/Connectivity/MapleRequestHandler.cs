@@ -12,23 +12,24 @@ namespace MeadowClimaProKit.Connectivity
     {
         public MapleRequestHandler() { }
 
-        [HttpGet("/getweatherlogs")]
-        public IActionResult GetWeatherLogs()
+        [HttpGet("/getclimatelogs")]
+        public IActionResult GetClimateLogs()
         {
             LedController.Instance.SetColor(Color.Magenta);
 
             var logs = DatabaseManager.Instance.GetAllClimateReadings();
 
-            var data = new List<WeatherModel>();
+            var data = new List<ClimateModel>();
             foreach (var log in logs)
             {
-                data.Add(new WeatherModel()
+                data.Add(new ClimateModel()
                 {
-                    ID = log.ID,
-                    TimeOfReading = log.DateTime,
-                    TempC = log.TemperatureValue,
-                    BarometricPressureMillibarHg = log.PressureValue,
-                    RelativeHumdity = log.HumidityValue
+                    Date = log.DateTime.ToString(),
+                    Temperature = log.Temperature.ToString(),
+                    Pressure = log.Pressure.ToString(),
+                    Humidity = log.Humidity.ToString(),
+                    WindDirection = log.WindDirection.ToString(),
+                    WindSpeed = log.WindSpeed.ToString()
                 });
             }
 
