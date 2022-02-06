@@ -1,17 +1,13 @@
-﻿using MeadowClimaHackKit.Controllers;
-using MeadowClimaHackKit.Utils;
-using Meadow;
+﻿using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Buttons;
 using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Gateway.WiFi;
-using System;
+using MeadowClimaHackKit.Controllers;
+using MeadowClimaHackKit.ServiceAccessLayer;
 using System.Threading;
 using System.Threading.Tasks;
-using WildernessLabs.MeadowClimaHackKit.Controllers;
-using WildernessLabs.MeadowClimaHackKit.Entities;
-using WildernessLabs.MeadowClimaHackKit.ServiceAccessLayer;
 
 namespace MeadowClimaHackKit
 {
@@ -21,8 +17,6 @@ namespace MeadowClimaHackKit
         PushButton buttonUp, buttonDown, buttonMenu;
 
         CancellationTokenSource token;
-
-        public TemperatureModel CurrentReading { get; set; }
 
         public MeadowApp()
         {
@@ -37,15 +31,12 @@ namespace MeadowClimaHackKit
 
             InitializeWiFi().Wait();
             LedController.Instance.SetColor(Color.Green);
-
-            TemperatureController.Instance.Updated += TemperatureControllerUpdated;
         }
 
         void InitializeHardware()
         {
             LedController.Instance.SetColor(Color.Red);
             
-            Console.WriteLine("Init buttons");
             buttonUp = new PushButton(Device, Device.Pins.D03);
             buttonDown = new PushButton(Device, Device.Pins.D02);
             buttonMenu = new PushButton(Device, Device.Pins.D04);
@@ -79,9 +70,7 @@ namespace MeadowClimaHackKit
 
             //}, token.Token);
 
-            Device.WiFiAdapter.WiFiConnected += WiFiConnected;
             var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
-
             if (result.ConnectionStatus != ConnectionStatus.Success)
             {
                 DisplayController.Instance.UpdateStatusText("WiFi", "Failed");
@@ -91,10 +80,7 @@ namespace MeadowClimaHackKit
                 await DateTimeService.GetTimeAsync();
                 DisplayController.Instance.UpdateStatusText("WiFi", "Connected!");
             }
-        }
 
-        async void WiFiConnected(object sender, EventArgs e)
-        {
             //token.Cancel(); //stop the ellipsis task above
             await DateTimeService.GetTimeAsync();
 
@@ -102,14 +88,6 @@ namespace MeadowClimaHackKit
             mapleServer.Start();
 
             DisplayController.Instance.UpdateStatusText("WiFi", "Connected!");
-        }
-
-        void TemperatureControllerUpdated(object sender, TemperatureModel e)
-        {
-            CurrentReading = e;
-            DisplayController.Instance.UpdateDisplay(e.Temperature);
-            //await ClimateService.FetchReadings();
-            //await ClimateService.PostTempReading(e.Temperature);
         }
     }
 }

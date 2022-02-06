@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:MobileApp.Converters"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"    
+    ios:Page.UseSafeArea="true"
+    x:Class="MobileApp.Views.BluetoothPage"
+    BackgroundColor="White">
+    
+    <ContentPage.Content>
+        <Grid>
+            <Grid RowSpacing="10" Padding="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Text="Bluetooth devices:" FontSize="Medium" TextColor="Black" />
+
+                <Frame Grid.Row="1" BackgroundColor="#23ABE3" HasShadow="False" CornerRadius="5" Padding="10,0,0,0">
+                    <Grid ColumnDefinitions="*, Auto, 1, Auto" ColumnSpacing="0">
+                        <Grid Grid.Column="0">
+                            <Picker TextColor="White" FontSize="Medium" BackgroundColor="Transparent"
+                                ItemsSource="{Binding DeviceList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding DeviceSelected}"/>
+                            <!--<Label Text="Meadow Clima.Pro" 
+                                FontSize="Medium" TextColor="White" VerticalOptions="Center" />-->
+                        </Grid>
+
+                        <Grid Grid.Column="1" WidthRequest="50" HeightRequest="50">
+                            <Button Command="{Binding CmdToggleConnection}" BackgroundColor="Transparent" CornerRadius="5" />
+                            <Image Margin="10" HorizontalOptions="Center" Source="icon_connected">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsDeviceListEmpty}" Value="True">
+                                        <Setter Property="Opacity" Value="0.5" />
+                                        <Setter Property="InputTransparent" Value="False" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsDeviceListEmpty}" Value="False">
+                                        <Setter Property="Opacity" Value="1" />
+                                        <Setter Property="InputTransparent" Value="True" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsScanning}" Value="True">
+                                        <Setter Property="IsVisible" Value="False" />
+                                        <Setter Property="InputTransparent" Value="False" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsScanning}" Value="False">
+                                        <Setter Property="IsVisible" Value="True" />
+                                        <Setter Property="InputTransparent" Value="True" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsConnected}" Value="True">
+                                        <Setter Property="Source" Value="icon_connected" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsConnected}" Value="False">
+                                        <Setter Property="Source" Value="icon_disconnected" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                            <ActivityIndicator Color="White" IsRunning="True" IsVisible="{Binding IsScanning}" Margin="7" />
+                        </Grid>
+
+                        <BoxView Grid.Column="2" Color="White" />
+
+                        <Grid Grid.Column="3" WidthRequest="50" HeightRequest="50">
+                            <Button Command="{Binding CmdSearchForDevices}" BackgroundColor="Transparent" CornerRadius="5" />
+                            <Image Source="icon_search.png" Margin="10" InputTransparent="True" HorizontalOptions="Center" />
+                        </Grid>
+                    </Grid>
+                </Frame>
+
+                <Label Grid.Row="2" Text="Current Weather Stats:" TextColor="Black" FontSize="Medium" Margin="0,5" />
+
+                <Frame Grid.Row="3" BackgroundColor="#23ABE3" HasShadow="False" Padding="10">
+                    <Grid RowDefinitions="*,Auto" RowSpacing="0">
+                        <StackLayout Grid.Row="0" IsVisible="{Binding IsClimaPro, Converter={converters:InverseBoolConverter}}">
+                            <Grid>
+                                <Label Text="Temperature" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding Temperature}" FontSize="Medium"
+                                    TextColor="White" HorizontalOptions="End" />
+                            </Grid>
+                        </StackLayout>
+
+                        <StackLayout Grid.Row="0" IsVisible="{Binding IsClimaPro}" Spacing="25">
+                            <Grid>
+                                <Label Text="Date" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding Date}" FontSize="Medium"
+                                    TextColor="White" HorizontalOptions="End" />
+                            </Grid>
+                            <Grid>
+                                <Label Text="Temperature" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding Temperature}" FontSize="Medium"
+                                    TextColor="White" HorizontalOptions="End" />
+                            </Grid>
+                            <Grid>
+                                <Label Text="Pressure" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding Pressure}" FontSize="Medium"
+                                    TextColor="White" HorizontalOptions="End" />
+                            </Grid>
+                            <Grid>
+                                <Label Text="Humidity" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding Humidity}" FontSize="Medium"
+                                    TextColor="White" HorizontalOptions="End" />
+                            </Grid>
+                            <Grid>
+                                <Label Text="WindSpeed" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding WindSpeed}" FontSize="Medium"
+                                    TextColor="White" HorizontalOptions="End" />
+                            </Grid>
+                            <Grid>
+                                <Label Text="WindDirection" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding WindDirection}" FontSize="Medium"
+                                    TextColor="White" HorizontalOptions="End" />
+                            </Grid>
+                            <Grid>
+                                <Label Text="RainVolume" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding RainVolume}" FontSize="Medium"
+                                    TextColor="White" HorizontalOptions="End" />
+                            </Grid>
+                        </StackLayout>
+
+                        <Button Grid.Row="1" Text="Update" TextColor="White" BackgroundColor="#EF7D3B"
+                                Margin="0,5,0,0" />
+                    </Grid>
+                </Frame>
+
+                <Label Grid.Row="4" Text="By Wilderness Labs" TextColor="Black" 
+                    HorizontalOptions="Center" VerticalOptions="EndAndExpand" />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
