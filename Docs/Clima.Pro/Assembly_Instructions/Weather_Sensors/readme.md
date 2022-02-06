@@ -33,3 +33,11 @@ Your kit should be looking like this:
 Now lets install the Rain meter sensor. Grab the rain meter support piece and secure it on the tube about an inch below top of the tube, perpendicular to the anemometer/wind vane support piece.
 
 ![](clima_rainmeter_support.jpg)
+
+Take the Rain Meter and put it on the end of the support piece. Right underneath you can grab the smallest screw to secure it with the base. 
+
+![](clima_rainmeter_under.jpg)
+
+If you'd look the rain meter on its side, you'll see another small hole where you would use the last small screw to further secure the sensor in place.
+
+![](clima_rainmeter_under_2.jpg)
