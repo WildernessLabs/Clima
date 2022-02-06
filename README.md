@@ -71,7 +71,7 @@ Instructions on how to assemble the Clima Hack Kit Version can be found [here](/
 
 # Companion Phone App
 
-This project also comes with a Xamarin.Forms Clima companion app (on Android and iOS) that shows you how to communicate with your Meadow device using [Bluetooth](http://developer.wildernesslabs.co/Meadow/Meadow.OS/Bluetooth/) on the Pro version and [Maple](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Libraries_and_Frameworks/Maple.Server/) for the Hack Kit version.
+This project also comes with a Xamarin.Forms Clima companion app (on Android and iOS) that shows you how to communicate with your Meadow device using [Bluetooth](http://developer.wildernesslabs.co/Meadow/Meadow.OS/Bluetooth/) and [Maple](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Libraries_and_Frameworks/Maple.Server/) for both kit versions.
 
 ![Clima companion app](Image_Assets/Clima_android.png)
 
@@ -82,13 +82,11 @@ The source code for the Clima applications can be found in the [source](/Source)
 In there is a `clima.sln` file with the following projects in it:
 
 * **CommonContracts** - Shared project with the data models that are shared amongs the various projects.
-* **MeadowClimaHackKit** - A Meadow application to use with the Clima Pro climate station hardware.
-* **MeadowClimaProKit** - Meadow application for the Hack Kit version of Clima.
-* **MeadowClimaProKit.Tests** - A console application used to test the Mini server.
-* **MobileApp** - A console application used to test the Mini server.
-* **MobileApp.Android** - A console application used to test the Mini server.
-* **MobileApp.iOS** - A console application used to test the Mini server.
-* **ServerMini** - A very basic local test Web API server written in ASP.NET Core.
-* **ServerMini.Tests** - A very basic local test Web API server written in ASP.NET Core.
+* **MeadowClimaHackKit** - A Meadow application for the Hack Kit version of Clima.
+* **MeadowClimaProKit** - A Meadow application to use with the Clima Pro climate station hardware.
+* **MeadowClimaProKit.Tests** - A Meadow application used to test Clima.Pro sensors.
+* **MobileApp** - Xamarin.Forms common project of Clima's companion app.
+* **MobileApp.Android** - Android specific head project.
+* **MobileApp.iOS** - iOS specific head project.
 
 For more information on the application source code, please see the [source code readme](/Source/readme.md).
