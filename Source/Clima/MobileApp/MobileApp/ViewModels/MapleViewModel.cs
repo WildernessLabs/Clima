@@ -16,7 +16,7 @@ namespace WildernessLabs.Clima.App
 
         public ObservableCollection<TemperatureModel> TemperatureLog { get; set; }
 
-        public ObservableCollection<WeatherModel> WeatherLog { get; set; }
+        public ObservableCollection<ClimateModel> WeatherLog { get; set; }
 
         int _serverPort;
         public int ServerPort
@@ -78,8 +78,8 @@ namespace WildernessLabs.Clima.App
 
             if (isClimaPro)
             {
-                WeatherLog = new ObservableCollection<WeatherModel>();
-                WeatherLog.Add(new WeatherModel()
+                WeatherLog = new ObservableCollection<ClimateModel>();
+                WeatherLog.Add(new ClimateModel()
                 {
                     Date = "2022-01-21 10:00:00 AM",
                     Temperature = "10°C",
@@ -89,7 +89,7 @@ namespace WildernessLabs.Clima.App
                     WindDirection = "N",
                     Rain = "1mm"
                 });
-                WeatherLog.Add(new WeatherModel()
+                WeatherLog.Add(new ClimateModel()
                 {
                     Date = "2022-01-21 11:00:00 AM",
                     Temperature = "12°C",
@@ -99,7 +99,7 @@ namespace WildernessLabs.Clima.App
                     WindDirection = "N",
                     Rain = "1mm"
                 });
-                WeatherLog.Add(new WeatherModel()
+                WeatherLog.Add(new ClimateModel()
                 {
                     Date = "2022-01-21 12:00:00 PM",
                     Temperature = "14°C",

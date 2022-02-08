@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace CommonContracts.Models
 {
-    public class WeatherModel
+    public class ClimateModel
     {
         [JsonPropertyName("date")]
         public string Date { get; set; }

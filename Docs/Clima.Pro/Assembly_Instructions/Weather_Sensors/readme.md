@@ -1,43 +1,57 @@
 # Weather Sensors Assembly
- 
-To assemble the Clima.Pro kit, you'll need this little bag with three long screws and bolts, along with 2 small short screws.
+
+To assemble the whole Clima kit with all its sensor, you'll need the set if 3 long screws with its bolts, and 2 smaller screws. They should be in a little zip lock bag like this:
 
 ![](clima_screws.jpg)
 
-## Clima.Pro structure
+## Assembling
 
-Start connecting both steel tubes like so:
+Start by connecting the two steel tubes together like so:
 
 ![](clima_tubes.jpg)
 
-In one of the ends of the tubes it has a gap at the lip with a small hole below it. Place the sensor support structure here and secure it with one of the long screws and a bolt:
+Next, one of the tube ends have has a small rounded gap and a whole right below it. In that end, place the sensor support for the windvane and anemometer. Use one of the long screws and bolts to fix the support to the tube.
 
 ![](clima_support.jpg)
 
-Grab the anemometer sensor and place it on one of the ends of the support piece. It can connect in three positions, the right position should align a hole of the sensor and the support piece so you can insert one of the long screws so you can secure it with a bolt.
+On the right end of the support piece you can put the anemometer. It has three possible positions to connect it to the base, keep rotating it until you see the the hole to insert another long screw and bolt to secure it to the support.
 
 ![](clima_anemometer.jpg)
 
-Now take the Wind Vane sensor and place it on the other end of the support structure and secure it with the third and last long screw and bolt.
+On the left side of the support you can place the wind vane. Like we did with the Anemometer, make sure to position it correctly to use the third and final screw and bolt to secure the sensor to the support.
 
 ![](clima_windvane.jpg)
 
-If you look under the Wind Vane, you'll see theres a black port. Take the cable of the Anemometer, loop it around the support piece as it goes to the Wind Vane and connect it to that port.
+Under the wind vane you can see a small connection port. Take the short cable of the anemometer and loop it around the support piece as we make our way to the wind vane and connect the end to the port underneath.
 
 ![](clima_windvane_connection.jpg)
 
-Your kit should be looking like this:
+At this point, you should have something like this:
 
 ![](clima_windvane_anemometer.jpg)
 
-Now lets install the Rain meter sensor. Grab the rain meter support piece and secure it on the tube about an inch below top of the tube, perpendicular to the anemometer/wind vane support piece.
+About an inch lower of the tube end where the suport piece is, grab the rain meter support piece and secure it on the tube, making sure its perpendicular to the other two sensors.
 
 ![](clima_rainmeter_support.jpg)
 
-Take the Rain Meter and put it on the end of the support piece. Right underneath you can grab the smallest screw to secure it with the base. 
+Take the rain meter and place it on the support piece and secure it with the last two small screws: one goes in the bottom and the other on one of the sides: 
 
 ![](clima_rainmeter_under.jpg)
 
-If you'd look the rain meter on its side, you'll see another small hole where you would use the last small screw to further secure the sensor in place.
-
 ![](clima_rainmeter_under_2.jpg)
+
+About one inch above where the steel tubes connect, mount the Clima Meadow module on the tube.
+
+![](clima_meadow.jpg)
+
+Now you can connect the rain meter sensor in the middle port and the wind sensor on the other connector available. The round port is used for the solar panel. 
+
+![](clima_connections.jpg)
+
+Additionally, you can tidy the cable of the wind sensors by looping it around its support piece and/or tubes, making your way to the Meadow module.
+
+![](clima_wind_wire.jpg)
+
+You can do the same with the rain meter sensor's cable, looping it around its support piece, making your way to the Meadow enclosure.
+
+![](clima_complete.jpg)

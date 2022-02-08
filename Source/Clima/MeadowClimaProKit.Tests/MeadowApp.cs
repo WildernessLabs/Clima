@@ -9,7 +9,7 @@ using System;
 
 namespace MeadowClimaProKit.Tests
 {
-    public class MeadowApp : App<F7Micro, MeadowApp>
+    public class MeadowApp : App<F7MicroV2, MeadowApp>
     {
         Bme680 bme680;
         WindVane windVane;
@@ -59,7 +59,7 @@ namespace MeadowClimaProKit.Tests
             windVane.StartUpdating(TimeSpan.FromSeconds(1));
 
             Console.WriteLine("Initialize Bme680");
-            bme680 = new Bme680(Device.CreateI2cBus());
+            bme680 = new Bme680(Device.CreateI2cBus(), (byte)Bme680.Addresses.Address_0x76);
             var bmeObserver = Bme680.CreateObserver(
                 handler: result => Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"),
                 filter: result => true);
