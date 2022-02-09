@@ -29,7 +29,10 @@ namespace MeadowClimaHackKit
             LedController.Instance.SetColor(Color.Blue);
             DisplayController.Instance.ShowSplashScreen();
 
-            InitializeWiFi().Wait();
+            InitializeMaple().Wait();
+
+            //InitializeBluetooth().Wait();
+
             LedController.Instance.SetColor(Color.Green);
         }
 
@@ -46,29 +49,29 @@ namespace MeadowClimaHackKit
             buttonMenu.Clicked += (s, e) => DisplayController.Instance.MenuSelect();
         }
 
-        async Task InitializeWiFi()
+        async Task InitializeMaple()
         {
-            //token = new CancellationTokenSource();
+            token = new CancellationTokenSource();
 
-            //_ = Task.Run(async () =>
-            //{
-            //    string ellipsis;
-            //    int count = 0;
-            //    while (token.IsCancellationRequested == false)
-            //    {
-            //        ellipsis = (count++ % 4) switch
-            //        {
-            //            0 => "   ",
-            //            1 => ".  ",
-            //            2 => ".. ",
-            //            _ => "...",
-            //        };
+            _ = Task.Run(async () =>
+            {
+                string ellipsis;
+                int count = 0;
+                while (token.IsCancellationRequested == false)
+                {
+                    ellipsis = (count++ % 4) switch
+                    {
+                        0 => "   ",
+                        1 => ".  ",
+                        2 => ".. ",
+                        _ => "...",
+                    };
 
-            //        DisplayController.Instance.UpdateStatusText("WiFi", "Connecting" + ellipsis);
-            //        await Task.Delay(500);
-            //    }
+                    DisplayController.Instance.UpdateStatusText("WiFi", "Connecting" + ellipsis);
+                    await Task.Delay(500);
+                }
 
-            //}, token.Token);
+            }, token.Token);
 
             var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
             if (result.ConnectionStatus != ConnectionStatus.Success)
@@ -81,7 +84,7 @@ namespace MeadowClimaHackKit
                 DisplayController.Instance.UpdateStatusText("WiFi", "Connected!");
             }
 
-            //token.Cancel(); //stop the ellipsis task above
+            token.Cancel(); //stop the ellipsis task above
             await DateTimeService.GetTimeAsync();
 
             mapleServer = new MapleServer(Device.WiFiAdapter.IpAddress, 5417, false);

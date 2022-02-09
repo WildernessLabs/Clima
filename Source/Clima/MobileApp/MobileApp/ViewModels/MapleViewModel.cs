@@ -1,12 +1,12 @@
-﻿using Meadow.Foundation.Web.Maple.Client;
+﻿using CommonContracts.Models;
+using Meadow.Foundation.Web.Maple.Client;
+using MobileApp.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using MobileApp.ViewModels;
 using Xamarin.Forms;
-using CommonContracts.Models;
 
 namespace WildernessLabs.Clima.App
 {
@@ -68,7 +68,7 @@ namespace WildernessLabs.Clima.App
 
         public ObservableCollection<ServerModel> HostList { get; set; }
 
-        public ICommand SearchServersCommand { set; get; }
+        public ICommand SearchServersCommand { get; private set; }
 
         public ICommand CmdReloadTemperatureLog { get; private set; }
 
@@ -79,60 +79,60 @@ namespace WildernessLabs.Clima.App
             if (isClimaPro)
             {
                 WeatherLog = new ObservableCollection<ClimateModel>();
-                WeatherLog.Add(new ClimateModel()
-                {
-                    Date = "2022-01-21 10:00:00 AM",
-                    Temperature = "10°C",
-                    Pressure = "1035mB",
-                    Humidity = "93%",
-                    WindSpeed = "6Kmh",
-                    WindDirection = "N",
-                    Rain = "1mm"
-                });
-                WeatherLog.Add(new ClimateModel()
-                {
-                    Date = "2022-01-21 11:00:00 AM",
-                    Temperature = "12°C",
-                    Pressure = "1040mB",
-                    Humidity = "94%",
-                    WindSpeed = "7Kmh",
-                    WindDirection = "N",
-                    Rain = "1mm"
-                });
-                WeatherLog.Add(new ClimateModel()
-                {
-                    Date = "2022-01-21 12:00:00 PM",
-                    Temperature = "14°C",
-                    Pressure = "1045mB",
-                    Humidity = "95%",
-                    WindSpeed = "5Kmh",
-                    WindDirection = "N",
-                    Rain = "1mm"
-                });
+                //WeatherLog.Add(new ClimateModel()
+                //{
+                //    Date = "2022-01-21 10:00:00 AM",
+                //    Temperature = "10°C",
+                //    Pressure = "1035mB",
+                //    Humidity = "93%",
+                //    WindSpeed = "6Kmh",
+                //    WindDirection = "N",
+                //    Rain = "1mm"
+                //});
+                //WeatherLog.Add(new ClimateModel()
+                //{
+                //    Date = "2022-01-21 11:00:00 AM",
+                //    Temperature = "12°C",
+                //    Pressure = "1040mB",
+                //    Humidity = "94%",
+                //    WindSpeed = "7Kmh",
+                //    WindDirection = "N",
+                //    Rain = "1mm"
+                //});
+                //WeatherLog.Add(new ClimateModel()
+                //{
+                //    Date = "2022-01-21 12:00:00 PM",
+                //    Temperature = "14°C",
+                //    Pressure = "1045mB",
+                //    Humidity = "95%",
+                //    WindSpeed = "5Kmh",
+                //    WindDirection = "N",
+                //    Rain = "1mm"
+                //});
             }
             else
             {
                 TemperatureLog = new ObservableCollection<TemperatureModel>();
-                TemperatureLog.Add(new TemperatureModel() 
-                { 
-                    DateTime = DateTime.Now,
-                    Temperature = "20 C"
-                });
-                TemperatureLog.Add(new TemperatureModel()
-                {
-                    DateTime = DateTime.Now,
-                    Temperature = "22 C"
-                });
-                TemperatureLog.Add(new TemperatureModel()
-                {
-                    DateTime = DateTime.Now,
-                    Temperature = "21 C"
-                });
-                TemperatureLog.Add(new TemperatureModel()
-                {
-                    DateTime = DateTime.Now,
-                    Temperature = "24 C"
-                });
+                //TemperatureLog.Add(new TemperatureModel() 
+                //{ 
+                //    DateTime = DateTime.Now,
+                //    Temperature = "20 C"
+                //});
+                //TemperatureLog.Add(new TemperatureModel()
+                //{
+                //    DateTime = DateTime.Now,
+                //    Temperature = "22 C"
+                //});
+                //TemperatureLog.Add(new TemperatureModel()
+                //{
+                //    DateTime = DateTime.Now,
+                //    Temperature = "21 C"
+                //});
+                //TemperatureLog.Add(new TemperatureModel()
+                //{
+                //    DateTime = DateTime.Now,
+                //    Temperature = "24 C"
+                //});
             }
 
             HostList = new ObservableCollection<ServerModel>();            
@@ -166,24 +166,6 @@ namespace WildernessLabs.Clima.App
             }
         }
 
-        async Task GetTemperatureLogs()
-        {
-            try
-            {
-                var response = await client.GetAsync(SelectedServer != null ? SelectedServer.IpAddress : IpAddress, ServerPort, "GetTemperature", null, null);
-
-                if (response == null) 
-                    return;
-
-                var value = System.Text.Json.JsonSerializer.Deserialize<TemperatureModel>(response);
-                //TemperatureLog.Add(value);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
         async Task GetServers()
         {
             if (IsScanning)
@@ -196,7 +178,7 @@ namespace WildernessLabs.Clima.App
 
                 await client.StartScanningForAdvertisingServers();
 
-                HostList.Add(new ServerModel() { Name = "Meadow (192.168.1.81)", IpAddress = "192.168.1.81" });
+                //HostList.Add(new ServerModel() { Name = "Meadow (192.168.1.81)", IpAddress = "192.168.1.81" });
 
                 if (HostList.Count == 0)
                 {
@@ -215,6 +197,24 @@ namespace WildernessLabs.Clima.App
             finally
             {
                 IsScanning = false;
+            }
+        }
+        
+        async Task GetTemperatureLogs()
+        {
+            try
+            {
+                var response = await client.GetAsync(SelectedServer != null ? SelectedServer.IpAddress : IpAddress, ServerPort, "GetTemperature", null, null);
+
+                if (response == null)
+                    return;
+
+                var value = System.Text.Json.JsonSerializer.Deserialize<TemperatureModel>(response);
+                //TemperatureLog.Add(value);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
