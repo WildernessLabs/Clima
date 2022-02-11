@@ -1,4 +1,5 @@
 ﻿using Meadow.Foundation;
+using Meadow.Foundation.Displays.TextDisplayMenu;
 using Meadow.Foundation.Displays.TftSpi;
 using Meadow.Foundation.Graphics;
 using Meadow.Foundation.Graphics.Buffers;
@@ -19,10 +20,9 @@ namespace MeadowClimaHackKit.Controller
 
         protected Temperature conditions;
 
+        protected Menu menu;
         protected St7789 display;
-        protected BufferRgb888 logo;
-        protected BufferRgb888 wifiConnecting;
-        protected BufferRgb888 wifiConnected;
+        protected BufferRgb888 logo, wifiConnecting, wifiConnected;
         protected MicroGraphics graphics;
 
         static Color backgroundColor = Color.FromHex("#23ABE3");
@@ -44,7 +44,6 @@ namespace MeadowClimaHackKit.Controller
             // our display needs mode3
             var config = new SpiClockConfiguration(new Frequency(48000, Frequency.UnitType.Kilohertz), SpiClockConfiguration.Mode.Mode3);
             var spiBus = MeadowApp.Device.CreateSpiBus(MeadowApp.Device.Pins.SCK, MeadowApp.Device.Pins.MOSI, MeadowApp.Device.Pins.MISO, config);
-            // new up the actual display on the SPI bus
             display = new St7789
             (
                 device: MeadowApp.Device,
@@ -60,18 +59,26 @@ namespace MeadowClimaHackKit.Controller
             graphics = new MicroGraphics(display)
             {
                 CurrentFont = new Font12x20(),
-                Stroke = 3,
+                Stroke = 3        
             };
             graphics.DisplayConfig.FontScale = 2;
+
+            var menuItems = new MenuItem[]
+            {
+                new MenuItem("°C", command: "setCelcius"),
+                new MenuItem("°F", command: "setFahrenheit"),
+            };
+
+            menu = new Menu(graphics, menuItems, false);
+            menu.Selected += MenuSelected;
 
             // finally, clear the display so it's ready for action
             graphics.Clear(true);
 
             //and load the logo jpg into a buffer
-            //LoadJpeg("meadow.jpg");
-            logo = LoadJpeg("meadow.jpg");
-            wifiConnected = LoadJpeg("wifi_connected.jpg");
-            wifiConnecting = LoadJpeg("wifi_connecting.jpg");
+            logo = LoadJpeg("img_meadow.jpg");
+            wifiConnected = LoadJpeg("img_wifi_connected.jpg");
+            wifiConnecting = LoadJpeg("img_wifi_connecting.jpg");
         }
 
         BufferRgb888 LoadJpeg(string fileName)
@@ -80,6 +87,18 @@ namespace MeadowClimaHackKit.Controller
             var decoder = new JpegDecoder();
             decoder.DecodeJpeg(jpgData);
             return new BufferRgb888(decoder.Width, decoder.Height, decoder.GetImageData());
+        }
+
+        void MenuSelected(object sender, MenuSelectedEventArgs e)
+        {
+            Console.WriteLine("MenuSelected: " + e.Command);
+
+            isCelcius = (e.Command == "setCelcius");
+
+            //hide the menu after a selection
+            menu.Disable();
+            //and update the display
+            Render();
         }
 
         void DrawBackground()
@@ -106,7 +125,10 @@ namespace MeadowClimaHackKit.Controller
         {
             this.conditions = conditions;
 
-            Render();
+            if (menu.IsEnabled == false)
+            {
+                Render();
+            }
         }
 
         public void ShowSplashScreen()
@@ -116,7 +138,27 @@ namespace MeadowClimaHackKit.Controller
             graphics.Show();
         }
 
-        
+        public void MenuUp()
+        {
+            menu.Previous();
+        }
+
+        public void MenuDown()
+        {
+            menu.Next();
+        }
+
+        public void MenuSelect()
+        {
+            if (menu.IsEnabled == false)
+            {
+                menu.Enable();
+            }
+            else
+            {
+                menu.Select();
+            }
+        }
 
         protected byte[] LoadResource(string filename)
         {
@@ -131,6 +173,9 @@ namespace MeadowClimaHackKit.Controller
 
         protected void Render()
         {
+            //if the menu is enabled, it's responsible for drawing the screen
+            if (menu.IsEnabled) { return; }
+
             // if we're already rendering, bail out.
             if (isRendering)
             {
