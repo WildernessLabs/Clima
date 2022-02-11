@@ -26,14 +26,14 @@ namespace MeadowClimaHackKit.Database
             var databasePath = Path.Combine(MeadowOS.FileSystem.DataDirectory, "ClimateReadings.db");
             Database = new SQLiteConnection(databasePath);
 
-            Database.DropTable<TemperatureReading>();
+            Database.DropTable<TemperatureTable>();
             Console.WriteLine("ConfigureDatabase");
-            Database.CreateTable<TemperatureReading>();
+            Database.CreateTable<TemperatureTable>();
             Console.WriteLine("Table created");
             isConfigured = true;
         }
 
-        public bool SaveReading(TemperatureReading temperature)
+        public bool SaveReading(TemperatureTable temperature)
         {
             if (isConfigured == false)
             {
@@ -56,9 +56,9 @@ namespace MeadowClimaHackKit.Database
             return true;
         }
 
-        public List<TemperatureReading> GetTemperatureReadings()
+        public List<TemperatureTable> GetTemperatureReadings()
         {
-            return Database.Table<TemperatureReading>().ToList();
+            return Database.Table<TemperatureTable>().ToList();
         }
     }
 }

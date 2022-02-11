@@ -1,5 +1,4 @@
-﻿using Meadow.Foundation;
-using Meadow.Foundation.Sensors.Temperature;
+﻿using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Units;
 using MeadowClimaHackKit.Database;
 using System;
@@ -14,10 +13,7 @@ namespace MeadowClimaHackKit.Controllers
             new Lazy<TemperatureController>(() => new TemperatureController());
         public static TemperatureController Instance => instance.Value;
 
-        private TemperatureController()
-        {
-            Initialize();
-        }
+        private TemperatureController() { }
 
         public void Initialize()
         {
@@ -29,16 +25,16 @@ namespace MeadowClimaHackKit.Controllers
 
         void AnalogTemperatureUpdated(object sender, Meadow.IChangeResult<Temperature> e)
         {
-            LedController.Instance.SetColor(Color.Cyan);
-            
-            var reading = new TemperatureReading()
+            Console.Write($"Saving ({e.New.Celsius},{DateTime.Now})...");
+
+            var reading = new TemperatureTable()
             {
                 TemperatureValue = e.New,
                 DateTime = DateTime.Now
             };
             DatabaseManager.Instance.SaveReading(reading);
 
-            LedController.Instance.SetColor(Color.Green);
+            Console.WriteLine("done!");
         }
     }
 }
