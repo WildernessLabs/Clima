@@ -1,7 +1,9 @@
 ﻿using Meadow;
+using MeadowClimaHackKit.Controller;
 using SQLite;
 using System;
 using System.Collections.Generic;
+using Meadow.Foundation;
 using System.IO;
 
 namespace MeadowClimaHackKit.Database
@@ -27,14 +29,14 @@ namespace MeadowClimaHackKit.Database
             Database = new SQLiteConnection(databasePath);
 
             Database.DropTable<TemperatureTable>();
-            Console.WriteLine("ConfigureDatabase");
             Database.CreateTable<TemperatureTable>();
-            Console.WriteLine("Table created");
             isConfigured = true;
         }
 
         public bool SaveReading(TemperatureTable temperature)
         {
+            LedController.Instance.SetColor(WildernessLabsColors.ChileanFireDark);
+
             if (isConfigured == false)
             {
                 Console.WriteLine("SaveUpdateReading: DB not ready");
@@ -47,12 +49,9 @@ namespace MeadowClimaHackKit.Database
                 return false;
             }
 
-            Console.WriteLine("Saving climate reading to DB");
-
             Database.Insert(temperature);
 
-            Console.WriteLine($"Successfully saved to database");
-
+            LedController.Instance.SetColor(Color.Green);
             return true;
         }
 

@@ -1,6 +1,8 @@
 ﻿using CommonContracts.Models;
+using Meadow.Foundation;
 using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Foundation.Web.Maple.Server.Routing;
+using MeadowClimaHackKit.Controller;
 using MeadowClimaHackKit.Database;
 using System.Collections.Generic;
 
@@ -13,6 +15,8 @@ namespace MeadowClimaHackKit.Connectivity
         [HttpGet("/gettemperaturelogs")]
         public IActionResult GetTemperatureLogs()
         {
+            LedController.Instance.SetColor(Color.Magenta);
+
             var logs = DatabaseManager.Instance.GetTemperatureReadings();
 
             var data = new List<TemperatureModel>();
@@ -25,6 +29,7 @@ namespace MeadowClimaHackKit.Connectivity
                 });
             }
 
+            LedController.Instance.SetColor(Color.Green);
             return new JsonResult(data);
         }
     }

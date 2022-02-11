@@ -25,11 +25,7 @@ namespace MeadowClimaHackKit
 
         async Task InitializeMaple()
         {
-            var onboardLed = new RgbPwmLed(device: Device,
-                redPwmPin: Device.Pins.OnboardLedRed,
-                greenPwmPin: Device.Pins.OnboardLedGreen,
-                bluePwmPin: Device.Pins.OnboardLedBlue);
-            onboardLed.SetColor(Color.Red);
+            LedController.Instance.SetColor(Color.Red);
 
             var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
             if (result.ConnectionStatus != ConnectionStatus.Success)
@@ -43,7 +39,7 @@ namespace MeadowClimaHackKit
 
             TemperatureController.Instance.Initialize();
 
-            onboardLed.SetColor(Color.Green);
+            LedController.Instance.SetColor(Color.Green);
         }
     }
 }
