@@ -55,5 +55,10 @@ namespace MeadowClimaHackKit
 
             LedController.Instance.SetColor(Color.Green);
         }
+
+        async Task InitializeBluetooth() 
+        { 
+        
+        }
     }
 }

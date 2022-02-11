@@ -204,7 +204,7 @@ namespace WildernessLabs.Clima.App
         {
             try
             {
-                var response = await client.GetAsync(SelectedServer != null ? SelectedServer.IpAddress : IpAddress, ServerPort, "GetTemperature", null, null);
+                var response = await client.GetAsync(SelectedServer != null ? SelectedServer.IpAddress : IpAddress, ServerPort, "gettemperaturelogs", null, null);
 
                 if (response == null)
                     return;
