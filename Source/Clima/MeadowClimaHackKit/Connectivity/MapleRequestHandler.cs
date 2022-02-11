@@ -4,11 +4,11 @@ using Meadow.Foundation.Web.Maple.Server.Routing;
 using MeadowClimaHackKit.Database;
 using System.Collections.Generic;
 
-namespace MeadowClimaHackKit
+namespace MeadowClimaHackKit.Connectivity
 {
-    public class TemperatureRequestHandler : RequestHandlerBase
+    public class MapleRequestHandler : RequestHandlerBase
     {
-        public TemperatureRequestHandler() { }
+        public MapleRequestHandler() { }
 
         [HttpGet("/gettemperaturelogs")]
         public IActionResult GetTemperatureLogs()

@@ -3,7 +3,7 @@ using Meadow.Units;
 using MeadowClimaHackKit.Database;
 using System;
 
-namespace MeadowClimaHackKit.Controllers
+namespace MeadowClimaHackKit.Controller
 {
     public class TemperatureController
     {
