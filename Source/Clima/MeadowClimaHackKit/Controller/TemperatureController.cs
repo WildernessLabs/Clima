@@ -34,6 +34,8 @@ namespace MeadowClimaHackKit.Controller
             };
             DatabaseManager.Instance.SaveReading(reading);
 
+            DisplayController.Instance.UpdateDisplay(e.New);
+
             Console.WriteLine("done!");
         }
     }

@@ -1,7 +1,6 @@
 ﻿using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
-using Meadow.Foundation.Leds;
 using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Gateway.WiFi;
 using MeadowClimaHackKit.Controller;
@@ -27,11 +26,16 @@ namespace MeadowClimaHackKit
         {
             LedController.Instance.SetColor(Color.Red);
 
+            DisplayController.Instance.ShowSplashScreen();
+            DisplayController.Instance.StartWifiConnectingAnimation();
+
             var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
             if (result.ConnectionStatus != ConnectionStatus.Success)
             {
                 throw new Exception($"Cannot connect to network: {result.ConnectionStatus}");
             }
+
+            DisplayController.Instance.StopWifiConnectingAnimation();
 
             await DateTimeService.GetTimeAsync();
 
