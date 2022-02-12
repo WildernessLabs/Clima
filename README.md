@@ -63,7 +63,8 @@ Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructi
 
 ## Known Issues
 
-The Meadow.OS Power and Sleep APIs haven't been released yet, so Clima can't go to sleep to conserve power. For that reason, it'll need to be plugged into USB. We're hoping to have the first sleep APIs available in b6.4.
+* **Battery Power** - The Meadow.OS Power and Sleep APIs haven't been released yet, so Clima can't go to sleep to conserve power. For that reason, it'll need to be plugged into USB. We're hoping to have the first sleep APIs available in b6.4.
+* **Low-Power Raingauge** - The raingauge sensor is hooked to `D15`, which is a low-power counting timer, capable of counting pulses even when the Meadow is in low-power mode. This enables the rain gauge to collect data even while Clima is asleep. However, we haven't exposed that functionality via Meadow.Core yet. 
 
 # Clima.HackKit
 
