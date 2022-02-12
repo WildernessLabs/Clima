@@ -42,6 +42,10 @@ Both versions are 100% open source, including all of the enclosure design files,
 
 # Clima.Pro Kit 
 
+Hello and welcome! 
+
+**These getting started instructions are still in beta**, please help us. :) As you run through the, please log any challenges, bugs, or enhancements in the [issues tracker](https://github.com/WildernessLabs/Clima/issues). You can also chat with us in realtime on our [Slack Server](http://slackinvite.wildernesslabs.co/). Make sure to join the `#clima` channel and say `hi!`.
+
 ## Getting Started
 
 1) [Buy](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) or [Source](/Docs/Clima.Pro/Bill_of_Materials.md) a kit.
