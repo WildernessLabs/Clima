@@ -38,12 +38,14 @@ Once all four have been plungd, using a knife, trim the excess plastic:
 
 ## Install the M3 Heat-Set Inserts into the Enclosure Mount
 
-**TODO: Pictures**
+Using the same method, install (4), M3 inserts into the enclosure mount from the backside, and then push excess plastic out with a bolt and trim:
+
+![](Mount.png)
 
 ## Install the M2 Heat-Set Inserts into the Enclosure Body
 
 Finally, install the M2 heat-set inserts for the lid into the enclosure body:
 
-**TODO: Picture**
+![](Enclosure_Bottom.png)
 
 ## [Next - Electronics Installation](../Electronics_Installation/readme.md)
