@@ -55,3 +55,6 @@ Additionally, you can tidy the cable of the wind sensors by looping it around it
 You can do the same with the rain meter sensor's cable, looping it around its support piece, making your way to the Meadow enclosure.
 
 ![](clima_complete.jpg)
+
+
+## [Next - Enclosure Assembly](../Enclosure_Assembly/readme.md)
