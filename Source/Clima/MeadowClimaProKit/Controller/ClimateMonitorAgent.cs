@@ -27,6 +27,8 @@ namespace MeadowClimaProKit
             new Lazy<ClimateMonitorAgent>(() => new ClimateMonitorAgent());
         public static ClimateMonitorAgent Instance => instance.Value;
 
+        public event EventHandler<ClimateConditions> ClimateConditionsUpdated = delegate { };
+
         IF7MeadowDevice Device => MeadowApp.Device;
         object samplingLock = new object();
         CancellationTokenSource? SamplingTokenSource;
@@ -37,7 +39,7 @@ namespace MeadowClimaProKit
         Bme280? bme280;
         WindVane? windVane;
         SwitchingAnemometer? anemometer;
-        SwitchingRainGauge rainGauge;
+        SwitchingRainGauge? rainGauge;
 
         public ClimateReading? Climate { get; set; }
 
@@ -133,6 +135,8 @@ namespace MeadowClimaProKit
 
                         Console.WriteLine("ClimateMonitorAgent: Reading complete.");
                         DatabaseManager.Instance.SaveReading(result?.New);
+
+                        ClimateConditionsUpdated.Invoke(this, result);
 
                         // sleep for the appropriate interval
                         await Task.Delay(updateInterval).ConfigureAwait(false);

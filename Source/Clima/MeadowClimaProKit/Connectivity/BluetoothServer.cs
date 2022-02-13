@@ -1,7 +1,7 @@
 ﻿using System;
 using Meadow.Gateways.Bluetooth;
 
-namespace MeadowClimaProKit.Server.Bluetooth
+namespace MeadowClimaProKit.Connectivity
 {
     public class BluetoothServer
     {
@@ -17,17 +17,12 @@ namespace MeadowClimaProKit.Server.Bluetooth
         CharacteristicString windSpeedCharacteristic;
         CharacteristicString windDirectionCharacteristic;
 
-        //==== controllers and such
-        //ClimateMonitorAgent climateMonitorAgent = ClimateMonitorAgent.Instance;
-
         private BluetoothServer() { }
 
         public void Initialize()
         {
             bleTreeDefinition = GetDefinition();
-
-           // ClimateMonitorAgent.Instance.ClimateConditionsUpdated += ClimateConditionsUpdated;
-
+            ClimateMonitorAgent.Instance.ClimateConditionsUpdated += ClimateConditionsUpdated;
             MeadowApp.Device.BluetoothAdapter.StartBluetoothServer(bleTreeDefinition);
         }
 
@@ -48,7 +43,7 @@ namespace MeadowClimaProKit.Server.Bluetooth
             }
             if (climateConditions.New?.RainFall is { } rainFall)
             {
-                humidityCharacteristic.SetValue($"{ rainFall:N2}mm;");
+                rainFallCharacteristic.SetValue($"{ rainFall:N2}mm;");
             }
             if (climateConditions.New?.WindSpeed is { } windSpeed)
             {
@@ -87,9 +82,9 @@ namespace MeadowClimaProKit.Server.Bluetooth
                     maxLength: 32
                 );
 
-            humidityCharacteristic = new CharacteristicString(
+            rainFallCharacteristic = new CharacteristicString(
                     "RainFall",
-                    uuid: "143a3841-e244-4520-a456-214e048a030A",
+                    uuid: "017e99d6-8a61-11eb-8dcd-0242ac1300aa",
                     permissions: CharacteristicPermission.Read,
                     properties: CharacteristicProperty.Read,
                     maxLength: 32
