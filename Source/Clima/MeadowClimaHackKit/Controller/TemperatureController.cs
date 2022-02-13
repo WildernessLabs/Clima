@@ -11,9 +11,9 @@ namespace MeadowClimaHackKit.Controller
             new Lazy<TemperatureController>(() => new TemperatureController());
         public static TemperatureController Instance => instance.Value;
 
-        AnalogTemperature analogTemperature;
+        public event EventHandler<Temperature> TemperatureUpdated = delegate { };
 
-        public string CurrentTemperature => analogTemperature.Temperature.Value.Celsius.ToString();
+        AnalogTemperature analogTemperature;
 
         private TemperatureController() { }
 
@@ -35,6 +35,8 @@ namespace MeadowClimaHackKit.Controller
                 DateTime = DateTime.Now
             };
             DatabaseManager.Instance.SaveReading(reading);
+
+            TemperatureUpdated.Invoke(this, e.New);
 
             DisplayController.Instance.UpdateDisplay(e.New);
 

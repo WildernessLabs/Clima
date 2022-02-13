@@ -4,6 +4,7 @@ using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Buttons;
 using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Gateway.WiFi;
+using MeadowClimaHackKit.Connectivity;
 using MeadowClimaHackKit.Controller;
 using MeadowClimaHackKit.ServiceAccessLayer;
 using System;
@@ -19,7 +20,12 @@ namespace MeadowClimaHackKit
 
         public MeadowApp()
         {
-            InitializeMaple().Wait();
+            Initialize();
+        }
+
+        void Initialize() 
+        {
+            LedController.Instance.SetColor(Color.Red);
 
             buttonUp = new PushButton(Device, Device.Pins.D03);
             buttonDown = new PushButton(Device, Device.Pins.D02);
@@ -29,14 +35,23 @@ namespace MeadowClimaHackKit
             buttonDown.Clicked += (s, e) => DisplayController.Instance.MenuDown();
             buttonMenu.Clicked += (s, e) => DisplayController.Instance.MenuSelect();
 
-            mapleServer.Start();
+            DisplayController.Instance.ShowSplashScreen();
+
+            TemperatureController.Instance.Initialize();
+
+            InitializeBluetooth();
+            //InitializeMaple().Wait();
+
+            LedController.Instance.SetColor(Color.Green);
+        }
+
+        void InitializeBluetooth()
+        {
+            BluetoothServer.Instance.Initialize();
         }
 
         async Task InitializeMaple()
-        {
-            LedController.Instance.SetColor(Color.Red);
-
-            DisplayController.Instance.ShowSplashScreen();
+        {            
             DisplayController.Instance.StartWifiConnectingAnimation();
 
             var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
@@ -50,15 +65,7 @@ namespace MeadowClimaHackKit
             await DateTimeService.GetTimeAsync();
 
             mapleServer = new MapleServer(Device.WiFiAdapter.IpAddress, 5417, false);
-
-            TemperatureController.Instance.Initialize();
-
-            LedController.Instance.SetColor(Color.Green);
-        }
-
-        async Task InitializeBluetooth() 
-        { 
-        
+            mapleServer.Start();
         }
     }
 }

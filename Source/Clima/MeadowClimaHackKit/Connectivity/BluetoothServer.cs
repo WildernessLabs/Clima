@@ -1,36 +1,32 @@
-﻿using Meadow.Foundation;
-using Meadow.Gateways.Bluetooth;
+﻿using Meadow.Gateways.Bluetooth;
 using MeadowClimaHackKit.Controller;
+using System;
 
 namespace MeadowClimaHackKit.Connectivity
 {
     public class BluetoothServer
     {
+        private static readonly Lazy<BluetoothServer> instance =
+            new Lazy<BluetoothServer>(() => new BluetoothServer());
+        public static BluetoothServer Instance => instance.Value;
+
         Definition bleTreeDefinition;
         CharacteristicString temperatureCharacteristic;
 
         readonly string TEMPERATURE = "24517ccc888e4ffc9da521884353b08d";
 
-        public BluetoothServer() 
-        { 
-            
-        }
+        private BluetoothServer() { }        
 
-        void Initialize()
+        public void Initialize()
         {
             bleTreeDefinition = GetDefinition();
+            TemperatureController.Instance.TemperatureUpdated += TemperatureUpdated;
             MeadowApp.Device.BluetoothAdapter.StartBluetoothServer(bleTreeDefinition);
-
-            temperatureCharacteristic.ValueSet += TemperatureCharacteristicValueSet;
         }
 
-        private void TemperatureCharacteristicValueSet(ICharacteristic c, object data)
+        private void TemperatureUpdated(object sender, Meadow.Units.Temperature e)
         {
-            LedController.Instance.SetColor(Color.Yellow);
-
-            
-
-            LedController.Instance.SetColor(Color.Green);
+            temperatureCharacteristic.SetValue($"{ e.Celsius:N2}°C;");
         }
 
         Definition GetDefinition()
@@ -48,7 +44,7 @@ namespace MeadowClimaHackKit.Connectivity
                 temperatureCharacteristic
             );
 
-            return new Definition("Clima.HackKit", service);
+            return new Definition("MeadowClimaHackKit", service);
         }
     }
 }
