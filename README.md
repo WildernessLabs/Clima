@@ -48,10 +48,11 @@ Hello and welcome!
 
 ## Getting Started
 
-1) [Buy](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) or [Source](/Docs/Clima.Pro/Bill_of_Materials.md) a kit.
-2) [Assemble it](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
-3) [Build and Deploy the Meadow Clima.Pro App to it].
-4) Optionally, build and deploy the [companion mobile app].
+1. [Buy](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) or [Source](/Docs/Clima.Pro/Bill_of_Materials.md) a kit.
+* [Assemble it](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
+* [Register for an OpenWeather API Key](https://blog.wildernesslabs.co/add-openweather-to-your-meadow-projects/)
+* [Build and Deploy the Meadow Clima.Pro App to it].
+* Optionally, build and deploy the [companion mobile app].
 
 ## Sourcing
 
