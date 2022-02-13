@@ -13,8 +13,6 @@ namespace MeadowClimaHackKit.Connectivity
         Definition bleTreeDefinition;
         CharacteristicString temperatureCharacteristic;
 
-        readonly string TEMPERATURE = "24517ccc888e4ffc9da521884353b08d";
-
         private BluetoothServer() { }        
 
         public void Initialize()
@@ -33,7 +31,7 @@ namespace MeadowClimaHackKit.Connectivity
         {
             temperatureCharacteristic = new CharacteristicString(
                 name: "Temperature",
-                uuid: TEMPERATURE,
+                uuid: "e78f7b5e-842b-4b99-94e3-7401bf72b870",
                 maxLength: 20,
                 permissions: CharacteristicPermission.Read,
                 properties: CharacteristicProperty.Read);

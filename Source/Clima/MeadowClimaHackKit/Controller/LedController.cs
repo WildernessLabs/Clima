@@ -6,11 +6,11 @@ namespace MeadowClimaHackKit.Controller
 {
     public class LedController
     {
-        RgbPwmLed led;
-
         private static readonly Lazy<LedController> instance =
             new Lazy<LedController>(() => new LedController());
         public static LedController Instance => instance.Value;
+
+        RgbPwmLed led;
 
         private LedController()
         {
@@ -29,14 +29,7 @@ namespace MeadowClimaHackKit.Controller
 
         public void SetColor(Color color)
         {
-            led.Stop();
             led.SetColor(color);
-        }
-
-        public void StartBlink(Color color)
-        {
-            led.Stop();
-            led.StartBlink(color);
         }
     }
 }
