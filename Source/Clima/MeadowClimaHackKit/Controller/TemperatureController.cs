@@ -7,13 +7,13 @@ namespace MeadowClimaHackKit.Controller
 {
     public class TemperatureController
     {
-        AnalogTemperature analogTemperature;
-
-        public string CurrentTemperature => analogTemperature.Temperature.Value.Celsius.ToString();
-
         private static readonly Lazy<TemperatureController> instance =
             new Lazy<TemperatureController>(() => new TemperatureController());
         public static TemperatureController Instance => instance.Value;
+
+        AnalogTemperature analogTemperature;
+
+        public string CurrentTemperature => analogTemperature.Temperature.Value.Celsius.ToString();
 
         private TemperatureController() { }
 
