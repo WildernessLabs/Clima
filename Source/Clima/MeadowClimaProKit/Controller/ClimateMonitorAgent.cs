@@ -23,18 +23,15 @@ namespace MeadowClimaProKit
     /// </summary>
     public class ClimateMonitorAgent
     {
-        //==== singleton
         private static readonly Lazy<ClimateMonitorAgent> instance =
             new Lazy<ClimateMonitorAgent>(() => new ClimateMonitorAgent());
         public static ClimateMonitorAgent Instance => instance.Value;
 
-        //==== internals
         IF7MeadowDevice Device => MeadowApp.Device;
         object samplingLock = new object();
         CancellationTokenSource? SamplingTokenSource;
         bool IsSampling = false;
 
-        //==== peripherals
         II2cBus? i2c;
         Bme680? bme680;
         Bme280? bme280;
@@ -42,10 +39,6 @@ namespace MeadowClimaProKit
         SwitchingAnemometer? anemometer;
         SwitchingRainGauge rainGauge;
 
-        //==== properties
-        /// <summary>
-        /// The last read conditions.
-        /// </summary>
         public ClimateReading? Climate { get; set; }
 
         private ClimateMonitorAgent() { }
@@ -106,8 +99,8 @@ namespace MeadowClimaProKit
 
             lock (samplingLock)
             {
-                if (IsSampling) return;
-
+                if (IsSampling) 
+                    return;
                 IsSampling = true;
 
                 SamplingTokenSource = new CancellationTokenSource();
@@ -115,18 +108,18 @@ namespace MeadowClimaProKit
 
                 ClimateReading oldClimate;
 
-                Task.Factory.StartNew(async () =>
+                Task.Run(async () =>
                 {
                     while (true)
                     {
                         Console.WriteLine("ClimateMonitorAgent: About to do a reading.");
-
-                        // cleanup
+                        
                         if (ct.IsCancellationRequested)
-                        {   // do task clean up here
-                        //observers.ForEach(x => x.OnCompleted());
-                        IsSampling = false;
-                        break;
+                        {   
+                            // do task clean up here
+                            //observers.ForEach(x => x.OnCompleted());
+                            IsSampling = false;
+                            break;
                         }
 
                         // capture history
@@ -139,6 +132,7 @@ namespace MeadowClimaProKit
                         var result = new ClimateConditions(Climate, oldClimate);
 
                         Console.WriteLine("ClimateMonitorAgent: Reading complete.");
+                        DatabaseManager.Instance.SaveReading(result?.New);
 
                         // sleep for the appropriate interval
                         await Task.Delay(updateInterval).ConfigureAwait(false);
@@ -163,17 +157,19 @@ namespace MeadowClimaProKit
         {
             //==== create the read tasks
             var bmeTask = bme280?.Read();
-            var windVaneTask = windVane?.Read(); 
- 
+            var windVaneTask = windVane?.Read();
+            var rainFallTask = rainGauge.Read();
+
             //==== await until all tasks complete 
-            await Task.WhenAll(bmeTask, windVaneTask);
+            await Task.WhenAll(bmeTask, windVaneTask, rainFallTask);
 
             var climate = new ClimateReading()
             {
-                DateTime = DateTime.Now,
-                Humidity = bmeTask?.Result.Humidity,
+                DateTime = DateTime.Now,                
                 Temperature = bmeTask?.Result.Temperature,
                 Pressure = bmeTask?.Result.Pressure,
+                Humidity = bmeTask?.Result.Humidity,
+                RainFall = rainFallTask?.Result,
                 WindDirection = windVaneTask?.Result,
                 WindSpeed = anemometer?.WindSpeed,
             };

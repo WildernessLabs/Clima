@@ -1,22 +1,22 @@
 ﻿using Meadow;
+using Meadow.Foundation;
 using MeadowClimaHackKit.Controller;
 using SQLite;
 using System;
 using System.Collections.Generic;
-using Meadow.Foundation;
 using System.IO;
 
 namespace MeadowClimaHackKit.Database
 {
     public class DatabaseManager
     {
-        bool isConfigured = false;
-
-        SQLiteConnection Database { get; set; }
-
         private static readonly Lazy<DatabaseManager> instance =
             new Lazy<DatabaseManager>(() => new DatabaseManager());
         public static DatabaseManager Instance => instance.Value;
+
+        bool isConfigured = false;
+
+        SQLiteConnection Database { get; set; }
 
         private DatabaseManager()
         {
@@ -28,7 +28,7 @@ namespace MeadowClimaHackKit.Database
             var databasePath = Path.Combine(MeadowOS.FileSystem.DataDirectory, "ClimateReadings.db");
             Database = new SQLiteConnection(databasePath);
 
-            Database.DropTable<TemperatureTable>();
+            Database.DropTable<TemperatureTable>(); //convenience while we work on the model object
             Database.CreateTable<TemperatureTable>();
             isConfigured = true;
         }
