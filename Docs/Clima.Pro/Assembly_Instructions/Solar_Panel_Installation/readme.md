@@ -13,3 +13,5 @@ Using the U-bolt bracket, attach the solar panel mount to the pole:
 Using the plastic nuts on the solar panel, attach it to the solar panel bracket mount. Make sure to pull the solar panel power cable through the bracket hole:
 
 ![](Panel_Install_1.png)
+
+## [Next - Deploy the Clima App](/Docs/Clima.Pro/App_Deploy_Instructions/)
