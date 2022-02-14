@@ -15,8 +15,7 @@
 
 ### Step 2. - Deploy the Clima App
 
- * **Clone the Clima Repo** - Click the `Code` button above to clone this this repo locally:
-   ![](GitHub_Clone.png)
+ * **Clone the Clima Repo** - [Clone](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/adding-and-cloning-repositories/cloning-and-forking-repositories-from-github-desktop) the [Clima(this) repository](https://github.com/wildernesslabs/Clima) locally.
  * **Open the Clima VS Solution** - Navigate to the `source` folder and open the `Clima.sln` file in Visual Studio, or the `source` folder in VS Code.
  * **Add your OpenWeather API Key** - To the application config [or whatever: **JORGE TO UPDATE**]
  * **Add WiFi Credentials** - Edit the `Wifi.cs` [or whtaever **JORGE**] file to have the correct credentials for the WiFi your Clima will connect to.
