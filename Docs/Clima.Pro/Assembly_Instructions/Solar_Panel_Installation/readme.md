@@ -14,4 +14,4 @@ Using the plastic nuts on the solar panel, attach it to the solar panel bracket 
 
 ![](Panel_Install_1.png)
 
-## [Next - Deploy the Clima App](/Docs/Clima.Pro/App_Deploy_Instructions/)
+## [Next - Deploy the Clima App](/Docs/Clima.Pro/Deploy_Instructions/)
