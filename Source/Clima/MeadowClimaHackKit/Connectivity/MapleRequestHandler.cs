@@ -2,18 +2,18 @@
 using Meadow.Foundation;
 using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Foundation.Web.Maple.Server.Routing;
-using MeadowClimaHackKit.Controllers;
+using MeadowClimaHackKit.Controller;
 using MeadowClimaHackKit.Database;
 using System.Collections.Generic;
 
-namespace WildernessLabs.MeadowClimaHackKit.MapleRequestHandlers
+namespace MeadowClimaHackKit.Connectivity
 {
     public class MapleRequestHandler : RequestHandlerBase
     {
         public MapleRequestHandler() { }
 
-        [HttpGet("/gettemperature")]
-        public IActionResult GetTemperature()
+        [HttpGet("/gettemperaturelogs")]
+        public IActionResult GetTemperatureLogs()
         {
             LedController.Instance.SetColor(Color.Magenta);
 
@@ -25,12 +25,11 @@ namespace WildernessLabs.MeadowClimaHackKit.MapleRequestHandlers
                 data.Add(new TemperatureModel()
                 {
                     Temperature = log.TemperatureCelcius?.ToString("00"),
-                    DateTime = log.DateTime
+                    DateTime = log.DateTime.ToString("yyyy-mm-dd hh:mm:ss tt")
                 });
             }
 
             LedController.Instance.SetColor(Color.Green);
-
             return new JsonResult(data);
         }
     }

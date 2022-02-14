@@ -4,19 +4,19 @@ using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Buttons;
 using Meadow.Foundation.Web.Maple.Server;
 using Meadow.Gateway.WiFi;
-using MeadowClimaHackKit.Controllers;
+using MeadowClimaHackKit.Connectivity;
+using MeadowClimaHackKit.Controller;
 using MeadowClimaHackKit.ServiceAccessLayer;
-using System.Threading;
+using System;
 using System.Threading.Tasks;
 
 namespace MeadowClimaHackKit
 {
-    public class MeadowApp : App<F7Micro, MeadowApp>
+    // public class MeadowApp : App<F7Micro, MeadowApp> <- If you have a Meadow F7v1.*
+    public class MeadowApp : App<F7MicroV2, MeadowApp>
     {
         MapleServer mapleServer;
         PushButton buttonUp, buttonDown, buttonMenu;
-
-        CancellationTokenSource token;
 
         public MeadowApp()
         {
@@ -25,18 +25,8 @@ namespace MeadowClimaHackKit
 
         void Initialize() 
         {
-            InitializeHardware();
-            LedController.Instance.SetColor(Color.Blue);
-            DisplayController.Instance.ShowSplashScreen();
-
-            InitializeWiFi().Wait();
-            LedController.Instance.SetColor(Color.Green);
-        }
-
-        void InitializeHardware()
-        {
             LedController.Instance.SetColor(Color.Red);
-            
+
             buttonUp = new PushButton(Device, Device.Pins.D03);
             buttonDown = new PushButton(Device, Device.Pins.D02);
             buttonMenu = new PushButton(Device, Device.Pins.D04);
@@ -44,50 +34,39 @@ namespace MeadowClimaHackKit
             buttonUp.Clicked += (s, e) => DisplayController.Instance.MenuUp();
             buttonDown.Clicked += (s, e) => DisplayController.Instance.MenuDown();
             buttonMenu.Clicked += (s, e) => DisplayController.Instance.MenuSelect();
+
+            DisplayController.Instance.ShowSplashScreen();
+
+            TemperatureController.Instance.Initialize();
+
+            InitializeBluetooth();
+
+            //InitializeMaple().Wait();
+
+            LedController.Instance.SetColor(Color.Green);
         }
 
-        async Task InitializeWiFi()
+        void InitializeBluetooth()
         {
-            //token = new CancellationTokenSource();
+            BluetoothServer.Instance.Initialize();
+        }
 
-            //_ = Task.Run(async () =>
-            //{
-            //    string ellipsis;
-            //    int count = 0;
-            //    while (token.IsCancellationRequested == false)
-            //    {
-            //        ellipsis = (count++ % 4) switch
-            //        {
-            //            0 => "   ",
-            //            1 => ".  ",
-            //            2 => ".. ",
-            //            _ => "...",
-            //        };
-
-            //        DisplayController.Instance.UpdateStatusText("WiFi", "Connecting" + ellipsis);
-            //        await Task.Delay(500);
-            //    }
-
-            //}, token.Token);
+        async Task InitializeMaple()
+        {            
+            DisplayController.Instance.StartWifiConnectingAnimation();
 
             var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
             if (result.ConnectionStatus != ConnectionStatus.Success)
             {
-                DisplayController.Instance.UpdateStatusText("WiFi", "Failed");
-            }
-            else
-            {
-                await DateTimeService.GetTimeAsync();
-                DisplayController.Instance.UpdateStatusText("WiFi", "Connected!");
+                throw new Exception($"Cannot connect to network: {result.ConnectionStatus}");
             }
 
-            //token.Cancel(); //stop the ellipsis task above
+            DisplayController.Instance.StopWifiConnectingAnimation();
+
             await DateTimeService.GetTimeAsync();
 
             mapleServer = new MapleServer(Device.WiFiAdapter.IpAddress, 5417, false);
             mapleServer.Start();
-
-            DisplayController.Instance.UpdateStatusText("WiFi", "Connected!");
         }
     }
 }

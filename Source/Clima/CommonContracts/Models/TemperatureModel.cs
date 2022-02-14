@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace CommonContracts.Models
 {
@@ -7,8 +6,7 @@ namespace CommonContracts.Models
     {
         [JsonPropertyName("temperature")]
         public string Temperature { get; set; }
-
-        [JsonPropertyName("date")]
-        public DateTime? DateTime { get; set; }
+        [JsonPropertyName("dateTime")]
+        public string DateTime { get; set; }
     }
 }

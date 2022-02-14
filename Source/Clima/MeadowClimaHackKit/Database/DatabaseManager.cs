@@ -1,4 +1,6 @@
 ﻿using Meadow;
+using Meadow.Foundation;
+using MeadowClimaHackKit.Controller;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -8,13 +10,13 @@ namespace MeadowClimaHackKit.Database
 {
     public class DatabaseManager
     {
-        bool isConfigured = false;
-
-        SQLiteConnection Database { get; set; }
-
         private static readonly Lazy<DatabaseManager> instance =
             new Lazy<DatabaseManager>(() => new DatabaseManager());
         public static DatabaseManager Instance => instance.Value;
+
+        bool isConfigured = false;
+
+        SQLiteConnection Database { get; set; }
 
         private DatabaseManager()
         {
@@ -26,15 +28,15 @@ namespace MeadowClimaHackKit.Database
             var databasePath = Path.Combine(MeadowOS.FileSystem.DataDirectory, "ClimateReadings.db");
             Database = new SQLiteConnection(databasePath);
 
-            Database.DropTable<TemperatureReading>();
-            Console.WriteLine("ConfigureDatabase");
-            Database.CreateTable<TemperatureReading>();
-            Console.WriteLine("Table created");
+            Database.DropTable<TemperatureTable>(); //convenience while we work on the model object
+            Database.CreateTable<TemperatureTable>();
             isConfigured = true;
         }
 
-        public bool SaveReading(TemperatureReading temperature)
+        public bool SaveReading(TemperatureTable temperature)
         {
+            LedController.Instance.SetColor(WildernessLabsColors.ChileanFireDark);
+
             if (isConfigured == false)
             {
                 Console.WriteLine("SaveUpdateReading: DB not ready");
@@ -47,18 +49,15 @@ namespace MeadowClimaHackKit.Database
                 return false;
             }
 
-            Console.WriteLine("Saving climate reading to DB");
-
             Database.Insert(temperature);
 
-            Console.WriteLine($"Successfully saved to database");
-
+            LedController.Instance.SetColor(Color.Green);
             return true;
         }
 
-        public List<TemperatureReading> GetTemperatureReadings()
+        public List<TemperatureTable> GetTemperatureReadings()
         {
-            return Database.Table<TemperatureReading>().ToList();
+            return Database.Table<TemperatureTable>().ToList();
         }
     }
 }

@@ -9,11 +9,13 @@ namespace MeadowClimaProKit.Database
     {
         [PrimaryKey, AutoIncrement]
         public int? ID { get; set; }
+
         public double? TemperatureValue
         {
             get => Temperature?.Celsius;
             set => Temperature = new MU.Temperature(value.Value, MU.Temperature.UnitType.Celsius);
         }
+
         public double? PressureValue
         {
             get => Pressure?.Bar;
@@ -24,6 +26,12 @@ namespace MeadowClimaProKit.Database
         {
             get => Humidity?.Percent;
             set => Humidity = new MU.RelativeHumidity(value.Value, MU.RelativeHumidity.UnitType.Percent);
+        }
+
+        public double? RainFallValue
+        {
+            get => RainFall?.Millimeters;
+            set => RainFall = new MU.Length(value.Value, MU.Length.UnitType.Millimeters);
         }
 
         public double? WindDirectionValue
@@ -40,6 +48,7 @@ namespace MeadowClimaProKit.Database
 
         [Indexed]
         public DateTime DateTime { get; set; }
+
         /// <summary>
         /// Whether or not this particular reading has been uploaded to the cloud.
         /// </summary>
@@ -51,6 +60,8 @@ namespace MeadowClimaProKit.Database
         public MU.Pressure? Pressure { get; set; }
         [Ignore]
         public MU.RelativeHumidity? Humidity { get; set; }
+        [Ignore]
+        public MU.Length? RainFall { get; set; }
         [Ignore]
         public MU.Azimuth? WindDirection { get; set; }
         [Ignore]

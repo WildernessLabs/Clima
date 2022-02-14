@@ -25,6 +25,7 @@ namespace MobileApp.ViewModels
         ICharacteristic tempCharacteristic;
         ICharacteristic pressureCharacteristic;
         ICharacteristic humidityCharacteristic;
+        ICharacteristic rainFallCharacteristic;
         ICharacteristic windSpeedCharacteristic;
         ICharacteristic windDirectionCharacteristic;
 
@@ -143,6 +144,7 @@ namespace MobileApp.ViewModels
             tempCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.TEMPERATURE));
             pressureCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.PRESSURE));
             humidityCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.HUMIDITY));
+            rainFallCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.RAINFALL));
             windSpeedCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.WIND_SPEED));
             windDirectionCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.WIND_DIRECTION));
         }

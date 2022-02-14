@@ -1,55 +1,49 @@
-﻿using System;
+﻿using Meadow;
+using Meadow.Foundation;
+using MeadowClimaProKit.Controller;
+using SQLite;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using MeadowClimaProKit.Models;
-using Meadow;
-using SQLite;
-using MeadowClimaProKit.Database;
 
-namespace MeadowClimaProKit.DataAccessLayer
+namespace MeadowClimaProKit.Database
 {
     public class DatabaseManager
     {
-        //==== internals
-        SQLiteConnection Database { get; set; }
-
-        //==== singleton stuff
         private static readonly Lazy<DatabaseManager> instance =
             new Lazy<DatabaseManager>(() => new DatabaseManager());
-        public static DatabaseManager Instance {
-            get { return instance.Value; }
-        }
+        public static DatabaseManager Instance => instance.Value;
+
+        bool isConfigured = false;
+
+        SQLiteConnection Database { get; set; }
 
         private DatabaseManager()
         {
-            // database files should go in the `DataDirectory`
-            var databasePath = Path.Combine(MeadowOS.FileSystem.DataDirectory, "ClimateReadings.db");
-            // make the connection
-            Database = new SQLite.SQLiteConnection(databasePath);
-
-            ConfigureDatabase();
+            Initialize();
         }
 
-        bool isConfigured = false;
-        protected void ConfigureDatabase()
+        protected void Initialize() 
         {
-            // add table(s)
-            Console.WriteLine("ConfigureDatabase");
+            var databasePath = Path.Combine(MeadowOS.FileSystem.DataDirectory, "ClimateReadings.db");
+            Database = new SQLiteConnection(databasePath);
+
             Database.DropTable<ClimateReading>(); //convenience while we work on the model object
             Database.CreateTable<ClimateReading>();
-            Console.WriteLine("Table created");
             isConfigured = true;
         }
 
         public bool SaveReading(ClimateReading climate)
         {
-            if(isConfigured == false)
+            LedController.Instance.SetColor(WildernessLabsColors.ChileanFireDark);
+
+            if (isConfigured == false)
             {
                 Console.WriteLine("SaveUpdateReading: DB not ready");
                 return false;
             }
 
-            if(climate == null)
+            if (climate == null)
             {
                 Console.WriteLine("SaveUpdateReading: Conditions is null");
                 return false;
@@ -61,6 +55,7 @@ namespace MeadowClimaProKit.DataAccessLayer
 
             Console.WriteLine($"Successfully saved to database");
 
+            LedController.Instance.SetColor(Color.Green);
             return true;
         }
 

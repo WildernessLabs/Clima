@@ -6,6 +6,7 @@ using Meadow;
 using Meadow.Foundation.Sensors.Atmospheric;
 using Meadow.Foundation.Sensors.Weather;
 using MeadowClimaProKit.Database;
+using Meadow.Hardware;
 
 namespace MeadowClimaProKit
 {
@@ -22,68 +23,86 @@ namespace MeadowClimaProKit
     /// </summary>
     public class ClimateMonitorAgent
     {
-        //==== events
-        /// <summary>
-        /// Raised when a new climate reading has been taken. 
-        /// </summary>
+        private static readonly Lazy<ClimateMonitorAgent> instance =
+            new Lazy<ClimateMonitorAgent>(() => new ClimateMonitorAgent());
+        public static ClimateMonitorAgent Instance => instance.Value;
+
         public event EventHandler<ClimateConditions> ClimateConditionsUpdated = delegate { };
 
-        //==== internals
         IF7MeadowDevice Device => MeadowApp.Device;
         object samplingLock = new object();
         CancellationTokenSource? SamplingTokenSource;
         bool IsSampling = false;
 
-        //==== peripherals
-        Bme680 bme280;
+        II2cBus? i2c;
+        Bme680? bme680;
+        Bme280? bme280;
         WindVane? windVane;
         SwitchingAnemometer? anemometer;
+        SwitchingRainGauge? rainGauge;
 
-        //==== properties
-        /// <summary>
-        /// The last read conditions.
-        /// </summary>
         public ClimateReading? Climate { get; set; }
 
-        //==== singleton
-        private static readonly Lazy<ClimateMonitorAgent> instance =
-            new Lazy<ClimateMonitorAgent>(() => new ClimateMonitorAgent());
+        private ClimateMonitorAgent() { }
 
-        public static ClimateMonitorAgent Instance => instance.Value;
-
-        // Only invoked via the singleton instance 
-        private ClimateMonitorAgent()
+        public void Initialize()
         {
-            Initialize();
-        }
+            i2c = Device.CreateI2cBus();
+            try
+            {
+                bme680 = new Bme680(i2c, (byte)Bme680.Addresses.Address_0x76);
+                Console.WriteLine("Bme680 successully initialized.");
+                var bmeObserver = Bme680.CreateObserver(
+                    handler: result => Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"),
+                    filter: result => true);
+                bme680.Subscribe(bmeObserver);
+            }
+            catch (Exception e)
+            {
+                bme680 = null;
+                Console.WriteLine($"Bme680 failed bring-up: {e.Message}");
+            }
 
-        void Initialize()
-        {
-            Console.WriteLine("ClimateMonitor initializing.");
+            if (bme680 == null)
+            {
+                Console.WriteLine("Trying it as a BME280.");
+                try
+                {
+                    bme280 = new Bme280(i2c, (byte)Bme280.Addresses.Address0);
+                    Console.WriteLine("Bme280 successully initialized.");
+                    var bmeObserver = Bme280.CreateObserver(
+                        handler: result => Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"),
+                        filter: result => true);
+                    bme280.Subscribe(bmeObserver);
+                }
+                catch (Exception e2)
+                {
+                    Console.WriteLine($"Bme280 failed bring-up: {e2.Message}");
+                }
+            }
+
+            windVane = new WindVane(Device, Device.Pins.A00);
+            Console.WriteLine("WindVane up.");
 
             anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
             anemometer.UpdateInterval = TimeSpan.FromSeconds(10);
             anemometer.StartUpdating();
             Console.WriteLine("Anemometer up.");
 
-            windVane = new WindVane(Device, Device.Pins.A00);
-            Console.WriteLine("WindVane up.");
+            rainGauge = new SwitchingRainGauge(Device, Device.Pins.D15);
+            Console.WriteLine("Rain gauge up.");
 
-            bme280 = new Bme680(Device.CreateI2cBus());
-            Console.WriteLine("BME280 up.");
-
-            Console.WriteLine("ClimateMonitor initialized.");
+            StartUpdating(TimeSpan.FromSeconds(30));
         }
 
-        public void StartUpdating(TimeSpan updateInterval)
+        void StartUpdating(TimeSpan updateInterval)
         {
             Console.WriteLine("ClimateMonitorAgent.StartUpdating()");
 
-            // thread safety
             lock (samplingLock)
             {
-                if (IsSampling) return;
-
+                if (IsSampling) 
+                    return;
                 IsSampling = true;
 
                 SamplingTokenSource = new CancellationTokenSource();
@@ -91,18 +110,18 @@ namespace MeadowClimaProKit
 
                 ClimateReading oldClimate;
 
-                Task.Factory.StartNew(async () =>
+                Task.Run(async () =>
                 {
                     while (true)
                     {
                         Console.WriteLine("ClimateMonitorAgent: About to do a reading.");
-
-                        // cleanup
+                        
                         if (ct.IsCancellationRequested)
-                        {   // do task clean up here
-                        //observers.ForEach(x => x.OnCompleted());
-                        IsSampling = false;
-                        break;
+                        {   
+                            // do task clean up here
+                            //observers.ForEach(x => x.OnCompleted());
+                            IsSampling = false;
+                            break;
                         }
 
                         // capture history
@@ -115,9 +134,9 @@ namespace MeadowClimaProKit
                         var result = new ClimateConditions(Climate, oldClimate);
 
                         Console.WriteLine("ClimateMonitorAgent: Reading complete.");
+                        DatabaseManager.Instance.SaveReading(result?.New);
 
-                        // let everyone know
-                        RaiseEventsAndNotify(result);
+                        ClimateConditionsUpdated.Invoke(this, result);
 
                         // sleep for the appropriate interval
                         await Task.Delay(updateInterval).ConfigureAwait(false);
@@ -126,10 +145,7 @@ namespace MeadowClimaProKit
             }
         }
 
-        /// <summary>
-        /// Stops sampling the sensor.
-        /// </summary>
-        public void StopUpdating()
+        void StopUpdating()
         {
             if (!IsSampling) return;
 
@@ -141,26 +157,23 @@ namespace MeadowClimaProKit
             }
         }
 
-        protected virtual void RaiseEventsAndNotify(ClimateConditions changeResult)
-        {
-            ClimateConditionsUpdated.Invoke(this, changeResult);
-        }
-
-        public virtual async Task<ClimateReading> Read()
+        public async Task<ClimateReading> Read()
         {
             //==== create the read tasks
             var bmeTask = bme280?.Read();
-            var windVaneTask = windVane?.Read(); 
- 
+            var windVaneTask = windVane?.Read();
+            var rainFallTask = rainGauge.Read();
+
             //==== await until all tasks complete 
-            await Task.WhenAll(bmeTask, windVaneTask);
+            await Task.WhenAll(bmeTask, windVaneTask, rainFallTask);
 
             var climate = new ClimateReading()
             {
-                DateTime = DateTime.Now,
-                Humidity = bmeTask?.Result.Humidity,
+                DateTime = DateTime.Now,                
                 Temperature = bmeTask?.Result.Temperature,
                 Pressure = bmeTask?.Result.Pressure,
+                Humidity = bmeTask?.Result.Humidity,
+                RainFall = rainFallTask?.Result,
                 WindDirection = windVaneTask?.Result,
                 WindSpeed = anemometer?.WindSpeed,
             };

@@ -1,36 +1,28 @@
 ﻿using System;
 using Meadow.Gateways.Bluetooth;
 
-namespace MeadowClimaProKit.Server.Bluetooth
+namespace MeadowClimaProKit.Connectivity
 {
     public class BluetoothServer
     {
-        //==== internals
+        private static readonly Lazy<BluetoothServer> instance =
+            new Lazy<BluetoothServer>(() => new BluetoothServer());
+        public static BluetoothServer Instance => instance.Value;
+
         Definition bleTreeDefinition;
         CharacteristicString tempCharacteristic;
         CharacteristicString pressureCharacteristic;
         CharacteristicString humidityCharacteristic;
+        CharacteristicString rainFallCharacteristic;
         CharacteristicString windSpeedCharacteristic;
         CharacteristicString windDirectionCharacteristic;
-
-        //==== controllers and such
-        //ClimateMonitorAgent climateMonitorAgent = ClimateMonitorAgent.Instance;
-
-        //==== singleton stuff
-        private static readonly Lazy<BluetoothServer> instance = new Lazy<BluetoothServer>(() => new BluetoothServer());
-        public static BluetoothServer Instance 
-        {
-            get => instance.Value;
-        }
 
         private BluetoothServer() { }
 
         public void Initialize()
         {
             bleTreeDefinition = GetDefinition();
-
             ClimateMonitorAgent.Instance.ClimateConditionsUpdated += ClimateConditionsUpdated;
-
             MeadowApp.Device.BluetoothAdapter.StartBluetoothServer(bleTreeDefinition);
         }
 
@@ -49,6 +41,10 @@ namespace MeadowClimaProKit.Server.Bluetooth
             {
                 humidityCharacteristic.SetValue($"{ humidity:N2}%;");
             }
+            if (climateConditions.New?.RainFall is { } rainFall)
+            {
+                rainFallCharacteristic.SetValue($"{ rainFall:N2}mm;");
+            }
             if (climateConditions.New?.WindSpeed is { } windSpeed)
             {
                 windSpeedCharacteristic.SetValue($"{ windSpeed.KilometersPerHour:N2}Kmph;");
@@ -61,7 +57,7 @@ namespace MeadowClimaProKit.Server.Bluetooth
 
         protected Definition GetDefinition()
         {
-            //==== create our charactistics            
+            //==== Create our charactistics            
             tempCharacteristic = new CharacteristicString(
                     "Temperature",
                     uuid: "e78f7b5e-842b-4b99-94e3-7401bf72b870",
@@ -81,6 +77,14 @@ namespace MeadowClimaProKit.Server.Bluetooth
             humidityCharacteristic = new CharacteristicString(
                     "Humidity",
                     uuid: "143a3841-e244-4520-a456-214e048a030f",
+                    permissions: CharacteristicPermission.Read,
+                    properties: CharacteristicProperty.Read,
+                    maxLength: 32
+                );
+
+            rainFallCharacteristic = new CharacteristicString(
+                    "RainFall",
+                    uuid: "017e99d6-8a61-11eb-8dcd-0242ac1300aa",
                     permissions: CharacteristicPermission.Read,
                     properties: CharacteristicProperty.Read,
                     maxLength: 32
@@ -106,6 +110,7 @@ namespace MeadowClimaProKit.Server.Bluetooth
                     tempCharacteristic,
                     pressureCharacteristic,
                     humidityCharacteristic,
+                    rainFallCharacteristic,
                     windSpeedCharacteristic,
                     windDirectionCharacteristic
             };

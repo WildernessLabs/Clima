@@ -9,19 +9,23 @@ using SimpleJpegDecoder;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace MeadowClimaHackKit.Controllers
+namespace MeadowClimaHackKit.Controller
 {
     public class DisplayController
     {
+        CancellationTokenSource token;
+
         protected Temperature conditions;
 
         protected Menu menu;
         protected St7789 display;
-        protected BufferRgb888 logo;
+        protected BufferRgb888 logo, wifiConnecting, wifiConnected;
         protected MicroGraphics graphics;
 
-        static Color backgroundColor = Color.FromHex("#23abe3");
+        static Color backgroundColor = Color.FromHex("#23ABE3");
 
         protected bool isCelcius = true;
         protected bool isRendering = false;
@@ -40,7 +44,6 @@ namespace MeadowClimaHackKit.Controllers
             // our display needs mode3
             var config = new SpiClockConfiguration(new Frequency(48000, Frequency.UnitType.Kilohertz), SpiClockConfiguration.Mode.Mode3);
             var spiBus = MeadowApp.Device.CreateSpiBus(MeadowApp.Device.Pins.SCK, MeadowApp.Device.Pins.MOSI, MeadowApp.Device.Pins.MISO, config);
-            // new up the actual display on the SPI bus
             display = new St7789
             (
                 device: MeadowApp.Device,
@@ -53,14 +56,13 @@ namespace MeadowClimaHackKit.Controllers
             );
 
             // create our graphics surface that we'll draw onto and then blit to the display
-            graphics = new MicroGraphics(display) 
-            {   
+            graphics = new MicroGraphics(display)
+            {
                 CurrentFont = new Font12x20(),
-                Stroke = 3,
+                Stroke = 3        
             };
             graphics.DisplayConfig.FontScale = 2;
 
-            //create the menu for TextDisplayMenu
             var menuItems = new MenuItem[]
             {
                 new MenuItem("°C", command: "setCelcius"),
@@ -70,13 +72,21 @@ namespace MeadowClimaHackKit.Controllers
             menu = new Menu(graphics, menuItems, false);
             menu.Selected += MenuSelected;
 
-            Console.WriteLine("Clear display");
-
             // finally, clear the display so it's ready for action
             graphics.Clear(true);
 
             //and load the logo jpg into a buffer
-            LoadJpeg();
+            logo = LoadJpeg("img_meadow.jpg");
+            wifiConnected = LoadJpeg("img_wifi_connected.jpg");
+            wifiConnecting = LoadJpeg("img_wifi_connecting.jpg");
+        }
+
+        BufferRgb888 LoadJpeg(string fileName)
+        {
+            var jpgData = LoadResource(fileName);
+            var decoder = new JpegDecoder();
+            decoder.DecodeJpeg(jpgData);
+            return new BufferRgb888(decoder.Width, decoder.Height, decoder.GetImageData());
         }
 
         void MenuSelected(object sender, MenuSelectedEventArgs e)
@@ -84,59 +94,48 @@ namespace MeadowClimaHackKit.Controllers
             Console.WriteLine("MenuSelected: " + e.Command);
 
             isCelcius = (e.Command == "setCelcius");
-               
+
             //hide the menu after a selection
             menu.Disable();
             //and update the display
             Render();
         }
-        
+
         void DrawBackground()
         {
             //clear the buffer to a single color
-            graphics.Clear(backgroundColor); 
+            graphics.Clear(backgroundColor);
 
             //draw the jpeg logo
             graphics.DrawBuffer(
                 x: graphics.Width / 2 - logo.Width / 2,
-                y: 40,
+                y: 34,
                 buffer: logo);
 
             //draw the circle
             graphics.DrawCircle(
-                centerX: display.Width / 2, 
-                centerY: display.Height / 2, 
-                radius: (display.Width / 2) - 10, 
-                color: Color.Black, 
+                centerX: display.Width / 2,
+                centerY: display.Height / 2,
+                radius: (display.Width / 2) - 10,
+                color: Color.Black,
                 filled: false);
         }
 
-        public void UpdateStatusText(string line1, string line2)
-        {
-            if (isRendering) return;
-
-            //we'll do a partial update
-            Rect rect = new Rect(40, 140, 200, 190);
-            graphics.DrawRectangle(rect.Left, rect.Top, rect.Width, rect.Height, 
-                backgroundColor, true);
-
-            graphics.DrawText(display.Width / 2, 140, line1, Color.Black, 
-                alignment: TextAlignment.Center);
-
-            graphics.DrawText(display.Width / 2, 170, line2, Color.Black, 
-                alignment: TextAlignment.Center);
-
-            graphics.Show(rect);
-        }
-
-        public void UpdateDisplay(Temperature conditions) 
+        public void UpdateDisplay(Temperature conditions)
         {
             this.conditions = conditions;
 
-            if(menu.IsEnabled == false)
+            if (menu.IsEnabled == false)
             {
                 Render();
             }
+        }
+
+        public void ShowSplashScreen()
+        {
+            DrawBackground();
+
+            graphics.Show();
         }
 
         public void MenuUp()
@@ -151,7 +150,7 @@ namespace MeadowClimaHackKit.Controllers
 
         public void MenuSelect()
         {
-            if(menu.IsEnabled == false)
+            if (menu.IsEnabled == false)
             {
                 menu.Enable();
             }
@@ -159,22 +158,6 @@ namespace MeadowClimaHackKit.Controllers
             {
                 menu.Select();
             }
-        }
-
-        public void ShowSplashScreen()
-        {
-            DrawBackground();
-
-            graphics.Show();
-        }
-
-        protected void LoadJpeg()
-        {
-            var jpgData = LoadResource("meadow.jpg");
-            var decoder = new JpegDecoder();
-            decoder.DecodeJpeg(jpgData);
-
-            logo = new BufferRgb888(decoder.Width, decoder.Height, decoder.GetImageData());
         }
 
         protected byte[] LoadResource(string filename)
@@ -188,10 +171,6 @@ namespace MeadowClimaHackKit.Controllers
             return ms.ToArray();
         }
 
-        /// <summary>
-        /// Does the actual rendering. If it's already rendering, it'll bail out,
-        /// so render requests don't stack up.
-        /// </summary>
         protected void Render()
         {
             //if the menu is enabled, it's responsible for drawing the screen
@@ -229,6 +208,35 @@ namespace MeadowClimaHackKit.Controllers
             graphics.Show();
 
             isRendering = false;
+        }
+
+        public async Task StartWifiConnectingAnimation() 
+        {
+            token = new CancellationTokenSource();
+
+            while (!token.IsCancellationRequested)
+            {                
+                graphics.DrawBuffer(
+                    x: graphics.Width / 2 - wifiConnecting.Width / 2,
+                    y: 134,
+                    buffer: wifiConnecting);
+                graphics.Show();
+
+                await Task.Delay(500);
+
+                graphics.DrawBuffer(
+                    x: graphics.Width / 2 - wifiConnected.Width / 2,
+                    y: 134,
+                    buffer: wifiConnected);
+                graphics.Show();
+
+                await Task.Delay(500);
+            }
+        }
+
+        public void StopWifiConnectingAnimation() 
+        {
+            token.Cancel();
         }
     }
 }

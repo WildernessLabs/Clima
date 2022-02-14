@@ -51,8 +51,8 @@ Hello and welcome!
 1. [Buy](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) or [Source](/Docs/Clima.Pro/Bill_of_Materials.md) a kit.
 2. [Assemble it](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
 3. [Register for an OpenWeather API Key](https://blog.wildernesslabs.co/add-openweather-to-your-meadow-projects/)
-4. [Build and Deploy the Meadow Clima.Pro App to it].
-5. Optionally, build and deploy the [companion mobile app].
+4. [Build and Deploy the Meadow Clima.Pro App](/Docs/Clima.Pro/Deploy_Instructions/readme.md).
+5. Optionally, build and deploy the [companion mobile app](/Docs/Clima.MobileApp/readme.md).
 
 ## Sourcing
 
@@ -90,7 +90,7 @@ In there is a `clima.sln` file with the following projects in it:
 * **CommonContracts** - Shared project with the data models that are shared amongs the various projects.
 * **MeadowClimaHackKit** - A Meadow application for the Hack Kit version of Clima.
 * **MeadowClimaProKit** - A Meadow application to use with the Clima Pro climate station hardware.
-* **MeadowClimaProKit.Tests** - A Meadow application used to test Clima.Pro sensors.
+* **MeadowClimaProKit.Diagnostics** - A Meadow application used to test Clima.Pro sensors.
 * **MobileApp** - Xamarin.Forms common project of Clima's companion app.
 * **MobileApp.Android** - Android specific head project.
 * **MobileApp.iOS** - iOS specific head project.

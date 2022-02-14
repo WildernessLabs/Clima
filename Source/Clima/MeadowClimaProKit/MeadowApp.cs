@@ -1,61 +1,41 @@
 ﻿using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
-using Meadow.Foundation.Leds;
-using MeadowClimaProKit.DataAccessLayer;
-using MeadowClimaProKit.Database;
-using MeadowClimaProKit.Models;
-using MeadowClimaProKit.Server.Bluetooth;
+using Meadow.Foundation.Web.Maple.Server;
+using Meadow.Gateway.WiFi;
+using MeadowClimaProKit.Controller;
+using MeadowClimaProKit.ServiceAccessLayer;
 using System;
+using System.Threading.Tasks;
 
 namespace MeadowClimaProKit
 {
     public class MeadowApp : App<F7MicroV2, MeadowApp>
     {
-        //==== Controllers and such
+        MapleServer mapleServer;
+
         public MeadowApp()
         {
-            Console.WriteLine("MeadowApp constructor started.");
+            InitializeMaple().Wait();
 
-            //==== new up our peripherals
-            Initialize();
-        
-            //==== subscribe to climate updates and save them to the database
-            ClimateMonitorAgent.Instance.ClimateConditionsUpdated += (s, e) =>
+            mapleServer.Start();
+        }
+
+        async Task InitializeMaple()
+        {
+            LedController.Instance.SetColor(Color.Red);
+
+            var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
+            if (result.ConnectionStatus != ConnectionStatus.Success)
             {
-                DebugOut(e.New);
-                DatabaseManager.Instance.SaveReading(e.New);
-            };
-            ClimateMonitorAgent.Instance.StartUpdating(TimeSpan.FromSeconds(10));
+                throw new Exception($"Cannot connect to network: {result.ConnectionStatus}");
+            }
 
-            Console.WriteLine("MeadowApp constructor finished.");
-        }
+            await DateTimeService.GetTimeAsync();
 
-        //==== Initializes the hardware.
-        protected void Initialize()
-        {
-            Console.WriteLine("Hardware initialization started.");
-            var onboardLed = new RgbPwmLed(device: Device,
-                redPwmPin: Device.Pins.OnboardLedRed,
-                greenPwmPin: Device.Pins.OnboardLedGreen,
-                bluePwmPin: Device.Pins.OnboardLedBlue);
+            mapleServer = new MapleServer(Device.WiFiAdapter.IpAddress, 5417, false);
 
-            onboardLed.SetColor(WildernessLabsColors.ChileanFire);
-
-            BluetoothServer.Instance.Initialize();
-
-            onboardLed.SetColor(Color.Green);
-            Console.WriteLine("Hardware initialization complete.");
-        }
-
-        protected void DebugOut(ClimateReading climate)
-        {
-            Console.WriteLine("New climate reading:");
-            Console.WriteLine($"Temperature: {climate.Temperature?.Celsius:N2}C");
-            Console.WriteLine($"Pressure: {climate.Pressure?.Millibar:N2}millibar");
-            Console.WriteLine($"Humidity: {climate.Humidity:N2}%");
-            Console.WriteLine($"Wind Speed: {climate.WindSpeed?.KilometersPerHour}");
-            Console.WriteLine($"Wind Direction: {climate.WindDirection?.Compass16PointCardinalName}");
+            LedController.Instance.SetColor(Color.Green);            
         }
     }
 }
