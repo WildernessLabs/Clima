@@ -4,11 +4,11 @@
 
  * **Download and install [Visual Studio](https://visualstudio.microsoft.com/)** - For either Windows or macOS. Community edition will work fine.
 
- * **Follow the [Meadow.OS Deployment Guide](http://developer.wildernesslabs.co/Meadow/Getting_Started/Deploying_Meadow/)**
+ * **Follow the [Meadow.OS Deployment Guide](http://developer.wildernesslabs.co/Meadow/Getting_Started/Deploying_Meadow/)**:
    * Install Meadow.CLI
    * Download the latest Meadow.OS and flash it to the Meadow board.
 
- * **Follow the [`Hello, Meadow` Guide](http://developer.wildernesslabs.co/Meadow/Getting_Started/Hello_World/)**
+ * **Follow the [`Hello, Meadow` Guide](http://developer.wildernesslabs.co/Meadow/Getting_Started/Hello_World/)**:
    * Install the Meadow Visual Studio Extension(s).
    * Create and deploy the Meadow template application to ensure everthing is setup correctly.
 
