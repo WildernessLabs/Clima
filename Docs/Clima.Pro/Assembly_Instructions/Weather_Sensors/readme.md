@@ -1,6 +1,6 @@
 # Weather Sensors Assembly
 
-To assemble the whole Clima kit with all its sensor, you'll need the set if 3 long screws with its bolts, and 2 smaller screws. They should be in a little zip lock bag like this:
+To assemble the whole Clima kit with all it's sensors, you'll need the set of 3 long screws with it's bolts, and 2 smaller screws. They should be in a little zip lock bag like this:
 
 ![](clima_screws.jpg)
 
@@ -10,7 +10,7 @@ Start by connecting the two steel tubes together like so:
 
 ![](clima_tubes.jpg)
 
-Next, one of the tube ends have has a small rounded gap and a whole right below it. In that end, place the sensor support for the windvane and anemometer. Use one of the long screws and bolts to fix the support to the tube.
+Next, one of the tube ends has a small rounded gap and a hole right below it. In that end, place the sensor support for the wind vane and anemometer. Use one of the long screws and bolts to fix the support to the tube.
 
 ![](clima_support.jpg)
 
