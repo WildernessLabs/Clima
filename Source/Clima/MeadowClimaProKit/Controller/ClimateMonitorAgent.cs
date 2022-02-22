@@ -68,7 +68,7 @@ namespace MeadowClimaProKit
                 Console.WriteLine("Trying it as a BME280.");
                 try
                 {
-                    bme280 = new Bme280(i2c, (byte)Bme280.Addresses.Address0);
+                    bme280 = new Bme280(i2c, (byte)Bme280.Addresses.Default);
                     Console.WriteLine("Bme280 successully initialized.");
                     var bmeObserver = Bme280.CreateObserver(
                         handler: result => Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"),
