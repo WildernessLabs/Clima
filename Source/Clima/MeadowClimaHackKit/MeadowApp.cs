@@ -37,17 +37,12 @@ namespace MeadowClimaHackKit
 
             DisplayController.Instance.ShowSplashScreen();
 
-            TemperatureController.Instance.Initialize();
-
             //InitializeBluetooth();
-
             InitializeMaple().Wait();
-
-            LedController.Instance.SetColor(Color.Green);
         }
 
         void InitializeBluetooth()
-        {
+        {            
             BluetoothServer.Instance.Initialize();
         }
 
@@ -55,18 +50,26 @@ namespace MeadowClimaHackKit
         {            
             DisplayController.Instance.StartWifiConnectingAnimation();
 
+            Device.WiFiAdapter.WiFiConnected += WiFiConnected;
             var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
             if (result.ConnectionStatus != ConnectionStatus.Success)
             {
                 throw new Exception($"Cannot connect to network: {result.ConnectionStatus}");
             }
+        }
 
+        async void WiFiConnected(object sender, EventArgs e)
+        {
             DisplayController.Instance.StopWifiConnectingAnimation();
 
             await DateTimeService.GetTimeAsync();
 
             mapleServer = new MapleServer(Device.WiFiAdapter.IpAddress, 5417, false);
             mapleServer.Start();
+
+            TemperatureController.Instance.Initialize();
+
+            LedController.Instance.SetColor(Color.Green);
         }
     }
 }
