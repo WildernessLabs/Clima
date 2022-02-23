@@ -12,8 +12,8 @@ namespace MeadowClimaProKit.Connectivity
     {
         public MapleRequestHandler() { }
 
-        [HttpGet("/getclimatelogs")]
-        public IActionResult GetClimateLogs()
+        [HttpGet]
+        public void GetClimateLogs()
         {
             LedController.Instance.SetColor(Color.Magenta);
 
@@ -35,7 +35,9 @@ namespace MeadowClimaProKit.Connectivity
 
             LedController.Instance.SetColor(Color.Green);
 
-            return new JsonResult(data);
+            Context.Response.ContentType = ContentTypes.Application_Text;
+            Context.Response.StatusCode = 200;
+            Send();
         }
     }
 }

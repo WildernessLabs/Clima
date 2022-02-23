@@ -22,7 +22,7 @@
 	  <PackageReference Include="Meadow.Foundation.Web.Maple.Server" Version="0.*" />
 	  <PackageReference Include="SimpleJpegDecoder" Version="0.4.0" />
 	  <PackageReference Include="sqlite-net-static" Version="1.8.116" />
-	  <PackageReference Include="System.Text.Json" Version="6.0.1" />
+	  <PackageReference Include="System.Text.Json" Version="6.0.2" />
   </ItemGroup>
   <Import Project="..\CommonContracts\CommonContracts.projitems" Label="Shared" />
 </Project>

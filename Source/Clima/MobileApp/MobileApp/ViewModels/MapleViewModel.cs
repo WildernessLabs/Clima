@@ -1,5 +1,5 @@
 ﻿using CommonContracts.Models;
-using Meadow.Foundation.Web.Maple.Client;
+using Meadow.Foundation.Maple.Web.Client;
 using MobileApp.ViewModels;
 using System;
 using System.Collections.ObjectModel;
