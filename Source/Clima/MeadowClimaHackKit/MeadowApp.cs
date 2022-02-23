@@ -39,9 +39,9 @@ namespace MeadowClimaHackKit
 
             TemperatureController.Instance.Initialize();
 
-            InitializeBluetooth();
+            //InitializeBluetooth();
 
-            //InitializeMaple().Wait();
+            InitializeMaple().Wait();
 
             LedController.Instance.SetColor(Color.Green);
         }

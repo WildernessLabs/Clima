@@ -31,9 +31,9 @@ namespace MeadowClimaHackKit.Connectivity
 
             LedController.Instance.SetColor(Color.Green);
 
-            Context.Response.ContentType = ContentTypes.Application_Text;
+            Context.Response.ContentType = ContentTypes.Application_Json;
             Context.Response.StatusCode = 200;
-            Send();
+            Send(data);
         }
     }
 }
