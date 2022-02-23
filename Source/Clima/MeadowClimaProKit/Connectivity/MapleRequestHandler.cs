@@ -37,7 +37,7 @@ namespace MeadowClimaProKit.Connectivity
 
             Context.Response.ContentType = ContentTypes.Application_Text;
             Context.Response.StatusCode = 200;
-            Send();
+            Send(data);
         }
     }
 }
