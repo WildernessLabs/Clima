@@ -46,6 +46,20 @@ Hello and welcome!
 
 **These getting started instructions are still in beta**, please help us. :) As you run through the, please log any challenges, bugs, or enhancements in the [issues tracker](https://github.com/WildernessLabs/Clima/issues). You can also chat with us in realtime on our [Slack Server](http://slackinvite.wildernesslabs.co/). Make sure to join the `#clima` channel and say `hi!`.
 
+## Important Note - Don't hook up the solar panel yet!!
+
+We recently learned that in certain circumstances, hooking the clima PCB up to the solar panel and the battery can kill the Meadow. This is due to the nature of the battery charging circuit on the Meadow board which makes the `5V` rail effectively output only, with the USB `5V` input being the only way to appropriately power the Meadow and charge a battery with `5V` or greater.
+
+There are two workarounds to this, and we're working on both currently:
+ * **Add a charging circuit to the Clima PCB** - By adding a charging circuit to the Clima PCB, we bypass the internal charing circuit. 
+ * **Expose the USB `5V` rail on the Meadow** - We're also currently considering a design change to future Meadow boards that would expose castellated connectors for `GND` and `5V+` input on either side of the USB connector. This would enable the solar power input to take the same path as the USB input and then the onboard battery charger would work as expected. 
+
+**If you purchased a Clima.Pro Kit we will be sending you an updated PCB soon!** - It may take a month or more (expected shipping mid-March). We need to spin the design, test it, and then assemble production boards.
+
+This problem appears to be a flaw in the design spec of the Feather Form Factor itself. We've analyzed a number of Feather boards, and they employ one of two designs; ours, which prevents the `5V` pin from being an input, or another design which has the distinct possibility of blowing the host USB port that the Meadow is plugged into.
+
+
+
 ## Getting Started
 
 1. [Buy](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) or [Source](/Docs/Clima.Pro/Bill_of_Materials.md) a kit.
