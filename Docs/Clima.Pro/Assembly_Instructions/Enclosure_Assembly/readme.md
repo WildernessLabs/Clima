@@ -1,6 +1,6 @@
 # Clima.Pro 3D Printed Enclosure Assembly
 
-If you've ordered the enclosure from the Wilderness Labs store, it already comes assembled with the heat-set inserts in it, so you can skip this step and go directly to [Weather Sensor assembly instructions](../Weather_Sensors/).
+If you've ordered the enclosure from the Wilderness Labs store, it already comes assembled with the heat-set inserts in it, so you can skip this step and go directly to [Electronics Installation instructions](../Electronics_Installation/readme.md).
 
 However, if you're 3D printing at home, you'll need to follow the instructions below:
 
