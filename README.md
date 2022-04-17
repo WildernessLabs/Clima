@@ -54,7 +54,7 @@ There are two workarounds to this, and we're working on both currently:
  * **Add a charging circuit to the Clima PCB** - By adding a charging circuit to the Clima PCB, we bypass the internal charing circuit. 
  * **Expose the USB `5V` rail on the Meadow** - We're also currently considering a design change to future Meadow boards that would expose castellated connectors for `GND` and `5V+` input on either side of the USB connector. This would enable the solar power input to take the same path as the USB input and then the onboard battery charger would work as expected. 
 
-**If you purchased a Clima.Pro Kit we will be sending you an updated PCB soon!** - It may take a month or more (expected shipping mid-March). We need to spin the design, test it, and then assemble production boards.
+**If you purchased a Clima.Pro Kit we will be sending you an updated PCB soon!** - ETA: July-ish. We have spun a new design, and we should be able to validate it soon. Thanks for you patience!
 
 This problem appears to be a flaw in the design spec of the Feather Form Factor itself. We've analyzed a number of Feather boards, and they employ one of two designs; ours, which prevents the `5V` pin from being an input, or another design which has the distinct possibility of blowing the host USB port that the Meadow is plugged into.
 
