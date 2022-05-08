@@ -50,15 +50,13 @@ Hello and welcome!
 
 We recently learned that in certain circumstances, hooking the clima PCB up to the solar panel and the battery can kill the Meadow. This is due to the nature of the battery charging circuit on the Meadow board which makes the `5V` rail effectively output only, with the USB `5V` input being the only way to appropriately power the Meadow and charge a battery with `5V` or greater.
 
+This problem appears to be a flaw in the design spec of the Feather Form Factor itself. We've analyzed a number of Feather boards, and they employ one of two designs; ours, which prevents the `5V` pin from being an input, or another design which has the distinct possibility of blowing the host USB port that the Meadow is plugged into.
+
 There are two workarounds to this, and we're working on both currently:
  * **Add a charging circuit to the Clima PCB** - By adding a charging circuit to the Clima PCB, we bypass the internal charing circuit. 
  * **Expose the USB `5V` rail on the Meadow** - We're also currently considering a design change to future Meadow boards that would expose castellated connectors for `GND` and `5V+` input on either side of the USB connector. This would enable the solar power input to take the same path as the USB input and then the onboard battery charger would work as expected. 
 
-**If you purchased a Clima.Pro Kit we will be sending you an updated PCB soon!** - ETA: May-ish. We have spun a new design, and we should be able to validate it soon. Thanks for you patience!
-
-This problem appears to be a flaw in the design spec of the Feather Form Factor itself. We've analyzed a number of Feather boards, and they employ one of two designs; ours, which prevents the `5V` pin from being an input, or another design which has the distinct possibility of blowing the host USB port that the Meadow is plugged into.
-
-
+**If you purchased a Clima.Pro Kit we will be sending you an updated PCB soon!** - Update 2022.05.07: We've spun and validated a new module that handles the solar power/battery charging. Took us a little while to validate it because we had an incorrect part placed on it. We just ordered the new PCBs for it and they should be here in two weeks. We'll assemble a few onto the new Clima board, validate, and if everything works together, we'll assemble the rest of them and ship them out. Thanks for you patience!
 
 ## Getting Started
 
