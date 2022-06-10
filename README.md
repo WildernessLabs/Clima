@@ -56,7 +56,13 @@ There are two workarounds to this, and we're working on both currently:
  * **Add a charging circuit to the Clima PCB** - By adding a charging circuit to the Clima PCB, we bypass the internal charing circuit. 
  * **Expose the USB `5V` rail on the Meadow** - We're also currently considering a design change to future Meadow boards that would expose castellated connectors for `GND` and `5V+` input on either side of the USB connector. This would enable the solar power input to take the same path as the USB input and then the onboard battery charger would work as expected. 
 
-**If you purchased a Clima.Pro Kit we will be sending you an updated PCB soon!** - Update 2022.05.07: We've spun and validated a new module that handles the solar power/battery charging. Took us a little while to validate it because we had an incorrect part placed on it. We just ordered the new PCBs for it and they should be here in two weeks. We'll assemble a few onto the new Clima board, validate, and if everything works together, we'll assemble the rest of them and ship them out. Thanks for you patience!
+**If you purchased a Clima.Pro Kit we will be sending you an updated PCB soon!** - Update 2022.06.10: Good news; the new board design works as expected. Two tasks for us:
+ * We need to assemble replacements and send out. Unfortunately the camera on our pick-n-place machine has given out, so we might have to assembly by hand. 
+ * The news solar power/battery charging circuit sits above the enclosure and interferes with the lid, so we need to make a small design change there and print new ones.
+
+![](/Image_Assets/Clima_w_new_Solar_Circuit.jpg)
+
+Stay tuned and thanks for you patience!
 
 ## Getting Started
 
