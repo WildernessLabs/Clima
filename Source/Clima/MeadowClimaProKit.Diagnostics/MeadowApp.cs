@@ -7,10 +7,11 @@ using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
 using Meadow.Units;
 using System;
+using System.Threading.Tasks;
 
 namespace MeadowClimaProKit.Tests
 {
-    public class MeadowApp : App<F7MicroV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2>
     {
         II2cBus? i2c;
         Bme680? bme680;
@@ -20,12 +21,7 @@ namespace MeadowClimaProKit.Tests
         SwitchingAnemometer anemometer;
         SwitchingRainGauge rainGauge;
 
-        public MeadowApp()
-        {
-            Initialize();
-        }
-
-        void Initialize()
+        public override Task Initialize()
         {
             Console.WriteLine("Initialize RGB Led");
             onboardLed = new RgbPwmLed(device: Device,
@@ -41,7 +37,6 @@ namespace MeadowClimaProKit.Tests
                 filter: null
             );
             rainGauge.Subscribe(rainGaugeObserver);
-            rainGauge.StartUpdating();
 
             Console.WriteLine("Initialize SwitchingAnemometer");
             anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
@@ -50,7 +45,7 @@ namespace MeadowClimaProKit.Tests
                 filter: null
             );
             anemometer.Subscribe(anemometerObserver);
-            anemometer.StartUpdating();
+            //anemometer.StartUpdating();
 
             Console.WriteLine("Initialize WindVane");
             windVane = new WindVane(Device, Device.Pins.A00);
@@ -59,18 +54,9 @@ namespace MeadowClimaProKit.Tests
                 filter: null
             );
             windVane.Subscribe(observer);
-            windVane.StartUpdating(TimeSpan.FromSeconds(1));
+            //windVane.StartUpdating(TimeSpan.FromSeconds(1));
 
-            // i2c
-            try
-            {
-                Console.WriteLine("Instantiating I2C bus");
-                i2c = Device.CreateI2cBus();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("i2C failed bring-up.");
-            }
+            i2c = Device.CreateI2cBus();
 
             Console.WriteLine("Initialize Bme680");
             if (i2c != null)
@@ -121,6 +107,8 @@ namespace MeadowClimaProKit.Tests
             }
 
             onboardLed.SetColor(Color.Green);
+
+            return Task.CompletedTask;
         }
 
         void OutputWindSpeed(Speed windspeed)
@@ -133,11 +121,14 @@ namespace MeadowClimaProKit.Tests
             onboardLed.SetColor(wspeedColor);
         }
 
-        void StartUpdating()
+        public override Task Run()
         {
-            bme680.StartUpdating();
-            windVane.StartUpdating(TimeSpan.FromSeconds(1));
+            rainGauge?.StartUpdating();
             anemometer.StartUpdating();
+            windVane.StartUpdating(TimeSpan.FromSeconds(1));
+            bme680?.StartUpdating();
+
+            return Task.CompletedTask;
         }
     }
 }
