@@ -9,7 +9,7 @@ using Meadow.Units;
 using System;
 using System.Threading.Tasks;
 
-namespace MeadowClimaProKit.Tests
+namespace MeadowClimaProKit.Diagnostics
 {
     public class MeadowApp : App<F7FeatherV2>
     {
@@ -20,16 +20,32 @@ namespace MeadowClimaProKit.Tests
         RgbPwmLed onboardLed;
         SwitchingAnemometer anemometer;
         SwitchingRainGauge rainGauge;
+        IAnalogInputPort solarVoltageInput;
+        DiagnosticStatus diagnosticStatus;
 
         public override Task Initialize()
         {
+            diagnosticStatus = new DiagnosticStatus();
+
+            //==== Solar Voltage Input
+            Console.WriteLine("Initializing the solar voltage input");
+            solarVoltageInput = Device.CreateAnalogInputPort(Device.Pins.A02);
+            var solarVoltageObserver = IAnalogInputPort.CreateObserver(
+                handler: result => Console.WriteLine($"Solar Voltage: {result.New}"),
+                filter: null
+            );
+            solarVoltageInput.Subscribe(solarVoltageObserver);
+
+            //==== Onboard LED
             Console.WriteLine("Initialize RGB Led");
             onboardLed = new RgbPwmLed(device: Device,
                 redPwmPin: Device.Pins.OnboardLedRed,
                 greenPwmPin: Device.Pins.OnboardLedGreen,
                 bluePwmPin: Device.Pins.OnboardLedBlue);
-            onboardLed.SetColor(Color.Red);
+            // start pulsing blue
+            onboardLed.StartPulse(WildernessLabsColors.AzureBlue);
 
+            //==== rain gauge
             Console.WriteLine("Initialize SwitchingRainGauge");
             rainGauge = new SwitchingRainGauge(Device, Device.Pins.D15);
             var rainGaugeObserver = SwitchingRainGauge.CreateObserver(
@@ -38,6 +54,7 @@ namespace MeadowClimaProKit.Tests
             );
             rainGauge.Subscribe(rainGaugeObserver);
 
+            //==== anemometer
             Console.WriteLine("Initialize SwitchingAnemometer");
             anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
             var anemometerObserver = SwitchingAnemometer.CreateObserver(
@@ -45,8 +62,8 @@ namespace MeadowClimaProKit.Tests
                 filter: null
             );
             anemometer.Subscribe(anemometerObserver);
-            //anemometer.StartUpdating();
 
+            //==== windvane
             Console.WriteLine("Initialize WindVane");
             windVane = new WindVane(Device, Device.Pins.A00);
             var observer = WindVane.CreateObserver(
@@ -54,11 +71,13 @@ namespace MeadowClimaProKit.Tests
                 filter: null
             );
             windVane.Subscribe(observer);
-            //windVane.StartUpdating(TimeSpan.FromSeconds(1));
 
+            //==== I2C Bus
             i2c = Device.CreateI2cBus();
 
+            //==== Bme
             Console.WriteLine("Initialize Bme680");
+            //TODO: actually a BME688
             if (i2c != null)
             {
                 try
@@ -97,16 +116,8 @@ namespace MeadowClimaProKit.Tests
 
             if (bme680 != null || bme280 != null)
             {
-                onboardLed.StartPulse(Color.Green);
-                Console.WriteLine("Success. Board is good.");
+                diagnosticStatus.BmeWorking = true;
             }
-            else
-            {
-                onboardLed.SetColor(Color.Red);
-                Console.WriteLine("Failure. Board is bad.");
-            }
-
-            onboardLed.SetColor(Color.Green);
 
             return Task.CompletedTask;
         }
@@ -121,14 +132,43 @@ namespace MeadowClimaProKit.Tests
             onboardLed.SetColor(wspeedColor);
         }
 
-        public override Task Run()
+        public async override Task Run()
         {
             rainGauge?.StartUpdating();
             anemometer.StartUpdating();
             windVane.StartUpdating(TimeSpan.FromSeconds(1));
             bme680?.StartUpdating();
 
-            return Task.CompletedTask;
+            var solarVoltage = await solarVoltageInput.Read();
+            Console.WriteLine($"Solar Voltage: {solarVoltage:n2}V");
+
+            if (solarVoltage.Volts > 2)
+            {
+                diagnosticStatus.SolarWorking = true;
+            }
+
+            // write out our test status.
+            if(diagnosticStatus.AllWorking)
+            {
+                onboardLed.StartPulse(WildernessLabsColors.PearGreen);
+                Console.WriteLine("Success. Board is good.");
+            }
+            else
+            {
+                onboardLed.StartPulse(WildernessLabsColors.ChileanFire);
+                Console.WriteLine("Failure. Board is not good.");
+                if(!diagnosticStatus.BmeWorking)
+                {
+                    Console.WriteLine("BME didn't bring up.");
+                }
+                if (!diagnosticStatus.SolarWorking)
+                {
+                    Console.WriteLine("Solar voltage incorrect.");
+                }
+            }
+
+
+            return;
         }
     }
 }
