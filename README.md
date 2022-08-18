@@ -56,7 +56,7 @@ There are two workarounds to this, and we're working on both currently:
  * **Add a charging circuit to the Clima PCB** - By adding a charging circuit to the Clima PCB, we bypass the internal charing circuit. 
  * **Expose the USB `5V` rail on the Meadow** - We're also currently considering a design change to future Meadow boards that would expose castellated connectors for `GND` and `5V+` input on either side of the USB connector. This would enable the solar power input to take the same path as the USB input and then the onboard battery charger would work as expected. 
 
-**If you purchased a Clima.Pro Kit we will be sending you an updated PCB soon!** - Update 2022.07.10: Best news! We've got new boards assembled for you! We just need to test them before they go out. We're working on getting the test harness together (we have a diagnostic app, but need to add the solar stuff to it).
+**If you purchased a Clima.Pro Kit we will be sending you an updated PCB soon!** - Update 2022.08.18: Good news, bad news... *Good News*: The new solar/battery charging circuit is working great! *Bad News*: with some recent changes to the Networking stack, we lost interrupt group `12` to the ESP comms stack, which means we gotta move the rain gauge off that pin. So we gotta re-spin the PCB, reassemble, and ship. Sorry, and thanks for your patience!!
 
 ![](/Image_Assets/Clima_w_new_Solar_Circuit.jpg)
 
