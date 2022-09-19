@@ -1,6 +1,6 @@
 ﻿using Meadow.Foundation;
 using Meadow.Foundation.Displays.TextDisplayMenu;
-using Meadow.Foundation.Displays.TftSpi;
+using Meadow.Foundation.Displays;
 using Meadow.Foundation.Graphics;
 using Meadow.Foundation.Graphics.Buffers;
 using Meadow.Hardware;
@@ -16,6 +16,10 @@ namespace MeadowClimaHackKit.Controller
 {
     public class DisplayController
     {
+        private static readonly Lazy<DisplayController> instance =
+            new Lazy<DisplayController>(() => new DisplayController());
+        public static DisplayController Instance => instance.Value;
+
         CancellationTokenSource token;
 
         protected Temperature conditions;
@@ -30,10 +34,6 @@ namespace MeadowClimaHackKit.Controller
         protected bool isCelcius = true;
         protected bool isRendering = false;
 
-        private static readonly Lazy<DisplayController> instance =
-            new Lazy<DisplayController>(() => new DisplayController());
-        public static DisplayController Instance => instance.Value;
-
         private DisplayController()
         {
             Initialize();
@@ -41,9 +41,16 @@ namespace MeadowClimaHackKit.Controller
 
         public void Initialize()
         {
-            // our display needs mode3
-            var config = new SpiClockConfiguration(new Frequency(48000, Frequency.UnitType.Kilohertz), SpiClockConfiguration.Mode.Mode3);
-            var spiBus = MeadowApp.Device.CreateSpiBus(MeadowApp.Device.Pins.SCK, MeadowApp.Device.Pins.MOSI, MeadowApp.Device.Pins.MISO, config);
+            var config = new SpiClockConfiguration(
+                new Frequency(48000, Frequency.UnitType.Kilohertz),
+                SpiClockConfiguration.Mode.Mode3);
+
+            var spiBus = MeadowApp.Device.CreateSpiBus(
+                MeadowApp.Device.Pins.SCK,
+                MeadowApp.Device.Pins.MOSI,
+                MeadowApp.Device.Pins.MISO,
+                config);
+
             display = new St7789
             (
                 device: MeadowApp.Device,
@@ -52,14 +59,14 @@ namespace MeadowClimaHackKit.Controller
                 dcPin: MeadowApp.Device.Pins.D01,
                 resetPin: MeadowApp.Device.Pins.D00,
                 width: 240, height: 240,
-                displayColorMode: ColorType.Format16bppRgb565
+                colorMode: ColorType.Format16bppRgb565
             );
 
             // create our graphics surface that we'll draw onto and then blit to the display
             graphics = new MicroGraphics(display)
             {
                 CurrentFont = new Font12x20(),
-                Stroke = 3        
+                Stroke = 3
             };
             graphics.DisplayConfig.FontScale = 2;
 

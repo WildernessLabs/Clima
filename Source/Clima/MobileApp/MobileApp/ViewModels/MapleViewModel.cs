@@ -1,7 +1,8 @@
 ﻿using CommonContracts.Models;
-using Meadow.Foundation.Maple.Web.Client;
+using Meadow.Foundation.Web.Maple;
 using MobileApp.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
@@ -204,13 +205,22 @@ namespace WildernessLabs.Clima.App
         {
             try
             {
-                var response = await client.GetAsync(SelectedServer != null ? SelectedServer.IpAddress : IpAddress, ServerPort, "gettemperaturelogs", null, null);
+                var response = await client.GetAsync(
+                    hostAddress: SelectedServer != null ? SelectedServer.IpAddress : IpAddress, 
+                    port: ServerPort, 
+                    endPoint: "gettemperaturelogs", 
+                    param: null, 
+                    value: null);
 
                 if (response == null)
                     return;
 
-                var value = System.Text.Json.JsonSerializer.Deserialize<TemperatureModel>(response);
-                //TemperatureLog.Add(value);
+                var values = System.Text.Json.JsonSerializer.Deserialize<List<TemperatureModel>>(response);
+
+                foreach (var value in values)
+                {
+                    TemperatureLog.Add(value);
+                }
             }
             catch (Exception ex)
             {

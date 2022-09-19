@@ -4,9 +4,9 @@ namespace CommonContracts.Models
 {
     public class TemperatureModel
     {
-        [JsonPropertyName("temperature")]
+        [JsonPropertyName("Temperature")]
         public string Temperature { get; set; }
-        [JsonPropertyName("dateTime")]
+        [JsonPropertyName("DateTime")]
         public string DateTime { get; set; }
     }
 }

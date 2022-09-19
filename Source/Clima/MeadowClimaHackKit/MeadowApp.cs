@@ -2,8 +2,9 @@
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Buttons;
-using Meadow.Foundation.Web.Maple.Server;
+using Meadow.Foundation.Web.Maple;
 using Meadow.Gateway.WiFi;
+using Meadow.Hardware;
 using MeadowClimaHackKit.Connectivity;
 using MeadowClimaHackKit.Controller;
 using MeadowClimaHackKit.ServiceAccessLayer;
@@ -13,17 +14,12 @@ using System.Threading.Tasks;
 namespace MeadowClimaHackKit
 {
     // public class MeadowApp : App<F7Micro, MeadowApp> <- If you have a Meadow F7v1.*
-    public class MeadowApp : App<F7MicroV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2>
     {
         MapleServer mapleServer;
         PushButton buttonUp, buttonDown, buttonMenu;
 
-        public MeadowApp()
-        {
-            Initialize();
-        }
-
-        void Initialize() 
+        public override Task Initialize()
         {
             LedController.Instance.SetColor(Color.Red);
 
@@ -39,32 +35,32 @@ namespace MeadowClimaHackKit
 
             //InitializeBluetooth();
             InitializeMaple().Wait();
+
+            return base.Initialize();
         }
 
         void InitializeBluetooth()
-        {            
+        {
             BluetoothServer.Instance.Initialize();
         }
 
         async Task InitializeMaple()
-        {            
+        {
             DisplayController.Instance.StartWifiConnectingAnimation();
 
-            Device.WiFiAdapter.WiFiConnected += WiFiConnected;
-            var result = await Device.WiFiAdapter.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD);
-            if (result.ConnectionStatus != ConnectionStatus.Success)
-            {
-                throw new Exception($"Cannot connect to network: {result.ConnectionStatus}");
-            }
-        }
+            var wifi = Device.NetworkAdapters.Primary<IWiFiNetworkAdapter>();
 
-        async void WiFiConnected(object sender, EventArgs e)
-        {
+            var connectionResult = await wifi.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD, TimeSpan.FromSeconds(45));
+            if (connectionResult.ConnectionStatus != ConnectionStatus.Success)
+            {
+                throw new Exception($"Cannot connect to network: {connectionResult.ConnectionStatus}");
+            }
+
             DisplayController.Instance.StopWifiConnectingAnimation();
 
             await DateTimeService.GetTimeAsync();
 
-            mapleServer = new MapleServer(Device.WiFiAdapter.IpAddress, 5417, false);
+            mapleServer = new MapleServer(wifi.IpAddress, 5417, false);
             mapleServer.Start();
 
             TemperatureController.Instance.Initialize();

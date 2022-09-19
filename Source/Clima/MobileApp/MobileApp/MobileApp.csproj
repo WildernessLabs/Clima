@@ -8,11 +8,13 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Meadow.Foundation.Web.Maple.Client" Version="0.*" />
     <PackageReference Include="Plugin.BLE" Version="2.1.2" />
     <PackageReference Include="System.Text.Json" Version="6.0.2" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Web.Maple.MapleClient\Driver\Web.Maple.MapleClient.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Views\BluetoothPage.xaml.cs">

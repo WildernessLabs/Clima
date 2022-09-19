@@ -46,11 +46,11 @@ namespace MeadowClimaHackKit.ServiceAccessLayer
                 }
                 catch (TaskCanceledException)
                 {
-                    Console.WriteLine("Request timed out.");                    
+                    Console.WriteLine("Request timed out.");
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Request went sideways: {e.Message}");                    
+                    Console.WriteLine($"Request went sideways: {e.Message}");
                 }
             }
         }
