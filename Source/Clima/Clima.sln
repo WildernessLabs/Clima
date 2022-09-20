@@ -8,12 +8,6 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonContracts", "CommonCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaProKit", "MeadowClimaProKit\MeadowClimaProKit.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.Android", "MobileApp\MobileApp.Android\MobileApp.Android.csproj", "{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.iOS", "MobileApp\MobileApp.iOS\MobileApp.iOS.csproj", "{FAD5E344-A87A-49C4-B3EA-67665D5F3421}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileApp", "MobileApp\MobileApp\MobileApp.csproj", "{0A88B701-120A-491C-B823-7ECD2F7BD24E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaProKit.Diagnostics", "MeadowClimaProKit.Diagnostics\MeadowClimaProKit.Diagnostics.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_External", "_External", "{B0B2B6D1-F607-49E4-8935-389AD964C0DF}"
@@ -48,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Displays.TextDisplayMenu", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Maple.MapleClient", "..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Web.Maple.MapleClient\Driver\Web.Maple.MapleClient.csproj", "{64D433AD-23CD-43C8-A7BE-D85CCBFB82B1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileMaple", "MobileMaple\MobileMaple.csproj", "{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileClima", "MobileClima\MobileClima.csproj", "{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,46 +88,6 @@ Global
 		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Debug|iPhone.Deploy.0 = Debug|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Debug|iPhoneSimulator.Deploy.0 = Debug|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Release|iPhone.Build.0 = Release|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Release|iPhone.Deploy.0 = Release|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{5C96FCA3-10C5-4066-A7EA-59B715E3FE01}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
-		{FAD5E344-A87A-49C4-B3EA-67665D5F3421}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
-		{FAD5E344-A87A-49C4-B3EA-67665D5F3421}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{FAD5E344-A87A-49C4-B3EA-67665D5F3421}.Debug|iPhone.Build.0 = Debug|iPhone
-		{FAD5E344-A87A-49C4-B3EA-67665D5F3421}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{FAD5E344-A87A-49C4-B3EA-67665D5F3421}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{FAD5E344-A87A-49C4-B3EA-67665D5F3421}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
-		{FAD5E344-A87A-49C4-B3EA-67665D5F3421}.Release|iPhone.ActiveCfg = Release|iPhone
-		{FAD5E344-A87A-49C4-B3EA-67665D5F3421}.Release|iPhone.Build.0 = Release|iPhone
-		{FAD5E344-A87A-49C4-B3EA-67665D5F3421}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{FAD5E344-A87A-49C4-B3EA-67665D5F3421}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Release|iPhone.Build.0 = Release|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{0A88B701-120A-491C-B823-7ECD2F7BD24E}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{50B2CBA1-2053-42D6-9783-184802980F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{50B2CBA1-2053-42D6-9783-184802980F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50B2CBA1-2053-42D6-9783-184802980F4B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -436,10 +390,10 @@ Global
 		SolutionGuid = {CA61E123-F783-4CB3-8EB2-099EE930ADD4}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		CommonContracts\CommonContracts.projitems*{0a88b701-120a-491c-b823-7ecd2f7bd24e}*SharedItemsImports = 5
 		CommonContracts\CommonContracts.projitems*{50b2cba1-2053-42d6-9783-184802980f4b}*SharedItemsImports = 5
 		CommonContracts\CommonContracts.projitems*{567267b3-ed96-4fea-b555-2ee203372ea4}*SharedItemsImports = 13
 		CommonContracts\CommonContracts.projitems*{9b08a0ce-df94-4c59-98d4-b96212e78498}*SharedItemsImports = 5
 		CommonContracts\CommonContracts.projitems*{e753b478-f501-45a8-8ccb-67970f131033}*SharedItemsImports = 5
+		CommonContracts\CommonContracts.projitems*{eccfaf9d-ef9b-4b19-b7d8-37e820eb3adb}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

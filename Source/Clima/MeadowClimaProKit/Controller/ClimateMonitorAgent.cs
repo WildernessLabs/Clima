@@ -81,15 +81,15 @@ namespace MeadowClimaProKit
                 }
             }
 
-            windVane = new WindVane(Device, Device.Pins.A00);
+            windVane = new WindVane(Device, MeadowApp.Device.Pins.A00);
             Console.WriteLine("WindVane up.");
 
-            anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
+            anemometer = new SwitchingAnemometer(Device, MeadowApp.Device.Pins.A01);
             anemometer.UpdateInterval = TimeSpan.FromSeconds(10);
             anemometer.StartUpdating();
             Console.WriteLine("Anemometer up.");
 
-            rainGauge = new SwitchingRainGauge(Device, Device.Pins.D15);
+            rainGauge = new SwitchingRainGauge(Device, MeadowApp.Device.Pins.D15);
             Console.WriteLine("Rain gauge up.");
 
             StartUpdating(TimeSpan.FromSeconds(30));
