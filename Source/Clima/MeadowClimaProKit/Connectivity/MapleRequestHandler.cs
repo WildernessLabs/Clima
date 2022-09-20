@@ -1,7 +1,7 @@
 ﻿using CommonContracts.Models;
 using Meadow.Foundation;
-using Meadow.Foundation.Web.Maple.Server;
-using Meadow.Foundation.Web.Maple.Server.Routing;
+using Meadow.Foundation.Web.Maple;
+using Meadow.Foundation.Web.Maple.Routing;
 using MeadowClimaProKit.Controller;
 using MeadowClimaProKit.Database;
 using System.Collections.Generic;
@@ -12,8 +12,8 @@ namespace MeadowClimaProKit.Connectivity
     {
         public MapleRequestHandler() { }
 
-        [HttpGet]
-        public void GetClimateLogs()
+        [HttpGet("/getclimalogs")]
+        public IActionResult GetClimateLogs()
         {
             LedController.Instance.SetColor(Color.Magenta);
 
@@ -34,10 +34,7 @@ namespace MeadowClimaProKit.Connectivity
             }
 
             LedController.Instance.SetColor(Color.Green);
-
-            Context.Response.ContentType = ContentTypes.Application_Json;
-            Context.Response.StatusCode = 200;
-            Send(data);
+            return new JsonResult(data);
         }
     }
 }

@@ -2,7 +2,7 @@
   <PropertyGroup>    
     <TargetFramework>netstandard2.1</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AssemblyName>App</AssemblyName>
     <Nullable>enable</Nullable>  
   </PropertyGroup>
@@ -10,16 +10,26 @@
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Meadow.F7" Version="0.*" />
+    <!--<PackageReference Include="Meadow.F7" Version="0.*" />
     <PackageReference Include="Meadow.Foundation" Version="0.*" />
     <PackageReference Include="Meadow.Foundation.Sensors.Atmospheric.Bme68x" Version="0.*" />
     <PackageReference Include="Meadow.Foundation.Sensors.Atmospheric.Bme280" Version="0.*" />
     <PackageReference Include="Meadow.Foundation.Sensors.Weather.SwitchingAnemometer" Version="0.*" />
     <PackageReference Include="Meadow.Foundation.Sensors.Weather.SwitchingRainGauge" Version="0.*" />
     <PackageReference Include="Meadow.Foundation.Sensors.Weather.WindVane" Version="0.*" />
-    <PackageReference Include="Meadow.Foundation.Web.Maple.Server" Version="0.*" />
+    <PackageReference Include="Meadow.Foundation.Web.Maple.Server" Version="0.*" />-->
     <PackageReference Include="sqlite-net-static" Version="1.*" />
     <PackageReference Include="System.Text.Json" Version="6.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Meadow.Core\source\Meadow.F7\Meadow.F7.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Core\Meadow.Foundation.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Web.Maple.MapleServer\Driver\Web.Maple.MapleServer.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Atmospheric.Bme280\Driver\Sensors.Atmospheric.Bme280.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Atmospheric.Bme68x\Driver\Sensors.Atmospheric.Bme68x.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Weather.SwitchingAnemometer\Driver\Sensors.Weather.SwitchingAnemometer.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Weather.SwitchingRainGauge\Driver\Sensors.Weather.SwitchingRainGauge.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Weather.WindVane\Driver\Sensors.Weather.WindVane.csproj" />
   </ItemGroup>
   <Import Project="..\CommonContracts\CommonContracts.projitems" Label="Shared" />
 </Project>

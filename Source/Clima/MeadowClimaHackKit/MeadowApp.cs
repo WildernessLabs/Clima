@@ -16,7 +16,6 @@ namespace MeadowClimaHackKit
     // public class MeadowApp : App<F7Micro, MeadowApp> <- If you have a Meadow F7v1.*
     public class MeadowApp : App<F7FeatherV2>
     {
-        MapleServer mapleServer;
         PushButton buttonUp, buttonDown, buttonMenu;
 
         public override Task Initialize()
@@ -60,7 +59,7 @@ namespace MeadowClimaHackKit
 
             await DateTimeService.GetTimeAsync();
 
-            mapleServer = new MapleServer(wifi.IpAddress, 5417, false);
+            var mapleServer = new MapleServer(wifi.IpAddress, 5417, false);
             mapleServer.Start();
 
             TemperatureController.Instance.Initialize();
