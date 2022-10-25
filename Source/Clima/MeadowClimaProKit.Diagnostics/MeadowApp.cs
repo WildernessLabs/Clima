@@ -13,21 +13,18 @@ namespace MeadowClimaProKit.Diagnostics
 {
     public class MeadowApp : App<F7FeatherV2>
     {
-        II2cBus? i2c;
         Bme680? bme680;
-        Bme280? bme280;
-        WindVane windVane;
-        RgbPwmLed onboardLed;
-        SwitchingAnemometer anemometer;
-        SwitchingRainGauge rainGauge;
-        IAnalogInputPort solarVoltageInput;
-        DiagnosticStatus diagnosticStatus;
+        WindVane? windVane;
+        RgbPwmLed? onboardLed;
+        SwitchingAnemometer? anemometer;
+        SwitchingRainGauge? rainGauge;
+        IAnalogInputPort? solarVoltageInput;
+        DiagnosticStatus? diagnosticStatus;
 
         public override Task Initialize()
         {
             diagnosticStatus = new DiagnosticStatus();
 
-            //==== Solar Voltage Input
             Console.WriteLine("Initializing the solar voltage input");
             solarVoltageInput = Device.CreateAnalogInputPort(Device.Pins.A02);
             var solarVoltageObserver = IAnalogInputPort.CreateObserver(
@@ -36,25 +33,21 @@ namespace MeadowClimaProKit.Diagnostics
             );
             solarVoltageInput.Subscribe(solarVoltageObserver);
 
-            //==== Onboard LED
             Console.WriteLine("Initialize RGB Led");
             onboardLed = new RgbPwmLed(device: Device,
                 redPwmPin: Device.Pins.OnboardLedRed,
                 greenPwmPin: Device.Pins.OnboardLedGreen,
                 bluePwmPin: Device.Pins.OnboardLedBlue);
-            // start pulsing blue
-            onboardLed.StartPulse(WildernessLabsColors.AzureBlue);
+            onboardLed.StartPulse(Color.Red);
 
-            //==== rain gauge
             Console.WriteLine("Initialize SwitchingRainGauge");
-            rainGauge = new SwitchingRainGauge(Device, Device.Pins.D15);
+            rainGauge = new SwitchingRainGauge(Device, Device.Pins.D11);
             var rainGaugeObserver = SwitchingRainGauge.CreateObserver(
                 handler: result => Console.WriteLine($"Rain depth: {result.New.Millimeters}mm"),
                 filter: null
             );
             rainGauge.Subscribe(rainGaugeObserver);
 
-            //==== anemometer
             Console.WriteLine("Initialize SwitchingAnemometer");
             anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
             var anemometerObserver = SwitchingAnemometer.CreateObserver(
@@ -63,7 +56,6 @@ namespace MeadowClimaProKit.Diagnostics
             );
             anemometer.Subscribe(anemometerObserver);
 
-            //==== windvane
             Console.WriteLine("Initialize WindVane");
             windVane = new WindVane(Device, Device.Pins.A00);
             var observer = WindVane.CreateObserver(
@@ -72,52 +64,14 @@ namespace MeadowClimaProKit.Diagnostics
             );
             windVane.Subscribe(observer);
 
-            //==== I2C Bus
-            i2c = Device.CreateI2cBus();
+            Console.WriteLine("Initialize BME680");
+            bme680 = new Bme680(Device.CreateI2cBus(), (byte)Bme680.Addresses.Address_0x76);
+            var bmeObserver = Bme680.CreateObserver(
+                handler: result => Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"),
+                filter: result => true);
+            bme680.Subscribe(bmeObserver);
 
-            //==== Bme
-            Console.WriteLine("Initialize Bme680");
-            //TODO: actually a BME688
-            if (i2c != null)
-            {
-                try
-                {
-                    bme680 = new Bme680(i2c, (byte)Bme680.Addresses.Address_0x76);
-                    Console.WriteLine("Bme680 successully initialized.");
-                    var bmeObserver = Bme680.CreateObserver(
-                        handler: result => Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"),
-                        filter: result => true);
-                    bme680.Subscribe(bmeObserver);
-                }
-                catch (Exception e)
-                {
-                    bme680 = null;
-                    Console.WriteLine($"Bme680 failed bring-up: {e.Message}");
-                }
-
-                if (bme680 == null)
-                {
-                    Console.WriteLine("Trying it as a BME280.");
-                    try
-                    {
-                        bme280 = new Bme280(i2c, (byte)Bme280.Addresses.Default);
-                        Console.WriteLine("Bme280 successully initialized.");
-                        var bmeObserver = Bme280.CreateObserver(
-                            handler: result => Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"),
-                            filter: result => true);
-                        bme280.Subscribe(bmeObserver);
-                    }
-                    catch (Exception e2)
-                    {
-                        Console.WriteLine($"Bme280 failed bring-up: {e2.Message}");
-                    }
-                }
-            }
-
-            if (bme680 != null || bme280 != null)
-            {
-                diagnosticStatus.BmeWorking = true;
-            }
+            onboardLed.StartPulse(Color.Green);
 
             return Task.CompletedTask;
         }
@@ -135,8 +89,8 @@ namespace MeadowClimaProKit.Diagnostics
         public async override Task Run()
         {
             rainGauge?.StartUpdating();
-            anemometer.StartUpdating();
-            windVane.StartUpdating(TimeSpan.FromSeconds(1));
+            anemometer?.StartUpdating();
+            windVane?.StartUpdating(TimeSpan.FromSeconds(1));
             bme680?.StartUpdating();
 
             var solarVoltage = await solarVoltageInput.Read();
@@ -157,16 +111,11 @@ namespace MeadowClimaProKit.Diagnostics
             {
                 onboardLed.StartPulse(WildernessLabsColors.ChileanFire);
                 Console.WriteLine("Failure. Board is not good.");
-                if(!diagnosticStatus.BmeWorking)
-                {
-                    Console.WriteLine("BME didn't bring up.");
-                }
                 if (!diagnosticStatus.SolarWorking)
                 {
                     Console.WriteLine("Solar voltage incorrect.");
                 }
             }
-
 
             return;
         }
