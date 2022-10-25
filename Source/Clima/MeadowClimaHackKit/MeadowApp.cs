@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 namespace MeadowClimaHackKit
 {
-    // public class MeadowApp : App<F7Micro, MeadowApp> <- If you have a Meadow F7v1.*
-    public class MeadowApp : App<F7FeatherV2>
+    // Change F7FeatherV2 to F7FeatherV1 for V1.x boards
+    public class MeadowApp : App<F7FeatherV1>
     {
         PushButton buttonUp, buttonDown, buttonMenu;
 
@@ -23,8 +23,8 @@ namespace MeadowClimaHackKit
             LedController.Instance.SetColor(Color.Red);
 
             buttonUp = new PushButton(Device, Device.Pins.D03);
-            buttonDown = new PushButton(Device, Device.Pins.D02);
-            buttonMenu = new PushButton(Device, Device.Pins.D04);
+            buttonDown = new PushButton(Device, Device.Pins.D04);
+            buttonMenu = new PushButton(Device, Device.Pins.D05);
 
             buttonUp.Clicked += (s, e) => DisplayController.Instance.MenuUp();
             buttonDown.Clicked += (s, e) => DisplayController.Instance.MenuDown();

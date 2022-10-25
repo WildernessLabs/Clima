@@ -85,14 +85,17 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <Frame BackgroundColor="#23ABE3" HasShadow="False" Padding="10,0" Margin="0,0,0,5">
+                                        <Border BackgroundColor="#23ABE3" Stroke="Transparent" Padding="10,0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="5" />
+                                            </Border.StrokeShape>
                                             <Grid>
                                                 <Label Text="{Binding DateTime}" FontSize="Medium"
                                                     TextColor="White" VerticalOptions="Center" />
                                                 <Label Text="{Binding Path=Temperature, StringFormat='{0}°C'}" FontSize="Medium"
                                                     TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
                                             </Grid>
-                                        </Frame>
+                                        </Border>
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -104,7 +107,10 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <Frame BackgroundColor="#23ABE3" HasShadow="False" Padding="10" Margin="0,0,0,5">
+                                        <Border BackgroundColor="#23ABE3" Stroke="Transparent" Padding="10,0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="5" />
+                                            </Border.StrokeShape>
                                             <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto" RowSpacing="0">
                                                 <Label Grid.Row="0" Grid.Column="0" Text="Date" FontSize="Medium"
                                                     TextColor="White" VerticalOptions="Center" />
@@ -141,7 +147,7 @@
                                                 <Label Grid.Row="6" Grid.Column="1" Text="{Binding Rain}" FontSize="Medium"
                                                     TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
                                             </Grid>
-                                        </Frame>
+                                        </Border>
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.ItemTemplate>

@@ -75,60 +75,10 @@ namespace MobileClima.ViewModel
             if (isClimaPro)
             {
                 WeatherLog = new ObservableCollection<ClimateModel>();
-                //WeatherLog.Add(new ClimateModel()
-                //{
-                //    Date = "2022-01-21 10:00:00 AM",
-                //    Temperature = "10°C",
-                //    Pressure = "1035mB",
-                //    Humidity = "93%",
-                //    WindSpeed = "6Kmh",
-                //    WindDirection = "N",
-                //    Rain = "1mm"
-                //});
-                //WeatherLog.Add(new ClimateModel()
-                //{
-                //    Date = "2022-01-21 11:00:00 AM",
-                //    Temperature = "12°C",
-                //    Pressure = "1040mB",
-                //    Humidity = "94%",
-                //    WindSpeed = "7Kmh",
-                //    WindDirection = "N",
-                //    Rain = "1mm"
-                //});
-                //WeatherLog.Add(new ClimateModel()
-                //{
-                //    Date = "2022-01-21 12:00:00 PM",
-                //    Temperature = "14°C",
-                //    Pressure = "1045mB",
-                //    Humidity = "95%",
-                //    WindSpeed = "5Kmh",
-                //    WindDirection = "N",
-                //    Rain = "1mm"
-                //});
             }
             else
             {
                 TemperatureLog = new ObservableCollection<TemperatureModel>();
-                //TemperatureLog.Add(new TemperatureModel() 
-                //{ 
-                //    DateTime = DateTime.Now,
-                //    Temperature = "20 C"
-                //});
-                //TemperatureLog.Add(new TemperatureModel()
-                //{
-                //    DateTime = DateTime.Now,
-                //    Temperature = "22 C"
-                //});
-                //TemperatureLog.Add(new TemperatureModel()
-                //{
-                //    DateTime = DateTime.Now,
-                //    Temperature = "21 C"
-                //});
-                //TemperatureLog.Add(new TemperatureModel()
-                //{
-                //    DateTime = DateTime.Now,
-                //    Temperature = "24 C"
-                //});
             }
 
             HostList = new ObservableCollection<ServerModel>();
