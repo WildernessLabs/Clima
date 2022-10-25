@@ -27,6 +27,8 @@ namespace MeadowClimaProKit
 
             await DateTimeService.GetTimeAsync();
 
+            ClimateMonitorAgent.Instance.Initialize();
+
             var mapleServer = new MapleServer(wifi.IpAddress, 5417, false);
             mapleServer.Start();
 

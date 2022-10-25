@@ -36,7 +36,6 @@ namespace MeadowClimaProKit
 
         II2cBus? i2c;
         Bme680? bme680;
-        Bme280? bme280;
         WindVane? windVane;
         SwitchingAnemometer? anemometer;
         SwitchingRainGauge? rainGauge;
@@ -63,33 +62,14 @@ namespace MeadowClimaProKit
                 Console.WriteLine($"Bme680 failed bring-up: {e.Message}");
             }
 
-            if (bme680 == null)
-            {
-                Console.WriteLine("Trying it as a BME280.");
-                try
-                {
-                    bme280 = new Bme280(i2c, (byte)Bme280.Addresses.Default);
-                    Console.WriteLine("Bme280 successully initialized.");
-                    var bmeObserver = Bme280.CreateObserver(
-                        handler: result => Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"),
-                        filter: result => true);
-                    bme280.Subscribe(bmeObserver);
-                }
-                catch (Exception e2)
-                {
-                    Console.WriteLine($"Bme280 failed bring-up: {e2.Message}");
-                }
-            }
-
             windVane = new WindVane(Device, MeadowApp.Device.Pins.A00);
             Console.WriteLine("WindVane up.");
 
             anemometer = new SwitchingAnemometer(Device, MeadowApp.Device.Pins.A01);
-            anemometer.UpdateInterval = TimeSpan.FromSeconds(10);
             anemometer.StartUpdating();
             Console.WriteLine("Anemometer up.");
 
-            rainGauge = new SwitchingRainGauge(Device, MeadowApp.Device.Pins.D15);
+            rainGauge = new SwitchingRainGauge(Device, MeadowApp.Device.Pins.D11);
             Console.WriteLine("Rain gauge up.");
 
             StartUpdating(TimeSpan.FromSeconds(30));
@@ -160,16 +140,16 @@ namespace MeadowClimaProKit
         public async Task<ClimateReading> Read()
         {
             //==== create the read tasks
-            var bmeTask = bme280?.Read();
+            var bmeTask = bme680?.Read();
             var windVaneTask = windVane?.Read();
-            var rainFallTask = rainGauge.Read();
+            var rainFallTask = rainGauge?.Read();
 
             //==== await until all tasks complete 
             await Task.WhenAll(bmeTask, windVaneTask, rainFallTask);
 
             var climate = new ClimateReading()
             {
-                DateTime = DateTime.Now,                
+                DateTime = DateTime.Now,
                 Temperature = bmeTask?.Result.Temperature,
                 Pressure = bmeTask?.Result.Pressure,
                 Humidity = bmeTask?.Result.Humidity,

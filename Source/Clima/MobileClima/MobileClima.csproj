@@ -51,12 +51,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+        <PackageReference Include="Meadow.Foundation.Web.Maple.Client" Version="0.*" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Plugin.BLE" Version="2.1.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Web.Maple.MapleClient\Driver\Web.Maple.MapleClient.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
