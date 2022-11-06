@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MobileClima.View.MainPage"
+    BackgroundColor="White"
+    Title="Clima">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="TextColor">#555</Color>
+            <Style x:Key="ButtonNavStyle" TargetType="Button">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="HeightRequest" Value="38" />
+                <Setter Property="BackgroundColor" Value="#EF7D3B" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid RowDefinitions="Auto, Auto, Auto, *, Auto" RowSpacing="10" Margin="20">
+            <Label Grid.Row="0" Text="Select a device to get data:" TextColor="Black" FontSize="Medium" Margin="0,0,0,10" />
+
+            <Frame Grid.Row="1" Padding="20,10,15,15" CornerRadius="10" BorderColor="Transparent" BackgroundColor="#23abe3">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <VerticalStackLayout Grid.Column="0" Spacing="7" VerticalOptions="Center">
+                        <VerticalStackLayout Spacing="0">
+                            <Label Text="Clima.Pro" TextColor="White" FontSize="25" />
+                            <Label Text="Version" TextColor="White" FontSize="Subtitle" />
+                        </VerticalStackLayout>
+                        <Button Text="Bluetooth" Clicked="BtnProBluetoothClicked" Style="{StaticResource ButtonNavStyle}" />
+                        <Button Text="Maple" Clicked="BtnProMapleClicked" Style="{StaticResource ButtonNavStyle}" />
+                    </VerticalStackLayout>
+                    <Image Grid.Column="1" Source="img_clima_pro.png" WidthRequest="165" VerticalOptions="Center" />
+                </Grid>
+            </Frame>
+
+            <Frame Grid.Row="2" Padding="20,10,15,15" CornerRadius="10" BorderColor="Transparent" BackgroundColor="#23abe3">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <VerticalStackLayout Grid.Column="0" Spacing="7" VerticalOptions="Center">
+                        <VerticalStackLayout Spacing="0">
+                            <Label Text="Clima.HackKit" TextColor="White" FontSize="20" />
+                            <Label Text="Version" TextColor="White" FontSize="Subtitle" />
+                        </VerticalStackLayout>
+                        <Button Text="Bluetooth" Clicked="BtnHackKitBluetoothClicked"  Style="{StaticResource ButtonNavStyle}" />
+                        <Button Text="Maple" Clicked="BtnHackKitMapleClicked" Style="{StaticResource ButtonNavStyle}" />
+                    </VerticalStackLayout>
+                    <Image Grid.Column="1" Source="img_clima_hack_kit.png" WidthRequest="165" VerticalOptions="Center" />
+                </Grid>
+            </Frame>
+
+            <Label Grid.Row="4" Text="By Wilderness Labs" TextColor="Black" 
+                HorizontalOptions="Center" VerticalOptions="EndAndExpand" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
