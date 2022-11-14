@@ -51,7 +51,7 @@ namespace MeadowClimaProKit.Connectivity
             }
             if (climateConditions.New?.WindDirection is { } windDirection)
             {
-                windDirectionCharacteristic.SetValue($"{ windDirection.Compass16PointCardinalName};");
+                windDirectionCharacteristic.SetValue($"{ windDirection};");
             }
         }
 

@@ -196,6 +196,7 @@ namespace MobileClima.ViewModel
 
                 var values = System.Text.Json.JsonSerializer.Deserialize<List<ClimateModel>>(response);
 
+                WeatherLog.Clear();
                 foreach (var value in values)
                 {
                     WeatherLog.Add(value);

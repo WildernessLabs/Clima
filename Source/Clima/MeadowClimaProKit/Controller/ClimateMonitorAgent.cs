@@ -34,7 +34,6 @@ namespace MeadowClimaProKit
         CancellationTokenSource? SamplingTokenSource;
         bool IsSampling = false;
 
-        II2cBus? i2c;
         Bme680? bme680;
         WindVane? windVane;
         SwitchingAnemometer? anemometer;
@@ -46,27 +45,13 @@ namespace MeadowClimaProKit
 
         public void Initialize()
         {
-            i2c = Device.CreateI2cBus();
-            try
-            {
-                bme680 = new Bme680(i2c, (byte)Bme680.Addresses.Address_0x76);
-                Console.WriteLine("Bme680 successully initialized.");
-                var bmeObserver = Bme680.CreateObserver(
-                    handler: result => Console.WriteLine($"Temp: {result.New.Temperature.Value.Fahrenheit:n2}, Humidity: {result.New.Humidity.Value.Percent:n2}%"),
-                    filter: result => true);
-                bme680.Subscribe(bmeObserver);
-            }
-            catch (Exception e)
-            {
-                bme680 = null;
-                Console.WriteLine($"Bme680 failed bring-up: {e.Message}");
-            }
+            bme680 = new Bme680(Device.CreateI2cBus(), (byte)Bme680.Addresses.Address_0x76);
+            Console.WriteLine("Bme680 successully initialized.");
 
             windVane = new WindVane(Device, MeadowApp.Device.Pins.A00);
             Console.WriteLine("WindVane up.");
 
             anemometer = new SwitchingAnemometer(Device, MeadowApp.Device.Pins.A01);
-            anemometer.StartUpdating();
             Console.WriteLine("Anemometer up.");
 
             rainGauge = new SwitchingRainGauge(Device, MeadowApp.Device.Pins.D11);
@@ -142,10 +127,11 @@ namespace MeadowClimaProKit
             //==== create the read tasks
             var bmeTask = bme680?.Read();
             var windVaneTask = windVane?.Read();
+            var anemometerTask = anemometer?.Read();
             var rainFallTask = rainGauge?.Read();
 
             //==== await until all tasks complete 
-            await Task.WhenAll(bmeTask, windVaneTask, rainFallTask);
+            await Task.WhenAll(bmeTask, anemometerTask, windVaneTask, rainFallTask);
 
             var climate = new ClimateReading()
             {
@@ -154,8 +140,8 @@ namespace MeadowClimaProKit
                 Pressure = bmeTask?.Result.Pressure,
                 Humidity = bmeTask?.Result.Humidity,
                 RainFall = rainFallTask?.Result,
-                WindDirection = windVaneTask?.Result,
-                WindSpeed = anemometer?.WindSpeed,
+                WindDirection = windVaneTask?.Result.Compass16PointCardinalName,
+                WindSpeed = anemometerTask?.Result,
             };
 
             return climate;

@@ -35,7 +35,7 @@ namespace MeadowClimaProKit.Database
 
         public bool SaveReading(ClimateReading climate)
         {
-            LedController.Instance.SetColor(WildernessLabsColors.ChileanFireDark);
+            LedController.Instance.SetColor(Color.Orange);
 
             if (isConfigured == false)
             {
