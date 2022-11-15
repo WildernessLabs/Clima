@@ -91,42 +91,43 @@
                             <Grid>
                                 <Label Text="Temperature" FontSize="Medium"
                                     TextColor="White" />
-                                <Label Text="{Binding Temperature}" FontSize="Medium"
+                                <Label Text="{Binding TemperatureValue}" FontSize="Medium"
                                     TextColor="White" HorizontalOptions="End" />
                             </Grid>
                             <Grid>
                                 <Label Text="Pressure" FontSize="Medium"
                                     TextColor="White" />
-                                <Label Text="{Binding Pressure}" FontSize="Medium"
+                                <Label Text="{Binding PressureValue}" FontSize="Medium"
                                     TextColor="White" HorizontalOptions="End" />
                             </Grid>
                             <Grid>
                                 <Label Text="Humidity" FontSize="Medium"
                                     TextColor="White" />
-                                <Label Text="{Binding Humidity}" FontSize="Medium"
-                                    TextColor="White" HorizontalOptions="End" />
-                            </Grid>
-                            <Grid>
-                                <Label Text="WindSpeed" FontSize="Medium"
-                                    TextColor="White" />
-                                <Label Text="{Binding WindSpeed}" FontSize="Medium"
-                                    TextColor="White" HorizontalOptions="End" />
-                            </Grid>
-                            <Grid>
-                                <Label Text="WindDirection" FontSize="Medium"
-                                    TextColor="White" />
-                                <Label Text="{Binding WindDirection}" FontSize="Medium"
+                                <Label Text="{Binding HumidityValue}" FontSize="Medium"
                                     TextColor="White" HorizontalOptions="End" />
                             </Grid>
                             <Grid>
                                 <Label Text="RainVolume" FontSize="Medium"
                                     TextColor="White" />
-                                <Label Text="{Binding RainVolume}" FontSize="Medium"
+                                <Label Text="{Binding RainFallValue}" FontSize="Medium"
+                                    TextColor="White" HorizontalOptions="End" />
+                            </Grid>
+                            <Grid>
+                                <Label Text="WindSpeed" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding WindSpeedValue}" FontSize="Medium"
+                                    TextColor="White" HorizontalOptions="End" />
+                            </Grid>
+                            <Grid>
+                                <Label Text="WindDirection" FontSize="Medium"
+                                    TextColor="White" />
+                                <Label Text="{Binding WindDirectionValue}" FontSize="Medium"
                                     TextColor="White" HorizontalOptions="End" />
                             </Grid>
                         </StackLayout>
 
-                        <Button Grid.Row="1" Text="Update" TextColor="White" BackgroundColor="#EF7D3B"
+                        <Button Grid.Row="1" Text="Update" Command="{Binding CmdGetClimaStatus}"
+                            TextColor="White" BackgroundColor="#EF7D3B"
                                 Margin="0,5,0,0" />
                     </Grid>
                 </Frame>

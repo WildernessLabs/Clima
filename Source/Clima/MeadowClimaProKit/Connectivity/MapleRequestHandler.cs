@@ -22,7 +22,7 @@ namespace MeadowClimaProKit.Connectivity
             var data = new List<ClimateModel>();
             foreach (var log in logs)
             {
-                data.Add(new ClimateModel()
+                data.Insert(0, new ClimateModel()
                 {
                     Date = log.DateTime.ToString(),
                     Temperature = log.Temperature.ToString(),

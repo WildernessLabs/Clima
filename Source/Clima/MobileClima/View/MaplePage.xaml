@@ -148,7 +148,7 @@
 
                                                 <Label Grid.Row="5" Grid.Column="0" Text="Wind Direction" FontSize="Medium"
                                                     TextColor="White" VerticalOptions="Center" />
-                                                <Label Grid.Row="5" Grid.Column="1" Text="{Binding WindDirection, StringFormat='{0}'}" FontSize="Medium"
+                                                <Label Grid.Row="5" Grid.Column="1" Text="{Binding WindDirection}" FontSize="Medium"
                                                     TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
 
                                                 <Label Grid.Row="6" Grid.Column="0" Text="Rain Volume" FontSize="Medium"
