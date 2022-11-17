@@ -20,6 +20,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Text="Maple servers:" FontSize="Medium" TextColor="Black" />
+                <Button Grid.Row="0"  Text="Test" Background="Red" />
 
                 <Frame Grid.Row="1" BackgroundColor="#23ABE3" HasShadow="False" CornerRadius="5" BorderColor="Transparent" Padding="10,0,0,0">
                     <Grid>
