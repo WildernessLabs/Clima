@@ -30,7 +30,10 @@
                             <Label Text="Clima.Pro" TextColor="White" FontSize="25" />
                             <Label Text="Version" TextColor="White" FontSize="Subtitle" />
                         </VerticalStackLayout>
-                        <Button Text="Bluetooth" Clicked="BtnProBluetoothClicked" Style="{StaticResource ButtonNavStyle}" />
+                        <Button Text="Bluetooth" 
+                            Opacity="{OnPlatform 0.65, iOS=1, Android=1}"
+                            IsEnabled="{OnPlatform false, iOS=true, Android=true}"
+                            Clicked="BtnProBluetoothClicked" Style="{StaticResource ButtonNavStyle}" />
                         <Button Text="Maple" Clicked="BtnProMapleClicked" Style="{StaticResource ButtonNavStyle}" />
                     </VerticalStackLayout>
                     <Image Grid.Column="1" Source="img_clima_pro.png" WidthRequest="165" VerticalOptions="Center" />
@@ -44,7 +47,10 @@
                             <Label Text="Clima.HackKit" TextColor="White" FontSize="20" />
                             <Label Text="Version" TextColor="White" FontSize="Subtitle" />
                         </VerticalStackLayout>
-                        <Button Text="Bluetooth" Clicked="BtnHackKitBluetoothClicked"  Style="{StaticResource ButtonNavStyle}" />
+                        <Button Text="Bluetooth" 
+                            Opacity="{OnPlatform 0.65, iOS=1, Android=1}"
+                            IsEnabled="{OnPlatform false, iOS=true, Android=true}"
+                            Clicked="BtnHackKitBluetoothClicked"  Style="{StaticResource ButtonNavStyle}" />
                         <Button Text="Maple" Clicked="BtnHackKitMapleClicked" Style="{StaticResource ButtonNavStyle}" />
                     </VerticalStackLayout>
                     <Image Grid.Column="1" Source="img_clima_hack_kit.png" WidthRequest="165" VerticalOptions="Center" />
