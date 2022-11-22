@@ -51,6 +51,7 @@ namespace MeadowClimaProKit.Diagnostics
             Console.WriteLine("Solar voltage input up.");
 
             rainGauge = new SwitchingRainGauge(Device, Device.Pins.D11);
+            rainGauge.StartUpdating();
             Console.WriteLine("Rain gauge up.");
 
             onboardLed.StartPulse(Color.Green);
