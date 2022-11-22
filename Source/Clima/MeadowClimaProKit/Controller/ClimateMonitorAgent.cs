@@ -30,8 +30,6 @@ namespace MeadowClimaProKit
         public event EventHandler<ClimateConditions> ClimateConditionsUpdated = delegate { };
 
         IF7MeadowDevice Device => MeadowApp.Device;
-        object samplingLock = new object();
-        CancellationTokenSource? SamplingTokenSource;
         bool IsSampling = false;
 
         Bme680? bme680;
@@ -52,85 +50,64 @@ namespace MeadowClimaProKit
             Console.WriteLine("WindVane up.");
 
             anemometer = new SwitchingAnemometer(Device, MeadowApp.Device.Pins.A01);
+            anemometer.StartUpdating();
             Console.WriteLine("Anemometer up.");
 
             rainGauge = new SwitchingRainGauge(Device, MeadowApp.Device.Pins.D11);
+            rainGauge.StartUpdating();
             Console.WriteLine("Rain gauge up.");
 
             StartUpdating(TimeSpan.FromSeconds(30));
         }
 
-        void StartUpdating(TimeSpan updateInterval)
+        async Task StartUpdating(TimeSpan updateInterval)
         {
             Console.WriteLine("ClimateMonitorAgent.StartUpdating()");
 
-            lock (samplingLock)
+            if (IsSampling)
+                return;
+            IsSampling = true;
+
+            ClimateReading oldClimate;
+
+            while (IsSampling)
             {
-                if (IsSampling) 
-                    return;
-                IsSampling = true;
-
-                SamplingTokenSource = new CancellationTokenSource();
-                CancellationToken ct = SamplingTokenSource.Token;
-
-                ClimateReading oldClimate;
-
-                Task.Run(async () =>
-                {
-                    while (true)
-                    {
-                        Console.WriteLine("ClimateMonitorAgent: About to do a reading.");
+                Console.WriteLine("ClimateMonitorAgent: About to do a reading.");
                         
-                        if (ct.IsCancellationRequested)
-                        {   
-                            // do task clean up here
-                            //observers.ForEach(x => x.OnCompleted());
-                            IsSampling = false;
-                            break;
-                        }
+                // capture history
+                oldClimate = Climate ?? new ClimateReading();
 
-                        // capture history
-                        oldClimate = Climate ?? new ClimateReading();
+                // read
+                Climate = await Read();
 
-                        // read
-                        Climate = await Read().ConfigureAwait(false);
+                // build a new result with the old and new conditions
+                var result = new ClimateConditions(Climate, oldClimate);
 
-                        // build a new result with the old and new conditions
-                        var result = new ClimateConditions(Climate, oldClimate);
+                Console.WriteLine("ClimateMonitorAgent: Reading complete.");
+                DatabaseManager.Instance.SaveReading(result?.New);
 
-                        Console.WriteLine("ClimateMonitorAgent: Reading complete.");
-                        DatabaseManager.Instance.SaveReading(result?.New);
+                ClimateConditionsUpdated.Invoke(this, result);
 
-                        ClimateConditionsUpdated.Invoke(this, result);
-
-                        // sleep for the appropriate interval
-                        await Task.Delay(updateInterval).ConfigureAwait(false);
-                    }
-                }, SamplingTokenSource.Token);
+                // sleep for the appropriate interval
+                await Task.Delay(updateInterval).ConfigureAwait(false);
             }
         }
 
         void StopUpdating()
         {
-            if (!IsSampling) return;
+            if (!IsSampling) 
+                return;
 
-            lock (samplingLock)
-            {
-                SamplingTokenSource?.Cancel();
-
-                IsSampling = false;
-            }
+            IsSampling = false;
         }
 
         public async Task<ClimateReading> Read()
         {
-            //==== create the read tasks
             var bmeTask = bme680?.Read();
             var windVaneTask = windVane?.Read();
             var anemometerTask = anemometer?.Read();
             var rainFallTask = rainGauge?.Read();
 
-            //==== await until all tasks complete 
             await Task.WhenAll(bmeTask, anemometerTask, windVaneTask, rainFallTask);
 
             var climate = new ClimateReading()

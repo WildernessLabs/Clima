@@ -14,7 +14,7 @@ namespace MeadowClimaProKit
 {
     public class MeadowApp : App<F7FeatherV2>
     {
-        bool isWiFi = false;
+        bool isWiFi = true;
 
         public override async Task Initialize()
         {
@@ -34,7 +34,7 @@ namespace MeadowClimaProKit
 
                 await DateTimeService.GetTimeAsync();
 
-                var mapleServer = new MapleServer(wifi.IpAddress, 5417, false);
+                var mapleServer = new MapleServer(wifi.IpAddress, 5417, true, logger: Resolver.Log);
                 mapleServer.Start();
             }
             else
