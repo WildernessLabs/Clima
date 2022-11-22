@@ -15,6 +15,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -29,7 +30,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Grid Grid.Column="0">
-                            <Picker TextColor="White" FontSize="Medium" BackgroundColor="Transparent"
+                            <Picker TextColor="White" FontSize="Medium" BackgroundColor="Transparent" Margin="0,5,0,0"
                                 ItemsSource="{Binding HostList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedServer}"/>
                             <Label IsVisible="{Binding IsServerListEmpty}" Text="Pick a server" 
                                 FontSize="Medium" TextColor="White" VerticalOptions="Center" />
@@ -37,7 +38,7 @@
 
                         <Grid Grid.Column="1" WidthRequest="50" HeightRequest="50">
                             <Button Command="{Binding SearchServersCommand}" BackgroundColor="Transparent" CornerRadius="5" />
-                            <Image Source="img_search" Margin="10" InputTransparent="True">
+                            <Image Source="img_search.png" Margin="10" InputTransparent="True">
                                 <Image.Triggers>
                                     <DataTrigger TargetType="Image" Binding="{Binding IsScanning}" Value="True">
                                         <Setter Property="IsVisible" Value="False" />
@@ -86,15 +87,17 @@
                     </Label.Triggers>
                 </Label>
 
-                <Frame Grid.Row="4" BackgroundColor="#F5F5F5" BorderColor="Transparent" HasShadow="False" Padding="0">
+                <Button Grid.Row="4" Text="Refresh" Command="{Binding UpdateReadingsCommand}" 
+                    TextColor="White" Background="#23ABE3" FontSize="Medium" />
+
+                <Frame Grid.Row="5" BackgroundColor="#F0F5F5" BorderColor="Transparent" HasShadow="False" Padding="0">
                     <Grid>
                         <ListView ItemsSource="{Binding TemperatureLog}" SeparatorVisibility="None" BackgroundColor="Transparent" RowHeight="50"
-                            IsPullToRefreshEnabled="True" RefreshCommand="{Binding CmdReloadTemperatureLog}" IsRefreshing="{Binding IsRefreshing}"
-                            IsVisible="{Binding IsClimaPro, Converter={converter:InverseBoolConverter}}">
+                            IsRefreshing="{Binding IsRefreshing}" IsVisible="{Binding IsClimaPro, Converter={converter:InverseBoolConverter}}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <Border BackgroundColor="#23ABE3" Stroke="Transparent" Padding="10,0">
+                                        <Border BackgroundColor="#23ABE3" Stroke="Transparent" Padding="10,0" Margin="0,0,0,5">
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="5" />
                                             </Border.StrokeShape>
@@ -110,13 +113,12 @@
                             </ListView.ItemTemplate>
                         </ListView>
 
-                        <ListView ItemsSource="{Binding WeatherLog}" SeparatorVisibility="None" BackgroundColor="Transparent" HasUnevenRows="True"
-                            IsPullToRefreshEnabled="True" RefreshCommand="{Binding CmdReloadTemperatureLog}" IsRefreshing="{Binding IsRefreshing}"
-                            IsVisible="{Binding IsClimaPro}">
+                        <ListView ItemsSource="{Binding WeatherLog}" SeparatorVisibility="None" BackgroundColor="Transparent" RowHeight="245"
+                            IsRefreshing="{Binding IsRefreshing}" IsVisible="{Binding IsClimaPro}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <Border BackgroundColor="#23ABE3" Stroke="Transparent" Padding="10">
+                                        <Border BackgroundColor="#23ABE3" Stroke="Transparent" Padding="10" VerticalOptions="Center">
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="5" />
                                             </Border.StrokeShape>
@@ -164,7 +166,7 @@
                     </Grid>
                 </Frame>
 
-                <Label Grid.Row="5" Text="By Wilderness Labs" TextColor="Black" 
+                <Label Grid.Row="6" Text="By Wilderness Labs" TextColor="Black" 
                     HorizontalOptions="Center" VerticalOptions="EndAndExpand" />
             </Grid>
         </Grid>

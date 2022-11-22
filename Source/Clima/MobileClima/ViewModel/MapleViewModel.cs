@@ -66,7 +66,7 @@ namespace MobileClima.ViewModel
 
         public ICommand SearchServersCommand { get; private set; }
 
-        public ICommand CmdReloadTemperatureLog { get; private set; }
+        public ICommand UpdateReadingsCommand { get; private set; }
 
         public MapleViewModel(bool isClimaPro)
         {
@@ -88,7 +88,7 @@ namespace MobileClima.ViewModel
             client = new MapleClient();
             client.Servers.CollectionChanged += ServersCollectionChanged;
 
-            CmdReloadTemperatureLog = new Command(async () =>
+            UpdateReadingsCommand = new Command(async () =>
             {
                 if (isClimaPro)
                 {
@@ -169,6 +169,7 @@ namespace MobileClima.ViewModel
 
                 var values = System.Text.Json.JsonSerializer.Deserialize<List<TemperatureModel>>(response);
 
+                TemperatureLog.Clear();
                 foreach (var value in values)
                 {
                     TemperatureLog.Add(value);
@@ -214,7 +215,14 @@ namespace MobileClima.ViewModel
 
             if (SelectedServer != null)
             {
-                await GetTemperatureLogs();
+                if (IsClimaPro)
+                {
+                    await GetClimateLogs();
+                }
+                else
+                {
+                    await GetTemperatureLogs();
+                }
             }
         }
     }
