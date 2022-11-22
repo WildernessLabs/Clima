@@ -1,4 +1,5 @@
-﻿using Meadow.Gateways.Bluetooth;
+﻿using Clima.Contracts.Bluetooth;
+using Meadow.Gateways.Bluetooth;
 using MeadowClimaHackKit.Controller;
 using System;
 
@@ -13,7 +14,7 @@ namespace MeadowClimaHackKit.Connectivity
         Definition bleTreeDefinition;
         CharacteristicString temperatureCharacteristic;
 
-        private BluetoothServer() { }        
+        private BluetoothServer() { }
 
         public void Initialize()
         {
@@ -31,7 +32,7 @@ namespace MeadowClimaHackKit.Connectivity
         {
             temperatureCharacteristic = new CharacteristicString(
                 name: "Temperature",
-                uuid: "e78f7b5e-842b-4b99-94e3-7401bf72b870",
+                uuid: CharacteristicsConstants.TEMPERATURE,
                 maxLength: 20,
                 permissions: CharacteristicPermission.Read,
                 properties: CharacteristicProperty.Read);

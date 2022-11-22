@@ -1,4 +1,4 @@
-﻿using MobileClima.Utils;
+﻿using Clima.Contracts.Bluetooth;
 using Plugin.BLE;
 using Plugin.BLE.Abstractions.Contracts;
 using Plugin.BLE.Abstractions.EventArgs;
@@ -13,7 +13,7 @@ namespace MobileClima.ViewModel
     {
         int listenTimeout = 5000;
 
-        ushort DEVICE_ID = 896;
+        ushort DEVICE_ID = 253;
 
         IAdapter adapter;
         IService service;
@@ -55,6 +55,13 @@ namespace MobileClima.ViewModel
             set { isDeviceListEmpty = value; OnPropertyChanged(nameof(IsDeviceListEmpty)); }
         }
 
+        string date;
+        public string Date
+        {
+            get => date;
+            set { date = value; OnPropertyChanged(nameof(Date)); }
+        }
+
         string temperatureValue;
         public string TemperatureValue
         {
@@ -74,6 +81,13 @@ namespace MobileClima.ViewModel
         {
             get => humidityValue;
             set { humidityValue = value; OnPropertyChanged(nameof(HumidityValue)); }
+        }
+
+        string rainFallValue;
+        public string RainFallValue
+        {
+            get => rainFallValue;
+            set { rainFallValue = value; OnPropertyChanged(nameof(RainFallValue)); }
         }
 
         string windSpeedValue;
@@ -140,7 +154,7 @@ namespace MobileClima.ViewModel
             tempCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.TEMPERATURE));
             pressureCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.PRESSURE));
             humidityCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.HUMIDITY));
-            rainFallCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.RAINFALL));
+            rainFallCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.RAIN_FALL));
             windSpeedCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.WIND_SPEED));
             windDirectionCharacteristic = await service.GetCharacteristicAsync(Guid.Parse(CharacteristicsConstants.WIND_DIRECTION));
         }
@@ -153,7 +167,7 @@ namespace MobileClima.ViewModel
                 DeviceList.Add(e.Device);
             }
 
-            if (e.Device.Name == "Meadow Clima")
+            if (e.Device.Name == "MeadowClimaPro")
             {
                 await adapter.StopScanningForDevicesAsync();
                 IsDeviceListEmpty = false;
@@ -225,9 +239,11 @@ namespace MobileClima.ViewModel
 
             try
             {
+                Date = DateTime.Now.ToString();
                 TemperatureValue = System.Text.Encoding.Default.GetString(await tempCharacteristic.ReadAsync()).Split(';')[0];
                 PressureValue = System.Text.Encoding.Default.GetString(await pressureCharacteristic.ReadAsync()).Split(';')[0];
                 HumidityValue = System.Text.Encoding.Default.GetString(await humidityCharacteristic.ReadAsync()).Split(';')[0];
+                RainFallValue = System.Text.Encoding.Default.GetString(await rainFallCharacteristic.ReadAsync()).Split(';')[0];
                 WindSpeedValue = System.Text.Encoding.Default.GetString(await windSpeedCharacteristic.ReadAsync()).Split(';')[0];
                 WindDirectionValue = System.Text.Encoding.Default.GetString(await windDirectionCharacteristic.ReadAsync()).Split(';')[0];
             }

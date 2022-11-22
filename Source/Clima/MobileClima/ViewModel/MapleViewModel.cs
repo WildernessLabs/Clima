@@ -90,7 +90,14 @@ namespace MobileClima.ViewModel
 
             CmdReloadTemperatureLog = new Command(async () =>
             {
-                await GetTemperatureLogs();
+                if (isClimaPro)
+                {
+                    await GetClimateLogs();
+                }
+                else
+                {
+                    await GetTemperatureLogs();
+                }
 
                 IsRefreshing = false;
             });
@@ -165,6 +172,34 @@ namespace MobileClima.ViewModel
                 foreach (var value in values)
                 {
                     TemperatureLog.Add(value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        async Task GetClimateLogs()
+        {
+            try
+            {
+                var response = await client.GetAsync(
+                    hostAddress: SelectedServer != null ? SelectedServer.IpAddress : IpAddress,
+                    port: ServerPort,
+                    endpoint: "getclimalogs",
+                    param: null,
+                    value: null);
+
+                if (response == null)
+                    return;
+
+                var values = System.Text.Json.JsonSerializer.Deserialize<List<ClimateModel>>(response);
+
+                WeatherLog.Clear();
+                foreach (var value in values)
+                {
+                    WeatherLog.Add(value);
                 }
             }
             catch (Exception ex)

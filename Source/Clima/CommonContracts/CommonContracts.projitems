@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Models\ClimateModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\TemperatureModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bluetooth\CharacteristicsConstants.cs" />
   </ItemGroup>
 </Project>

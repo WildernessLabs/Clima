@@ -20,6 +20,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Text="Maple servers:" FontSize="Medium" TextColor="Black" />
+                <Button Grid.Row="0"  Text="Test" Background="Red" />
 
                 <Frame Grid.Row="1" BackgroundColor="#23ABE3" HasShadow="False" CornerRadius="5" BorderColor="Transparent" Padding="10,0,0,0">
                     <Grid>
@@ -75,7 +76,16 @@
                     </Grid>
                 </Frame>
 
-                <Label Grid.Row="3" Text="Temperature Logs:" TextColor="Black" FontSize="Medium" Margin="0,5" />
+                <Label Grid.Row="3" TextColor="Black" FontSize="Medium" Margin="0,5">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsClimaPro}" Value="true">
+                            <Setter Property="Text" Value="Climate Logs:" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsClimaPro}" Value="false">
+                            <Setter Property="Text" Value="Temperature Logs:" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
 
                 <Frame Grid.Row="4" BackgroundColor="#F5F5F5" BorderColor="Transparent" HasShadow="False" Padding="0">
                     <Grid>
@@ -107,11 +117,11 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <Border BackgroundColor="#23ABE3" Stroke="Transparent" Padding="10,0">
+                                        <Border BackgroundColor="#23ABE3" Stroke="Transparent" Padding="10">
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="5" />
                                             </Border.StrokeShape>
-                                            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto" RowSpacing="0">
+                                            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto" RowSpacing="0">
                                                 <Label Grid.Row="0" Grid.Column="0" Text="Date" FontSize="Medium"
                                                     TextColor="White" VerticalOptions="Center" />
                                                 <Label Grid.Row="0" Grid.Column="1" Text="{Binding Date}" FontSize="Medium"
@@ -119,22 +129,22 @@
 
                                                 <Label Grid.Row="1" Grid.Column="0" Text="Temperature" FontSize="Medium"
                                                     TextColor="White" VerticalOptions="Center" />
-                                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Temperature}" FontSize="Medium"
+                                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Temperature, StringFormat='{0} °C'}" FontSize="Medium"
                                                     TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
 
                                                 <Label Grid.Row="2" Grid.Column="0" Text="Pressure" FontSize="Medium"
                                                     TextColor="White" VerticalOptions="Center" />
-                                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Pressure}" FontSize="Medium"
+                                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Pressure, StringFormat='{0} bar'}" FontSize="Medium"
                                                     TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
 
                                                 <Label Grid.Row="3" Grid.Column="0" Text="Humidity" FontSize="Medium"
                                                     TextColor="White" VerticalOptions="Center" />
-                                                <Label Grid.Row="3" Grid.Column="1" Text="{Binding Humidity}" FontSize="Medium"
+                                                <Label Grid.Row="3" Grid.Column="1" Text="{Binding Humidity, StringFormat='{0} %'}" FontSize="Medium"
                                                     TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
 
                                                 <Label Grid.Row="4" Grid.Column="0" Text="WindSpeed" FontSize="Medium"
                                                     TextColor="White" VerticalOptions="Center" />
-                                                <Label Grid.Row="4" Grid.Column="1" Text="{Binding WindSpeed}" FontSize="Medium"
+                                                <Label Grid.Row="4" Grid.Column="1" Text="{Binding WindSpeed, StringFormat='{0} Kph'}" FontSize="Medium"
                                                     TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
 
                                                 <Label Grid.Row="5" Grid.Column="0" Text="Wind Direction" FontSize="Medium"
@@ -144,7 +154,7 @@
 
                                                 <Label Grid.Row="6" Grid.Column="0" Text="Rain Volume" FontSize="Medium"
                                                     TextColor="White" VerticalOptions="Center" />
-                                                <Label Grid.Row="6" Grid.Column="1" Text="{Binding Rain}" FontSize="Medium"
+                                                <Label Grid.Row="6" Grid.Column="1" Text="{Binding Rain, StringFormat='{0} mm'}" FontSize="Medium"
                                                     TextColor="White" HorizontalOptions="End" VerticalOptions="Center" />
                                             </Grid>
                                         </Border>

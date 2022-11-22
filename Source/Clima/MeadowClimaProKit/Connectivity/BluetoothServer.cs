@@ -1,4 +1,5 @@
 ﻿using System;
+using Clima.Contracts.Bluetooth;
 using Meadow.Gateways.Bluetooth;
 
 namespace MeadowClimaProKit.Connectivity
@@ -51,16 +52,15 @@ namespace MeadowClimaProKit.Connectivity
             }
             if (climateConditions.New?.WindDirection is { } windDirection)
             {
-                windDirectionCharacteristic.SetValue($"{ windDirection.Compass16PointCardinalName};");
+                windDirectionCharacteristic.SetValue($"{ windDirection};");
             }
         }
 
         protected Definition GetDefinition()
         {
-            //==== Create our charactistics            
             tempCharacteristic = new CharacteristicString(
                     "Temperature",
-                    uuid: "e78f7b5e-842b-4b99-94e3-7401bf72b870",
+                    uuid: CharacteristicsConstants.TEMPERATURE,
                     permissions: CharacteristicPermission.Read,
                     properties: CharacteristicProperty.Read,
                     maxLength: 32
@@ -68,7 +68,7 @@ namespace MeadowClimaProKit.Connectivity
 
             pressureCharacteristic = new CharacteristicString(
                     "Pressure",
-                    uuid: "2d45f026-d8ea-4d47-813a-13e8f788d328",
+                    uuid: CharacteristicsConstants.PRESSURE,
                     permissions: CharacteristicPermission.Read,
                     properties: CharacteristicProperty.Read,
                     maxLength: 32
@@ -76,7 +76,7 @@ namespace MeadowClimaProKit.Connectivity
             
             humidityCharacteristic = new CharacteristicString(
                     "Humidity",
-                    uuid: "143a3841-e244-4520-a456-214e048a030f",
+                    uuid: CharacteristicsConstants.HUMIDITY,
                     permissions: CharacteristicPermission.Read,
                     properties: CharacteristicProperty.Read,
                     maxLength: 32
@@ -84,7 +84,7 @@ namespace MeadowClimaProKit.Connectivity
 
             rainFallCharacteristic = new CharacteristicString(
                     "RainFall",
-                    uuid: "017e99d6-8a61-11eb-8dcd-0242ac1300aa",
+                    uuid: CharacteristicsConstants.RAIN_FALL,
                     permissions: CharacteristicPermission.Read,
                     properties: CharacteristicProperty.Read,
                     maxLength: 32
@@ -92,7 +92,7 @@ namespace MeadowClimaProKit.Connectivity
 
             windSpeedCharacteristic = new CharacteristicString(
                     "WindSpeed",
-                    uuid: "5a0bb016-69ab-4a49-a2f2-de5b292458f3",
+                    uuid: CharacteristicsConstants.WIND_SPEED,
                     permissions: CharacteristicPermission.Read,
                     properties: CharacteristicProperty.Read,
                     maxLength: 32
@@ -100,30 +100,29 @@ namespace MeadowClimaProKit.Connectivity
 
             windDirectionCharacteristic = new CharacteristicString(
                     "WindDirection",
-                    uuid: "b54aa605-c1ae-47cd-b4e1-0c5ff6af735c",
+                    uuid: CharacteristicsConstants.WIND_DIRECTION,
                     permissions: CharacteristicPermission.Read,
                     properties: CharacteristicProperty.Read,
                     maxLength: 32
                 );
 
-            ICharacteristic[] characteristics = {
-                    tempCharacteristic,
-                    pressureCharacteristic,
-                    humidityCharacteristic,
-                    rainFallCharacteristic,
-                    windSpeedCharacteristic,
-                    windDirectionCharacteristic
+            ICharacteristic[] characteristics = 
+            {
+                tempCharacteristic,
+                pressureCharacteristic,
+                humidityCharacteristic,
+                rainFallCharacteristic,
+                windSpeedCharacteristic,
+                windDirectionCharacteristic
             };
 
-            //==== BLE Tree Definition
-            var definition = new Definition(
-                "Meadow Clima",
-                new Service(
-                    "Weather_Conditions",
-                    896,
-                    characteristics
-                ));
-            return definition;
+            var service = new Service(
+                name: "ServiceA",
+                uuid: 253,
+                characteristics
+            );
+
+            return new Definition("MeadowClimaPro", service);
         }
     }
 }

@@ -12,6 +12,15 @@
    * Install the Meadow Visual Studio Extension(s).
    * Create and deploy the Meadow template application to ensure everthing is setup correctly.
 
+### Expected Development version stack (RC-1)
+At this point, you should have the following versions on your dev machine and Meadow:
+* Meadow.CLI - v.0.90.0
+* VS Tools for Meadow - v0.90.0
+* Meadow
+   * Meadow.OS - v0.9.0.2
+   * Mono Runtime - v0.9.0.2
+   * ESP32 Coprocessor - v0.9.0.2
+
 ### Step 2. - Deploy the Clima App
 
  * **Clone the Clima Repo** - [Clone](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/adding-and-cloning-repositories/cloning-and-forking-repositories-from-github-desktop) the [Clima(this) repository](https://github.com/wildernesslabs/Clima) locally.
