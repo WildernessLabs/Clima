@@ -90,6 +90,10 @@ namespace MobileClima.ViewModel
 
             UpdateReadingsCommand = new Command(async () =>
             {
+                if(IsRefreshing) 
+                    return;
+                IsRefreshing = true;
+
                 if (isClimaPro)
                 {
                     await GetClimateLogs();
@@ -215,14 +219,7 @@ namespace MobileClima.ViewModel
 
             if (SelectedServer != null)
             {
-                if (IsClimaPro)
-                {
-                    await GetClimateLogs();
-                }
-                else
-                {
-                    await GetTemperatureLogs();
-                }
+                UpdateReadingsCommand.Execute(null);
             }
         }
     }

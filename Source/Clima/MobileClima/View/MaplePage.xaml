@@ -92,8 +92,8 @@
 
                 <Frame Grid.Row="5" BackgroundColor="#F0F5F5" BorderColor="Transparent" HasShadow="False" Padding="0">
                     <Grid>
-                        <ListView ItemsSource="{Binding TemperatureLog}" SeparatorVisibility="None" BackgroundColor="Transparent" RowHeight="50"
-                            IsRefreshing="{Binding IsRefreshing}" IsVisible="{Binding IsClimaPro, Converter={converter:InverseBoolConverter}}">
+                        <ListView ItemsSource="{Binding TemperatureLog}" SeparatorVisibility="None" BackgroundColor="Transparent"
+                            HasUnevenRows="True" IsVisible="{Binding IsClimaPro, Converter={converter:InverseBoolConverter}}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
@@ -113,12 +113,12 @@
                             </ListView.ItemTemplate>
                         </ListView>
 
-                        <ListView ItemsSource="{Binding WeatherLog}" SeparatorVisibility="None" BackgroundColor="Transparent" RowHeight="245"
-                            IsRefreshing="{Binding IsRefreshing}" IsVisible="{Binding IsClimaPro}">
+                        <ListView ItemsSource="{Binding WeatherLog}" SeparatorVisibility="None" BackgroundColor="Transparent" 
+                            HasUnevenRows="True" IsVisible="{Binding IsClimaPro}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <Border BackgroundColor="#23ABE3" Stroke="Transparent" Padding="10" VerticalOptions="Center">
+                                        <Border BackgroundColor="#23ABE3" Stroke="Transparent" Padding="10" Margin="0,0,0,5">
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="5" />
                                             </Border.StrokeShape>
@@ -163,6 +163,9 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
+
+                        <ActivityIndicator Color="Black" HorizontalOptions="Center" VerticalOptions="Center" 
+                            IsRunning="{Binding IsRefreshing}" IsVisible="{Binding IsRefreshing}" />
                     </Grid>
                 </Frame>
 
