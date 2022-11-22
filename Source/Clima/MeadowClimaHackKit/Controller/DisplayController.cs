@@ -210,7 +210,7 @@ namespace MeadowClimaHackKit.Controller
                 text: tempText,
                 color: Color.Black,
                 scaleFactor: ScaleFactor.X2,
-                alignment: TextAlignment.Center);
+                HorizontalAlignment.Center);
 
             graphics.Show();
 
