@@ -87,8 +87,15 @@
                     </Label.Triggers>
                 </Label>
 
-                <Button Grid.Row="4" Text="Refresh" Command="{Binding UpdateReadingsCommand}" 
-                    TextColor="White" Background="#23ABE3" FontSize="Medium" />
+                <Grid Grid.Row="4" HeightRequest="50">
+                    <Button  Text="Refresh" Command="{Binding UpdateReadingsCommand}" 
+                        TextColor="White" Background="#23ABE3" FontSize="Medium" />
+                    <Frame IsVisible="{Binding IsRefreshing}" BackgroundColor="#23ABE3" 
+                        Padding="0" BorderColor="Transparent" HasShadow="False">
+                        <ActivityIndicator Color="White" HorizontalOptions="Center" Scale="0.75"
+                            IsRunning="{Binding IsRefreshing}" IsVisible="{Binding IsRefreshing}" />
+                    </Frame>
+                </Grid>
 
                 <Frame Grid.Row="5" BackgroundColor="#F0F5F5" BorderColor="Transparent" HasShadow="False" Padding="0">
                     <Grid>
@@ -164,8 +171,7 @@
                             </ListView.ItemTemplate>
                         </ListView>
 
-                        <ActivityIndicator Color="Black" HorizontalOptions="Center" VerticalOptions="Center" 
-                            IsRunning="{Binding IsRefreshing}" IsVisible="{Binding IsRefreshing}" />
+                        
                     </Grid>
                 </Frame>
 

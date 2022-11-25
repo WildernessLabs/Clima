@@ -1,5 +1,5 @@
 ﻿using CommonContracts.Models;
-using Meadow.Foundation.Web.Maple.Client;
+using Meadow.Foundation.Web.Maple;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Input;
@@ -164,9 +164,7 @@ namespace MobileClima.ViewModel
                 var response = await client.GetAsync(
                     hostAddress: SelectedServer != null ? SelectedServer.IpAddress : IpAddress,
                     port: ServerPort,
-                    endpoint: "gettemperaturelogs",
-                    param: null,
-                    value: null);
+                    endPoint: "gettemperaturelogs");
 
                 if (response == null)
                     return;
@@ -192,9 +190,7 @@ namespace MobileClima.ViewModel
                 var response = await client.GetAsync(
                     hostAddress: SelectedServer != null ? SelectedServer.IpAddress : IpAddress,
                     port: ServerPort,
-                    endpoint: "getclimalogs",
-                    param: null,
-                    value: null);
+                    endPoint: "getclimalogs");
 
                 if (response == null)
                     return;
