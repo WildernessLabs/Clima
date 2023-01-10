@@ -2,11 +2,9 @@
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Web.Maple;
-using Meadow.Gateway.WiFi;
 using Meadow.Hardware;
 using MeadowClimaProKit.Connectivity;
 using MeadowClimaProKit.Controller;
-using MeadowClimaProKit.ServiceAccessLayer;
 using System;
 using System.Threading.Tasks;
 
@@ -24,23 +22,29 @@ namespace MeadowClimaProKit
 
             if (isWiFi)
             {
-                var wifi = Device.NetworkAdapters.Primary<IWiFiNetworkAdapter>();
-
-                var connectionResult = await wifi.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD, TimeSpan.FromSeconds(45));
-                if (connectionResult.ConnectionStatus != ConnectionStatus.Success)
+                try
                 {
-                    throw new Exception($"Cannot connect to network: {connectionResult.ConnectionStatus}");
+                    var wifi = Device.NetworkAdapters.Primary<IWiFiNetworkAdapter>();
+                    wifi.NetworkConnected += NetworkConnected;
+                    await wifi.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD, TimeSpan.FromSeconds(45));
                 }
-
-                await DateTimeService.GetTimeAsync();
-
-                var mapleServer = new MapleServer(wifi.IpAddress, 5417, true, logger: Resolver.Log);
-                mapleServer.Start();
+                catch(Exception ex)
+                {
+                    Resolver.Log.Error(ex.Message);
+                }
             }
             else
             {
                 BluetoothServer.Instance.Initialize();
+
+                LedController.Instance.SetColor(Color.Green);
             }
+        }
+
+        private void NetworkConnected(INetworkAdapter sender, NetworkConnectionEventArgs args)
+        {
+            var mapleServer = new MapleServer(sender.IpAddress, 5417, true, logger: Resolver.Log);
+            mapleServer.Start();
 
             LedController.Instance.SetColor(Color.Green);
         }

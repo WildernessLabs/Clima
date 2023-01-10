@@ -3,11 +3,9 @@ using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Sensors.Buttons;
 using Meadow.Foundation.Web.Maple;
-using Meadow.Gateway.WiFi;
 using Meadow.Hardware;
 using MeadowClimaHackKit.Connectivity;
 using MeadowClimaHackKit.Controller;
-using MeadowClimaHackKit.ServiceAccessLayer;
 using System;
 using System.Threading.Tasks;
 
@@ -53,21 +51,18 @@ namespace MeadowClimaHackKit
 
         async Task InitializeMaple()
         {
-            DisplayController.Instance.StartWifiConnectingAnimation();
+            _ = DisplayController.Instance.StartWifiConnectingAnimation();
 
             var wifi = Device.NetworkAdapters.Primary<IWiFiNetworkAdapter>();
+            wifi.NetworkConnected += NetworkConnected;
+            await wifi.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD, TimeSpan.FromSeconds(45));
+        }
 
-            var connectionResult = await wifi.Connect(Secrets.WIFI_NAME, Secrets.WIFI_PASSWORD, TimeSpan.FromSeconds(45));
-            if (connectionResult.ConnectionStatus != ConnectionStatus.Success)
-            {
-                throw new Exception($"Cannot connect to network: {connectionResult.ConnectionStatus}");
-            }
-
+        private void NetworkConnected(INetworkAdapter sender, NetworkConnectionEventArgs args)
+        {
             DisplayController.Instance.StopWifiConnectingAnimation();
 
-            await DateTimeService.GetTimeAsync();
-
-            var mapleServer = new MapleServer(wifi.IpAddress, 5417, false);
+            var mapleServer = new MapleServer(sender.IpAddress, 5417, true, logger: Resolver.Log);
             mapleServer.Start();
 
             TemperatureController.Instance.Initialize();
