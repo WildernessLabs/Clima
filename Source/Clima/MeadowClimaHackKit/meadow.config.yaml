@@ -9,7 +9,7 @@ Options: --jit
 
 Device:
 # Name of the device on the network.
-Name: MeadowClimaProKit
+Name: MeadowClimaHackKit
 
 #===============================================================================
 # Network configuration.
