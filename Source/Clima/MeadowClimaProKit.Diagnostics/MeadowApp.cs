@@ -30,7 +30,6 @@ namespace MeadowClimaProKit.Diagnostics
             Console.WriteLine("Initialize started...");
 
             onboardLed = new RgbPwmLed(
-                Device,
                 Device.Pins.OnboardLedRed,
                 Device.Pins.OnboardLedGreen,
                 Device.Pins.OnboardLedBlue);
@@ -40,17 +39,17 @@ namespace MeadowClimaProKit.Diagnostics
             bme680 = new Bme680(Device.CreateI2cBus(), (byte)Bme680.Addresses.Address_0x76);
             Console.WriteLine("Bme680 successully initialized.");
 
-            windVane = new WindVane(Device, Device.Pins.A00);
+            windVane = new WindVane(Device.Pins.A00);
             Console.WriteLine("WindVane up.");
 
-            anemometer = new SwitchingAnemometer(Device, Device.Pins.A01);
+            anemometer = new SwitchingAnemometer(Device.Pins.A01);
             anemometer.StartUpdating();
             Console.WriteLine("Anemometer up.");
 
             solarVoltageInput = Device.CreateAnalogInputPort(Device.Pins.A02);
             Console.WriteLine("Solar voltage input up.");
 
-            rainGauge = new SwitchingRainGauge(Device, Device.Pins.D11);
+            rainGauge = new SwitchingRainGauge(Device.Pins.D11);
             rainGauge.StartUpdating();
             Console.WriteLine("Rain gauge up.");
 

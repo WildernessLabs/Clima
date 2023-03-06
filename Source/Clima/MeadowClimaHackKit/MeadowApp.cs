@@ -22,9 +22,9 @@ namespace MeadowClimaHackKit
         {
             LedController.Instance.SetColor(Color.Red);
 
-            buttonUp = new PushButton(Device, Device.Pins.D03);
-            buttonDown = new PushButton(Device, Device.Pins.D04);
-            buttonMenu = new PushButton(Device, Device.Pins.D05);
+            buttonUp = new PushButton(Device.Pins.D03);
+            buttonDown = new PushButton(Device.Pins.D04);
+            buttonMenu = new PushButton(Device.Pins.D05);
 
             buttonUp.Clicked += (s, e) => DisplayController.Instance.MenuUp();
             buttonDown.Clicked += (s, e) => DisplayController.Instance.MenuDown();

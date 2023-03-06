@@ -19,7 +19,7 @@ namespace MeadowClimaHackKit.Controller
 
         public void Initialize()
         {
-            analogTemperature = new AnalogTemperature(MeadowApp.Device,
+            analogTemperature = new AnalogTemperature(
                 MeadowApp.Device.Pins.A00, AnalogTemperature.KnownSensorType.LM35);
             analogTemperature.StartUpdating(TimeSpan.FromSeconds(30));
             analogTemperature.TemperatureUpdated += AnalogTemperatureUpdated;
