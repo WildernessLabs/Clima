@@ -14,25 +14,25 @@ namespace MeadowClimaProKit.Database
         public double? TemperatureValue
         {
             get => Temperature?.Celsius;
-            set => Temperature = new MU.Temperature((int)value.Value, MU.Temperature.UnitType.Celsius);
+            set => Temperature = new Temperature(value.Value, MU.Temperature.UnitType.Celsius);
         }
 
         public double? PressureValue
         {
             get => Pressure?.Bar;
-            set => Pressure = new MU.Pressure((int)value.Value, MU.Pressure.UnitType.Bar);
+            set => Pressure = new Pressure(value.Value, MU.Pressure.UnitType.Bar);
         }
 
         public double? HumidityValue
         {
             get => Humidity?.Percent;
-            set => Humidity = new MU.RelativeHumidity((int)value.Value, MU.RelativeHumidity.UnitType.Percent);
+            set => Humidity = new RelativeHumidity(value.Value, MU.RelativeHumidity.UnitType.Percent);
         }
 
         public double? RainFallValue
         {
             get => RainFall?.Millimeters;
-            set => RainFall = new MU.Length((int)value.Value, MU.Length.UnitType.Millimeters);
+            set => RainFall = new Length(value.Value, MU.Length.UnitType.Millimeters);
         }
 
         public Azimuth16PointCardinalNames? WindDirectionValue
@@ -44,7 +44,7 @@ namespace MeadowClimaProKit.Database
         public double? WindSpeedValue
         {
             get => WindSpeed?.KilometersPerHour;
-            set => WindSpeed = new MU.Speed((int)value.Value, MU.Speed.UnitType.KilometersPerHour);
+            set => WindSpeed = new Speed(value.Value, MU.Speed.UnitType.KilometersPerHour);
         }
 
         [Indexed]
@@ -56,16 +56,16 @@ namespace MeadowClimaProKit.Database
         public bool Synchronized { get; set; }
 
         [Ignore]
-        public MU.Temperature? Temperature { get; set; }
+        public Temperature? Temperature { get; set; }
         [Ignore]
-        public MU.Pressure? Pressure { get; set; }
+        public Pressure? Pressure { get; set; }
         [Ignore]
-        public MU.RelativeHumidity? Humidity { get; set; }
+        public RelativeHumidity? Humidity { get; set; }
         [Ignore]
-        public MU.Length? RainFall { get; set; }
+        public Length? RainFall { get; set; }
         [Ignore]
-        public MU.Azimuth16PointCardinalNames? WindDirection { get; set; }
+        public Azimuth16PointCardinalNames? WindDirection { get; set; }
         [Ignore]
-        public MU.Speed? WindSpeed { get; set; }
+        public Speed? WindSpeed { get; set; }
     }
 }
