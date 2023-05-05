@@ -8,8 +8,6 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonContracts", "CommonCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Clima.ProKit", "MeadowClimaProKit\Meadow.Clima.ProKit.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Clima.ProKit.Diagnostics", "MeadowClimaProKit.Diagnostics\Meadow.Clima.ProKit.Diagnostics.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileClima", "MobileClima\MobileClima.csproj", "{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meadow.Clima", "Meadow.Clima\Meadow.Clima.csproj", "{49AF89E0-45BB-4C30-98F4-3DA80278E628}"
@@ -89,19 +87,6 @@ Global
 		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{9B08A0CE-DF94-4C59-98D4-B96212E78498}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Release|iPhone.Build.0 = Release|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{50B2CBA1-2053-42D6-9783-184802980F4B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -402,7 +387,6 @@ Global
 		SolutionGuid = {CA61E123-F783-4CB3-8EB2-099EE930ADD4}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		CommonContracts\CommonContracts.projitems*{50b2cba1-2053-42d6-9783-184802980f4b}*SharedItemsImports = 5
 		CommonContracts\CommonContracts.projitems*{567267b3-ed96-4fea-b555-2ee203372ea4}*SharedItemsImports = 13
 		CommonContracts\CommonContracts.projitems*{9b08a0ce-df94-4c59-98d4-b96212e78498}*SharedItemsImports = 5
 		CommonContracts\CommonContracts.projitems*{e753b478-f501-45a8-8ccb-67970f131033}*SharedItemsImports = 5
