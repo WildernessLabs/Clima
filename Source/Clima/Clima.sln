@@ -2,13 +2,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaHackKit", "MeadowClimaHackKit\MeadowClimaHackKit.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Clima.HackKit", "MeadowClimaHackKit\Meadow.Clima.HackKit.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonContracts", "CommonContracts\CommonContracts.shproj", "{567267B3-ED96-4FEA-B555-2EE203372EA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaProKit", "MeadowClimaProKit\MeadowClimaProKit.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Clima.ProKit", "MeadowClimaProKit\Meadow.Clima.ProKit.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowClimaProKit.Diagnostics", "MeadowClimaProKit.Diagnostics\MeadowClimaProKit.Diagnostics.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Clima.ProKit.Diagnostics", "MeadowClimaProKit.Diagnostics\Meadow.Clima.ProKit.Diagnostics.csproj", "{50B2CBA1-2053-42D6-9783-184802980F4B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileClima", "MobileClima\MobileClima.csproj", "{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB}"
 EndProject
@@ -41,6 +41,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensors.Weather.SwitchingRainGauge", "..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Weather.SwitchingRainGauge\Driver\Sensors.Weather.SwitchingRainGauge.csproj", "{EF62412C-FE4E-4B04-8C90-20615AACD1F2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensors.Weather.WindVane", "..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Weather.WindVane\Driver\Sensors.Weather.WindVane.csproj", "{BF400519-2445-4D03-AFEF-112A0E2B6CA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clima_Demo", "Clima_Demo\Clima_Demo.csproj", "{E914AFEB-4392-443C-A45B-67B71DD81171}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -359,6 +361,24 @@ Global
 		{BF400519-2445-4D03-AFEF-112A0E2B6CA2}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{BF400519-2445-4D03-AFEF-112A0E2B6CA2}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{BF400519-2445-4D03-AFEF-112A0E2B6CA2}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Debug|iPhone.Deploy.0 = Debug|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Debug|iPhoneSimulator.Deploy.0 = Debug|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Release|iPhone.Build.0 = Release|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Release|iPhone.Deploy.0 = Release|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{E914AFEB-4392-443C-A45B-67B71DD81171}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -19,5 +19,7 @@ namespace Meadow.Devices
         public SwitchingAnemometer? Anemometer { get; }
 
         public IAnalogInputPort? SolarVoltageInput { get; }
+
+        public string RevisionString { get; }
     }
 }
