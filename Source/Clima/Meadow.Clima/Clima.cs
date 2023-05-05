@@ -39,7 +39,7 @@ namespace Meadow.Devices
 
             if (device is IF7FeatherMeadowDevice { } feather)
             {
-                logger?.Debug("Instantiating Clima v2 specific hardware");
+                logger?.Info("Instantiating Clima v2 specific hardware");
                 hardware = new ClimaHardwareV2(feather, i2cBus);
             }
             else if (device is IF7CoreComputeMeadowDevice { } ccm)

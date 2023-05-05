@@ -1,5 +1,6 @@
 ﻿using Meadow;
 using Meadow.Devices;
+using Meadow.Foundation;
 using Meadow.Peripherals.Sensors.Location.Gnss;
 using Meadow.Units;
 using System;
@@ -71,6 +72,9 @@ namespace Clima_Demo
             //---- heartbeat
             Resolver.Log.Info("Initialization complete");
 
+            //---- set LED green
+            clima.ColorLed.SetColor(Color.Green);
+
             return base.Initialize();
         }
 
@@ -126,7 +130,7 @@ namespace Clima_Demo
             //---- SCD40 Environmental sensor
             if (clima.EnvironmentalSensor is { } scd40)
             {
-                scd40.StartUpdating(updateInterval);
+                //    scd40.StartUpdating(updateInterval);
             }
 
             //---- Wind Vane sensor
@@ -189,7 +193,7 @@ namespace Clima_Demo
 
         private void Scd40Updated(object sender, IChangeResult<(Concentration? Concentration, Temperature? Temperature, RelativeHumidity? Humidity)> e)
         {
-            Resolver.Log.Info($"SCD40: {e.New.Concentration.Value.PartsPerMillion:0.#}ppm, {e.New.Temperature.Value.Celsius:0.#}C, {e.New.Humidity.Value.Percent:0.#}%");
+            Resolver.Log.Info($"SCD40: {e.New.Concentration.Value.PartsPerMillion:0.#}ppm, {e.New.Temperature.Value.Celsius:0.0}C, {e.New.Humidity.Value.Percent:0.0}%");
         }
     }
 }
