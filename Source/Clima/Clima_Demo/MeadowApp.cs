@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Clima_Demo
 {
     // Change F7FeatherV2 to F7FeatherV1 for V1.x boards
-    public class MeadowApp : App<F7CoreComputeV2> //   F7FeatherV2>
+    public class MeadowApp : App<F7FeatherV2> //   F7FeatherV2>
     {
         IClimaHardware clima;
 

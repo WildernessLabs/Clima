@@ -24,7 +24,7 @@ namespace Meadow.Devices
         /// <summary>
         /// The BME688 environmental sensor on the Clima board
         /// </summary>
-        public Scd40? EnvironmentalSensor => throw new NotSupportedException("SCD40 is only available on Clima v3 and newer");
+        public Scd40? EnvironmentalSensor => null;
 
         /// <summary>
         /// The Wind Vane on the Clima board
@@ -81,7 +81,7 @@ namespace Meadow.Devices
             try
             {
                 Resolver.Log.Debug("Initializing GNSS");
-                Gnss = new NeoM8(device, device.PlatformOS.GetSerialPortName("COM4"), device.Pins.D09, device.Pins.D11);
+                Gnss = new NeoM8(device, device.PlatformOS.GetSerialPortName("COM4"), null, null);
                 Resolver.Log.Debug("GNSS initialized");
             }
             catch (Exception e)
