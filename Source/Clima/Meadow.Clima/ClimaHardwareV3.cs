@@ -8,6 +8,8 @@ using Meadow.Hardware;
 using Meadow.Logging;
 using System;
 
+#nullable enable
+
 namespace Meadow.Devices
 {
     public class ClimaHardwareV3 : IClimaHardware
@@ -48,20 +50,23 @@ namespace Meadow.Devices
         public IAnalogInputPort? SolarVoltageInput { get; protected set; }
 
         /// <summary>
-        /// Gets the ProjectLab board hardware revision
+        /// Gets the RGB PWM LED
         /// </summary>
-        public RgbPwmLed ColorLed { get; set; }
+        public RgbPwmLed? ColorLed { get; set; }
 
         /// <summary>
-        /// The MCP23008 IO expander that contains the ProjectLab hardware version 
+        /// The MCP23008 IO expander that contains the Clima hardware version 
         /// </summary>
-        Mcp23008? Mcp_Version { get; set; }
+        Mcp23008? McpVersion { get; set; }
 
         /// <summary>
         /// The Neo GNSS sensor
         /// </summary>
-        public NeoM8 Gnss { get; protected set; }
+        public NeoM8? Gnss { get; protected set; }
 
+        /// <summary>
+        /// The revision string for the Clima board
+        /// </summary>
         public string RevisionString => "v3.x";
 
         /// <summary>
@@ -69,6 +74,11 @@ namespace Meadow.Devices
         /// </summary>
         protected Logger? Logger { get; } = Resolver.Log;
 
+        /// <summary>
+        /// Create a new ClimaHardwareV3 object
+        /// </summary>
+        /// <param name="device">The meadow device</param>
+        /// <param name="i2cBus">The I2C bus</param>
         public ClimaHardwareV3(IF7CoreComputeMeadowDevice device, II2cBus i2cBus)
         {
             I2cBus = i2cBus;
@@ -76,7 +86,7 @@ namespace Meadow.Devices
             try
             {
                 Logger?.Trace("Instantiating Mcp Version");
-                Mcp_Version = new Mcp23008(I2cBus, address: 0x27, resetPort: device.Pins.D02.CreateDigitalOutputPort());
+                McpVersion = new Mcp23008(I2cBus, address: 0x27, resetPort: device.Pins.D02.CreateDigitalOutputPort());
                 Logger?.Info("Mcp Version up");
             }
             catch (Exception e)

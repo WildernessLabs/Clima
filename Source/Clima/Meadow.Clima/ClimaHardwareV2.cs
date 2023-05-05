@@ -7,22 +7,24 @@ using Meadow.Hardware;
 using Meadow.Logging;
 using System;
 
+#nullable enable
+
 namespace Meadow.Devices
 {
     public class ClimaHardwareV2 : IClimaHardware
     {
         /// <summary>
-        /// Gets the I2C Bus
+        /// The I2C Bus
         /// </summary>
         public II2cBus I2cBus { get; protected set; }
 
         /// <summary>
-        /// Gets the BME688 environmental sensor on the Clima board
+        /// The BME688 atmospheric sensor on the Clima board
         /// </summary>
         public Bme688? AtmosphericSensor { get; protected set; }
 
         /// <summary>
-        /// The BME688 environmental sensor on the Clima board
+        /// The SCD40 environmental sensor on the Clima board
         /// </summary>
         public Scd40? EnvironmentalSensor => null;
 
@@ -47,15 +49,18 @@ namespace Meadow.Devices
         public IAnalogInputPort? SolarVoltageInput { get; protected set; }
 
         /// <summary>
-        /// Gets the ProjectLab board hardware revision
+        /// Gets the RGB PWM LED
         /// </summary>
-        public RgbPwmLed ColorLed { get; set; }
+        public RgbPwmLed? ColorLed { get; set; }
 
         /// <summary>
         /// The Neo GNSS sensor
         /// </summary>
-        public NeoM8 Gnss { get; protected set; }
+        public NeoM8? Gnss { get; protected set; }
 
+        /// <summary>
+        /// The revision string for the Clima board
+        /// </summary>
         public string RevisionString => "v2.x";
 
         /// <summary>
@@ -63,6 +68,11 @@ namespace Meadow.Devices
         /// </summary>
         protected Logger? Logger { get; } = Resolver.Log;
 
+        /// <summary>
+        /// Create a new ClimaHardwareV2 object
+        /// </summary>
+        /// <param name="device">The meadow device</param>
+        /// <param name="i2cBus">The I2C bus</param>
         public ClimaHardwareV2(IF7FeatherMeadowDevice device, II2cBus i2cBus)
         {
             I2cBus = i2cBus;
