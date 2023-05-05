@@ -12,6 +12,9 @@ namespace Meadow.Devices
         /// </summary>
         Mcp23008? Mcp_Version { get; set; }
 
+        /// <summary>
+        /// The Neo GNSS sensor
+        /// </summary>
         public override NeoM8 Gnss { get; protected set; }
 
         public ClimaHardwareV3(IF7FeatherMeadowDevice device, II2cBus i2cBus) :

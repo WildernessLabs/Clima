@@ -14,10 +14,10 @@ namespace Meadow.Devices
         public Scd40? EnvironmentalSensor { get; }
         public NeoM8? Gnss { get; }
 
-        WindVane? WindVane { get; }
-        SwitchingRainGauge? RainGauge { get; }
-        SwitchingAnemometer? Anemometer { get; }
+        public WindVane? WindVane { get; }
+        public SwitchingRainGauge? RainGauge { get; }
+        public SwitchingAnemometer? Anemometer { get; }
 
-        IAnalogInputPort? SolarVoltageInput { get; }
+        public IAnalogInputPort? SolarVoltageInput { get; }
     }
 }

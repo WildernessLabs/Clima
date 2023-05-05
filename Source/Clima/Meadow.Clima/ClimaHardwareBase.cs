@@ -8,7 +8,7 @@ using System;
 
 namespace Meadow.Devices
 {
-    abstract internal class ClimaHardwareBase : IClimaHardware
+    public abstract class ClimaHardwareBase : IClimaHardware
     {
         /// <summary>
         /// Get a reference to Meadow Logger
@@ -38,22 +38,22 @@ namespace Meadow.Devices
         /// <summary>
         /// The Wind Vane on the Clima board
         /// </summary>
-        WindVane? WindVane { get; }
+        public WindVane? WindVane { get; }
 
         /// <summary>
         /// The Switching Rain Gauge on the Clima board
         /// </summary>
-        SwitchingRainGauge? RainGauge { get; }
+        public SwitchingRainGauge? RainGauge { get; }
 
         /// <summary>
         /// The Switching Anemometer on the Clima board
         /// </summary>
-        SwitchingAnemometer? Anemometer { get; }
+        public SwitchingAnemometer? Anemometer { get; }
 
         /// <summary>
         /// The Solar Voltage Input on the Clima board
         /// </summary>
-        IAnalogInputPort? SolarVoltageInput { get; }
+        public IAnalogInputPort? SolarVoltageInput { get; }
 
         /// <summary>
         /// Gets the ProjectLab board hardware revision
@@ -62,7 +62,6 @@ namespace Meadow.Devices
 
         internal ClimaHardwareBase(IF7FeatherMeadowDevice device, II2cBus i2cBus)
         {
-            SpiBus = spiBus;
             I2cBus = i2cBus;
 
             try
