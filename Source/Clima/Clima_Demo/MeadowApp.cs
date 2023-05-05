@@ -1,5 +1,6 @@
 ﻿using Meadow;
 using Meadow.Devices;
+using Meadow.Peripherals.Sensors.Location.Gnss;
 using Meadow.Units;
 using System;
 using System.Threading.Tasks;
@@ -57,20 +58,105 @@ namespace Clima_Demo
                 solarVoltage.Updated += SolarVoltageUpdated;
             }
 
+            //---- GNSS
+            if (clima.Gnss is { } gnss)
+            {
+                //    gnss.GllReceived += GnssGllReceived;
+                //    gnss.RmcReceived += GnssRmcReceived;
+                //    gnss.VtgReceived += GnssVtgReceived;
+                //    gnss.GsvReceived += GnssGsvReceived;
+                //    gnss.GsaReceived += GnssGsaReceived;
+            }
+
             //---- heartbeat
             Resolver.Log.Info("Initialization complete");
 
             return base.Initialize();
         }
 
+        private void GnssGsaReceived(object sender, ActiveSatellites e)
+        {
+            if (e.SatellitesUsedForFix is { } sats)
+            {
+                Resolver.Log.Info($"Number of active satellites: {sats.Length}");
+            }
+        }
+
+        private void GnssGsvReceived(object sender, SatellitesInView e)
+        {
+            Resolver.Log.Info($"Satellites in view: {e.Satellites.Length}");
+        }
+
+        private void GnssVtgReceived(object sender, CourseOverGround e)
+        {
+            if (e is { } cv)
+            {
+                Resolver.Log.Info($"{cv}");
+            };
+        }
+
+        private void GnssRmcReceived(object sender, GnssPositionInfo e)
+        {
+            if (e.Valid)
+            {
+                Resolver.Log.Info($"GNSS Position: lat: [{e.Position.Latitude}], long: [{e.Position.Longitude}]");
+            }
+        }
+
+        private void GnssGllReceived(object sender, GnssPositionInfo e)
+        {
+            if (e.Valid)
+            {
+                Resolver.Log.Info($"GNSS Position: lat: [{e.Position.Latitude}], long: [{e.Position.Longitude}]");
+            }
+        }
+
         public override Task Run()
         {
             Resolver.Log.Info("Run...");
 
+            var updateInterval = TimeSpan.FromSeconds(2);
+
             //---- BME688 Atmospheric sensor
             if (clima.EnvironmentalSensor is { } bme688)
             {
-                bme688.StartUpdating(TimeSpan.FromSeconds(5));
+                bme688.StartUpdating(updateInterval);
+            }
+
+            //---- SCD40 Environmental sensor
+            if (clima.EnvironmentalSensor is { } scd40)
+            {
+                scd40.StartUpdating(updateInterval);
+            }
+
+            //---- Wind Vane sensor
+            if (clima.WindVane is { } windVane)
+            {
+                windVane.StartUpdating(updateInterval);
+            }
+
+            //---- Rain Gauge sensor
+            if (clima.RainGauge is { } rainGuage)
+            {
+                rainGuage.StartUpdating(updateInterval);
+            }
+
+            //---- Anemometer
+            if (clima.Anemometer is { } anemometer)
+            {
+                anemometer.StartUpdating(updateInterval);
+            }
+
+            //---- Solar Voltage Input sensor
+            if (clima.SolarVoltageInput is { } solarVoltage)
+            {
+                solarVoltage.StartUpdating(updateInterval);
+            }
+
+            //---- Neo8 GNSS
+            if (clima.Gnss is { } gnss)
+            {
+                gnss.StartUpdating();
             }
 
             return base.Run();
@@ -78,32 +164,32 @@ namespace Clima_Demo
 
         private void Bme688Updated(object sender, IChangeResult<(Temperature? Temperature, RelativeHumidity? Humidity, Pressure? Pressure, Resistance? GasResistance)> e)
         {
-            Resolver.Log.Info($"BME688: {(int)e.New.Temperature?.Celsius}C - {(int)e.New.Humidity?.Percent}% - {(int)e.New.Pressure?.Millibar}mbar");
+            Resolver.Log.Info($"BME688: {(int)e.New.Temperature?.Celsius:0.#}C - {(int)e.New.Humidity?.Percent:0.#}% - {(int)e.New.Pressure?.Millibar:0.#}mbar");
         }
 
         private void SolarVoltageUpdated(object sender, IChangeResult<Voltage> e)
         {
-            Resolver.Log.Info($"SolarVoltage: {e.New.Volts} volts");
+            Resolver.Log.Info($"SolarVoltage: {e.New.Volts:0.#} volts");
         }
 
         private void AnemometerUpdated(object sender, IChangeResult<Speed> e)
         {
-            Resolver.Log.Info($"Anemometer: {e.New.MetersPerSecond} m/s");
+            Resolver.Log.Info($"Anemometer: {e.New.MetersPerSecond:0.#} m/s");
         }
 
         private void RainGuageUpdated(object sender, IChangeResult<Length> e)
         {
-            Resolver.Log.Info($"RainGauge: {e.New.Millimeters} mm");
+            Resolver.Log.Info($"RainGauge: {e.New.Millimeters:0.#} mm");
         }
 
         private void WindvaneUpdated(object sender, IChangeResult<Azimuth> e)
         {
-            Resolver.Log.Info($"$WineVane: {e.New.Compass16PointCardinalName} ({e.New.Radians:0} radians)");
+            Resolver.Log.Info($"$WineVane: {e.New.Compass16PointCardinalName} ({e.New.Radians::0.#} radians)");
         }
 
         private void Scd40Updated(object sender, IChangeResult<(Concentration? Concentration, Temperature? Temperature, RelativeHumidity? Humidity)> e)
         {
-            Resolver.Log.Info($"SCD40: {e.New.Concentration.Value.PartsPerMillion}ppm, {e.New.Temperature.Value.Celsius}C, {e.New.Humidity.Value.Percent}%");
+            Resolver.Log.Info($"SCD40: {e.New.Concentration.Value.PartsPerMillion:0.#}ppm, {e.New.Temperature.Value.Celsius:0.#}C, {e.New.Humidity.Value.Percent:0.#}%");
         }
     }
 }

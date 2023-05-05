@@ -1,4 +1,5 @@
-﻿using Meadow.Foundation.Sensors.Atmospheric;
+﻿using Meadow.Foundation.Leds;
+using Meadow.Foundation.Sensors.Atmospheric;
 using Meadow.Foundation.Sensors.Environmental;
 using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Foundation.Sensors.Weather;
@@ -56,6 +57,11 @@ namespace Meadow.Devices
         /// The Solar Voltage Input on the Clima board
         /// </summary>
         public IAnalogInputPort? SolarVoltageInput { get; protected set; }
+
+        /// <summary>
+        /// Gets the ProjectLab board hardware revision
+        /// </summary>
+        public RgbPwmLed ColorLed { get; set; }
 
         /// <summary>
         /// Gets the ProjectLab board hardware revision

@@ -1,4 +1,5 @@
-﻿using Meadow.Foundation.Sensors.Atmospheric;
+﻿using Meadow.Foundation.Leds;
+using Meadow.Foundation.Sensors.Atmospheric;
 using Meadow.Foundation.Sensors.Environmental;
 using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Foundation.Sensors.Weather;
@@ -19,6 +20,8 @@ namespace Meadow.Devices
         public SwitchingAnemometer? Anemometer { get; }
 
         public IAnalogInputPort? SolarVoltageInput { get; }
+
+        public RgbPwmLed ColorLed { get; }
 
         public string RevisionString { get; }
     }

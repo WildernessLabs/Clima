@@ -1,4 +1,5 @@
 ﻿using Meadow.Foundation.ICs.IOExpanders;
+using Meadow.Foundation.Leds;
 using Meadow.Foundation.Sensors.Environmental;
 using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Foundation.Sensors.Weather;
@@ -50,7 +51,7 @@ namespace Meadow.Devices
             try
             {
                 Resolver.Log.Debug("Initializing GNSS");
-                Gnss = new NeoM8(device, device.PlatformOS.GetSerialPortName("COM4"), device.Pins.D09, device.Pins.D11);
+                Gnss = new NeoM8(device, device.PlatformOS.GetSerialPortName("COM4"), device.Pins.D05, device.Pins.A03);
                 Resolver.Log.Debug("GNSS initialized");
             }
             catch (Exception e)
@@ -72,7 +73,7 @@ namespace Meadow.Devices
             try
             {
                 Logger?.Trace("Instantiating Rain Gauge");
-                RainGauge = new SwitchingRainGauge(device.Pins.D11);
+                RainGauge = new SwitchingRainGauge(device.Pins.D16);
                 Logger?.Trace("RainGauge up");
             }
             catch (Exception ex)
@@ -100,6 +101,17 @@ namespace Meadow.Devices
             catch (Exception ex)
             {
                 Resolver.Log.Error($"Unabled to create the Switching Anemometer: {ex.Message}");
+            }
+
+            try
+            {
+                Logger?.Trace("Instantiating RGB LED");
+                ColorLed = new RgbPwmLed(device.Pins.D09, device.Pins.D10, device.Pins.D11, Peripherals.Leds.CommonType.CommonAnode);
+                Logger?.Trace("RGB LED up");
+            }
+            catch (Exception ex)
+            {
+                Resolver.Log.Error($"Unabled to create the RGB LED: {ex.Message}");
             }
         }
     }

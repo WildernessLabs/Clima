@@ -1,4 +1,5 @@
-﻿using Meadow.Foundation.Sensors.Gnss;
+﻿using Meadow.Foundation.Leds;
+using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
 using System;
@@ -72,6 +73,17 @@ namespace Meadow.Devices
             catch (Exception ex)
             {
                 Resolver.Log.Error($"Unabled to create the Switching Anemometer: {ex.Message}");
+            }
+
+            try
+            {
+                Logger?.Trace("Instantiating RGB LED");
+                ColorLed = new RgbPwmLed(device.Pins.OnboardLedRed, device.Pins.OnboardLedGreen, device.Pins.OnboardLedBlue, Peripherals.Leds.CommonType.CommonAnode);
+                Logger?.Trace("RGB LED up");
+            }
+            catch (Exception ex)
+            {
+                Resolver.Log.Error($"Unabled to create the RGB LED: {ex.Message}");
             }
         }
     }
