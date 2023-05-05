@@ -87,8 +87,8 @@ namespace Meadow.Devices
             try
             {
                 Logger?.Trace("Instantiating atmospheric sensor");
-                AtmosphericSensor = new Bme688(I2cBus, (byte)Bme688.Addresses.Address_0x77);
-                Logger?.Trace("Environmental sensor up");
+                AtmosphericSensor = new Bme688(I2cBus, (byte)Bme688.Addresses.Address_0x76);
+                Logger?.Trace("Atmospheric sensor up");
             }
             catch (Exception ex)
             {
