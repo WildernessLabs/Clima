@@ -1,6 +1,6 @@
 ﻿using Meadow.Foundation;
-using Meadow.Foundation.Displays.TextDisplayMenu;
 using Meadow.Foundation.Displays;
+using Meadow.Foundation.Displays.UI;
 using Meadow.Foundation.Graphics;
 using Meadow.Foundation.Graphics.Buffers;
 using Meadow.Hardware;
@@ -24,7 +24,7 @@ namespace MeadowClimaHackKit.Controller
 
         protected Temperature conditions;
 
-        protected Menu menu;
+        protected TextDisplayMenu menu;
         protected St7789 display;
         protected BufferRgb888 logo, wifiConnecting, wifiConnected;
         protected MicroGraphics graphics;
@@ -75,7 +75,7 @@ namespace MeadowClimaHackKit.Controller
                 new MenuItem("°F", command: "setFahrenheit"),
             };
 
-            menu = new Menu(graphics, menuItems, false);
+            menu = new TextDisplayMenu(graphics, menuItems, false);
             menu.Selected += MenuSelected;
 
             // finally, clear the display so it's ready for action
@@ -216,12 +216,12 @@ namespace MeadowClimaHackKit.Controller
             isRendering = false;
         }
 
-        public async Task StartWifiConnectingAnimation() 
+        public async Task StartWifiConnectingAnimation()
         {
             token = new CancellationTokenSource();
 
             while (!token.IsCancellationRequested)
-            {                
+            {
                 graphics.DrawBuffer(
                     x: graphics.Width / 2 - wifiConnecting.Width / 2,
                     y: 134,
@@ -240,7 +240,7 @@ namespace MeadowClimaHackKit.Controller
             }
         }
 
-        public void StopWifiConnectingAnimation() 
+        public void StopWifiConnectingAnimation()
         {
             token.Cancel();
         }
