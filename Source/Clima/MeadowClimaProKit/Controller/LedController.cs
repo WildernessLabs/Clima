@@ -28,13 +28,12 @@ namespace MeadowClimaProKit.Controller
 
         public void SetColor(Color color)
         {
-            led.Stop();
+            led.StopAnimation();
             led.SetColor(color);
         }
 
         public void StartBlink(Color color)
         {
-            led.Stop();
             led.StartBlink(color);
         }
     }

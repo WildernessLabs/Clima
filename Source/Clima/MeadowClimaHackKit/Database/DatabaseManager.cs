@@ -14,7 +14,7 @@ namespace MeadowClimaHackKit.Database
             new Lazy<DatabaseManager>(() => new DatabaseManager());
         public static DatabaseManager Instance => instance.Value;
 
-        bool isConfigured = false;
+        bool isConfigured = false; 
 
         SQLiteConnection Database { get; set; }
 
