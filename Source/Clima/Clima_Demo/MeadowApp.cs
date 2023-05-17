@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Clima_Demo
 {
     // Change F7FeatherV2 to F7FeatherV1 for V1.x boards
-    public class MeadowApp : App<F7FeatherV2> //   F7FeatherV2>
+    public class MeadowApp : App<F7CoreComputeV2>
     {
         IClimaHardware clima;
 
@@ -62,11 +62,11 @@ namespace Clima_Demo
             //---- GNSS
             if (clima.Gnss is { } gnss)
             {
-                gnss.GllReceived += GnssGllReceived;
+                //gnss.GsaReceived += GnssGsaReceived;
+                //gnss.GsvReceived += GnssGsvReceived;
+                //gnss.VtgReceived += GnssVtgReceived;
                 gnss.RmcReceived += GnssRmcReceived;
-                gnss.VtgReceived += GnssVtgReceived;
-                gnss.GsvReceived += GnssGsvReceived;
-                gnss.GsaReceived += GnssGsaReceived;
+                gnss.GllReceived += GnssGllReceived;
             }
 
             //---- heartbeat
@@ -119,7 +119,7 @@ namespace Clima_Demo
         {
             Resolver.Log.Info("Run...");
 
-            var updateInterval = TimeSpan.FromSeconds(2);
+            var updateInterval = TimeSpan.FromSeconds(5);
 
             //---- BME688 Atmospheric sensor
             if (clima.AtmosphericSensor is { } bme688)
@@ -168,7 +168,7 @@ namespace Clima_Demo
 
         private void Bme688Updated(object sender, IChangeResult<(Temperature? Temperature, RelativeHumidity? Humidity, Pressure? Pressure, Resistance? GasResistance)> e)
         {
-            Resolver.Log.Info($"BME688: {(int)e.New.Temperature?.Celsius:0.0}C, {(int)e.New.Humidity?.Percent:0.#}%, {(int)e.New.Pressure?.Millibar:0.#}mbar");
+            Resolver.Log.Info($"BME688:        {(int)e.New.Temperature?.Celsius:0.0}C, {(int)e.New.Humidity?.Percent:0.#}%, {(int)e.New.Pressure?.Millibar:0.#}mbar");
         }
 
         private void SolarVoltageUpdated(object sender, IChangeResult<Voltage> e)
@@ -178,22 +178,22 @@ namespace Clima_Demo
 
         private void AnemometerUpdated(object sender, IChangeResult<Speed> e)
         {
-            Resolver.Log.Info($"Anemometer: {e.New.MetersPerSecond:0.#} m/s");
+            Resolver.Log.Info($"Anemometer:    {e.New.MetersPerSecond:0.#} m/s");
         }
 
         private void RainGuageUpdated(object sender, IChangeResult<Length> e)
         {
-            Resolver.Log.Info($"Rain Gauge: {e.New.Millimeters:0.#} mm");
+            Resolver.Log.Info($"Rain Gauge:    {e.New.Millimeters:0.#} mm");
         }
 
         private void WindvaneUpdated(object sender, IChangeResult<Azimuth> e)
         {
-            Resolver.Log.Info($"Wind Vane: {e.New.Compass16PointCardinalName} ({e.New.Radians:0.#} radians)");
+            Resolver.Log.Info($"Wind Vane:     {e.New.Compass16PointCardinalName} ({e.New.Radians:0.#} radians)");
         }
 
         private void Scd40Updated(object sender, IChangeResult<(Concentration? Concentration, Temperature? Temperature, RelativeHumidity? Humidity)> e)
         {
-            Resolver.Log.Info($"SCD40: {e.New.Concentration.Value.PartsPerMillion:0.#}ppm, {e.New.Temperature.Value.Celsius:0.0}C, {e.New.Humidity.Value.Percent:0.0}%");
+            Resolver.Log.Info($"SCD40:         {e.New.Concentration.Value.PartsPerMillion:0.#}ppm, {e.New.Temperature.Value.Celsius:0.0}C, {e.New.Humidity.Value.Percent:0.0}%");
         }
     }
 }

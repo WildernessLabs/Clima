@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Clima.ProKit", "Mead
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileClima", "MobileClima\MobileClima.csproj", "{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Clima", "Meadow.Clima\Meadow.Clima.csproj", "{49AF89E0-45BB-4C30-98F4-3DA80278E628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clima", "Meadow.Clima\Clima.csproj", "{49AF89E0-45BB-4C30-98F4-3DA80278E628}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_External", "_External", "{2889A476-F914-49E8-9F97-4CC6CA34A901}"
 EndProject
