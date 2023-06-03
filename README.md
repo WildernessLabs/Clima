@@ -52,7 +52,7 @@ We made an important change to the clima board to handle solar charging better. 
 
 ![](/Image_Assets/Clima_w_new_Solar_Circuit.jpg)
 
-If your Clima has the updated solar charging circuit, you're good to go! If you haven't received one it, it's on the way.
+If your Clima has the updated solar charging circuit, you're good to go!
 
 Check out the [Core-Compute Addon Modules](https://github.com/WildernessLabs/Hardware_Addon_Modules) if you want to dive into the new solar charging circuit design.
 
@@ -84,7 +84,6 @@ Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructi
 
 ## Known Issues
 
-* **Battery Power** - The Meadow.OS Power and Sleep APIs haven't been released yet, so Clima can't go to sleep to conserve power. For that reason, it'll need to be plugged into USB. We're hoping to have the first sleep APIs available in b6.4.
 * **Low-Power Raingauge** - The raingauge sensor is hooked to `D15`, which is a low-power counting timer, capable of counting pulses even when the Meadow is in low-power mode. This enables the rain gauge to collect data even while Clima is asleep. However, we haven't exposed that functionality via Meadow.Core yet. 
 
 # Clima.HackKit
