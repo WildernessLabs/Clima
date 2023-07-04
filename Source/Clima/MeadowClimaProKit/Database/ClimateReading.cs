@@ -3,7 +3,7 @@ using Meadow.Units;
 using SQLite;
 using MU = Meadow.Units;
 
-namespace MeadowClimaProKit.Database
+namespace Clima_SQLite_Demo.Database
 {
     [Table("ClimateReadings")]
     public class ClimateReading

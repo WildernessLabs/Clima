@@ -2,7 +2,7 @@
 using Clima.Contracts.Bluetooth;
 using Meadow.Gateways.Bluetooth;
 
-namespace MeadowClimaProKit.Connectivity
+namespace Clima_SQLite_Demo.Connectivity
 {
     public class BluetoothServer
     {

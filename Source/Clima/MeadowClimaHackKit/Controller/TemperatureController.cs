@@ -1,9 +1,9 @@
 ﻿using Meadow.Foundation.Sensors.Temperature;
 using Meadow.Units;
-using MeadowClimaHackKit.Database;
+using Clima_HackKit_Demo.Database;
 using System;
 
-namespace MeadowClimaHackKit.Controller
+namespace Clima_HackKit_Demo.Controller
 {
     public class TemperatureController
     {

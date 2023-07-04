@@ -1,4 +1,4 @@
-﻿namespace MeadowClimaProKit
+﻿namespace Clima_SQLite_Demo
 {
     public class Secrets
     {

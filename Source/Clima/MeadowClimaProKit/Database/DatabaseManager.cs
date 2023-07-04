@@ -1,12 +1,10 @@
 ﻿using Meadow;
-using Meadow.Foundation;
-using MeadowClimaProKit.Controller;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace MeadowClimaProKit.Database
+namespace Clima_SQLite_Demo.Database
 {
     public class DatabaseManager
     {
@@ -23,7 +21,7 @@ namespace MeadowClimaProKit.Database
             Initialize();
         }
 
-        protected void Initialize() 
+        protected void Initialize()
         {
             var databasePath = Path.Combine(MeadowOS.FileSystem.DataDirectory, "ClimateReadings.db");
             Database = new SQLiteConnection(databasePath);
@@ -35,8 +33,6 @@ namespace MeadowClimaProKit.Database
 
         public bool SaveReading(ClimateReading climate)
         {
-            LedController.Instance.SetColor(Color.Orange);
-
             if (isConfigured == false)
             {
                 Console.WriteLine("SaveUpdateReading: DB not ready");
@@ -55,7 +51,6 @@ namespace MeadowClimaProKit.Database
 
             Console.WriteLine($"Successfully saved to database");
 
-            LedController.Instance.SetColor(Color.Green);
             return true;
         }
 

@@ -2,13 +2,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Clima.HackKit", "MeadowClimaHackKit\Meadow.Clima.HackKit.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clima_HackKit_Demo", "MeadowClimaHackKit\Clima_HackKit_Demo.csproj", "{E753B478-F501-45A8-8CCB-67970F131033}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonContracts", "CommonContracts\CommonContracts.shproj", "{567267B3-ED96-4FEA-B555-2EE203372EA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Clima.ProKit", "MeadowClimaProKit\Meadow.Clima.ProKit.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clima_SQLite_Demo", "MeadowClimaProKit\Clima_SQLite_Demo.csproj", "{9B08A0CE-DF94-4C59-98D4-B96212E78498}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileClima", "MobileClima\MobileClima.csproj", "{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clima_Companion_App", "MobileClima\Clima_Companion_App.csproj", "{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clima", "Meadow.Clima\Clima.csproj", "{49AF89E0-45BB-4C30-98F4-3DA80278E628}"
 EndProject
@@ -48,13 +48,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Displays.TextDisplayMenu", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Maple.MapleServer", "..\..\..\Maple\Source\Web.Maple.MapleServer\Driver\Web.Maple.MapleServer.csproj", "{009F059F-0677-487C-9C9B-9396AF54D67C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meadow.Units", "..\..\..\Meadow.Units\Source\Meadow.Units\Meadow.Units.csproj", "{CAC3B6F1-6337-493A-9D90-9FB8BAE28417}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Units", "..\..\..\Meadow.Units\Source\Meadow.Units\Meadow.Units.csproj", "{CAC3B6F1-6337-493A-9D90-9FB8BAE28417}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meadow.Modbus", "..\..\..\Meadow.Modbus\src\Meadow.Modbus\Meadow.Modbus.csproj", "{85DC9E85-3472-418A-8065-5EF99323E6FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Modbus", "..\..\..\Meadow.Modbus\src\Meadow.Modbus\Meadow.Modbus.csproj", "{85DC9E85-3472-418A-8065-5EF99323E6FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQTTnet", "..\..\..\MQTTnet\Source\MQTTnet\MQTTnet.csproj", "{F6EB1347-3926-4308-BE20-70AC53BEBF1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MQTTnet", "..\..\..\MQTTnet\Source\MQTTnet\MQTTnet.csproj", "{F6EB1347-3926-4308-BE20-70AC53BEBF1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphics.MicroGraphics", "..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Graphics.MicroGraphics\Driver\Graphics.MicroGraphics.csproj", "{6604B4E1-D993-48E5-A3D0-6A5A180EFB76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphics.MicroGraphics", "..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Graphics.MicroGraphics\Driver\Graphics.MicroGraphics.csproj", "{6604B4E1-D993-48E5-A3D0-6A5A180EFB76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Additional Samples", "Additional Samples", "{4AB0FC09-05D2-4F55-9C2D-13C133456E2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -485,6 +487,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{E753B478-F501-45A8-8CCB-67970F131033} = {4AB0FC09-05D2-4F55-9C2D-13C133456E2F}
+		{567267B3-ED96-4FEA-B555-2EE203372EA4} = {4AB0FC09-05D2-4F55-9C2D-13C133456E2F}
+		{9B08A0CE-DF94-4C59-98D4-B96212E78498} = {4AB0FC09-05D2-4F55-9C2D-13C133456E2F}
+		{ECCFAF9D-EF9B-4B19-B7D8-37E820EB3ADB} = {4AB0FC09-05D2-4F55-9C2D-13C133456E2F}
 		{97251727-4C61-4727-AFFE-3B0AB7893730} = {2889A476-F914-49E8-9F97-4CC6CA34A901}
 		{6413D387-8218-493A-9354-34F2BCE1C76F} = {2889A476-F914-49E8-9F97-4CC6CA34A901}
 		{A79A5214-5F86-4BF3-B15F-70D5F2C85B16} = {2889A476-F914-49E8-9F97-4CC6CA34A901}

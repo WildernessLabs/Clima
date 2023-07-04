@@ -1,9 +1,9 @@
 ﻿using Clima.Contracts.Bluetooth;
 using Meadow.Gateways.Bluetooth;
-using MeadowClimaHackKit.Controller;
+using Clima_HackKit_Demo.Controller;
 using System;
 
-namespace MeadowClimaHackKit.Connectivity
+namespace Clima_HackKit_Demo.Connectivity
 {
     public class BluetoothServer
     {

@@ -1,12 +1,12 @@
 ﻿using Meadow;
 using Meadow.Foundation;
-using MeadowClimaHackKit.Controller;
+using Clima_HackKit_Demo.Controller;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace MeadowClimaHackKit.Database
+namespace Clima_HackKit_Demo.Database
 {
     public class DatabaseManager
     {

@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MeadowClimaHackKit.Controller
+namespace Clima_HackKit_Demo.Controller
 {
     public class DisplayController
     {

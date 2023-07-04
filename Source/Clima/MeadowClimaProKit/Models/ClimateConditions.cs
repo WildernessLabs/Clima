@@ -1,6 +1,6 @@
-﻿using MeadowClimaProKit.Database;
+﻿using Clima_SQLite_Demo.Database;
 
-namespace MeadowClimaProKit.Models
+namespace Clima_SQLite_Demo.Models
 {
     public class ClimateConditions
     {

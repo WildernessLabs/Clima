@@ -2,7 +2,7 @@
 using SQLite;
 using System;
 
-namespace MeadowClimaHackKit.Database
+namespace Clima_HackKit_Demo.Database
 {
     [Table("TemperatureReadings")]
     public class TemperatureTable

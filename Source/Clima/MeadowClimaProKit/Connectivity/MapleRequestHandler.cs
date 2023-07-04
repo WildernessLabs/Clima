@@ -1,12 +1,10 @@
 ﻿using CommonContracts.Models;
-using Meadow.Foundation;
 using Meadow.Foundation.Web.Maple;
 using Meadow.Foundation.Web.Maple.Routing;
-using MeadowClimaProKit.Controller;
-using MeadowClimaProKit.Database;
+using Clima_SQLite_Demo.Database;
 using System.Collections.Generic;
 
-namespace MeadowClimaProKit.Connectivity
+namespace Clima_SQLite_Demo.Connectivity
 {
     public class MapleRequestHandler : RequestHandlerBase
     {
@@ -15,8 +13,6 @@ namespace MeadowClimaProKit.Connectivity
         [HttpGet("/getclimalogs")]
         public IActionResult GetClimateLogs()
         {
-            LedController.Instance.SetColor(Color.Magenta);
-
             var logs = DatabaseManager.Instance.GetAllClimateReadings();
 
             var data = new List<ClimateModel>();
@@ -33,7 +29,6 @@ namespace MeadowClimaProKit.Connectivity
                 });
             }
 
-            LedController.Instance.SetColor(Color.Green);
             return new JsonResult(data);
         }
     }

@@ -2,11 +2,11 @@
 using Meadow.Foundation;
 using Meadow.Foundation.Web.Maple;
 using Meadow.Foundation.Web.Maple.Routing;
-using MeadowClimaHackKit.Controller;
-using MeadowClimaHackKit.Database;
+using Clima_HackKit_Demo.Controller;
+using Clima_HackKit_Demo.Database;
 using System.Collections.Generic;
 
-namespace MeadowClimaHackKit.Connectivity
+namespace Clima_HackKit_Demo.Connectivity
 {
     public class MapleRequestHandler : RequestHandlerBase
     {
