@@ -169,7 +169,7 @@ namespace Clima_HackKit_Demo.Controller
         protected byte[] LoadResource(string filename)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = $"MeadowClimaHackKit.{filename}";
+            var resourceName = $"Clima_HackKit_Demo.{filename}";
 
             using Stream stream = assembly.GetManifestResourceStream(resourceName);
             using var ms = new MemoryStream();

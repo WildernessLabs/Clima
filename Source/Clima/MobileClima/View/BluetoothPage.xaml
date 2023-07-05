@@ -76,7 +76,7 @@
                             <Grid>
                                 <Label Text="Temperature" FontSize="Medium"
                                     TextColor="White" />
-                                <Label Text="{Binding Temperature}" FontSize="Medium"
+                                <Label Text="{Binding TemperatureValue}" FontSize="Medium"
                                     TextColor="White" HorizontalOptions="End" />
                             </Grid>
                         </StackLayout>

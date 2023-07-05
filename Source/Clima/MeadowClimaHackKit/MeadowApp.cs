@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 namespace Clima_HackKit_Demo
 {
     // Change F7FeatherV2 to F7FeatherV1 for V1.x boards
-    public class MeadowApp : App<F7FeatherV1>
+    public class MeadowApp : App<F7FeatherV2>
     {
-        bool isWiFi = true;
+        bool isWiFi = false;
 
         PushButton buttonUp, buttonDown, buttonMenu;
 
@@ -31,6 +31,8 @@ namespace Clima_HackKit_Demo
             buttonMenu.Clicked += (s, e) => DisplayController.Instance.MenuSelect();
 
             DisplayController.Instance.ShowSplashScreen();
+
+            TemperatureController.Instance.Initialize();
 
             if (isWiFi)
             {
@@ -64,8 +66,6 @@ namespace Clima_HackKit_Demo
 
             var mapleServer = new MapleServer(sender.IpAddress, 5417, true, logger: Resolver.Log);
             mapleServer.Start();
-
-            TemperatureController.Instance.Initialize();
 
             LedController.Instance.SetColor(Color.Green);
         }

@@ -2,6 +2,7 @@
 using Meadow.Gateways.Bluetooth;
 using Clima_HackKit_Demo.Controller;
 using System;
+using Meadow.Foundation;
 
 namespace Clima_HackKit_Demo.Connectivity
 {
@@ -21,6 +22,8 @@ namespace Clima_HackKit_Demo.Connectivity
             bleTreeDefinition = GetDefinition();
             TemperatureController.Instance.TemperatureUpdated += TemperatureUpdated;
             MeadowApp.Device.BluetoothAdapter.StartBluetoothServer(bleTreeDefinition);
+
+            LedController.Instance.SetColor(Color.Green);
         }
 
         private void TemperatureUpdated(object sender, Meadow.Units.Temperature e)
@@ -43,7 +46,7 @@ namespace Clima_HackKit_Demo.Connectivity
                 temperatureCharacteristic
             );
 
-            return new Definition("MeadowClimaHackKit", service);
+            return new Definition("Clima_HackKit_Demo", service);
         }
     }
 }
