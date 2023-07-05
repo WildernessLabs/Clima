@@ -10,6 +10,9 @@ namespace MeadowClimaHackKit.Connectivity
 {
     public class MapleRequestHandler : RequestHandlerBase
     {
+
+        private const int MAX_PAGE_SIZE = 50;
+
         public MapleRequestHandler() { }
 
         [HttpGet("/gettemperaturelogs")]
@@ -17,8 +20,28 @@ namespace MeadowClimaHackKit.Connectivity
         {
             LedController.Instance.SetColor(Color.Magenta);
 
-            var logs = DatabaseManager.Instance.GetTemperatureReadings();
+            var logs = DatabaseManager.Instance.GetAllTemperatureReadings();
+            var data = MapDtoTemperatureModels(logs);
 
+            LedController.Instance.SetColor(Color.Green);
+            return new JsonResult(data);
+        }
+
+        [HttpGet("/gettemperaturepage/{page}")]
+        public IActionResult GetTemperaturePage(int page)
+        {
+            LedController.Instance.SetColor(Color.Magenta);
+
+            var logs = DatabaseManager.Instance.GetTemperatureReadings(MAX_PAGE_SIZE, page);
+
+            var data = MapDtoTemperatureModels(logs);
+
+            LedController.Instance.SetColor(Color.Green);
+            return new JsonResult(data);
+        }
+
+        private static List<TemperatureModel> MapDtoTemperatureModels(List<TemperatureTable> logs)
+        {
             var data = new List<TemperatureModel>();
             foreach (var log in logs)
             {
@@ -29,8 +52,7 @@ namespace MeadowClimaHackKit.Connectivity
                 });
             }
 
-            LedController.Instance.SetColor(Color.Green);
-            return new JsonResult(data);
+            return data;
         }
     }
 }
