@@ -171,7 +171,7 @@ namespace MobileClima.ViewModel
                 DeviceList.Add(e.Device);
             }
 
-            if (e.Device.Name == "MeadowClimaPro" ||
+            if (e.Device.Name == "Clima_SQLite_Demo" ||
                 e.Device.Name == "Clima_HackKit_Demo")
             {
                 await adapter.StopScanningForDevicesAsync();
