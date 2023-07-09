@@ -65,7 +65,8 @@ namespace Clima_HackKit_Demo.Controller
             graphics = new MicroGraphics(display)
             {
                 CurrentFont = new Font12x20(),
-                Stroke = 3
+                Stroke = 3,
+                Rotation = RotationType._180Degrees
             };
             graphics.DisplayConfig.FontScale = 2;
 
