@@ -16,15 +16,16 @@ namespace Clima_HackKit_Demo
     {
         bool isWiFi = false;
 
-        PushButton buttonUp, buttonDown, buttonMenu;
+        PushButton buttonUp, buttonMenu;
+        PollingPushButton buttonDown;
 
         public override Task Initialize()
         {
             LedController.Instance.SetColor(Color.Red);
 
             buttonUp = new PushButton(Device.Pins.D03);
-            buttonDown = new PushButton(Device.Pins.D04);
-            buttonMenu = new PushButton(Device.Pins.D05);
+            buttonDown = new PollingPushButton(Device.Pins.D02);
+            buttonMenu = new PushButton(Device.Pins.D04);
 
             buttonUp.Clicked += (s, e) => DisplayController.Instance.MenuUp();
             buttonDown.Clicked += (s, e) => DisplayController.Instance.MenuDown();

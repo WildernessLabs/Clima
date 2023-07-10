@@ -3,7 +3,6 @@ using Meadow.Foundation.Displays;
 using Meadow.Foundation.Displays.UI;
 using Meadow.Foundation.Graphics;
 using Meadow.Foundation.Graphics.Buffers;
-using Meadow.Hardware;
 using Meadow.Units;
 using SimpleJpegDecoder;
 using System;
@@ -41,19 +40,9 @@ namespace Clima_HackKit_Demo.Controller
 
         public void Initialize()
         {
-            var config = new SpiClockConfiguration(
-                new Frequency(48000, Frequency.UnitType.Kilohertz),
-                SpiClockConfiguration.Mode.Mode3);
-
-            var spiBus = MeadowApp.Device.CreateSpiBus(
-                MeadowApp.Device.Pins.SCK,
-                MeadowApp.Device.Pins.MOSI,
-                MeadowApp.Device.Pins.MISO,
-                config);
-
             display = new St7789
             (
-                spiBus: spiBus,
+                spiBus: MeadowApp.Device.CreateSpiBus(),
                 chipSelectPin: null,
                 dcPin: MeadowApp.Device.Pins.D01,
                 resetPin: MeadowApp.Device.Pins.D00,
@@ -65,7 +54,8 @@ namespace Clima_HackKit_Demo.Controller
             graphics = new MicroGraphics(display)
             {
                 CurrentFont = new Font12x20(),
-                Stroke = 3
+                Stroke = 3,
+                Rotation = RotationType._180Degrees
             };
             graphics.DisplayConfig.FontScale = 2;
 
