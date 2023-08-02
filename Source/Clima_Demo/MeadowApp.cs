@@ -15,7 +15,7 @@ namespace Clima_Demo
 
         public override Task Initialize()
         {
-            Resolver.Log.Loglevel = Meadow.Logging.LogLevel.Trace;
+            Resolver.Log.LogLevel = Meadow.Logging.LogLevel.Trace;
 
             Resolver.Log.Info("Initialize hardware...");
 
@@ -23,43 +23,36 @@ namespace Clima_Demo
 
             Resolver.Log.Info($"Running on Clima Hardware {clima.RevisionString}");
 
-            //---- BME688 Atmospheric sensor
             if (clima.AtmosphericSensor is { } bme688)
             {
                 bme688.Updated += Bme688Updated;
             }
 
-            //---- SCD40 Environmental sensor
             if (clima.EnvironmentalSensor is { } scd40)
             {
                 scd40.Updated += Scd40Updated;
             }
 
-            //---- Wind Vane sensor
             if (clima.WindVane is { } windVane)
             {
                 windVane.Updated += WindvaneUpdated;
             }
 
-            //---- Rain Gauge sensor
             if (clima.RainGauge is { } rainGuage)
             {
                 rainGuage.Updated += RainGuageUpdated;
             }
 
-            //---- Anemometer
             if (clima.Anemometer is { } anemometer)
             {
                 anemometer.WindSpeedUpdated += AnemometerUpdated;
             }
 
-            //---- Solar Voltage Input sensor
             if (clima.SolarVoltageInput is { } solarVoltage)
             {
                 solarVoltage.Updated += SolarVoltageUpdated;
             }
 
-            //---- GNSS
             if (clima.Gnss is { } gnss)
             {
                 //gnss.GsaReceived += GnssGsaReceived;
@@ -69,10 +62,8 @@ namespace Clima_Demo
                 gnss.GllReceived += GnssGllReceived;
             }
 
-            //---- heartbeat
             Resolver.Log.Info("Initialization complete");
 
-            //---- set LED green
             clima.ColorLed.SetColor(Color.Green);
 
             return base.Initialize();
@@ -121,43 +112,36 @@ namespace Clima_Demo
 
             var updateInterval = TimeSpan.FromSeconds(5);
 
-            //---- BME688 Atmospheric sensor
             if (clima.AtmosphericSensor is { } bme688)
             {
                 bme688.StartUpdating(updateInterval);
             }
 
-            //---- SCD40 Environmental sensor
             if (clima.EnvironmentalSensor is { } scd40)
             {
                 scd40.StartUpdating(updateInterval);
             }
 
-            //---- Wind Vane sensor
             if (clima.WindVane is { } windVane)
             {
                 windVane.StartUpdating(updateInterval);
             }
 
-            //---- Rain Gauge sensor
             if (clima.RainGauge is { } rainGuage)
             {
                 rainGuage.StartUpdating(updateInterval);
             }
 
-            //---- Anemometer
             if (clima.Anemometer is { } anemometer)
             {
                 anemometer.StartUpdating(updateInterval);
             }
 
-            //---- Solar Voltage Input sensor
             if (clima.SolarVoltageInput is { } solarVoltage)
             {
                 solarVoltage.StartUpdating(updateInterval);
             }
 
-            //---- Neo8 GNSS
             if (clima.Gnss is { } gnss)
             {
                 gnss.StartUpdating();
