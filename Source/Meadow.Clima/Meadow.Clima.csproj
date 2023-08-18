@@ -1,29 +1,23 @@
 <Project Sdk="Meadow.Sdk/1.1.0">
-	<PropertyGroup>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PackageIcon>icon.png</PackageIcon>
-		<Authors>Wilderness Labs, Inc</Authors>
-		<TargetFramework>netstandard2.1</TargetFramework>
-		<OutputType>Library</OutputType>
-		<AssemblyName>Clima</AssemblyName>
-		<Company>Wilderness Labs, Inc</Company>
-		<PackageProjectUrl>https://github.com/WildernessLabs/Clima</PackageProjectUrl>
-		<PackageId>Meadow.Clima</PackageId>
-		<RepositoryUrl>https://github.com/WildernessLabs/Clima</RepositoryUrl>
-		<PackageTags>Meadow.Clima,Meadow,Clima,atmospheric,environmental,sensors,accelerator</PackageTags>
-		<Version>0.1.0</Version>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Description>Library for the Meadow Clima IoT accelerator</Description>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
-	<PropertyGroup>
-		<LangVersion>10.0</LangVersion>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<None Include="icon.png" Pack="true" PackagePath="" />
-	</ItemGroup>
-
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <Authors>Wilderness Labs, Inc</Authors>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Clima</AssemblyName>
+    <Company>Wilderness Labs, Inc</Company>
+    <PackageProjectUrl>https://github.com/WildernessLabs/Clima</PackageProjectUrl>
+    <PackageId>Meadow.Clima</PackageId>
+    <RepositoryUrl>https://github.com/WildernessLabs/Clima</RepositoryUrl>
+    <PackageTags>Meadow.Clima,Meadow,Clima,atmospheric,environmental,sensors,accelerator</PackageTags>
+    <Version>0.1.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Library for the Meadow Clima IoT accelerator</Description>
+    <Nullable>enable</Nullable>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
