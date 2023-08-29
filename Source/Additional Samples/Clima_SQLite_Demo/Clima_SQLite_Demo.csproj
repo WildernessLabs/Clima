@@ -1,4 +1,4 @@
-﻿<Project Sdk="Meadow.Sdk/1.1.0">
+<Project Sdk="Meadow.Sdk/1.1.0">
   <PropertyGroup>    
     <TargetFramework>netstandard2.1</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -10,7 +10,7 @@
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Maple\Source\Web.Maple.MapleServer\Driver\Web.Maple.MapleServer.csproj" />
+    <PackageReference Include="Meadow.Foundation.Web.Maple.Server" Version="*" />
     <ProjectReference Include="..\..\Meadow.Clima\Meadow.Clima.csproj" />
     <PackageReference Include="System.Text.Json" Version="*" />
     <PackageReference Include="sqlite-net-static" Version="*" />

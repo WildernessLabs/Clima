@@ -15,7 +15,7 @@
     <EmbeddedResource Include="img_wifi_connecting.jpg" />
   </ItemGroup>  
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Maple\Source\Web.Maple.MapleServer\Driver\Web.Maple.MapleServer.csproj" />
+    <PackageReference Include="Meadow.Foundation.Web.Maple.Server" Version="*" />
     <PackageReference Include="Meadow.F7" Version="*" />
     <PackageReference Include="Meadow.Foundation" Version="*" />
     <PackageReference Include="Meadow.Foundation.Displays.TextDisplayMenu" Version="*" />
