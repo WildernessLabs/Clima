@@ -15,7 +15,7 @@ namespace Clima_Demo
 
         public override Task Initialize()
         {
-            Resolver.Log.LogLevel = Meadow.Logging.LogLevel.Trace;
+            Resolver.Log.LogLevel = Meadow.Logging.LogLevel.Information;
 
             Resolver.Log.Info("Initialize hardware...");
 
