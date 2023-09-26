@@ -23,9 +23,8 @@ namespace Meadow.Devices
 
             logger?.Debug("Initializing Clima...");
 
-            var device = Resolver.Device; //convenience local var
+            var device = Resolver.Device;
 
-            // make sure not getting instantiated before the App Initialize method
             if (Resolver.Device == null)
             {
                 var msg = "Clima instance must be created no earlier than App.Initialize()";
@@ -49,7 +48,7 @@ namespace Meadow.Devices
             }
             else
             {
-                throw new NotSupportedException(); //should never get here
+                throw new NotSupportedException();
             }
 
             return hardware;
