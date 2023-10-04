@@ -39,7 +39,7 @@ Both versions are 100% open source, including all of the enclosure design files,
             With this kit, it includes the complete package of sensors, PCB enclosure and mount to place this outdoors. You'll be able to measure wind speed/direction, rain volume, atmospheric conditions like temperature, pressure, humidity, CO2 levels and GPS Coordinates.
         </td>
         <td> 
-            With the Hack Kit, you can build this project to measure indoor room temperature with an analog temperature sensor, use a 240x240 TFT Spi display and three push buttons to build a simple UI using MicroGraphics to do things like change temperature units, and more.
+            With the Meadow Hack Kit, you can build this project to measure indoor room temperature with an analog temperature sensor, use a 240x240 TFT Spi display and three push buttons to build a simple UI using MicroGraphics to do things like change temperature units, and more.
         </td>
     </tr>
 </table>
@@ -81,7 +81,7 @@ public class MeadowApp : App<F7CoreComputeV2>
     }
 ```
 
-4. Like on step 3, you can also access other peripherals like:
+4. Like on step 3, you can also access the rest of peripherals:
     - `EnvironmentalSensor` - Access the SCD40 sensor
     - `WindVane` - Access the Wind Vane to check wind direction
     - `RainGauge` - Access the Rain Gauge to check rain volume
@@ -89,6 +89,8 @@ public class MeadowApp : App<F7CoreComputeV2>
     - `SolarVoltageInput` - Access the voltage input from the Solar Add-on
     - `Gnss` - Access the NEO-M8 GNSS/GPS module
     - `ColorLed` - Access an RGB LED
+
+5. Run the [Clima_Demo](Source/Clima_Demo/) project that uses all the peripherals onboard and outputs readings every few seconds.
 
 ## Hardware Specifications
 
@@ -108,7 +110,7 @@ Go to [Register for an OpenWeather API Key](https://blog.wildernesslabs.co/add-o
 
 ## Clima.HackKit
 
-![Clima companion app](Image_Assets/Clima.jpg)
+![Clima hack kit](Image_Assets/Clima.jpg)
 
 Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
 
