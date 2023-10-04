@@ -3,11 +3,14 @@
 Clima is a solar-powered, custom embedded-IoT solution that tracks climate from a suite of sensors, saves data locally for access via Bluetooth, uses a RESTful Web API, and synchronizes data to the cloud.
 
 ## Contents
-* [Clima Options](#clima-options)
-* [Clima.Pro Kit](#getting-started)
+* [Clima Versions](#clima-versions)
+* [Assembly Instructions](#assembly-instructions)
+* [Getting Started](#getting-started)
 * [Hardware Specifications](#hardware-specifications)
-* [Video Stream Design Series](#video-stream-design-series)
-* [Industrial Enclosure Design](#industrial-enclosure-design)
+* [Mobile Companion App](#mobile-companion-app)
+* [Get an API Key for OpenWeather](#get-an-api-key-for-openweather)
+* [Clima.HackKit](#climahackkit)
+* [Support](#support)
 
 ## Clima Versions
 
@@ -41,7 +44,7 @@ Both versions are 100% open source, including all of the enclosure design files,
     </tr>
 </table>
 
-## Assemblying Clima.Pro Kit
+## Assembly Instructions
 
 A complete kit of Clima.Pro can be found on the [Wilderness Labs Store](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) and the Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
 
@@ -91,54 +94,9 @@ public class MeadowApp : App<F7CoreComputeV2>
 
 <img src="Image_Assets/wildernesslabs-clima-v3-specs.jpg" style="margin-top:10px;margin-bottom:10px" />
 
-<table>
-    <tr>
-        <th>Onboard Peripherals</th>
-    </tr>
-    <tr>
-        <td><strong>3.7V 18650 LiPo Rechargeable Battery</strong></td>
-    </tr>
-    <tr>
-        <td><strong>Meadow F7 Core-Compute Module</strong></td>
-    </tr>
-    <tr>
-        <td><strong>BME688 Temp, Pressure, and Humidity Sensor</strong></td>
-    </tr>
-    <tr>
-        <td><strong>SCD40 CO2, Humidity, and Temp sensor</strong></td>
-    </tr>
-    <tr>
-        <td><strong>USB-C Boot/Reset Add-on Module</strong></td>
-    </tr>
-    <tr>
-        <td><strong>Wind Vane and Anemometer Input</strong></td>
-    </tr>
-    <tr>
-        <td><strong>Rain Gauge Sensor Input</strong></td>
-    </tr>
-    <tr>
-        <td><strong>GNSS Antenna</strong></td>
-    </tr>
-    <tr>
-        <td><strong>Solar Panel Connector</strong></td>
-    </tr>
-    <tr>
-        <td><strong>NEO-M8 GNSS/GPS</strong></td>
-    </tr>
-    <tr>
-        <td><strong>Solar Power/Battery Charging Add-on Module</strong></td>
-    </tr>
-    <tr>
-        <td><strong>I2C Qwiic Connector</strong></td>
-    </tr>
-    <tr>
-        <td><strong>RGB LED</strong></td>
-    </tr>
-</table>
-
 You can find the schematics and other design files in the [Hardware_Design folder](Hardware_Design/).
 
-## Clima Companion Phone App
+## Mobile Companion App
 
 This project also comes with a Xamarin.Forms Clima companion app (on Android and iOS) that shows you how to communicate with your Meadow device using [Bluetooth](http://developer.wildernesslabs.co/Meadow/Meadow.OS/Bluetooth/) and [Maple](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Libraries_and_Frameworks/Maple.Server/) for both kit versions.
 
@@ -159,41 +117,3 @@ Instructions on how to assemble the Clima Hack Kit Version can be found [here](/
 Having trouble building/running these projects? 
 * File an [issue](https://github.com/WildernessLabs/Meadow.Desktop.Samples/issues) with a repro case to investigate, and/or
 * Join our [public Slack](http://slackinvite.wildernesslabs.co/), where we have an awesome community helping, sharing and building amazing things using Meadow.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Getting Started
-
-1. [Buy](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) or [Source](/Docs/Clima.Pro/Bill_of_Materials.md) a kit.
-2. [Clima assembly](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
-3. [Register for an OpenWeather API Key](https://blog.wildernesslabs.co/add-openweather-to-your-meadow-projects/)
-4. [Build and Deploy the Meadow Clima.Pro App](/Docs/Clima.Pro/Deploy_Instructions/readme.md).
-5. Optionally, build and deploy the [companion mobile app](/Docs/Clima.MobileApp/readme.md).
-
-
-
