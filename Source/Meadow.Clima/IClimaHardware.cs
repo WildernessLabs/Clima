@@ -52,6 +52,11 @@ namespace Meadow.Devices
         public IAnalogInputPort? SolarVoltageInput { get; }
 
         /// <summary>
+        /// The Battery Voltage Input on the Clima board
+        /// </summary>
+        public IAnalogInputPort? BatteryVoltageInput { get; }
+
+        /// <summary>
         /// Gets the RGB PWM LED
         /// </summary>
         public RgbPwmLed? ColorLed { get; }
