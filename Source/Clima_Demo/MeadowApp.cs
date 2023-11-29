@@ -20,6 +20,7 @@ namespace Clima_Demo
             Resolver.Log.Info("Initialize hardware...");
 
             clima = Clima.Create();
+            clima.ColorLed.SetColor(Color.Red);
 
             Resolver.Log.Info($"Running on Clima Hardware {clima.RevisionString}");
 
@@ -51,6 +52,11 @@ namespace Clima_Demo
             if (clima.SolarVoltageInput is { } solarVoltage)
             {
                 solarVoltage.Updated += SolarVoltageUpdated;
+            }
+
+            if (clima.BatteryVoltageInput is { } batteryVoltage)
+            {
+               batteryVoltage.Updated += BatteryVoltageUpdated;
             }
 
             if (clima.Gnss is { } gnss)
@@ -142,6 +148,11 @@ namespace Clima_Demo
                 solarVoltage.StartUpdating(updateInterval);
             }
 
+            if (clima.BatteryVoltageInput is { } batteryVoltage)
+            {
+                batteryVoltage.StartUpdating(updateInterval);
+            }
+
             if (clima.Gnss is { } gnss)
             {
                 gnss.StartUpdating();
@@ -158,6 +169,11 @@ namespace Clima_Demo
         private void SolarVoltageUpdated(object sender, IChangeResult<Voltage> e)
         {
             Resolver.Log.Info($"Solar Voltage: {e.New.Volts:0.#} volts");
+        }
+
+        private void BatteryVoltageUpdated(object sender, IChangeResult<Voltage> e)
+        {
+            Resolver.Log.Info($"Battery Voltage: {e.New.Volts:0.#} volts");
         }
 
         private void AnemometerUpdated(object sender, IChangeResult<Speed> e)

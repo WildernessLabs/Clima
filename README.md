@@ -2,7 +2,17 @@
 
 Clima is a solar-powered, custom embedded-IoT solution that tracks climate from a suite of sensors, saves data locally for access via Bluetooth, uses a RESTful Web API, and synchronizes data to the cloud.
 
-## Clima Options
+## Contents
+* [Clima Versions](#clima-versions)
+* [Assembly Instructions](#assembly-instructions)
+* [Getting Started](#getting-started)
+* [Hardware Specifications](#hardware-specifications)
+* [Mobile Companion App](#mobile-companion-app)
+* [Get an API Key for OpenWeather](#get-an-api-key-for-openweather)
+* [Clima.HackKit](#climahackkit)
+* [Support](#support)
+
+## Clima Versions
 
 We offer clima in two options, a full dedicated kit that it's fully solar powered build and ideal to measure weather outdoors, or a much simplified version that you can build with our Hack Kits.
 
@@ -26,88 +36,86 @@ Both versions are 100% open source, including all of the enclosure design files,
     </tr>
     <tr>
         <td>
-            With this kit, the sensors included are:
-            <ul>
-                <li>Anemometer to measure wind speed</li>
-                <li>WindVane to check wind direction</li>
-                <li>Rain meter to measure precipitation</li>
-                <li>BME680 to measure ambient temperature, pressure and humidity </li>
-            </ul>
+            With this kit, it includes the complete package of sensors, PCB enclosure and mount to place this outdoors. You'll be able to measure wind speed/direction, rain volume, atmospheric conditions like temperature, pressure, humidity, CO2 levels and GPS Coordinates.
         </td>
         <td> 
-            With the Hack Kit, you can build this project to measure indoor room temperature with an analog temperature sensor, use a 240x240 TFT Spi display and three push buttons to build a simple UI using MicroGraphics to do things like change temperature units, and more.
+            With the Meadow Hack Kit, you can build this project to measure indoor room temperature with an analog temperature sensor, use a 240x240 TFT Spi display and three push buttons to build a simple UI using MicroGraphics to do things like change temperature units, and more.
         </td>
     </tr>
 </table>
 
-# Clima.Pro Kit 
+## Assembly Instructions
 
-Hello and welcome! 
+A complete kit of Clima.Pro can be found on the [Wilderness Labs Store](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) and the Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
 
-**These getting started instructions are still in beta**, please help us. :) As you run through the, please log any challenges, bugs, or enhancements in the [issues tracker](https://github.com/WildernessLabs/Clima/issues). You can also chat with us in realtime on our [Slack Server](http://slackinvite.wildernesslabs.co/). Make sure to join the `#clima` channel and say `hi!`.
+The store version is 100% kit complete, including the option to upgrade the PCB, Enclosure and Battery only, if you include a previous version of the kit.
 
-## Important Note - Hooking up the solar panel
-
-We made an important change to the clima board to handle solar charging better. If you don't have a `v1.g` or newer, please don't hook up the solar panel, as it can damage the Meadow. We've shipped out all the updated boards, they should look like this:
-
-![](/Image_Assets/Clima_w_new_Solar_Circuit.jpg)
-
-If your Clima has the updated solar charging circuit, you're good to go!
-
-Check out the [Core-Compute Addon Modules](https://github.com/WildernessLabs/Hardware_Addon_Modules) if you want to dive into the new solar charging circuit design.
-
-### Solar Charging Background
-
-We recently learned that in certain circumstances, hooking the clima PCB up to the solar panel and the battery can kill the Meadow. This is due to the nature of the battery charging circuit on the Meadow board which makes the `5V` rail effectively output only, with the USB `5V` input being the only way to appropriately power the Meadow and charge a battery with `5V` or greater.
-
-This problem appears to be a flaw in the design spec of the Feather Form Factor itself. We've analyzed a number of Feather boards, and they employ one of two designs; ours, which prevents the `5V` pin from being an input, or another design which has the distinct possibility of blowing the host USB port that the Meadow is plugged into.
+You can also source all of the components yourself. For a list of components see the [Clima Pro Bill of Material (BoM)](/Docs/Clima.Pro/Bill_of_Materials.md)
 
 ## Getting Started
 
-1. [Buy](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit) or [Source](/Docs/Clima.Pro/Bill_of_Materials.md) a kit.
-2. [Assemble it](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
-3. [Register for an OpenWeather API Key](https://blog.wildernesslabs.co/add-openweather-to-your-meadow-projects/)
-4. [Build and Deploy the Meadow Clima.Pro App](/Docs/Clima.Pro/Deploy_Instructions/readme.md).
-5. Optionally, build and deploy the [companion mobile app](/Docs/Clima.MobileApp/readme.md).
+To simplify the way to use this Meadow-powered reference IoT product, we've created a NuGet package that instantiates and encapsulates the onboard hardware into a `Clima` class.
 
-## Sourcing
+1. Add the ProjectLab Nuget package your project: 
+    - `dotnet add package Meadow.Clima`, or
+    - [Meadow.Clima Nuget Package](https://www.nuget.org/packages/Meadow.Clima/)
 
-A complete kit of the Pro version of Clima can be found on the [Wilderness Labs Store](https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit).
+2. Instantiate the `IClimaHardware` object:  
+```csharp
+public class MeadowApp : App<F7CoreComputeV2>
+{
+    IClimaHardware clima;
 
-The store version is 100% kit complete, including the option to include the 3D printed enclosure, and a meadow.
+    public override Task Initialize()
+    {
+        clima = Clima.Create();
+        ...
+```
 
-You can also source all of the components yourself. For a list of components see the [Clima Pro Bill of Material (BoM)](/Docs/Clima.Pro/Bill_of_Materials.md)
- 
-## Assembly
+3. To Access the `Clima` onboard peripherals (AtmosphericSensor, for example):
+```csharp
+    if (clima.AtmosphericSensor is { } bme688)
+    {
+        bme688.Updated += Bme688Updated;
+        bme688.StartUpdating();
+    }
+```
 
-Instructions for assembly can be found [here](/Docs/Clima.Pro/Assembly_Instructions/readme.md).
+4. Like on step 3, you can also access the rest of peripherals:
+    - `EnvironmentalSensor` - Access the SCD40 sensor
+    - `WindVane` - Access the Wind Vane to check wind direction
+    - `RainGauge` - Access the Rain Gauge to check rain volume
+    - `Anemometer` - Access the Anemometer to get wind speed
+    - `SolarVoltageInput` - Access the voltage input from the Solar Add-on
+    - `Gnss` - Access the NEO-M8 GNSS/GPS module
+    - `ColorLed` - Access an RGB LED
 
-## Known Issues
+5. Run the [Clima_Demo](Source/Clima_Demo/) project that uses all the peripherals onboard and outputs readings every few seconds.
 
-* **Low-Power Raingauge** - The raingauge sensor is hooked to `D15`, which is a low-power counting timer, capable of counting pulses even when the Meadow is in low-power mode. This enables the rain gauge to collect data even while Clima is asleep. However, we haven't exposed that functionality via Meadow.Core yet. 
+## Hardware Specifications
 
-# Clima.HackKit
+<img src="Image_Assets/wildernesslabs-clima-v3-specs.jpg" style="margin-top:10px;margin-bottom:10px" />
 
-Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
+You can find the schematics and other design files in the [Hardware_Design folder](Hardware_Design/).
 
-# Companion Phone App
+## Mobile Companion App
 
 This project also comes with a Xamarin.Forms Clima companion app (on Android and iOS) that shows you how to communicate with your Meadow device using [Bluetooth](http://developer.wildernesslabs.co/Meadow/Meadow.OS/Bluetooth/) and [Maple](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Libraries_and_Frameworks/Maple.Server/) for both kit versions.
 
 ![Clima companion app](Image_Assets/Clima_android.png)
 
-# Solution Structure
+## Get an API Key for OpenWeather
 
-The source code for the Clima applications can be found in the [source](/Source) folder.
+Go to [Register for an OpenWeather API Key](https://blog.wildernesslabs.co/add-openweather-to-your-meadow-projects/)
 
-In there is a `clima.sln` file with the following projects in it:
+## Clima.HackKit
 
-* **CommonContracts** - Shared project with the data models that are shared amongs the various projects.
-* **MeadowClimaHackKit** - A Meadow application for the Hack Kit version of Clima.
-* **MeadowClimaProKit** - A Meadow application to use with the Clima Pro climate station hardware.
-* **MeadowClimaProKit.Diagnostics** - A Meadow application used to test Clima.Pro sensors.
-* **MobileApp** - Xamarin.Forms common project of Clima's companion app.
-* **MobileApp.Android** - Android specific head project.
-* **MobileApp.iOS** - iOS specific head project.
+![Clima hack kit](Image_Assets/Clima.jpg)
 
-For more information on the application source code, please see the [source code readme](/Source/readme.md).
+Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
+
+## Support
+
+Having trouble building/running these projects? 
+* File an [issue](https://github.com/WildernessLabs/Meadow.Desktop.Samples/issues) with a repro case to investigate, and/or
+* Join our [public Slack](http://slackinvite.wildernesslabs.co/), where we have an awesome community helping, sharing and building amazing things using Meadow.
