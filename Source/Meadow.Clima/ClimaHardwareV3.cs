@@ -15,17 +15,17 @@ namespace Meadow.Devices
     public class ClimaHardwareV3 : IClimaHardware
     {
         /// <summary>
-        /// Gets the I2C Bus
+        /// The I2C Bus
         /// </summary>
         public II2cBus I2cBus { get; protected set; }
 
         /// <summary>
-        /// Gets the BME688 environmental sensor on the Clima board
+        /// The BME688 atmospheric sensor on the Clima board
         /// </summary>
         public Bme688? AtmosphericSensor { get; protected set; }
 
         /// <summary>
-        /// The BME688 environmental sensor on the Clima board
+        /// The SCD40 environmental sensor on the Clima board
         /// </summary>
         public Scd40? EnvironmentalSensor { get; protected set; }
 
@@ -48,6 +48,11 @@ namespace Meadow.Devices
         /// The Solar Voltage Input on the Clima board
         /// </summary>
         public IAnalogInputPort? SolarVoltageInput { get; protected set; }
+
+        /// <summary>
+        /// The Solar Voltage Input on the Clima board
+        /// </summary>
+        public IAnalogInputPort? BatteryVoltageInput { get; protected set; }
 
         /// <summary>
         /// Gets the RGB PWM LED
@@ -135,7 +140,7 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unabled to create the Wind Vane: {ex.Message}");
+                Resolver.Log.Error($"Unable to create the Wind Vane: {ex.Message}");
             }
 
             try
@@ -146,7 +151,7 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unabled to create the Switching Rain Gauge: {ex.Message}");
+                Resolver.Log.Error($"Unable to create the Switching Rain Gauge: {ex.Message}");
             }
 
             try
@@ -157,7 +162,7 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unabled to create the Switching Anemometer: {ex.Message}");
+                Resolver.Log.Error($"Unable to create the Switching Anemometer: {ex.Message}");
             }
 
             try
@@ -165,10 +170,31 @@ namespace Meadow.Devices
                 Logger?.Trace("Instantiating Solar Voltage Input");
                 SolarVoltageInput = device.Pins.A02.CreateAnalogInputPort(5);
                 Logger?.Trace("Solar Voltage Input up");
+
+                //SolarVoltageInput.Updated += (s, result) => {
+                //    Logger?.Trace($"Analog event, new Solar   voltage: {result.New.Volts:N2}V, old: {result.Old?.Volts:N2}V");
+                //};
+                //SolarVoltageInput.StartUpdating();
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unabled to create the Switching Anemometer: {ex.Message}");
+                Resolver.Log.Error($"Unable to create the Solar Voltage Input: {ex.Message}");
+            }
+
+            try
+            {
+                Logger?.Trace("Instantiating Battery Voltage Input");
+                BatteryVoltageInput = device.Pins.A04.CreateAnalogInputPort(5);
+                Logger?.Trace("Battery Voltage Input up");
+
+                //BatteryVoltageInput.Updated += (s, result) => {
+                //    Logger?.Trace($"Analog event, new battery voltage: {result.New.Volts:N2}V, old: {result.Old?.Volts:N2}V");
+                //};
+                //BatteryVoltageInput.StartUpdating();
+            }
+            catch (Exception ex)
+            {
+                Resolver.Log.Error($"Unable to create the Battery Voltage Input: {ex.Message}");
             }
 
             try
@@ -179,7 +205,7 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unabled to create the RGB LED: {ex.Message}");
+                Resolver.Log.Error($"Unable to create the RGB LED: {ex.Message}");
             }
         }
     }
