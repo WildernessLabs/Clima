@@ -196,7 +196,6 @@ namespace Meadow.Devices
             try
             {
                 Logger?.Trace("Instantiating Battery Voltage Input");
-                //BatteryVoltageInput = device.Pins.A04.CreateAnalogInputPort(5);
                 BatteryVoltageInput = device.Pins.A04.CreateAnalogInputPort(5,
                     AnalogInputPort.DefaultSampleInterval,
                     AnalogInputPort.DefaultReferenceVoltage * (1000 + 2000) / 2000);
