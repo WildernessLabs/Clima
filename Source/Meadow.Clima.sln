@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Displays.TftSpi", "..\..\Me
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Displays.TextDisplayMenu", "..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Displays.TextDisplayMenu\Driver\Displays.TextDisplayMenu.csproj", "{2300B0AB-E8B2-4897-B532-5148636483A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Maple.MapleServer", "..\..\Maple\Source\Web.Maple.MapleServer\Driver\Web.Maple.MapleServer.csproj", "{009F059F-0677-487C-9C9B-9396AF54D67C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Maple.Server", "..\..\Maple\Source\Web.Maple.Server\Web.Maple.Server.csproj", "{009F059F-0677-487C-9C9B-9396AF54D67C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Units", "..\..\Meadow.Units\Source\Meadow.Units\Meadow.Units.csproj", "{CAC3B6F1-6337-493A-9D90-9FB8BAE28417}"
 EndProject

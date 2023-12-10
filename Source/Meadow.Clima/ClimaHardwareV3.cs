@@ -6,6 +6,7 @@ using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
 using Meadow.Logging;
+using Meadow.Units;
 using System;
 
 #nullable enable
@@ -182,7 +183,9 @@ namespace Meadow.Devices
             try
             {
                 Logger?.Trace("Instantiating Solar Voltage Input");
-                SolarVoltageInput = device.Pins.A02.CreateAnalogInputPort(5);
+                SolarVoltageInput = device.Pins.A02.CreateAnalogInputPort(5,
+                    AnalogInputPort.DefaultSampleInterval,
+                    AnalogInputPort.DefaultReferenceVoltage * (1000 + 680) / 680);
                 Logger?.Trace("Solar Voltage Input up");
             }
             catch (Exception ex)
@@ -193,7 +196,11 @@ namespace Meadow.Devices
             try
             {
                 Logger?.Trace("Instantiating Battery Voltage Input");
-                BatteryVoltageInput = device.Pins.A04.CreateAnalogInputPort(5);
+                //BatteryVoltageInput = device.Pins.A04.CreateAnalogInputPort(5);
+                BatteryVoltageInput = device.Pins.A04.CreateAnalogInputPort(5,
+                    AnalogInputPort.DefaultSampleInterval,
+                    AnalogInputPort.DefaultReferenceVoltage * (1000 + 2000) / 2000);
+
                 Logger?.Trace("Battery Voltage Input up");
             }
             catch (Exception ex)
