@@ -81,6 +81,20 @@ namespace Meadow.Devices
         protected Logger? Logger { get; } = Resolver.Log;
 
         /// <summary>
+        /// Analog inputs to measure Solar voltage has Resistor Divider with R1 = 1000 Ohm, R2 = 680 Ohm
+        /// Measured analogue voltage needs to be scaled to RETURN actual input voltage
+        ///     Input Voltage = AIN / Resistor Divider
+        /// </summary>
+        protected const double SolarVoltageResistorDivider = 680 / (1000 + 680);
+
+        /// <summary>
+        /// Analog inputs to measure Solar voltage has Resistor Divider with R1 = 1000 Ohm, R2 = 680 Ohm
+        /// Measured analogue voltage needs to be scaled to RETURN actual input voltage
+        ///     Input Voltage = AIN / Resistor Divider
+        /// </summary>
+        protected const double BatteryVoltageResistorDivider = 2000 / (1000 + 2000);
+
+        /// <summary>
         /// Create a new ClimaHardwareV3 object
         /// </summary>
         /// <param name="device">The meadow device</param>
@@ -185,7 +199,7 @@ namespace Meadow.Devices
                 Logger?.Trace("Instantiating Solar Voltage Input");
                 SolarVoltageInput = device.Pins.A02.CreateAnalogInputPort(5,
                     AnalogInputPort.DefaultSampleInterval,
-                    AnalogInputPort.DefaultReferenceVoltage * (1000 + 680) / 680);
+                    AnalogInputPort.DefaultReferenceVoltage / SolarVoltageResistorDivider);
                 Logger?.Trace("Solar Voltage Input up");
             }
             catch (Exception ex)
@@ -198,7 +212,7 @@ namespace Meadow.Devices
                 Logger?.Trace("Instantiating Battery Voltage Input");
                 BatteryVoltageInput = device.Pins.A04.CreateAnalogInputPort(5,
                     AnalogInputPort.DefaultSampleInterval,
-                    AnalogInputPort.DefaultReferenceVoltage * (1000 + 2000) / 2000);
+                    AnalogInputPort.DefaultReferenceVoltage / BatteryVoltageResistorDivider);
 
                 Logger?.Trace("Battery Voltage Input up");
             }
