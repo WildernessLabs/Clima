@@ -82,6 +82,19 @@ namespace Meadow.Devices
         {
             I2cBus = i2cBus;
 
+            // See HACKin Meadow.Core\source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
+            // Must initialise any PWM based I/O first.
+            try
+            {
+                Logger?.Trace("Instantiating RGB LED");
+                ColorLed = new RgbPwmLed(device.Pins.OnboardLedRed, device.Pins.OnboardLedGreen, device.Pins.OnboardLedBlue, Peripherals.Leds.CommonType.CommonAnode);
+                Logger?.Trace("RGB LED up");
+            }
+            catch (Exception ex)
+            {
+                Resolver.Log.Error($"Unable to create the RGB LED: {ex.Message}");
+            }
+
             try
             {
                 Logger?.Trace("Instantiating atmospheric sensor");
@@ -146,17 +159,6 @@ namespace Meadow.Devices
             catch (Exception ex)
             {
                 Resolver.Log.Error($"Unable to create the Solar Voltage Input: {ex.Message}");
-            }
-
-            try
-            {
-                Logger?.Trace("Instantiating RGB LED");
-                ColorLed = new RgbPwmLed(device.Pins.OnboardLedRed, device.Pins.OnboardLedGreen, device.Pins.OnboardLedBlue, Peripherals.Leds.CommonType.CommonAnode);
-                Logger?.Trace("RGB LED up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log.Error($"Unable to create the RGB LED: {ex.Message}");
             }
         }
     }
