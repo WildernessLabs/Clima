@@ -46,7 +46,7 @@ namespace Clima_Demo
 
             if (clima.Anemometer is { } anemometer)
             {
-                anemometer.WindSpeedUpdated += AnemometerUpdated;
+                anemometer.Updated += AnemometerUpdated;
             }
 
             if (clima.SolarVoltageInput is { } solarVoltage)
