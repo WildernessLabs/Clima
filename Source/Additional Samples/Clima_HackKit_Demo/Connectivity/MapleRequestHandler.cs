@@ -5,6 +5,7 @@ using Meadow.Foundation.Web.Maple.Routing;
 using Clima_HackKit_Demo.Controller;
 using Clima_HackKit_Demo.Database;
 using System.Collections.Generic;
+using Meadow;
 
 namespace Clima_HackKit_Demo.Connectivity
 {
