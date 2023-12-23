@@ -85,14 +85,14 @@ namespace Meadow.Devices
         /// Measured analogue voltage needs to be scaled to RETURN actual input voltage
         ///     Input Voltage = AIN / Resistor Divider
         /// </summary>
-        protected const double SolarVoltageResistorDivider = 680 / (1000 + 680);
+        protected const double SolarVoltageResistorDivider = 680.0 / (1000.0 + 680.0);
 
         /// <summary>
         /// Analog inputs to measure Solar voltage has Resistor Divider with R1 = 1000 Ohm, R2 = 680 Ohm
         /// Measured analogue voltage needs to be scaled to RETURN actual input voltage
         ///     Input Voltage = AIN / Resistor Divider
         /// </summary>
-        protected const double BatteryVoltageResistorDivider = 2000 / (1000 + 2000);
+        protected const double BatteryVoltageResistorDivider = 2000.0 / (1000.0 + 2000.0);
 
         /// <summary>
         /// Create a new ClimaHardwareV3 object
