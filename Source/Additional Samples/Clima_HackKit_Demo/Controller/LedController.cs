@@ -1,6 +1,7 @@
 ﻿using Meadow.Foundation;
 using Meadow.Foundation.Leds;
 using System;
+using Meadow;
 
 namespace Clima_HackKit_Demo.Controller
 {

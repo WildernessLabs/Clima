@@ -2,6 +2,7 @@
 using Meadow.Gateways.Bluetooth;
 using Clima_HackKit_Demo.Controller;
 using System;
+using Meadow;
 using Meadow.Foundation;
 
 namespace Clima_HackKit_Demo.Connectivity

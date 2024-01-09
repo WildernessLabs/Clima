@@ -10,6 +10,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Meadow;
 
 namespace Clima_HackKit_Demo.Controller
 {
