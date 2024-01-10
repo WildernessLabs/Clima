@@ -6,6 +6,7 @@ using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
 using Meadow.Logging;
+using Meadow.Units;
 using System;
 
 #nullable enable
@@ -80,6 +81,20 @@ namespace Meadow.Devices
         protected Logger? Logger { get; } = Resolver.Log;
 
         /// <summary>
+        /// Analog inputs to measure Solar voltage has Resistor Divider with R1 = 1000 Ohm, R2 = 680 Ohm
+        /// Measured analogue voltage needs to be scaled to RETURN actual input voltage
+        ///     Input Voltage = AIN / Resistor Divider
+        /// </summary>
+        protected const double SolarVoltageResistorDivider = 680.0 / (1000.0 + 680.0);
+
+        /// <summary>
+        /// Analog inputs to measure Solar voltage has Resistor Divider with R1 = 1000 Ohm, R2 = 680 Ohm
+        /// Measured analogue voltage needs to be scaled to RETURN actual input voltage
+        ///     Input Voltage = AIN / Resistor Divider
+        /// </summary>
+        protected const double BatteryVoltageResistorDivider = 2000.0 / (1000.0 + 2000.0);
+
+        /// <summary>
         /// Create a new ClimaHardwareV3 object
         /// </summary>
         /// <param name="device">The meadow device</param>
@@ -87,6 +102,20 @@ namespace Meadow.Devices
         public ClimaHardwareV3(IF7CoreComputeMeadowDevice device, II2cBus i2cBus)
         {
             I2cBus = i2cBus;
+
+            // See HACKin Meadow.Core\source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
+            // Must initialise any PWM based I/O first.
+            try
+            {
+                Logger?.Trace("Instantiating RGB LED");
+                ColorLed = new RgbPwmLed(device.Pins.D09, device.Pins.D10, device.Pins.D11, Peripherals.Leds.CommonType.CommonAnode);
+                Logger?.Trace("RGB LED up");
+            }
+            catch (Exception ex)
+            {
+                Resolver.Log.Error($"Unable to create the RGB LED: {ex.Message}");
+            }
+
 
             try
             {
@@ -168,13 +197,10 @@ namespace Meadow.Devices
             try
             {
                 Logger?.Trace("Instantiating Solar Voltage Input");
-                SolarVoltageInput = device.Pins.A02.CreateAnalogInputPort(5);
+                SolarVoltageInput = device.Pins.A02.CreateAnalogInputPort(5,
+                    AnalogInputPort.DefaultSampleInterval,
+                    AnalogInputPort.DefaultReferenceVoltage / SolarVoltageResistorDivider);
                 Logger?.Trace("Solar Voltage Input up");
-
-                //SolarVoltageInput.Updated += (s, result) => {
-                //    Logger?.Trace($"Analog event, new Solar   voltage: {result.New.Volts:N2}V, old: {result.Old?.Volts:N2}V");
-                //};
-                //SolarVoltageInput.StartUpdating();
             }
             catch (Exception ex)
             {
@@ -184,28 +210,15 @@ namespace Meadow.Devices
             try
             {
                 Logger?.Trace("Instantiating Battery Voltage Input");
-                BatteryVoltageInput = device.Pins.A04.CreateAnalogInputPort(5);
-                Logger?.Trace("Battery Voltage Input up");
+                BatteryVoltageInput = device.Pins.A04.CreateAnalogInputPort(5,
+                    AnalogInputPort.DefaultSampleInterval,
+                    AnalogInputPort.DefaultReferenceVoltage / BatteryVoltageResistorDivider);
 
-                //BatteryVoltageInput.Updated += (s, result) => {
-                //    Logger?.Trace($"Analog event, new battery voltage: {result.New.Volts:N2}V, old: {result.Old?.Volts:N2}V");
-                //};
-                //BatteryVoltageInput.StartUpdating();
+                Logger?.Trace("Battery Voltage Input up");
             }
             catch (Exception ex)
             {
                 Resolver.Log.Error($"Unable to create the Battery Voltage Input: {ex.Message}");
-            }
-
-            try
-            {
-                Logger?.Trace("Instantiating RGB LED");
-                ColorLed = new RgbPwmLed(device.Pins.D09, device.Pins.D10, device.Pins.D11, Peripherals.Leds.CommonType.CommonAnode);
-                Logger?.Trace("RGB LED up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log.Error($"Unable to create the RGB LED: {ex.Message}");
             }
         }
     }
