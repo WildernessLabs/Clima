@@ -1,6 +1,6 @@
 <Project Sdk="Meadow.Sdk/1.1.0">
   <PropertyGroup>
-    <Version>1.7.0</Version>
+    <Version>1.8.0</Version>
     <Company>Wilderness Labs, Inc</Company>
     <Authors>Wilderness Labs, Inc</Authors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -22,13 +22,13 @@
     <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Meadow.F7" Version="1.7.0" />
-    <PackageReference Include="Meadow.Foundation.ICs.IOExpanders.Mcp23xxx" Version="1.7.0" />
-    <PackageReference Include="Meadow.Foundation.Sensors.Atmospheric.Bme68x" Version="1.7.0" />
-    <PackageReference Include="Meadow.Foundation.Sensors.Environmental.Scd4x" Version="1.7.0" />
-    <PackageReference Include="Meadow.Foundation.Sensors.Gnss.NeoM8" Version="1.7.0" />
-    <PackageReference Include="Meadow.Foundation.Sensors.Weather.SwitchingAnemometer" Version="1.7.0" />
-    <PackageReference Include="Meadow.Foundation.Sensors.Weather.SwitchingRainGauge" Version="1.7.0" />
-    <PackageReference Include="Meadow.Foundation.Sensors.Weather.WindVane" Version="1.7.0" />
+    <PackageReference Include="Meadow.F7" Version="1.8.0" />
+    <PackageReference Include="Meadow.Foundation.ICs.IOExpanders.Mcp23xxx" Version="1.8.0" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Atmospheric.Bme68x" Version="1.8.0" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Environmental.Scd4x" Version="1.8.0" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Gnss.NeoM8" Version="1.8.0" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Weather.SwitchingAnemometer" Version="1.8.0" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Weather.SwitchingRainGauge" Version="1.8.0" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Weather.WindVane" Version="1.8.0" />
   </ItemGroup>
 </Project>
