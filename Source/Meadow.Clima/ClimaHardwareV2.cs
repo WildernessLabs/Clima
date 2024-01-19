@@ -7,10 +7,11 @@ using Meadow.Hardware;
 using Meadow.Logging;
 using System;
 
-#nullable enable
-
 namespace Meadow.Devices
 {
+    /// <summary>
+    /// Represents the Clima v2.x hardware
+    /// </summary>
     public class ClimaHardwareV2 : IClimaHardware
     {
         /// <summary>
@@ -109,7 +110,7 @@ namespace Meadow.Devices
             try
             {
                 Resolver.Log?.Trace("Initializing GNSS");
-                Gnss = new NeoM8(device, device.PlatformOS.GetSerialPortName("COM4"), null, null);
+                Gnss = new NeoM8(device, device.PlatformOS.GetSerialPortName("COM4")!, null, null);
                 Resolver.Log?.Trace("GNSS initialized");
             }
             catch (Exception e)
@@ -125,7 +126,7 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unable to create the Wind Vane: {ex.Message}");
+                Resolver.Log?.Error($"Unable to create the Wind Vane: {ex.Message}");
             }
 
             try
@@ -136,7 +137,7 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unable to create the Switching Rain Gauge: {ex.Message}");
+                Resolver.Log?.Error($"Unable to create the Switching Rain Gauge: {ex.Message}");
             }
 
             try
@@ -147,7 +148,7 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unable to create the Switching Anemometer: {ex.Message}");
+                Resolver.Log?.Error($"Unable to create the Switching Anemometer: {ex.Message}");
             }
 
             try
@@ -158,7 +159,7 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unable to create the Solar Voltage Input: {ex.Message}");
+                Resolver.Log?.Error($"Unable to create the Solar Voltage Input: {ex.Message}");
             }
         }
     }
