@@ -5,10 +5,11 @@ using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
 
-#nullable enable
-
 namespace Meadow.Devices
 {
+    /// <summary>
+    /// Contract for the Clima hardware definitions
+    /// </summary>
     public interface IClimaHardware
     {
         /// <summary>
@@ -57,10 +58,13 @@ namespace Meadow.Devices
         public IAnalogInputPort? BatteryVoltageInput { get; }
 
         /// <summary>
-        /// Gets the RGB PWM LED
+        /// The RGB PWM LED on the Clima board
         /// </summary>
         public RgbPwmLed? ColorLed { get; }
 
+        /// <summary>
+        /// The hardware revision string for the Clima board
+        /// </summary>
         public string RevisionString { get; }
     }
 }

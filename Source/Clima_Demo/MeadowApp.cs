@@ -1,6 +1,5 @@
 ﻿using Meadow;
 using Meadow.Devices;
-using Meadow.Foundation;
 using Meadow.Peripherals.Sensors.Location.Gnss;
 using Meadow.Units;
 using System;
@@ -56,7 +55,7 @@ namespace Clima_Demo
 
             if (clima.BatteryVoltageInput is { } batteryVoltage)
             {
-               batteryVoltage.Updated += BatteryVoltageUpdated;
+                batteryVoltage.Updated += BatteryVoltageUpdated;
             }
 
             if (clima.Gnss is { } gnss)

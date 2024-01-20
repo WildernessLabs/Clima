@@ -6,13 +6,13 @@ using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
 using Meadow.Logging;
-using Meadow.Units;
 using System;
-
-#nullable enable
 
 namespace Meadow.Devices
 {
+    /// <summary>
+    /// Represents the Clima v3.x hardware
+    /// </summary>
     public class ClimaHardwareV3 : IClimaHardware
     {
         /// <summary>
@@ -153,7 +153,7 @@ namespace Meadow.Devices
             try
             {
                 Resolver.Log.Debug("Initializing GNSS");
-                Gnss = new NeoM8(device, device.PlatformOS.GetSerialPortName("COM4"), device.Pins.D05, device.Pins.A03);
+                Gnss = new NeoM8(device, device.PlatformOS.GetSerialPortName("COM4")!, device.Pins.D05, device.Pins.A03);
                 Resolver.Log.Debug("GNSS initialized");
             }
             catch (Exception e)
