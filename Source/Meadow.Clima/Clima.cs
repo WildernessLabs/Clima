@@ -2,10 +2,11 @@
 using Meadow.Logging;
 using System;
 
-#nullable enable
-
 namespace Meadow.Devices
 {
+    /// <summary>
+    /// Represents the Clima hardware
+    /// </summary>
     public class Clima
     {
         private Clima() { }
