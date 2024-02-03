@@ -84,7 +84,7 @@ namespace Clima_Demo
             return base.Initialize();
         }
 
-        private void GnssGsaReceived(object sender, ActiveSatellites e)
+        private void GnssGsaReceived(object _, ActiveSatellites e)
         {
             if (e.SatellitesUsedForFix is { } sats)
             {
@@ -182,28 +182,27 @@ namespace Clima_Demo
 
         private void TemperatureUpdated(object sender, IChangeResult<Temperature> e)
         {
-            Resolver.Log.Info($"Temperature:   {e.New.Celsius:0.#}C");
+            Resolver.Log.Info($"Temperature:     {e.New.Celsius:0.#}C");
         }
 
         private void PressureUpdated(object sender, IChangeResult<Pressure> e)
         {
-            Resolver.Log.Info($"Pressure:      {e.New.Millibar:0.#}mbar");
+            Resolver.Log.Info($"Pressure:        {e.New.Millibar:0.#}mbar");
         }
 
         private void HumidityUpdated(object sender, IChangeResult<RelativeHumidity> e)
         {
-            Resolver.Log.Info($"Humidity:      {e.New.Percent:0.#}%");
+            Resolver.Log.Info($"Humidity:        {e.New.Percent:0.#}%");
         }
-
 
         private void Co2Updated(object sender, IChangeResult<Concentration> e)
         {
-            Resolver.Log.Info($"CO2:           {e.New.PartsPerMillion:0.#}ppm");
+            Resolver.Log.Info($"CO2:             {e.New.PartsPerMillion:0.#}ppm");
         }
 
         private void SolarVoltageUpdated(object sender, IChangeResult<Voltage> e)
         {
-            Resolver.Log.Info($"Solar Voltage: {e.New.Volts:0.#} volts");
+            Resolver.Log.Info($"Solar Voltage:   {e.New.Volts:0.#} volts");
         }
 
         private void BatteryVoltageUpdated(object sender, IChangeResult<Voltage> e)
@@ -213,17 +212,17 @@ namespace Clima_Demo
 
         private void AnemometerUpdated(object sender, IChangeResult<Speed> e)
         {
-            Resolver.Log.Info($"Anemometer:    {e.New.MetersPerSecond:0.#} m/s");
+            Resolver.Log.Info($"Anemometer:      {e.New.MetersPerSecond:0.#} m/s");
         }
 
         private void RainGuageUpdated(object sender, IChangeResult<Length> e)
         {
-            Resolver.Log.Info($"Rain Gauge:    {e.New.Millimeters:0.#} mm");
+            Resolver.Log.Info($"Rain Gauge:      {e.New.Millimeters:0.#} mm");
         }
 
         private void WindvaneUpdated(object sender, IChangeResult<Azimuth> e)
         {
-            Resolver.Log.Info($"Wind Vane:     {e.New.Compass16PointCardinalName} ({e.New.Radians:0.#} radians)");
+            Resolver.Log.Info($"Wind Vane:       {e.New.Compass16PointCardinalName} ({e.New.Radians:0.#} radians)");
         }
     }
 }
