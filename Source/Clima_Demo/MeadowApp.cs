@@ -19,18 +19,28 @@ namespace Clima_Demo
             Resolver.Log.Info("Initialize hardware...");
 
             clima = Clima.Create();
-            clima.ColorLed.SetColor(Color.Red);
+            clima.RgbLed.SetColor(Color.Red);
 
             Resolver.Log.Info($"Running on Clima Hardware {clima.RevisionString}");
 
-            if (clima.AtmosphericSensor is { } bme688)
+            if (clima.TemperatureSensor is { } temperatureSensor)
             {
-                bme688.Updated += Bme688Updated;
+                temperatureSensor.Updated += TemperatureUpdated;
             }
 
-            if (clima.EnvironmentalSensor is { } scd40)
+            if (clima.BarometricPressureSensor is { } pressureSensor)
             {
-                scd40.Updated += Scd40Updated;
+                pressureSensor.Updated += PressureUpdated;
+            }
+
+            if (clima.HumiditySensor is { } humiditySensor)
+            {
+                humiditySensor.Updated += HumidityUpdated;
+            }
+
+            if (clima.CO2ConcentrationSensor is { } co2Sensor)
+            {
+                co2Sensor.Updated += Co2Updated;
             }
 
             if (clima.WindVane is { } windVane)
@@ -69,7 +79,7 @@ namespace Clima_Demo
 
             Resolver.Log.Info("Initialization complete");
 
-            clima.ColorLed.SetColor(Color.Green);
+            clima.RgbLed.SetColor(Color.Green);
 
             return base.Initialize();
         }
@@ -82,12 +92,12 @@ namespace Clima_Demo
             }
         }
 
-        private void GnssGsvReceived(object sender, SatellitesInView e)
+        private void GnssGsvReceived(object _, SatellitesInView e)
         {
             Resolver.Log.Info($"Satellites in view: {e.Satellites.Length}");
         }
 
-        private void GnssVtgReceived(object sender, CourseOverGround e)
+        private void GnssVtgReceived(object _, CourseOverGround e)
         {
             if (e is { } cv)
             {
@@ -95,7 +105,7 @@ namespace Clima_Demo
             };
         }
 
-        private void GnssRmcReceived(object sender, GnssPositionInfo e)
+        private void GnssRmcReceived(object _, GnssPositionInfo e)
         {
             if (e.Valid)
             {
@@ -103,7 +113,7 @@ namespace Clima_Demo
             }
         }
 
-        private void GnssGllReceived(object sender, GnssPositionInfo e)
+        private void GnssGllReceived(object _, GnssPositionInfo e)
         {
             if (e.Valid)
             {
@@ -117,14 +127,24 @@ namespace Clima_Demo
 
             var updateInterval = TimeSpan.FromSeconds(5);
 
-            if (clima.AtmosphericSensor is { } bme688)
+            if (clima.TemperatureSensor is { } temp)
             {
-                bme688.StartUpdating(updateInterval);
+                temp.StartUpdating(updateInterval);
             }
 
-            if (clima.EnvironmentalSensor is { } scd40)
+            if (clima.HumiditySensor is { } humidity)
             {
-                scd40.StartUpdating(updateInterval);
+                humidity.StartUpdating(updateInterval);
+            }
+
+            if (clima.BarometricPressureSensor is { } pressure)
+            {
+                pressure.StartUpdating(updateInterval);
+            }
+
+            if (clima.CO2ConcentrationSensor is { } co2)
+            {
+                co2.StartUpdating(updateInterval);
             }
 
             if (clima.WindVane is { } windVane)
@@ -160,9 +180,25 @@ namespace Clima_Demo
             return base.Run();
         }
 
-        private void Bme688Updated(object sender, IChangeResult<(Temperature? Temperature, RelativeHumidity? Humidity, Pressure? Pressure, Resistance? GasResistance)> e)
+        private void TemperatureUpdated(object sender, IChangeResult<Temperature> e)
         {
-            Resolver.Log.Info($"BME688:        {(int)e.New.Temperature?.Celsius:0.0}C, {(int)e.New.Humidity?.Percent:0.#}%, {(int)e.New.Pressure?.Millibar:0.#}mbar");
+            Resolver.Log.Info($"Temperature:   {e.New.Celsius:0.#}C");
+        }
+
+        private void PressureUpdated(object sender, IChangeResult<Pressure> e)
+        {
+            Resolver.Log.Info($"Pressure:      {e.New.Millibar:0.#}mbar");
+        }
+
+        private void HumidityUpdated(object sender, IChangeResult<RelativeHumidity> e)
+        {
+            Resolver.Log.Info($"Humidity:      {e.New.Percent:0.#}%");
+        }
+
+
+        private void Co2Updated(object sender, IChangeResult<Concentration> e)
+        {
+            Resolver.Log.Info($"CO2:           {e.New.PartsPerMillion:0.#}ppm");
         }
 
         private void SolarVoltageUpdated(object sender, IChangeResult<Voltage> e)
@@ -188,11 +224,6 @@ namespace Clima_Demo
         private void WindvaneUpdated(object sender, IChangeResult<Azimuth> e)
         {
             Resolver.Log.Info($"Wind Vane:     {e.New.Compass16PointCardinalName} ({e.New.Radians:0.#} radians)");
-        }
-
-        private void Scd40Updated(object sender, IChangeResult<(Concentration? Concentration, Temperature? Temperature, RelativeHumidity? Humidity)> e)
-        {
-            Resolver.Log.Info($"SCD40:         {e.New.Concentration.Value.PartsPerMillion:0.#}ppm, {e.New.Temperature.Value.Celsius:0.0}C, {e.New.Humidity.Value.Percent:0.0}%");
         }
     }
 }

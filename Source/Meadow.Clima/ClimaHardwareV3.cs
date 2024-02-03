@@ -1,11 +1,12 @@
 ﻿using Meadow.Foundation.ICs.IOExpanders;
 using Meadow.Foundation.Leds;
-using Meadow.Foundation.Sensors.Atmospheric;
 using Meadow.Foundation.Sensors.Environmental;
 using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
-using Meadow.Logging;
+using Meadow.Peripherals.Leds;
+using Meadow.Peripherals.Sensors.Environmental;
+using Meadow.Peripherals.Sensors.Weather;
 using System;
 
 namespace Meadow.Devices
@@ -13,72 +14,31 @@ namespace Meadow.Devices
     /// <summary>
     /// Represents the Clima v3.x hardware
     /// </summary>
-    public class ClimaHardwareV3 : IClimaHardware
+    public class ClimaHardwareV3 : ClimaHardwareBase
     {
-        /// <summary>
-        /// The I2C Bus
-        /// </summary>
-        public II2cBus I2cBus { get; protected set; }
+        private readonly IF7CoreComputeMeadowDevice _device;
 
-        /// <summary>
-        /// The BME688 atmospheric sensor on the Clima board
-        /// </summary>
-        public Bme688? AtmosphericSensor { get; protected set; }
+        private Scd40? _environmentalSensor;
+        private ICO2ConcentrationSensor? _co2ConcentrationSensor;
+
+        /// <inheritdoc/>
+        public sealed override II2cBus I2cBus { get; }
 
         /// <summary>
         /// The SCD40 environmental sensor on the Clima board
         /// </summary>
-        public Scd40? EnvironmentalSensor { get; protected set; }
+        public Scd40? EnvironmentalSensor => GetEnvironmentalSensor();
 
-        /// <summary>
-        /// The Wind Vane on the Clima board
-        /// </summary>
-        public WindVane? WindVane { get; protected set; }
-
-        /// <summary>
-        /// The Switching Rain Gauge on the Clima board
-        /// </summary>
-        public SwitchingRainGauge? RainGauge { get; protected set; }
-
-        /// <summary>
-        /// The Switching Anemometer on the Clima board
-        /// </summary>
-        public SwitchingAnemometer? Anemometer { get; protected set; }
-
-        /// <summary>
-        /// The Solar Voltage Input on the Clima board
-        /// </summary>
-        public IAnalogInputPort? SolarVoltageInput { get; protected set; }
-
-        /// <summary>
-        /// The Solar Voltage Input on the Clima board
-        /// </summary>
-        public IAnalogInputPort? BatteryVoltageInput { get; protected set; }
-
-        /// <summary>
-        /// Gets the RGB PWM LED
-        /// </summary>
-        public RgbPwmLed? ColorLed { get; set; }
+        /// <inheritdoc/>
+        public override ICO2ConcentrationSensor? CO2ConcentrationSensor => GetCO2ConcentrationSensor();
 
         /// <summary>
         /// The MCP23008 IO expander that contains the Clima hardware version 
         /// </summary>
         Mcp23008? McpVersion { get; set; }
 
-        /// <summary>
-        /// The Neo GNSS sensor
-        /// </summary>
-        public NeoM8? Gnss { get; protected set; }
-
-        /// <summary>
-        /// The revision string for the Clima board
-        /// </summary>
-        public string RevisionString => "v3.x";
-
-        /// <summary>
-        /// Get a reference to Meadow Logger
-        /// </summary>
-        protected Logger? Logger { get; } = Resolver.Log;
+        /// <inheritdoc/>
+        public override string RevisionString => "v3.x";
 
         /// <summary>
         /// Analog inputs to measure Solar voltage has Resistor Divider with R1 = 1000 Ohm, R2 = 680 Ohm
@@ -101,21 +61,13 @@ namespace Meadow.Devices
         /// <param name="i2cBus">The I2C bus</param>
         public ClimaHardwareV3(IF7CoreComputeMeadowDevice device, II2cBus i2cBus)
         {
+            _device = device;
+
             I2cBus = i2cBus;
 
-            // See HACKin Meadow.Core\source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
-            // Must initialise any PWM based I/O first.
-            try
-            {
-                Logger?.Trace("Instantiating RGB LED");
-                ColorLed = new RgbPwmLed(device.Pins.D09, device.Pins.D10, device.Pins.D11, Peripherals.Leds.CommonType.CommonAnode);
-                Logger?.Trace("RGB LED up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log.Error($"Unable to create the RGB LED: {ex.Message}");
-            }
-
+            // See hack in Meadow.Core\source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
+            // Must initialise any PWM based I/O first
+            GetRgbPwmLed();
 
             try
             {
@@ -128,71 +80,6 @@ namespace Meadow.Devices
                 Logger?.Trace($"ERR creating the MCP that has version information: {e.Message}");
             }
 
-            try
-            {
-                Logger?.Trace("Instantiating atmospheric sensor");
-                AtmosphericSensor = new Bme688(I2cBus, (byte)Bme688.Addresses.Address_0x76);
-                Logger?.Trace("Atmospheric sensor up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log.Error($"Unable to create the BME688 Environmental Sensor: {ex.Message}");
-            }
-
-            try
-            {
-                Logger?.Trace("Instantiating environmental sensor");
-                EnvironmentalSensor = new Scd40(I2cBus, (byte)Scd40.Addresses.Default);
-                Logger?.Trace("Environmental sensor up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log.Error($"Unable to create the SCD40 Environmental Sensor: {ex.Message}");
-            }
-
-            try
-            {
-                Resolver.Log.Debug("Initializing GNSS");
-                Gnss = new NeoM8(device, device.PlatformOS.GetSerialPortName("COM4")!, device.Pins.D05, device.Pins.A03);
-                Resolver.Log.Debug("GNSS initialized");
-            }
-            catch (Exception e)
-            {
-                Resolver.Log.Error($"Err initializing GNSS: {e.Message}");
-            }
-
-            try
-            {
-                Logger?.Trace("Instantiating Wind Vane");
-                WindVane = new WindVane(device.Pins.A00);
-                Logger?.Trace("Wind Vane up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log.Error($"Unable to create the Wind Vane: {ex.Message}");
-            }
-
-            try
-            {
-                Logger?.Trace("Instantiating Rain Gauge");
-                RainGauge = new SwitchingRainGauge(device.Pins.D16);
-                Logger?.Trace("RainGauge up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log.Error($"Unable to create the Switching Rain Gauge: {ex.Message}");
-            }
-
-            try
-            {
-                Logger?.Trace("Instantiating Switching Anemometer");
-                Anemometer = new SwitchingAnemometer(device.Pins.A01);
-                Logger?.Trace("Switching Anemometer up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log.Error($"Unable to create the Switching Anemometer: {ex.Message}");
-            }
 
             try
             {
@@ -204,7 +91,7 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unable to create the Solar Voltage Input: {ex.Message}");
+                Logger?.Error($"Unable to create the Solar Voltage Input: {ex.Message}");
             }
 
             try
@@ -218,8 +105,145 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log.Error($"Unable to create the Battery Voltage Input: {ex.Message}");
+                Logger?.Error($"Unable to create the Battery Voltage Input: {ex.Message}");
             }
+        }
+
+        private Scd40? GetEnvironmentalSensor()
+        {
+            if (_environmentalSensor == null)
+            {
+                InitializeScd40();
+            }
+
+            return _environmentalSensor;
+        }
+
+        private ICO2ConcentrationSensor? GetCO2ConcentrationSensor()
+        {
+            if (_co2ConcentrationSensor == null)
+            {
+                InitializeScd40();
+            }
+
+            return _co2ConcentrationSensor;
+        }
+
+        private void InitializeScd40()
+        {
+            try
+            {
+                Logger?.Trace("Instantiating environmental sensor");
+                var scd = new Scd40(I2cBus, (byte)Scd40.Addresses.Default);
+                _co2ConcentrationSensor = scd;
+                _environmentalSensor = scd;
+                Resolver.SensorService.RegisterSensor(scd);
+                Logger?.Trace("Environmental sensor up");
+            }
+            catch (Exception ex)
+            {
+                Logger?.Error($"Unable to create the SCD40 Environmental Sensor: {ex.Message}");
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override IRgbPwmLed? GetRgbPwmLed()
+        {
+            if (_rgbLed == null)
+            {
+                try
+                {
+                    Logger?.Trace("Instantiating RGB LED");
+                    _rgbLed = new RgbPwmLed(
+                        redPwmPin: _device.Pins.D09,
+                        greenPwmPin: _device.Pins.D10,
+                        bluePwmPin: _device.Pins.D11,
+                        CommonType.CommonAnode);
+                    Logger?.Trace("RGB LED up");
+                }
+                catch (Exception ex)
+                {
+                    Logger?.Error($"Unable to create the RGB LED: {ex.Message}");
+                }
+            }
+
+            return _rgbLed;
+        }
+
+        /// <inheritdoc/>
+        protected override NeoM8? GetNeoM8()
+        {
+            if (_gnss == null)
+            {
+                try
+                {
+                    Logger?.Trace("Instantiating GNSS");
+                    _gnss = new NeoM8(_device, _device.PlatformOS.GetSerialPortName("COM4")!, _device.Pins.D05, _device.Pins.A03);
+                    Logger?.Trace("GNSS initialized");
+                }
+                catch (Exception e)
+                {
+                    Logger?.Error($"Err initializing GNSS: {e.Message}");
+                }
+            }
+            return _gnss;
+        }
+
+        /// <inheritdoc/>
+        protected override IWindVane? GetWindVane()
+        {
+            if (_windVane == null)
+            {
+                try
+                {
+                    Logger?.Trace("Instantiating Wind Vane");
+                    _windVane = new WindVane(_device.Pins.A00);
+                    Logger?.Trace("Wind Vane up");
+                }
+                catch (Exception ex)
+                {
+                    Logger?.Error($"Unable to create the Wind Vane: {ex.Message}");
+                }
+            }
+            return _windVane;
+        }
+
+        /// <inheritdoc/>
+        protected override IRainGauge? GetRainGauge()
+        {
+            if (_rainGauge == null)
+            {
+                try
+                {
+                    Logger?.Trace("Instantiating Rain Gauge");
+                    _rainGauge = new SwitchingRainGauge(_device.Pins.D16);
+                    Logger?.Trace("Rain Gauge up");
+                }
+                catch (Exception ex)
+                {
+                    Logger?.Error($"Unable to create the Rain Gauge: {ex.Message}");
+                }
+            }
+            return _rainGauge;
+        }
+
+        /// <inheritdoc/>
+        protected override IAnemometer? GetAnemometer()
+        {
+            if (_anemometer == null)
+            {
+                try
+                {
+                    Logger?.Trace("Instantiating Anemometer");
+                    _anemometer = new SwitchingAnemometer(_device.Pins.A01);
+                    Logger?.Trace("Anemometer up");
+                }
+                catch (Exception ex)
+                {
+                    Logger?.Error($"Unable to create the Anemometer: {ex.Message}");
+                }
+            }
+            return _anemometer;
         }
     }
 }

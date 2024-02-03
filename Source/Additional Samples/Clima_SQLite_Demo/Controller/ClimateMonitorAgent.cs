@@ -1,6 +1,6 @@
-﻿using Meadow.Devices;
-using Clima_SQLite_Demo.Database;
+﻿using Clima_SQLite_Demo.Database;
 using Clima_SQLite_Demo.Models;
+using Meadow.Devices;
 using System;
 using System.Threading.Tasks;
 
@@ -68,19 +68,21 @@ namespace Clima_SQLite_Demo
 
         public async Task<ClimateReading> Read()
         {
-            var bmeTask = clima.AtmosphericSensor?.Read();
+            var tempTask = clima.TemperatureSensor?.Read();
+            var pressureTask = clima.BarometricPressureSensor?.Read();
+            var humidityTask = clima.HumiditySensor?.Read();
             var windVaneTask = clima.WindVane?.Read();
             var anemometerTask = clima.Anemometer?.Read();
             var rainFallTask = clima.RainGauge?.Read();
 
-            await Task.WhenAll(bmeTask, anemometerTask, windVaneTask, rainFallTask);
+            await Task.WhenAll(tempTask, humidityTask, pressureTask, anemometerTask, windVaneTask, rainFallTask);
 
             var climate = new ClimateReading()
             {
                 DateTime = DateTime.Now,
-                Temperature = bmeTask?.Result.Temperature,
-                Pressure = bmeTask?.Result.Pressure,
-                Humidity = bmeTask?.Result.Humidity,
+                Temperature = tempTask?.Result,
+                Pressure = pressureTask?.Result,
+                Humidity = humidityTask?.Result,
                 RainFall = rainFallTask?.Result,
                 WindDirection = windVaneTask?.Result.Compass16PointCardinalName,
                 WindSpeed = anemometerTask?.Result,
