@@ -100,6 +100,7 @@ namespace Meadow.Devices
                 {
                     Logger?.Trace("Instantiating Wind Vane");
                     _windVane = new WindVane(_device.Pins.A00);
+                    Resolver.SensorService.RegisterSensor(_windVane);
                     Logger?.Trace("Wind Vane up");
                 }
                 catch (Exception ex)
@@ -119,6 +120,7 @@ namespace Meadow.Devices
                 {
                     Logger?.Trace("Instantiating Rain Gauge");
                     _rainGauge = new SwitchingRainGauge(_device.Pins.D11);
+                    Resolver.SensorService.RegisterSensor(_rainGauge);
                     Logger?.Trace("Rain Gauge up");
                 }
                 catch (Exception ex)
@@ -138,6 +140,7 @@ namespace Meadow.Devices
                 {
                     Logger?.Trace("Instantiating Anemometer");
                     _anemometer = new SwitchingAnemometer(_device.Pins.A01);
+                    Resolver.SensorService.RegisterSensor(_anemometer);
                     Logger?.Trace("Anemometer up");
                 }
                 catch (Exception ex)
