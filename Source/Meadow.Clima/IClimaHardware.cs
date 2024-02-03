@@ -79,6 +79,11 @@ namespace Meadow.Devices
         public IRgbPwmLed? RgbLed { get; }
 
         /// <summary>
+        /// Gets the Qwiic connector on the Clima board.
+        /// </summary>
+        public I2cConnector Qwiic { get; }
+
+        /// <summary>
         /// The hardware revision string for the Clima board
         /// </summary>
         public string RevisionString { get; }
