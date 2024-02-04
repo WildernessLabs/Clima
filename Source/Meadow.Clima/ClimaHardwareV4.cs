@@ -1,4 +1,5 @@
-﻿using Meadow.Hardware;
+﻿using Meadow.Foundation.ICs.IOExpanders;
+using Meadow.Hardware;
 
 namespace Meadow.Devices
 {
@@ -7,8 +8,6 @@ namespace Meadow.Devices
     /// </summary>
     public class ClimaHardwareV4 : ClimaHardwareV3
     {
-        private readonly IF7CoreComputeMeadowDevice _device;
-
         /// <inheritdoc/>
         public override string RevisionString => "v4.x";
 
@@ -17,10 +16,10 @@ namespace Meadow.Devices
         /// </summary>
         /// <param name="device">The meadow device</param>
         /// <param name="i2cBus">The I2C bus</param>
-        public ClimaHardwareV4(IF7CoreComputeMeadowDevice device, II2cBus i2cBus)
-        : base(device, i2cBus)
+        /// <param name="mcpVersion">The Mcp23008 used to read version information</param>
+        public ClimaHardwareV4(IF7CoreComputeMeadowDevice device, II2cBus i2cBus, Mcp23008 mcpVersion)
+        : base(device, i2cBus, mcpVersion)
         {
-            _device = device;
         }
 
         internal override I2cConnector? CreateQwiicConnector()
