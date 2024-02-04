@@ -16,7 +16,10 @@ namespace Meadow.Devices
     /// </summary>
     public class ClimaHardwareV3 : ClimaHardwareBase
     {
-        private readonly IF7CoreComputeMeadowDevice _device;
+        /// <summary>
+        /// The Meadow CCM device
+        /// </summary>
+        protected readonly IF7CoreComputeMeadowDevice _device;
 
         private Scd40? _environmentalSensor;
         private ICO2ConcentrationSensor? _co2ConcentrationSensor;
@@ -35,7 +38,7 @@ namespace Meadow.Devices
         /// <summary>
         /// The MCP23008 IO expander that contains the Clima hardware version 
         /// </summary>
-        Mcp23008? McpVersion { get; set; }
+        public Mcp23008 McpVersion { get; protected set; }
 
         /// <inheritdoc/>
         public override string RevisionString => "v3.x";
@@ -59,8 +62,11 @@ namespace Meadow.Devices
         /// </summary>
         /// <param name="device">The meadow device</param>
         /// <param name="i2cBus">The I2C bus</param>
-        public ClimaHardwareV3(IF7CoreComputeMeadowDevice device, II2cBus i2cBus)
+        /// <param name="mcpVersion">The Mcp23008 used to read version information</param>
+        public ClimaHardwareV3(IF7CoreComputeMeadowDevice device, II2cBus i2cBus, Mcp23008 mcpVersion)
         {
+            McpVersion = mcpVersion;
+
             _device = device;
 
             I2cBus = i2cBus;
@@ -68,18 +74,6 @@ namespace Meadow.Devices
             // See hack in Meadow.Core\source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
             // Must initialise any PWM based I/O first
             GetRgbPwmLed();
-
-            try
-            {
-                Logger?.Trace("Instantiating Mcp Version");
-                McpVersion = new Mcp23008(I2cBus, address: 0x27, resetPort: device.Pins.D02.CreateDigitalOutputPort());
-                Logger?.Info("Mcp Version up");
-            }
-            catch (Exception e)
-            {
-                Logger?.Trace($"ERR creating the MCP that has version information: {e.Message}");
-            }
-
 
             try
             {
