@@ -16,6 +16,7 @@ namespace Meadow.Devices
     /// </summary>
     public abstract class ClimaHardwareBase : IClimaHardware
     {
+        private IConnector?[]? _connectors;
         private Bme688? _atmosphericSensor;
         private ITemperatureSensor? _temperatureSensor;
         private IHumiditySensor? _humiditySensor;
@@ -78,6 +79,31 @@ namespace Meadow.Devices
         /// The Neo GNSS sensor
         /// </summary>
         public NeoM8? Gnss => GetNeoM8();
+
+        /// <inheritdoc/>
+        public I2cConnector? Qwiic => (I2cConnector?)Connectors[0];
+
+        internal virtual I2cConnector? CreateQwiicConnector()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Collection of connectors on the Clima board
+        /// </summary>
+        public IConnector?[] Connectors
+        {
+            get
+            {
+                if (_connectors == null)
+                {
+                    _connectors = new IConnector[1];
+                    _connectors[0] = CreateQwiicConnector();
+                }
+
+                return _connectors;
+            }
+        }
 
         private Bme688? GetAtmosphericSensor()
         {
