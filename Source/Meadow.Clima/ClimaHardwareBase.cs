@@ -81,7 +81,7 @@ namespace Meadow.Devices
         public NeoM8? Gnss => GetNeoM8();
 
         /// <inheritdoc/>
-        public I2cConnector Qwiic => (I2cConnector)Connectors[0]!;
+        public I2cConnector? Qwiic => (I2cConnector?)Connectors[0];
 
         internal virtual I2cConnector? CreateQwiicConnector()
         {

@@ -23,7 +23,7 @@ namespace Meadow.Devices
             _device = device;
         }
 
-        internal override I2cConnector CreateQwiicConnector()
+        internal override I2cConnector? CreateQwiicConnector()
         {
             Logger?.Trace("Creating Qwiic I2C connector");
 

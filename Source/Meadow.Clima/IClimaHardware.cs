@@ -81,7 +81,7 @@ namespace Meadow.Devices
         /// <summary>
         /// Gets the Qwiic connector on the Clima board.
         /// </summary>
-        public I2cConnector Qwiic { get; }
+        public I2cConnector? Qwiic { get; }
 
         /// <summary>
         /// The hardware revision string for the Clima board
