@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Meadow;
+using Meadow.Peripherals.Displays;
 
 namespace Clima_HackKit_Demo.Controller
 {
