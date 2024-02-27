@@ -1,4 +1,5 @@
-﻿using Meadow.Hardware;
+﻿using Meadow.Foundation.ICs.IOExpanders;
+using Meadow.Hardware;
 using Meadow.Logging;
 using System;
 
@@ -44,8 +45,34 @@ namespace Meadow.Devices
             }
             else if (device is IF7CoreComputeMeadowDevice { } ccm)
             {
-                logger?.Info("Instantiating Clima v3 specific hardware");
-                hardware = new ClimaHardwareV3(ccm, i2cBus);
+                Mcp23008? mcpVersion = null;
+                byte version = 0;
+
+                try
+                {
+                    logger?.Info("Instantiating version MCP23008");
+
+                    var resetPort = ccm.Pins.D02.CreateDigitalOutputPort();
+
+                    mcpVersion = new Mcp23008(i2cBus, address: 0x27, resetPort: resetPort);
+
+                    version = mcpVersion.ReadFromPorts();
+                }
+                catch
+                {
+                    logger?.Info("Failed to instantiate version MCP23008");
+                }
+
+                if (version > 4)
+                {
+                    logger?.Info("Instantiating Clima v4 specific hardware");
+                    hardware = new ClimaHardwareV4(ccm, i2cBus, mcpVersion!);
+                }
+                else
+                {
+                    logger?.Info("Instantiating Clima v3 specific hardware");
+                    hardware = new ClimaHardwareV3(ccm, i2cBus, mcpVersion!);
+                }
             }
             else
             {
