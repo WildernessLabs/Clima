@@ -1,9 +1,10 @@
-﻿using Meadow.Foundation.Leds;
-using Meadow.Foundation.Sensors.Atmospheric;
-using Meadow.Foundation.Sensors.Environmental;
-using Meadow.Foundation.Sensors.Gnss;
-using Meadow.Foundation.Sensors.Weather;
+﻿using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Hardware;
+using Meadow.Peripherals.Leds;
+using Meadow.Peripherals.Sensors;
+using Meadow.Peripherals.Sensors.Atmospheric;
+using Meadow.Peripherals.Sensors.Environmental;
+using Meadow.Peripherals.Sensors.Weather;
 
 namespace Meadow.Devices
 {
@@ -18,14 +19,29 @@ namespace Meadow.Devices
         public II2cBus I2cBus { get; }
 
         /// <summary>
-        /// The BME688 atmospheric sensor on the Clima board
+        /// Gets the ITemperatureSensor on the Clima board
         /// </summary>
-        public Bme688? AtmosphericSensor { get; }
+        public ITemperatureSensor? TemperatureSensor { get; }
 
         /// <summary>
-        /// The SCD40 environmental sensor on the Clima board
+        /// Gets the IHumiditySensor on the Clima board
         /// </summary>
-        public Scd40? EnvironmentalSensor { get; }
+        public IHumiditySensor? HumiditySensor { get; }
+
+        /// <summary>
+        /// Gets the IBarometricPressureSensor on the Clima board
+        /// </summary>
+        public IBarometricPressureSensor? BarometricPressureSensor { get; }
+
+        /// <summary>
+        /// Gets the IGasResistanceSensor on the Clima board
+        /// </summary>
+        public IGasResistanceSensor? GasResistanceSensor { get; }
+
+        /// <summary>
+        /// Gets the ICO2ConcentrationSensor on the Clima board
+        /// </summary>
+        public ICO2ConcentrationSensor? CO2ConcentrationSensor { get; }
 
         /// <summary>
         /// The Neo GNSS sensor
@@ -33,19 +49,19 @@ namespace Meadow.Devices
         public NeoM8? Gnss { get; }
 
         /// <summary>
-        /// The Wind Vane on the Clima board
+        /// The Wind Vane on the Clima board 
         /// </summary>
-        public WindVane? WindVane { get; }
+        public IWindVane? WindVane { get; }
 
         /// <summary>
         /// The Switching Rain Gauge on the Clima board
         /// </summary>
-        public SwitchingRainGauge? RainGauge { get; }
+        public IRainGauge? RainGauge { get; }
 
         /// <summary>
-        /// The Switching Anemometer on the Clima board
+        /// The Switching Anemometer on the Clima board 
         /// </summary>
-        public SwitchingAnemometer? Anemometer { get; }
+        public IAnemometer? Anemometer { get; }
 
         /// <summary>
         /// The Solar Voltage Input on the Clima board
@@ -60,7 +76,12 @@ namespace Meadow.Devices
         /// <summary>
         /// The RGB PWM LED on the Clima board
         /// </summary>
-        public RgbPwmLed? ColorLed { get; }
+        public IRgbPwmLed? RgbLed { get; }
+
+        /// <summary>
+        /// Gets the Qwiic connector on the Clima board.
+        /// </summary>
+        public I2cConnector? Qwiic { get; }
 
         /// <summary>
         /// The hardware revision string for the Clima board

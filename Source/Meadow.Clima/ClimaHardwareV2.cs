@@ -1,10 +1,9 @@
 ﻿using Meadow.Foundation.Leds;
-using Meadow.Foundation.Sensors.Atmospheric;
-using Meadow.Foundation.Sensors.Environmental;
 using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Foundation.Sensors.Weather;
 using Meadow.Hardware;
-using Meadow.Logging;
+using Meadow.Peripherals.Leds;
+using Meadow.Peripherals.Sensors.Weather;
 using System;
 
 namespace Meadow.Devices
@@ -12,67 +11,15 @@ namespace Meadow.Devices
     /// <summary>
     /// Represents the Clima v2.x hardware
     /// </summary>
-    public class ClimaHardwareV2 : IClimaHardware
+    public class ClimaHardwareV2 : ClimaHardwareBase
     {
-        /// <summary>
-        /// The I2C Bus
-        /// </summary>
-        public II2cBus I2cBus { get; protected set; }
+        private readonly IF7FeatherMeadowDevice _device;
 
-        /// <summary>
-        /// The BME688 atmospheric sensor on the Clima board
-        /// </summary>
-        public Bme688? AtmosphericSensor { get; protected set; }
+        /// <inheritdoc/>
+        public sealed override II2cBus I2cBus { get; }
 
-        /// <summary>
-        /// The SCD40 environmental sensor on the Clima board
-        /// </summary>
-        public Scd40? EnvironmentalSensor => null;
-
-        /// <summary>
-        /// The Wind Vane on the Clima board
-        /// </summary>
-        public WindVane? WindVane { get; protected set; }
-
-        /// <summary>
-        /// The Switching Rain Gauge on the Clima board
-        /// </summary>
-        public SwitchingRainGauge? RainGauge { get; protected set; }
-
-        /// <summary>
-        /// The Switching Anemometer on the Clima board
-        /// </summary>
-        public SwitchingAnemometer? Anemometer { get; protected set; }
-
-        /// <summary>
-        /// The Solar Voltage Input on the Clima board
-        /// </summary>
-        public IAnalogInputPort? SolarVoltageInput { get; protected set; }
-
-        /// <summary>
-        /// The Solar Voltage Input on the Clima board
-        /// </summary>
-        public IAnalogInputPort? BatteryVoltageInput { get; protected set; }
-
-        /// <summary>
-        /// Gets the RGB PWM LED
-        /// </summary>
-        public RgbPwmLed? ColorLed { get; set; }
-
-        /// <summary>
-        /// The Neo GNSS sensor
-        /// </summary>
-        public NeoM8? Gnss { get; protected set; }
-
-        /// <summary>
-        /// The revision string for the Clima board
-        /// </summary>
-        public string RevisionString => "v2.x";
-
-        /// <summary>
-        /// Get a reference to Meadow Logger
-        /// </summary>
-        protected Logger? Logger { get; } = Resolver.Log;
+        /// <inheritdoc/>
+        public override string RevisionString => "v2.x";
 
         /// <summary>
         /// Create a new ClimaHardwareV2 object
@@ -81,75 +28,13 @@ namespace Meadow.Devices
         /// <param name="i2cBus">The I2C bus</param>
         public ClimaHardwareV2(IF7FeatherMeadowDevice device, II2cBus i2cBus)
         {
+            _device = device;
+
             I2cBus = i2cBus;
 
-            // See HACKin Meadow.Core\source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
-            // Must initialise any PWM based I/O first.
-            try
-            {
-                Logger?.Trace("Instantiating RGB LED");
-                ColorLed = new RgbPwmLed(device.Pins.OnboardLedRed, device.Pins.OnboardLedGreen, device.Pins.OnboardLedBlue, Peripherals.Leds.CommonType.CommonAnode);
-                Logger?.Trace("RGB LED up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log.Error($"Unable to create the RGB LED: {ex.Message}");
-            }
-
-            try
-            {
-                Logger?.Trace("Instantiating atmospheric sensor");
-                AtmosphericSensor = new Bme688(I2cBus, (byte)Bme688.Addresses.Address_0x76);
-                Logger?.Trace("Atmospheric sensor up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log.Error($"Unable to create the BME688 Environmental Sensor: {ex.Message}");
-            }
-
-            try
-            {
-                Resolver.Log?.Trace("Initializing GNSS");
-                Gnss = new NeoM8(device, device.PlatformOS.GetSerialPortName("COM4")!, null, null);
-                Resolver.Log?.Trace("GNSS initialized");
-            }
-            catch (Exception e)
-            {
-                Resolver.Log.Error($"Err initializing GNSS: {e.Message}");
-            }
-
-            try
-            {
-                Logger?.Trace("Instantiating Wind Vane");
-                WindVane = new WindVane(device.Pins.A00);
-                Logger?.Trace("Wind Vane up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log?.Error($"Unable to create the Wind Vane: {ex.Message}");
-            }
-
-            try
-            {
-                Logger?.Trace("Instantiating Rain Gauge");
-                RainGauge = new SwitchingRainGauge(device.Pins.D11);
-                Logger?.Trace("RainGauge up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log?.Error($"Unable to create the Switching Rain Gauge: {ex.Message}");
-            }
-
-            try
-            {
-                Logger?.Trace("Instantiating Switching Anemometer");
-                Anemometer = new SwitchingAnemometer(device.Pins.A01);
-                Logger?.Trace("Switching Anemometer up");
-            }
-            catch (Exception ex)
-            {
-                Resolver.Log?.Error($"Unable to create the Switching Anemometer: {ex.Message}");
-            }
+            // See hack in Meadow.Core\source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
+            // Must initialise any PWM based I/O first
+            GetRgbPwmLed();
 
             try
             {
@@ -159,8 +44,111 @@ namespace Meadow.Devices
             }
             catch (Exception ex)
             {
-                Resolver.Log?.Error($"Unable to create the Solar Voltage Input: {ex.Message}");
+                Logger?.Error($"Unable to create the Solar Voltage Input: {ex.Message}");
             }
+        }
+
+        /// <inheritdoc/>
+        protected override IRgbPwmLed? GetRgbPwmLed()
+        {
+            if (_rgbLed == null)
+            {
+                try
+                {
+                    Logger?.Trace("Instantiating RGB LED");
+                    _rgbLed = new RgbPwmLed(
+                        redPwmPin: _device.Pins.OnboardLedRed,
+                        greenPwmPin: _device.Pins.OnboardLedGreen,
+                        bluePwmPin: _device.Pins.OnboardLedBlue,
+                        CommonType.CommonAnode);
+                    Logger?.Trace("RGB LED up");
+                }
+                catch (Exception ex)
+                {
+                    Logger?.Error($"Unable to create the RGB LED: {ex.Message}");
+                }
+            }
+
+            return _rgbLed;
+        }
+
+        /// <inheritdoc/>
+        protected override NeoM8? GetNeoM8()
+        {
+            if (_gnss == null)
+            {
+                try
+                {
+                    Logger?.Trace("Instantiating GNSS");
+                    _gnss = new NeoM8(_device, _device.PlatformOS.GetSerialPortName("COM4")!, null, null);
+                    Logger?.Trace("GNSS initialized");
+                }
+                catch (Exception e)
+                {
+                    Logger?.Error($"Err initializing GNSS: {e.Message}");
+                }
+            }
+            return _gnss;
+        }
+
+        /// <inheritdoc/>
+        protected override IWindVane? GetWindVane()
+        {
+            if (_windVane == null)
+            {
+                try
+                {
+                    Logger?.Trace("Instantiating Wind Vane");
+                    _windVane = new WindVane(_device.Pins.A00);
+                    Resolver.SensorService.RegisterSensor(_windVane);
+                    Logger?.Trace("Wind Vane up");
+                }
+                catch (Exception ex)
+                {
+                    Logger?.Error($"Unable to create the Wind Vane: {ex.Message}");
+                }
+            }
+            return _windVane;
+        }
+
+        /// <inheritdoc/>
+        protected override IRainGauge? GetRainGauge()
+        {
+            if (_rainGauge == null)
+            {
+                try
+                {
+                    Logger?.Trace("Instantiating Rain Gauge");
+                    _rainGauge = new SwitchingRainGauge(_device.Pins.D11);
+                    Resolver.SensorService.RegisterSensor(_rainGauge);
+                    Logger?.Trace("Rain Gauge up");
+                }
+                catch (Exception ex)
+                {
+                    Logger?.Error($"Unable to create the Rain Gauge: {ex.Message}");
+                }
+            }
+            return _rainGauge;
+        }
+
+        /// <inheritdoc/>
+        protected override IAnemometer? GetAnemometer()
+        {
+            if (_anemometer == null)
+            {
+                try
+                {
+                    Logger?.Trace("Instantiating Anemometer");
+                    _anemometer = new SwitchingAnemometer(_device.Pins.A01);
+                    Resolver.SensorService.RegisterSensor(_anemometer);
+                    Logger?.Trace("Anemometer up");
+                }
+                catch (Exception ex)
+                {
+                    Logger?.Error($"Unable to create the Anemometer: {ex.Message}");
+                }
+            }
+            return _anemometer;
         }
     }
 }
