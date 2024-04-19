@@ -1,6 +1,7 @@
 ﻿using Meadow;
 using Meadow.Cloud;
 using System;
+using System.Linq;
 
 namespace Clima_Demo;
 
@@ -8,15 +9,78 @@ public class CloudController
 {
     public void LogAppStartupAfterCrash()
     {
-        LogEvent(CloudEventIds.DeviceStarted, $"Device restarted after crash");
+        SendEvent(CloudEventIds.DeviceStarted, $"Device restarted after crash");
     }
 
     public void LogAppStartup(string hardwareRevision)
     {
-        LogEvent(CloudEventIds.DeviceStarted, $"Device started (hardware {hardwareRevision})");
+        SendEvent(CloudEventIds.DeviceStarted, $"Device started (hardware {hardwareRevision})");
     }
 
-    private void LogEvent(CloudEventIds eventId, string message)
+    public void LogWarning(string message)
+    {
+        SendLog(message, "warning");
+    }
+
+    public void LogMessage(string message)
+    {
+        SendLog(message, "information");
+    }
+
+    public void LogTelemetry(SensorData sensorData, PowerData powerData)
+    {
+        var measurements = sensorData
+            .AsTelemetryDictionary()
+            .Concat(powerData.AsTelemetryDictionary())
+            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+        var cloudEvent = new CloudEvent
+        {
+            Description = "Clima Telemetry",
+            Timestamp = DateTime.UtcNow,
+            EventId = (int)CloudEventIds.Telemetry,
+            Measurements = measurements
+        };
+
+        SendEvent(cloudEvent);
+    }
+
+    private void SendLog(string message, string severity)
+    {
+        if (Resolver.MeadowCloudService == null)
+        {
+            Resolver.Log.Warn($"CLOUD SERVICE IS NULL");
+            return;
+        }
+
+        if (!Resolver.MeadowCloudService.IsEnabled)
+        {
+            Resolver.Log.Warn($"CLOUD INTEGRATION IS DISABLED");
+            return;
+        }
+
+        Resolver.Log.Info($"Sending cloud log");
+
+        Resolver.MeadowCloudService.SendLog(
+            new CloudLog
+            {
+                Message = message,
+                Timestamp = DateTime.UtcNow,
+                Severity = severity
+            });
+    }
+
+    private void SendEvent(CloudEventIds eventId, string message)
+    {
+        SendEvent(new CloudEvent
+        {
+            EventId = (int)eventId,
+            Description = message,
+            Timestamp = DateTime.UtcNow,
+        });
+    }
+
+    private void SendEvent(CloudEvent cloudEvent)
     {
         if (Resolver.MeadowCloudService == null)
         {
@@ -32,12 +96,13 @@ public class CloudController
 
         Resolver.Log.Info($"Sending cloud event");
 
-        Resolver.MeadowCloudService.SendEvent(
-            new CloudEvent
-            {
-                EventId = (int)eventId,
-                Description = message,
-                Timestamp = DateTime.UtcNow,
-            });
+        try
+        {
+            Resolver.MeadowCloudService.SendEvent(cloudEvent);
+        }
+        catch (Exception ex)
+        {
+            Resolver.Log.Warn($"Failed to send cloud event: {ex.Message}");
+        }
     }
 }

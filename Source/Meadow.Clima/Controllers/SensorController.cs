@@ -2,16 +2,21 @@
 using Meadow.Devices;
 using Meadow.Units;
 using System;
+using System.Threading.Tasks;
 
 namespace Clima_Demo;
 
 public class SensorController
 {
+    private IClimaHardware hardware;
+
     public bool LogSensorData { get; set; } = false;
     public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(5);
 
     public SensorController(IClimaHardware clima)
     {
+        hardware = clima;
+
         if (clima.TemperatureSensor is { } temperatureSensor)
         {
             temperatureSensor.Updated += TemperatureUpdated;
@@ -53,6 +58,20 @@ public class SensorController
             anemometer.Updated += AnemometerUpdated;
             anemometer.StartUpdating(UpdateInterval);
         }
+    }
+
+    public async Task<SensorData> GetSensorData()
+    {
+        return new SensorData
+        {
+            Temperature = hardware.TemperatureSensor?.Temperature ?? null,
+            Pressure = hardware.BarometricPressureSensor?.Pressure ?? null,
+            Humidity = hardware.HumiditySensor?.Humidity ?? null,
+            Co2Level = hardware.CO2ConcentrationSensor?.CO2Concentration ?? null,
+            WindSpeed = hardware.Anemometer?.WindSpeed ?? null,
+            WindDirection = hardware.WindVane?.WindAzimuth ?? null,
+            Rain = hardware.RainGauge?.RainDepth ?? null,
+        };
     }
 
     private void TemperatureUpdated(object sender, IChangeResult<Temperature> e)
