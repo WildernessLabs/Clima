@@ -18,13 +18,19 @@ public class CloudController
 
     private void LogEvent(CloudEventIds eventId, string message)
     {
-        if (Resolver.MeadowCloudService == null) { return; }
+        if (Resolver.MeadowCloudService == null)
+        {
+            Resolver.Log.Warn($"CLOUD SERVICE IS NULL");
+            return;
+        }
 
         if (!Resolver.MeadowCloudService.IsEnabled)
         {
             Resolver.Log.Warn($"CLOUD INTEGRATION IS DISABLED");
             return;
         }
+
+        Resolver.Log.Info($"Sending cloud event");
 
         Resolver.MeadowCloudService.SendEvent(
             new CloudEvent

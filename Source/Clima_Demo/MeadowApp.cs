@@ -1,7 +1,6 @@
 ﻿using Meadow;
 using Meadow.Devices;
 using Meadow.Hardware;
-using Meadow.Peripherals.Sensors.Location.Gnss;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +12,7 @@ public class MeadowApp : App<F7CoreComputeV2>
     private NotificationController notificationController;
     private SensorController sensorController;
     private PowerController powerController;
+    private LocationController locationController;
 
     public MeadowApp()
     {
@@ -42,10 +42,7 @@ public class MeadowApp : App<F7CoreComputeV2>
 
         sensorController = new SensorController(clima);
         powerController = new PowerController(clima);
-
-        InitializeSensors();
-
-        Resolver.Log.Info("Initialization complete");
+        locationController = new LocationController(clima);
 
         var wifi = Device.NetworkAdapters.Primary<IWiFiNetworkAdapter>();
         wifi.NetworkConnected += OnNetworkConnected;
@@ -60,6 +57,8 @@ public class MeadowApp : App<F7CoreComputeV2>
             notificationController.NetworkDisconnected();
         }
 
+        Resolver.Log.Info("Initialization complete");
+
         return Task.CompletedTask;
     }
 
@@ -71,66 +70,5 @@ public class MeadowApp : App<F7CoreComputeV2>
     private void OnNetworkConnected(INetworkAdapter sender, NetworkConnectionEventArgs args)
     {
         notificationController.NetworkConnected();
-    }
-
-    private void InitializeSensors()
-    {
-        if (clima.Gnss is { } gnss)
-        {
-            //gnss.GsaReceived += GnssGsaReceived;
-            //gnss.GsvReceived += GnssGsvReceived;
-            //gnss.VtgReceived += GnssVtgReceived;
-            gnss.RmcReceived += GnssRmcReceived;
-            gnss.GllReceived += GnssGllReceived;
-        }
-    }
-
-    private void GnssGsaReceived(object _, ActiveSatellites e)
-    {
-        if (e.SatellitesUsedForFix is { } sats)
-        {
-            Resolver.Log.Info($"Number of active satellites: {sats.Length}");
-        }
-    }
-
-    private void GnssGsvReceived(object _, SatellitesInView e)
-    {
-        Resolver.Log.Info($"Satellites in view: {e.Satellites.Length}");
-    }
-
-    private void GnssVtgReceived(object _, CourseOverGround e)
-    {
-        if (e is { } cv)
-        {
-            Resolver.Log.Info($"{cv}");
-        };
-    }
-
-    private void GnssRmcReceived(object _, GnssPositionInfo e)
-    {
-        if (e.Valid)
-        {
-            Resolver.Log.Info($"GNSS Position: lat: [{e.Position.Latitude}], long: [{e.Position.Longitude}]");
-        }
-    }
-
-    private void GnssGllReceived(object _, GnssPositionInfo e)
-    {
-        if (e.Valid)
-        {
-            Resolver.Log.Info($"GNSS Position: lat: [{e.Position.Latitude}], long: [{e.Position.Longitude}]");
-        }
-    }
-
-    public override Task Run()
-    {
-        Resolver.Log.Info("Run...");
-
-        if (clima.Gnss is { } gnss)
-        {
-            gnss.StartUpdating();
-        }
-
-        return base.Run();
     }
 }
