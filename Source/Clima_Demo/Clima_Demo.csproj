@@ -5,6 +5,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>App</AssemblyName>
     <LangVersion>10</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Meadow.Clima\Meadow.Clima.csproj" />

@@ -1,31 +1,58 @@
-﻿using Meadow;
-using Meadow.Peripherals.Leds;
+﻿using Meadow.Peripherals.Leds;
+using System;
 
 namespace Clima_Demo;
 
 public class NotificationController
 {
+    [Flags]
+    public enum Warnings
+    {
+        None = 0,
+        NetworkDisconnected = 1 << 0,
+        SolarLoadLow = 1 << 1,
+        BatteryLow = 1 << 2,
+    }
+
     private readonly IRgbPwmLed? rgbLed;
+    private Warnings activeWarnings = Warnings.None;
 
     public NotificationController(IRgbPwmLed? rgbLed)
     {
         this.rgbLed = rgbLed;
     }
 
-    public void Starting()
+    public void SystemStarting()
     {
         rgbLed?.SetColor(RgbLedColors.Red);
     }
 
-    public void NetworkConnected()
+    public void SystemUp()
     {
-        Resolver.Log.Info("Network connected");
-        rgbLed?.SetColor(RgbLedColors.Green);
+        ReportWarnings();
     }
 
-    public void NetworkDisconnected()
+    public void SetWarning(Warnings warning)
     {
-        Resolver.Log.Info("Network disconnected");
-        rgbLed?.SetColor(RgbLedColors.Yellow);
+        activeWarnings |= warning;
+        ReportWarnings();
+    }
+
+    public void ClearWarning(Warnings warning)
+    {
+        activeWarnings &= ~warning;
+        ReportWarnings();
+    }
+
+    private void ReportWarnings()
+    {
+        if (activeWarnings != Warnings.None)
+        {
+            rgbLed?.SetColor(RgbLedColors.Yellow);
+        }
+        else
+        {
+            rgbLed?.SetColor(RgbLedColors.Green);
+        }
     }
 }
