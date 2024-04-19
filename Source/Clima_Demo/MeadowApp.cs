@@ -2,8 +2,6 @@
 using Meadow.Devices;
 using Meadow.Hardware;
 using Meadow.Peripherals.Sensors.Location.Gnss;
-using Meadow.Units;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +11,8 @@ public class MeadowApp : App<F7CoreComputeV2>
 {
     private IClimaHardware clima;
     private NotificationController notificationController;
+    private SensorController sensorController;
+    private PowerController powerController;
 
     public MeadowApp()
     {
@@ -21,7 +21,7 @@ public class MeadowApp : App<F7CoreComputeV2>
 
     public override void OnBootFromCrash(IEnumerable<string> crashReports)
     {
-        Resolver.Services.Get<CloudController>()?.LogEvent(CloudEventIds.BootFromCrash, "Device restarted after a crash");
+        Resolver.Services.Get<CloudController>()?.LogAppStartupAfterCrash();
     }
 
     public override Task Initialize()
@@ -37,14 +37,15 @@ public class MeadowApp : App<F7CoreComputeV2>
 
         notificationController.Starting();
 
-        Resolver.Services.Get<CloudController>()?.LogEvent(CloudEventIds.DeviceStarted, $"Device started (hardware {clima.RevisionString})");
+        Resolver.Services.Get<CloudController>()?.LogAppStartup(clima.RevisionString);
         Resolver.Log.Info($"Running on Clima Hardware {clima.RevisionString}");
+
+        sensorController = new SensorController(clima);
+        powerController = new PowerController(clima);
 
         InitializeSensors();
 
         Resolver.Log.Info("Initialization complete");
-
-        clima.RgbLed.SetColor(Color.Yellow);
 
         var wifi = Device.NetworkAdapters.Primary<IWiFiNetworkAdapter>();
         wifi.NetworkConnected += OnNetworkConnected;
@@ -74,51 +75,6 @@ public class MeadowApp : App<F7CoreComputeV2>
 
     private void InitializeSensors()
     {
-        if (clima.TemperatureSensor is { } temperatureSensor)
-        {
-            temperatureSensor.Updated += TemperatureUpdated;
-        }
-
-        if (clima.BarometricPressureSensor is { } pressureSensor)
-        {
-            pressureSensor.Updated += PressureUpdated;
-        }
-
-        if (clima.HumiditySensor is { } humiditySensor)
-        {
-            humiditySensor.Updated += HumidityUpdated;
-        }
-
-        if (clima.CO2ConcentrationSensor is { } co2Sensor)
-        {
-            co2Sensor.Updated += Co2Updated;
-        }
-
-        if (clima.WindVane is { } windVane)
-        {
-            windVane.Updated += WindvaneUpdated;
-        }
-
-        if (clima.RainGauge is { } rainGuage)
-        {
-            rainGuage.Updated += RainGuageUpdated;
-        }
-
-        if (clima.Anemometer is { } anemometer)
-        {
-            anemometer.Updated += AnemometerUpdated;
-        }
-
-        if (clima.SolarVoltageInput is { } solarVoltage)
-        {
-            solarVoltage.Updated += SolarVoltageUpdated;
-        }
-
-        if (clima.BatteryVoltageInput is { } batteryVoltage)
-        {
-            batteryVoltage.Updated += BatteryVoltageUpdated;
-        }
-
         if (clima.Gnss is { } gnss)
         {
             //gnss.GsaReceived += GnssGsaReceived;
@@ -170,103 +126,11 @@ public class MeadowApp : App<F7CoreComputeV2>
     {
         Resolver.Log.Info("Run...");
 
-        var updateInterval = TimeSpan.FromSeconds(5);
-
-        if (clima.TemperatureSensor is { } temp)
-        {
-            temp.StartUpdating(updateInterval);
-        }
-
-        if (clima.HumiditySensor is { } humidity)
-        {
-            humidity.StartUpdating(updateInterval);
-        }
-
-        if (clima.BarometricPressureSensor is { } pressure)
-        {
-            pressure.StartUpdating(updateInterval);
-        }
-
-        if (clima.CO2ConcentrationSensor is { } co2)
-        {
-            co2.StartUpdating(updateInterval);
-        }
-
-        if (clima.WindVane is { } windVane)
-        {
-            windVane.StartUpdating(updateInterval);
-        }
-
-        if (clima.RainGauge is { } rainGuage)
-        {
-            rainGuage.StartUpdating(updateInterval);
-        }
-
-        if (clima.Anemometer is { } anemometer)
-        {
-            anemometer.StartUpdating(updateInterval);
-        }
-
-        if (clima.SolarVoltageInput is { } solarVoltage)
-        {
-            solarVoltage.StartUpdating(updateInterval);
-        }
-
-        if (clima.BatteryVoltageInput is { } batteryVoltage)
-        {
-            batteryVoltage.StartUpdating(updateInterval);
-        }
-
         if (clima.Gnss is { } gnss)
         {
             gnss.StartUpdating();
         }
 
         return base.Run();
-    }
-
-    private void TemperatureUpdated(object sender, IChangeResult<Temperature> e)
-    {
-        Resolver.Log.Info($"Temperature:     {e.New.Celsius:0.#}C");
-    }
-
-    private void PressureUpdated(object sender, IChangeResult<Pressure> e)
-    {
-        Resolver.Log.Info($"Pressure:        {e.New.Millibar:0.#}mbar");
-    }
-
-    private void HumidityUpdated(object sender, IChangeResult<RelativeHumidity> e)
-    {
-        Resolver.Log.Info($"Humidity:        {e.New.Percent:0.#}%");
-    }
-
-    private void Co2Updated(object sender, IChangeResult<Concentration> e)
-    {
-        Resolver.Log.Info($"CO2:             {e.New.PartsPerMillion:0.#}ppm");
-    }
-
-    private void SolarVoltageUpdated(object sender, IChangeResult<Voltage> e)
-    {
-        Resolver.Log.Info($"Solar Voltage:   {e.New.Volts:0.#} volts");
-    }
-
-    private void BatteryVoltageUpdated(object sender, IChangeResult<Voltage> e)
-    {
-        Resolver.Log.Info($"Battery Voltage: {e.New.Volts:0.#} volts");
-    }
-
-    private void AnemometerUpdated(object sender, IChangeResult<Speed> e)
-    {
-        Resolver.Log.Info($"Anemometer:      {e.New.MetersPerSecond:0.#} m/s");
-    }
-
-    private void RainGuageUpdated(object sender, IChangeResult<Length> e)
-    {
-        Resolver.Log.Info($"Rain Gauge:      {e.New.Millimeters:0.#} mm");
-    }
-
-    private void WindvaneUpdated(object sender, IChangeResult<Azimuth> e)
-    {
-        Resolver.Log.Info($"Wind Vane:       {e.New.Compass16PointCardinalName} ({e.New.Radians:0.#} radians)");
     }
 }
