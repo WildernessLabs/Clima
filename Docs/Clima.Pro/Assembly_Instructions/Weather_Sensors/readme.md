@@ -14,15 +14,19 @@ Next, one of the tube ends has a small rounded gap and a hole right below it. In
 
 ![](clima_support.jpg)
 
-On the right end of the support piece you can put the anemometer. It has three possible positions to connect it to the base, keep rotating it until you see the the hole to insert another long screw and bolt to secure it to the support.
+On the right end of the support piece you can put the anemometer. It has three possible positions to connect it to the base, keep rotating it until you see the the hole to insert another long screw and bolt to secure it to the support. You can thread the 
 
 ![](clima_anemometer.jpg)
 
-On the left side of the support you can place the wind vane. Like we did with the Anemometer, make sure to position it correctly to use the third and final screw and bolt to secure the sensor to the support.
+On the left side of the support you can place the wind vane. Like we did with the anemometer, make sure to position it correctly to use the third and final screw and bolt to secure the sensor to the support.
 
 ![](clima_windvane.jpg)
 
-Under the wind vane you can see a small connection port. Take the short cable of the anemometer and loop it around the support piece as we make our way to the wind vane and connect the end to the port underneath.
+Take the short cable from the anemometer and carefully feed/clip it through the provided cable tidies until it reaches the wind vane.
+
+![](clima_anemometer_cabling_to_wind_vane.jpg)
+
+Under the wind vane you can see a small connection port. Connect the end of the anemometer into the wind vane port underneath.
 
 ![](clima_windvane_connection.jpg)
 
@@ -30,7 +34,7 @@ At this point, you should have something like this:
 
 ![](clima_windvane_anemometer.jpg)
 
-About an inch lower of the tube end where the suport piece is, grab the rain meter support piece and secure it on the tube, making sure its perpendicular to the other two sensors.
+About an inch/2.54cm below the tube end, where the support piece is, use the rain meter support piece and secure it onto the tube, making sure it is perpendicular to the other two sensors.
 
 ![](clima_rainmeter_support.jpg)
 
@@ -40,7 +44,7 @@ Take the rain meter and place it on the support piece and secure it with the las
 
 ![](clima_rainmeter_under_2.jpg)
 
-About one inch above where the steel tubes connect, mount the Clima Meadow module on the tube.
+About one inch/2.54cm above where the 2 steel tubes connect, mount the Clima Meadow module onto the tube.
 
 ![](clima_meadow.jpg)
 
