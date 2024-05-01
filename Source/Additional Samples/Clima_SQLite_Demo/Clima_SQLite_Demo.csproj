@@ -10,7 +10,7 @@
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Meadow.Foundation.Web.Maple.Server" Version="1.10.2" />
+    <PackageReference Include="Meadow.Foundation.Web.Maple.Server" Version="1.11.0" />
     <ProjectReference Include="..\..\Meadow.Clima\Meadow.Clima.csproj" />
     <PackageReference Include="System.Text.Json" Version="*" />
     <PackageReference Include="sqlite-net-static" Version="*" />
