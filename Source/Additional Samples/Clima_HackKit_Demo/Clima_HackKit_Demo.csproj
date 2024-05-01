@@ -20,9 +20,9 @@
     <PackageReference Include="Meadow.Foundation" Version="1.11.0" />
     <PackageReference Include="Meadow.Foundation.Displays.TextDisplayMenu" Version="1.11.0" />
     <PackageReference Include="Meadow.Foundation.Displays.TftSpi" Version="1.11.0" />
-      <PackageReference Include="SimpleJpegDecoder" Version="0.4.0" />
-      <PackageReference Include="sqlite-net-static" Version="1.8.116" />
-      <PackageReference Include="System.Text.Json" Version="*" />
+    <PackageReference Include="SimpleJpegDecoder" Version="0.4.0" />
+    <PackageReference Include="sqlite-net-static" Version="1.8.116" />
+    <PackageReference Include="System.Text.Json" Version="*" />
   </ItemGroup>  
   <ItemGroup>
     <None Update="meadow.config.yaml">
