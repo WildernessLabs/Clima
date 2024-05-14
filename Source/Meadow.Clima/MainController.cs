@@ -29,7 +29,7 @@ public class MainController
         notificationController = new NotificationController(hardware.RgbLed);
         Resolver.Services.Add(notificationController);
 
-        notificationController.SystemStarting();
+        notificationController.SetSystemStatus(NotificationController.SystemStatus.Starting);
 
         cloudController = new CloudController();
 
@@ -56,17 +56,38 @@ public class MainController
 
             if (!networkController.IsConnected)
             {
+                notificationController.SetSystemStatus(NotificationController.SystemStatus.SearchingForNetwork);
                 Resolver.Log.Info("Network is down");
-                notificationController.SetWarning(NotificationController.Warnings.NetworkDisconnected);
+            }
+            else
+            {
+                notificationController.SetSystemStatus(NotificationController.SystemStatus.NetworkConnected);
+                if (Resolver.MeadowCloudService.ConnectionState == CloudConnectionState.Connecting)
+                {
+                    notificationController.SetSystemStatus(NotificationController.SystemStatus.ConnectingToCloud);
+                }
             }
         }
 
-        notificationController.SystemUp();
+        Resolver.MeadowCloudService.ConnectionStateChanged += OnMeadowCloudServiceConnectionStateChanged;
         cloudController.LogAppStartup(hardware.RevisionString);
 
         TelemetryTimer = new Timer(TelemetryTimerProc, null, 0, -1);
 
         return Task.CompletedTask;
+    }
+
+    private void OnMeadowCloudServiceConnectionStateChanged(object sender, CloudConnectionState e)
+    {
+        switch (e)
+        {
+            case CloudConnectionState.Connected:
+                notificationController.SetSystemStatus(NotificationController.SystemStatus.Connected);
+                break;
+            default:
+                notificationController.SetSystemStatus(NotificationController.SystemStatus.ConnectingToCloud);
+                break;
+        }
     }
 
     private async void TelemetryTimerProc(object _)
@@ -92,6 +113,11 @@ public class MainController
         Resolver.Log.Info($"Network has been down for {e.TotalSeconds:N0} seconds");
 
         // TODO: after some period, should we force-restart the device?
+        if (e.TotalMinutes > 5)
+        {
+            Resolver.Log.Info($"Network Connection timeout.  Resetting the device.");
+            Resolver.Device.PlatformOS.Reset();
+        }
     }
 
     private void OnNetworkConnectionStateChanged(object sender, bool e)
@@ -100,6 +126,7 @@ public class MainController
         {
             Resolver.Log.Info($"Network connected");
             notificationController.ClearWarning(NotificationController.Warnings.NetworkDisconnected);
+            notificationController.SetSystemStatus(NotificationController.SystemStatus.NetworkConnected);
         }
         else
         {
@@ -115,7 +142,7 @@ public class MainController
             var message = $"Battery voltage dropped below {powerController.LowBatteryWarningLevel.Volts:N1}";
             Resolver.Log.Warn(message);
 
-            notificationController.SetWarning(NotificationController.Warnings.BatteryLow);
+            //notificationController.SetWarning(NotificationController.Warnings.BatteryLow);
             cloudController.LogWarning(message);
         }
         else
@@ -135,7 +162,7 @@ public class MainController
             var message = $"Solar voltage dropped below {powerController.LowSolarWarningLevel.Volts:N1}";
             Resolver.Log.Warn(message);
 
-            notificationController.SetWarning(NotificationController.Warnings.SolarLoadLow);
+            //notificationController.SetWarning(NotificationController.Warnings.SolarLoadLow);
             cloudController.LogWarning(message);
         }
         else
