@@ -9,8 +9,9 @@ namespace Clima_Demo;
 public class SensorController
 {
     private IClimaHardware hardware;
+    private CircularBuffer<Azimuth> windVaneBuffer = new CircularBuffer<Azimuth>(12);
 
-    public bool LogSensorData { get; set; } = false;
+    public bool LogSensorData { get; set; } = true;
     public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(5);
 
     public SensorController(IClimaHardware clima)
@@ -44,7 +45,7 @@ public class SensorController
         if (clima.WindVane is { } windVane)
         {
             windVane.Updated += WindvaneUpdated;
-            windVane.StartUpdating(UpdateInterval);
+            windVane.StartUpdating(TimeSpan.FromSeconds(2));
         }
 
         if (clima.RainGauge is { } rainGuage)
@@ -106,6 +107,8 @@ public class SensorController
 
     private void WindvaneUpdated(object sender, IChangeResult<Azimuth> e)
     {
-        Resolver.Log.InfoIf(LogSensorData, $"Wind Vane:       {e.New.Compass16PointCardinalName} ({e.New.Radians:0.#} radians)");
+        windVaneBuffer.Append(e.New);
+
+        Resolver.Log.InfoIf(LogSensorData, $"Wind Vane:       {e.New.DecimalDegrees} (mean: {windVaneBuffer.Mean().DecimalDegrees})");
     }
 }
