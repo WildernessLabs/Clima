@@ -1,6 +1,7 @@
 ﻿using Meadow.Hardware;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Meadow.Devices;
 
@@ -19,6 +20,16 @@ public class NetworkController
 
     public NetworkController(INetworkAdapter networkAdapter)
     {
+        if (networkAdapter is IWiFiNetworkAdapter wifi)
+        {
+            if (wifi.IsConnected)
+            {
+                _ = ReportWiFiScan(wifi);
+            }
+
+            // TODO: make this configurable
+            wifi.SetAntenna(AntennaType.External);
+        }
         this.networkAdapter = networkAdapter;
 
         networkAdapter.NetworkConnected += OnNetworkConnected;
@@ -46,8 +57,38 @@ public class NetworkController
         ConnectionStateChanged?.Invoke(this, false);
     }
 
+    private async Task ReportWiFiScan(IWiFiNetworkAdapter wifi)
+    {
+        var networks = await wifi.Scan();
+
+        Resolver.Log.Info("WiFi Scan Results");
+        if (networks.Count == 0)
+        {
+            Resolver.Log.Info("No networks found");
+        }
+        else
+        {
+            foreach (var network in networks)
+            {
+                if (string.IsNullOrEmpty(network.Ssid))
+                {
+                    Resolver.Log.Info($"[no ssid]: {network.SignalDbStrength}dB");
+                }
+                else
+                {
+                    Resolver.Log.Info($"{network.Ssid}: {network.SignalDbStrength}dB");
+                }
+            }
+        }
+    }
+
     private void OnNetworkConnected(INetworkAdapter sender, NetworkConnectionEventArgs args)
     {
+        if (sender is IWiFiNetworkAdapter wifi)
+        {
+            _ = ReportWiFiScan(wifi);
+        }
+
         lastDown = null;
         ConnectionStateChanged?.Invoke(this, true);
     }
