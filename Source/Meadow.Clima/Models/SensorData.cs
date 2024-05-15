@@ -12,6 +12,7 @@ public record SensorData
     public Speed? WindSpeed { get; set; }
     public Azimuth? WindDirection { get; set; }
     public Length? Rain { get; set; }
+    public Illuminance? Light { get; set; }
 
     public Dictionary<string, object> AsTelemetryDictionary()
     {
@@ -43,6 +44,10 @@ public record SensorData
         if (Rain != null)
         {
             d.Add(nameof(Rain), Rain.Value.Centimeters);
+        }
+        if (Light != null)
+        {
+            d.Add(nameof(Light), Light.Value.Lux);
         }
 
         return d;

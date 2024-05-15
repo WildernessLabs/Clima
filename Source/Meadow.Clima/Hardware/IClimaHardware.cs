@@ -4,6 +4,7 @@ using Meadow.Peripherals.Leds;
 using Meadow.Peripherals.Sensors;
 using Meadow.Peripherals.Sensors.Atmospheric;
 using Meadow.Peripherals.Sensors.Environmental;
+using Meadow.Peripherals.Sensors.Light;
 using Meadow.Peripherals.Sensors.Weather;
 
 namespace Meadow.Devices;
@@ -17,6 +18,8 @@ public interface IClimaHardware
     /// The I2C Bus
     /// </summary>
     public II2cBus I2cBus { get; }
+
+    public ILightSensor? LightSensor { get; }
 
     /// <summary>
     /// Gets the ITemperatureSensor on the Clima board

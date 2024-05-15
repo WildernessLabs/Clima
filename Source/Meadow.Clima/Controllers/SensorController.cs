@@ -11,7 +11,7 @@ public class SensorController
     private IClimaHardware hardware;
     private CircularBuffer<Azimuth> windVaneBuffer = new CircularBuffer<Azimuth>(12);
 
-    public bool LogSensorData { get; set; } = true;
+    public bool LogSensorData { get; set; } = false;
     public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(5);
 
     public SensorController(IClimaHardware clima)
@@ -59,6 +59,11 @@ public class SensorController
             anemometer.Updated += AnemometerUpdated;
             anemometer.StartUpdating(UpdateInterval);
         }
+
+        if (clima.LightSensor is { } lightSensor)
+        {
+            lightSensor.StartUpdating(UpdateInterval);
+        }
     }
 
     public async Task<SensorData> GetSensorData()
@@ -72,6 +77,7 @@ public class SensorController
             WindSpeed = hardware.Anemometer?.WindSpeed ?? null,
             WindDirection = hardware.WindVane?.WindAzimuth ?? null,
             Rain = hardware.RainGauge?.RainDepth ?? null,
+            Light = hardware.LightSensor?.Illuminance ?? null,
         };
     }
 

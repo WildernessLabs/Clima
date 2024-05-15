@@ -6,6 +6,7 @@ using Meadow.Peripherals.Leds;
 using Meadow.Peripherals.Sensors;
 using Meadow.Peripherals.Sensors.Atmospheric;
 using Meadow.Peripherals.Sensors.Environmental;
+using Meadow.Peripherals.Sensors.Light;
 using Meadow.Peripherals.Sensors.Weather;
 using System;
 
@@ -62,6 +63,9 @@ public abstract class ClimaHardwareBase : IClimaHardware
 
     /// <inheritdoc/>
     public IAnemometer? Anemometer => GetAnemometer();
+
+    /// <inheritdoc/>
+    public ILightSensor? LightSensor => GetLightSensor();
 
     /// <inheritdoc/>
     public IAnalogInputPort? SolarVoltageInput { get; protected set; }
@@ -154,6 +158,8 @@ public abstract class ClimaHardwareBase : IClimaHardware
 
         return _gasResistanceSensor;
     }
+
+    protected virtual ILightSensor? GetLightSensor() => null;
 
     /// <summary>
     /// Get the Wind Vane on the Clima board
