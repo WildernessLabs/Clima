@@ -5,30 +5,22 @@ using System;
 
 namespace Meadow.Devices;
 
-public abstract class CustomMeadowDevice<TDevice>
-    where TDevice : IMeadowDevice
+public partial class ClimaDevice : CustomMeadowDevice<F7CoreComputeV2>
 {
-    private ConnectorCollection? _connectors;
+    private IClimaHardware hardware;
+    private ConnectorCollection? connectors;
+    private byte hardwareVersion;
 
-    public virtual ConnectorCollection Connectors => _connectors ??= ConnectorCollection.Empty;
-    public abstract string Revision { get; }
-}
+    public virtual ConnectorCollection Connectors => connectors ??= new ClimaConnectors(hardware);
+    public override string Revision => $"v{hardwareVersion}";
 
-/// <summary>
-/// Represents the Clima hardware
-/// </summary>
-public class Clima
-{
-    private Clima() { }
-
-    /// <summary>
-    /// Create an instance of the Clima class
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    public static IClimaHardware Create()
+    public ClimaDevice()
     {
-        IClimaHardware hardware;
+        hardware = DetectHardware();
+    }
+
+    private IClimaHardware DetectHardware()
+    {
         Logger? logger = Resolver.Log;
         II2cBus i2cBus;
 
@@ -55,7 +47,7 @@ public class Clima
         else if (device is IF7CoreComputeMeadowDevice { } ccm)
         {
             Mcp23008? mcpVersion = null;
-            byte version = 0;
+            hardwareVersion = 0;
 
             try
             {
@@ -65,16 +57,16 @@ public class Clima
 
                 mcpVersion = new Mcp23008(i2cBus, address: 0x27, resetPort: resetPort);
 
-                version = mcpVersion.ReadFromPorts();
+                hardwareVersion = mcpVersion.ReadFromPorts();
             }
             catch
             {
                 logger?.Info("Failed to instantiate version MCP23008");
             }
 
-            logger?.Info($"MCP Version: {version}");
+            logger?.Info($"MCP Version: {hardwareVersion}");
 
-            if (version >= 4)
+            if (hardwareVersion >= 4)
             {
                 logger?.Info("Instantiating Clima v4 specific hardware");
                 hardware = new ClimaHardwareV4(ccm, i2cBus, mcpVersion!);
@@ -92,4 +84,5 @@ public class Clima
 
         return hardware;
     }
+
 }

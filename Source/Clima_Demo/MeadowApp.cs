@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Clima_Demo;
 
-public class MeadowApp : App<F7CoreComputeV2>
+public class MeadowApp : App<ClimaDevice>
 {
     private MainController mainController;
 
