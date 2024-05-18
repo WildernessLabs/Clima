@@ -1,0 +1,11 @@
+<Application 
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Clima_reTerminal"
+    x:Class="Clima_reTerminal.App">
+    
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="avares://OxyPlot.Avalonia/Themes/Default.axaml"/>
+    </Application.Styles>
+</Application>

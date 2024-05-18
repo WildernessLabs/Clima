@@ -1,0 +1,739 @@
+<Window 
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Clima_reTerminal.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+    mc:Ignorable="d" 
+    d:DesignWidth="1280" 
+    d:DesignHeight="720"
+    x:Class="Clima_reTerminal.Views.MainWindow"
+    Icon="/Assets/avalonia-logo.ico"
+    Title="Meadow in Avalonia">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                <GradientStop Color="#061D44" Offset="0" />
+                <GradientStop Color="#11294F" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.Styles>
+            <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />
+                <Setter Property="TextBlock.Foreground" Value="{DynamicResource ButtonForegroundPointerOver}" />
+            </Style>
+            <Style Selector="Button:pressed">
+                <Setter Property="Background" Value="Purple" />
+            </Style>
+        </Grid.Styles>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Temperature -->
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            CornerRadius="5"
+            BorderThickness="2"
+            BorderBrush="#55555508" 
+            Padding="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            BoxShadow="-5 5 20 #80000000"
+            Margin="14,14,7,7">
+            <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                        <GradientStop Color="#061D44" Offset="0" />
+                        <GradientStop Color="#11294F" Offset="1" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid
+                    Grid.Row="0">
+                    
+                    
+                    
+                </Grid>
+                <TextBlock
+                    Grid.Row="0"
+                    Text="Temperature"
+                    Foreground="White"
+                    FontSize="20"
+                    FontWeight="SemiBold"
+                    Margin="5,5,0,0"
+                    Opacity="0.7"
+                    HorizontalAlignment="Left" />
+                <StackPanel
+                    Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+                    <Image
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Height="60"
+                        Opacity="0.6"
+                        Source="/Assets/icon-temp.png"
+                        Margin="0,0,12,0"
+                        HorizontalAlignment="Right"
+                    VerticalAlignment="Center" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1" LetterSpacing="-1"
+                        Text="{Binding CurrentTemperature}"
+                        Foreground="Black"
+                        FontSize="50"
+                        FontWeight="Bold"
+                        Opacity="0.6"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Humidity -->
+        <Border
+            Grid.Row="1"
+            Grid.Column="0"
+            CornerRadius="5"
+            BorderThickness="7"
+            BorderBrush="#71C3E4" 
+            Padding="10"
+            Background="White"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            BoxShadow="-5 5 20 #80000000"
+            Margin="14,7,7,7">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Text="Humidity"
+                    Foreground="Black"
+                    FontSize="25"
+                    FontWeight="SemiBold"
+                    Margin="5,5,0,0"
+                    Opacity="0.7"
+                    HorizontalAlignment="Left" />
+                <StackPanel
+                    Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+                    <Image
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Height="60"
+                        Opacity="0.6"
+                        Source="/Assets/icon-humidity.png"
+                        Margin="0,0,12,0"
+                        HorizontalAlignment="Right"
+                    VerticalAlignment="Center" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="{Binding CurrentHumidity}"
+                        Foreground="Black"
+                        FontSize="50"
+                        FontWeight="Bold"
+                        Opacity="0.6"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Soil Moisture -->
+        <Border
+            Grid.Row="2"
+            Grid.Column="0"
+            CornerRadius="5"
+            BorderThickness="7"
+            BorderBrush="#B7C085" 
+            Padding="10"
+            Background="White"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            BoxShadow="-5 5 20 #80000000"
+            Margin="14,7,7,7">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Text="Soil Moisture"
+                    Foreground="Black"
+                    FontSize="25"
+                    FontWeight="SemiBold"
+                    Margin="5,5,0,0"
+                    Opacity="0.7"
+                    HorizontalAlignment="Left" />
+                <StackPanel
+                    Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+                    <Image
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Height="60"
+                        Opacity="0.6"
+                        Source="/Assets/icon-soil.png"
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Right"
+                    VerticalAlignment="Center" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="{Binding CurrentSoilMoisture}"
+                        Foreground="Black"
+                        FontSize="50"
+                        FontWeight="Bold"
+                        Opacity="0.6"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Lights -->
+        <Border
+            Grid.Row="3"
+            Grid.Column="0"
+            CornerRadius="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Classes.IsUpdated="{Binding IsLightsOn}"
+            Classes.NotUpdated="{Binding !IsLightsOn}"
+            BoxShadow="-5 5 20 #80000000"
+            Margin="14,7,7,14">
+            <Border.Styles>
+                <Style Selector="Border.IsUpdated">
+                    <Style.Setters>
+                        <Setter Property="Background" Value="White"/>
+                    </Style.Setters>
+                </Style>
+                <Style Selector="Border.NotUpdated">
+                    <Style.Setters>
+                        <Setter Property="Background" Value="#EEE"/>
+                    </Style.Setters>
+                </Style>
+            </Border.Styles>
+            <Button
+                Command="{Binding ToggleLightsCommand}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="Transparent">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Text="Lights"
+                        Foreground="Black"
+                        FontSize="32"
+                        FontWeight="SemiBold"
+                        Margin="5,5,0,0"
+                        Opacity="0.7"
+                        HorizontalAlignment="Left" />
+                    <StackPanel
+                        Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                        <Image
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Height="60"
+                            Opacity="0.7"
+                            Classes.IsUpdated="{Binding IsLightsOn}"
+                            Classes.NotUpdated="{Binding !IsLightsOn}"
+                            Margin="0,0,12,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                            <Image.Styles>
+                                <Style Selector="Image.IsUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Source" Value="/Assets/icon-lights_on.png"/>
+                                    </Style.Setters>
+                                </Style>
+                                <Style Selector="Image.NotUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Source" Value="/Assets/icon-lights.png"/>
+                                    </Style.Setters>
+                                </Style>
+                            </Image.Styles>
+                        </Image>
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1" 
+                            LetterSpacing="-1"
+                            FontSize="30"
+                            FontWeight="Bold"
+                            Opacity="0.7"
+                            Classes.IsUpdated="{Binding IsLightsOn}"
+                            Classes.NotUpdated="{Binding !IsLightsOn}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                            <TextBlock.Styles>
+                                <Style Selector="TextBlock.IsUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Text" Value="Active"/>
+                                        <Setter Property="Foreground" Value="#B6832A" />
+                                    </Style.Setters>
+                                </Style>
+                                <Style Selector="TextBlock.NotUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Text" Value="Inactive"/>
+                                        <Setter Property="Foreground" Value="Black" />
+                                    </Style.Setters>
+                                </Style>
+                            </TextBlock.Styles>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Button>
+        </Border>
+
+        <!-- Heater -->
+        <Border
+            Grid.Row="3"
+            Grid.Column="1"
+            CornerRadius="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Classes.IsUpdated="{Binding IsHeaterOn}"
+            Classes.NotUpdated="{Binding !IsHeaterOn}"
+            BoxShadow="-5 5 20 #80000000"
+            Margin="7,7,7,14">
+            <Border.Styles>
+                <Style Selector="Border.IsUpdated">
+                    <Style.Setters>
+                        <Setter Property="Background" Value="White"/>
+                    </Style.Setters>
+                </Style>
+                <Style Selector="Border.NotUpdated">
+                    <Style.Setters>
+                        <Setter Property="Background" Value="#EEE"/>
+                    </Style.Setters>
+                </Style>
+            </Border.Styles>
+            <Button
+                Command="{Binding ToggleHeaterCommand}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="Transparent">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Text="Heater"
+                        Foreground="Black"
+                        FontSize="32"
+                        FontWeight="SemiBold"
+                        Margin="5,5,0,0"
+                        Opacity="0.7"
+                        HorizontalAlignment="Left" />
+                    <StackPanel
+                        Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                        <Image
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Height="60"
+                            Opacity="0.7"
+                            Margin="0,0,12,0"
+                            Classes.IsUpdated="{Binding IsHeaterOn}"
+                            Classes.NotUpdated="{Binding !IsHeaterOn}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                            <Image.Styles>
+                                <Style Selector="Image.IsUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Source" Value="/Assets/icon-heater_on.png"/>
+                                    </Style.Setters>
+                                </Style>
+                                <Style Selector="Image.NotUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Source" Value="/Assets/icon-heater.png"/>
+                                    </Style.Setters>
+                                </Style>
+                            </Image.Styles>
+                        </Image>
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontSize="30"
+                            FontWeight="Bold"
+                            Opacity="0.7"
+                            Classes.IsUpdated="{Binding IsHeaterOn}"
+                            Classes.NotUpdated="{Binding !IsHeaterOn}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                            <TextBlock.Styles>
+                                <Style Selector="TextBlock.IsUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Text" Value="Active"/>
+                                        <Setter Property="Foreground" Value="#B35E2C" />
+                                    </Style.Setters>
+                                </Style>
+                                <Style Selector="TextBlock.NotUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Text" Value="Inactive"/>
+                                        <Setter Property="Foreground" Value="Black" />
+                                    </Style.Setters>
+                                </Style>
+                            </TextBlock.Styles>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Button>
+        </Border>
+
+        <!-- Ventilation -->
+        <Border
+            Grid.Row="3"
+            Grid.Column="2"
+            CornerRadius="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Classes.IsUpdated="{Binding IsVentilationOn}"
+            Classes.NotUpdated="{Binding !IsVentilationOn}"
+            BoxShadow="-5 5 20 #80000000"
+            Margin="7,7,7,14">
+            <Border.Styles>
+                <Style Selector="Border.IsUpdated">
+                    <Style.Setters>
+                        <Setter Property="Background" Value="White"/>
+                    </Style.Setters>
+                </Style>
+                <Style Selector="Border.NotUpdated">
+                    <Style.Setters>
+                        <Setter Property="Background" Value="#EEE"/>
+                    </Style.Setters>
+                </Style>
+            </Border.Styles>
+            <Button
+                Command="{Binding ToggleVentilationCommand}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="Transparent">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Text="Ventilation"
+                        Foreground="Black"
+                        FontSize="32"
+                        FontWeight="SemiBold"
+                        Margin="5,5,0,0"
+                        Opacity="0.7"
+                        HorizontalAlignment="Left" />
+                    <StackPanel
+                        Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                        <Image
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Height="60"
+                            Opacity="0.7"
+                            Classes.IsUpdated="{Binding IsVentilationOn}"
+                            Classes.NotUpdated="{Binding !IsVentilationOn}"
+                            Margin="0,0,10,0">
+                            <Image.Styles>
+                                <Style Selector="Image.IsUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Source" Value="/Assets/icon-fans_on.png"/>
+                                    </Style.Setters>
+                                </Style>
+                                <Style Selector="Image.NotUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Source" Value="/Assets/icon-fans.png"/>
+                                    </Style.Setters>
+                                </Style>
+                            </Image.Styles>
+                        </Image>
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontSize="30"
+                            FontWeight="Bold"
+                            Opacity="0.7"
+                            Classes.IsUpdated="{Binding IsVentilationOn}"
+                            Classes.NotUpdated="{Binding !IsVentilationOn}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                            <TextBlock.Styles>
+                                <Style Selector="TextBlock.IsUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Text" Value="Active"/>
+                                        <Setter Property="Foreground" Value="#1A80AA" />
+                                    </Style.Setters>
+                                </Style>
+                                <Style Selector="TextBlock.NotUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Text" Value="Inactive"/>
+                                        <Setter Property="Foreground" Value="Black" />
+                                    </Style.Setters>
+                                </Style>
+                            </TextBlock.Styles>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Button>
+        </Border>
+
+        <!-- Sprinklers -->
+        <Border
+            Grid.Row="3"
+            Grid.Column="3"
+            CornerRadius="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Classes.IsUpdated="{Binding IsSprinklerOn}"
+            Classes.NotUpdated="{Binding !IsSprinklerOn}"
+            BoxShadow="-5 5 20 #80000000"
+            Margin="7,7,14,14">
+            <Border.Styles>
+                <Style Selector="Border.IsUpdated">
+                    <Style.Setters>
+                        <Setter Property="Background" Value="White"/>
+                    </Style.Setters>
+                </Style>
+                <Style Selector="Border.NotUpdated">
+                    <Style.Setters>
+                        <Setter Property="Background" Value="#EEE"/>
+                    </Style.Setters>
+                </Style>
+            </Border.Styles>
+            <Button
+                Command="{Binding ToggleSprinklerCommand}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="Transparent">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Text="Sprinklers"
+                        Foreground="Black"
+                        FontSize="32"
+                        FontWeight="SemiBold"
+                        Margin="5,5,0,0"
+                        Opacity="0.7"
+                        HorizontalAlignment="Left" />
+                    <StackPanel
+                        Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                        <Image
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Height="60"
+                            Opacity="0.7"
+                            Classes.IsUpdated="{Binding IsSprinklerOn}"
+                            Classes.NotUpdated="{Binding !IsSprinklerOn}"
+                            Margin="0,0,12,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                            <Image.Styles>
+                                <Style Selector="Image.IsUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Source" Value="/Assets/icon-sprinkler_on.png"/>
+                                    </Style.Setters>
+                                </Style>
+                                <Style Selector="Image.NotUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Source" Value="/Assets/icon-sprinkler.png"/>
+                                    </Style.Setters>
+                                </Style>
+                            </Image.Styles>
+                        </Image>
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontSize="30"
+                            FontWeight="Bold"
+                            Opacity="0.7"
+                            Classes.IsUpdated="{Binding IsSprinklerOn}"
+                            Classes.NotUpdated="{Binding !IsSprinklerOn}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                            <TextBlock.Styles>
+                                <Style Selector="TextBlock.IsUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Text" Value="Active"/>
+                                        <Setter Property="Foreground" Value="#737D45" />
+                                    </Style.Setters>
+                                </Style>
+                                <Style Selector="TextBlock.NotUpdated">
+                                    <Style.Setters>
+                                        <Setter Property="Text" Value="Inactive"/>
+                                        <Setter Property="Foreground" Value="Black" />
+                                    </Style.Setters>
+                                </Style>
+                            </TextBlock.Styles>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Button>
+        </Border>
+
+        <Border
+            Background="white"
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            CornerRadius="5"
+            BoxShadow="-5 5 20 #80000000"
+            Margin="7,14,14,7">
+            <oxy:Plot
+                Title="Cultivar Logs"
+                TitleColor="#555"
+                TitleFontSize="25"
+                Background="Transparent"
+                Margin="10">
+                <oxy:Plot.Axes>
+                    <!--<oxy:LinearAxis
+                        Title="Time (last X hours)"
+                        TitleColor="#555"
+                        TitleFontSize="25"
+                        Position="Bottom"
+                        AxislineColor="#555"
+                        AxislineThickness="3"
+                        AxislineStyle="Solid"
+                        AxisDistance="15" 
+                        TickStyle="Inside"
+                        FontSize="20"
+                        MajorGridlineStyle="Dash"
+                        MajorGridlineColor="#EEE"
+                        MinorGridlineStyle="None" />-->
+                    <oxy:DateTimeAxis 
+                        Title="Time"
+                        TitleColor="#555"
+                        TitleFontSize="25"
+                        IntervalType="Minutes" 
+                        IntervalLength="60"
+                        Position="Bottom"
+                        AxislineColor="#555"
+                        AxislineThickness="3"
+                        AxislineStyle="Solid"
+                        AxisDistance="15" 
+                        TickStyle="Inside"
+                        FontSize="20"
+                        MajorGridlineStyle="Dash"
+                        MajorGridlineColor="#EEE"
+                        MinorGridlineStyle="None"/>
+                    <oxy:LinearAxis
+                        Title="Temperature (°C)"
+                        TitleColor="#555"
+                        TitleFontSize="25"
+                        Position="Left"
+                        Key="Primary"
+                        AxislineColor="#555"
+                        AxislineThickness="3"
+                        AxislineStyle="Solid"
+                        AxisDistance="15"
+                        TickStyle="Inside"
+                        FontSize="20"
+                        TextColor="#555"
+                        MajorGridlineStyle="Dash"
+                        MajorGridlineColor="#EEE"
+                        MinorGridlineStyle="None" />
+                    <oxy:LinearAxis
+                        Title="Humidity/Soil Moisture (%)"
+                        TitleColor="#555"
+                        TitleFontSize="25"
+                        Position="Right"
+                        Key="Secondary"
+                        AxislineColor="#555"
+                        AxislineThickness="3"
+                        AxislineStyle="Solid"
+                        AxisDistance="15"
+                        TickStyle="Inside"
+                        FontSize="20"
+                        TextColor="#555"
+                        MajorGridlineStyle="Dash"
+                        MajorGridlineColor="#EEE"
+                        MinorGridlineStyle="None" />
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:LineSeries
+                        Color="#EBA77F"
+                        StrokeThickness="5"
+                        MarkerType="Circle"
+                        MarkerFill="#EBA77F"
+                        MarkerSize="6"
+                        ItemsSource="{Binding TemperatureLogs}"
+                        YAxisKey="Primary"
+                        DataFieldX="Time"
+                        DataFieldY="Value" />
+                </oxy:Plot.Series>
+                <oxy:Plot.Series>
+                    <oxy:LineSeries
+                        Color="#71C3E4"
+                        StrokeThickness="5"
+                        MarkerType="Circle"
+                        MarkerFill="#71C3E4"
+                        MarkerSize="6"
+                        ItemsSource="{Binding HumidityLogs}"
+                        YAxisKey="Secondary"
+                        DataFieldX="Time"
+                        DataFieldY="Value" />
+                </oxy:Plot.Series>
+                <oxy:Plot.Series>
+                    <oxy:LineSeries
+                        Color="#B7C085"
+                        StrokeThickness="5"
+                        MarkerType="Circle"
+                        MarkerFill="#B7C085"
+                        MarkerSize="6"
+                        ItemsSource="{Binding SoilMoistureLogs}"
+                        YAxisKey="Secondary"
+                        DataFieldX="Time"
+                        DataFieldY="Value" />
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </Border>
+    </Grid>
+</Window>
