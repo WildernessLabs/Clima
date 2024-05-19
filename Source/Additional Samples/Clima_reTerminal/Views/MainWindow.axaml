@@ -49,7 +49,7 @@
             Grid.Column="0"
             CornerRadius="5"
             BorderThickness="2"
-            BorderBrush="#55555508" 
+            BorderBrush="#88888888" 
             Padding="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
@@ -64,45 +64,48 @@
                 </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="2" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid
-                    Grid.Row="0">
-                    
-                    
-                    
-                </Grid>
-                <TextBlock
-                    Grid.Row="0"
-                    Text="Temperature"
-                    Foreground="White"
-                    FontSize="20"
-                    FontWeight="SemiBold"
-                    Margin="5,5,0,0"
-                    Opacity="0.7"
-                    HorizontalAlignment="Left" />
-                <StackPanel
-                    Grid.Row="1"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center">
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
                     <Image
-                        Grid.Row="1"
                         Grid.Column="0"
-                        Height="60"
+                        Height="30"
                         Opacity="0.6"
                         Source="/Assets/icon-temp.png"
-                        Margin="0,0,12,0"
+                        Margin="10,10,10,10"
                         HorizontalAlignment="Right"
-                    VerticalAlignment="Center" />
+                        VerticalAlignment="Center" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="Temperature"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left" />
+                </Grid>
+                
+                <Grid Grid.Row="1" Background="#88888888" />
+
+                <StackPanel
+                    Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+                    
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
-                        Text="{Binding CurrentTemperature}"
-                        Foreground="Black"
-                        FontSize="50"
+                        Text="23°"
+                        Foreground="White"
+                        FontSize="55"
                         FontWeight="Bold"
-                        Opacity="0.6"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"/>
                 </StackPanel>
@@ -114,210 +117,206 @@
             Grid.Row="1"
             Grid.Column="0"
             CornerRadius="5"
-            BorderThickness="7"
-            BorderBrush="#71C3E4" 
-            Padding="10"
-            Background="White"
+            BorderThickness="2"
+            BorderBrush="#88888888"
+            Padding="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             BoxShadow="-5 5 20 #80000000"
             Margin="14,7,7,7">
             <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                        <GradientStop Color="#061D44" Offset="0" />
+                        <GradientStop Color="#11294F" Offset="1" />
+                    </LinearGradientBrush>
+                </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="2" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <TextBlock
-                    Grid.Row="0"
-                    Text="Humidity"
-                    Foreground="Black"
-                    FontSize="25"
-                    FontWeight="SemiBold"
-                    Margin="5,5,0,0"
-                    Opacity="0.7"
-                    HorizontalAlignment="Left" />
-                <StackPanel
-                    Grid.Row="1"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center">
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
                     <Image
-                        Grid.Row="1"
                         Grid.Column="0"
-                        Height="60"
+                        Height="30"
                         Opacity="0.6"
                         Source="/Assets/icon-humidity.png"
-                        Margin="0,0,12,0"
+                        Margin="10,10,10,10"
                         HorizontalAlignment="Right"
-                    VerticalAlignment="Center" />
+                        VerticalAlignment="Center" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="Humidity"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left" />
+                </Grid>
+
+                <Grid Grid.Row="1" Background="#88888888" />
+
+                <StackPanel
+                    Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+
                     <TextBlock
                         Grid.Row="1"
-                        Grid.Column="1"
-                        Text="{Binding CurrentHumidity}"
-                        Foreground="Black"
-                        FontSize="50"
+                        Grid.Column="1" LetterSpacing="-1"
+                        Text="87%"
+                        Foreground="White"
+                        FontSize="55"
                         FontWeight="Bold"
-                        Opacity="0.6"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- Soil Moisture -->
+        <!-- Pressure -->
         <Border
             Grid.Row="2"
             Grid.Column="0"
             CornerRadius="5"
-            BorderThickness="7"
-            BorderBrush="#B7C085" 
-            Padding="10"
-            Background="White"
+            BorderThickness="2"
+            BorderBrush="#88888888"
+            Padding="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             BoxShadow="-5 5 20 #80000000"
             Margin="14,7,7,7">
             <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                        <GradientStop Color="#061D44" Offset="0" />
+                        <GradientStop Color="#11294F" Offset="1" />
+                    </LinearGradientBrush>
+                </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="2" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <TextBlock
-                    Grid.Row="0"
-                    Text="Soil Moisture"
-                    Foreground="Black"
-                    FontSize="25"
-                    FontWeight="SemiBold"
-                    Margin="5,5,0,0"
-                    Opacity="0.7"
-                    HorizontalAlignment="Left" />
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image
+                        Grid.Column="0"
+                        Height="30"
+                        Opacity="0.6"
+                        Source="/Assets/icon-humidity.png"
+                        Margin="10,10,10,10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="Atmospheric Pressure"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left" />
+                </Grid>
+
+                <Grid Grid.Row="1" Background="#88888888" />
+
                 <StackPanel
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center">
-                    <Image
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Height="60"
-                        Opacity="0.6"
-                        Source="/Assets/icon-soil.png"
-                        Margin="0,0,5,0"
-                        HorizontalAlignment="Right"
-                    VerticalAlignment="Center" />
+
                     <TextBlock
                         Grid.Row="1"
-                        Grid.Column="1"
-                        Text="{Binding CurrentSoilMoisture}"
-                        Foreground="Black"
+                        Grid.Column="1" LetterSpacing="-1"
+                        Text="0.98atm"
+                        Foreground="White"
                         FontSize="50"
                         FontWeight="Bold"
-                        Opacity="0.6"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- Lights -->
+        <!-- Wind -->
         <Border
             Grid.Row="3"
             Grid.Column="0"
             CornerRadius="5"
+            BorderThickness="2"
+            BorderBrush="#88888888"
+            Padding="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Classes.IsUpdated="{Binding IsLightsOn}"
-            Classes.NotUpdated="{Binding !IsLightsOn}"
             BoxShadow="-5 5 20 #80000000"
             Margin="14,7,7,14">
-            <Border.Styles>
-                <Style Selector="Border.IsUpdated">
-                    <Style.Setters>
-                        <Setter Property="Background" Value="White"/>
-                    </Style.Setters>
-                </Style>
-                <Style Selector="Border.NotUpdated">
-                    <Style.Setters>
-                        <Setter Property="Background" Value="#EEE"/>
-                    </Style.Setters>
-                </Style>
-            </Border.Styles>
-            <Button
-                Command="{Binding ToggleLightsCommand}"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="Transparent">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+            <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                        <GradientStop Color="#061D44" Offset="0" />
+                        <GradientStop Color="#11294F" Offset="1" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="2" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image
+                        Grid.Column="0"
+                        Height="30"
+                        Opacity="0.6"
+                        Source="/Assets/icon-humidity.png"
+                        Margin="10,10,10,10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" />
 
                     <TextBlock
-                        Grid.Row="0"
-                        Text="Lights"
-                        Foreground="Black"
-                        FontSize="32"
+                        Grid.Column="1"
+                        Text="Wind Conditions"
+                        Foreground="White"
+                        FontSize="20"
                         FontWeight="SemiBold"
-                        Margin="5,5,0,0"
-                        Opacity="0.7"
+                        VerticalAlignment="Center"
                         HorizontalAlignment="Left" />
-                    <StackPanel
-                        Grid.Row="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center">
-                        <Image
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Height="60"
-                            Opacity="0.7"
-                            Classes.IsUpdated="{Binding IsLightsOn}"
-                            Classes.NotUpdated="{Binding !IsLightsOn}"
-                            Margin="0,0,12,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center">
-                            <Image.Styles>
-                                <Style Selector="Image.IsUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Source" Value="/Assets/icon-lights_on.png"/>
-                                    </Style.Setters>
-                                </Style>
-                                <Style Selector="Image.NotUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Source" Value="/Assets/icon-lights.png"/>
-                                    </Style.Setters>
-                                </Style>
-                            </Image.Styles>
-                        </Image>
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="1" 
-                            LetterSpacing="-1"
-                            FontSize="30"
-                            FontWeight="Bold"
-                            Opacity="0.7"
-                            Classes.IsUpdated="{Binding IsLightsOn}"
-                            Classes.NotUpdated="{Binding !IsLightsOn}"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center">
-                            <TextBlock.Styles>
-                                <Style Selector="TextBlock.IsUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Text" Value="Active"/>
-                                        <Setter Property="Foreground" Value="#B6832A" />
-                                    </Style.Setters>
-                                </Style>
-                                <Style Selector="TextBlock.NotUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Text" Value="Inactive"/>
-                                        <Setter Property="Foreground" Value="Black" />
-                                    </Style.Setters>
-                                </Style>
-                            </TextBlock.Styles>
-                        </TextBlock>
-                    </StackPanel>
                 </Grid>
-            </Button>
+
+                <Grid Grid.Row="1" Background="#88888888" />
+
+                <StackPanel
+                    Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1" LetterSpacing="-1"
+                        Text="0.98atm"
+                        Foreground="White"
+                        FontSize="50"
+                        FontWeight="Bold"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
         </Border>
 
         <!-- Heater -->
