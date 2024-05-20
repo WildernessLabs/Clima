@@ -3,22 +3,19 @@ using System.Collections.Generic;
 
 namespace Clima_reTerminal.Models
 {
-    public class GreenhouseModel
-    {
-        public double TemperatureCelsius { get; set; }
-        public double HumidityPercentage { get; set; }
-        public double SoilMoisturePercentage { get; set; }
-        public bool IsLightOn { get; set; }
-        public bool IsHeaterOn { get; set; }
-        public bool IsSprinklerOn { get; set; }
-        public bool IsVentilationOn { get; set; }
-    }
-
     public class MeasurementData
     {
-        public double TemperatureCelsius { get; set; }
-        public double HumidityPercent { get; set; }
-        public double SoilMoistureDouble { get; set; }
+        public double Temperature { get; set; }
+        public double Rain { get; set; }
+        public double Light { get; set; }
+        public double SolarVoltage { get; set; }
+        public double Humidity { get; set; }
+        public double WindSpeed { get; set; }
+        public double WindDirection { get; set; }
+        public double Pressure { get; set; }
+        public double Co2Level { get; set; }
+        public double BatteryVoltage { get; set; }
+
     }
 
     public class Record

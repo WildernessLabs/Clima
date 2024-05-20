@@ -4,94 +4,99 @@ using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive;
 using System.Threading.Tasks;
 
 namespace Clima_reTerminal.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private bool _isLightsOn;
-        public bool IsLightsOn
-        {
-            get => _isLightsOn;
-            set => this.RaiseAndSetIfChanged(ref _isLightsOn, value);
-        }
-
-        private bool _isHeaterOn;
-        public bool IsHeaterOn
-        {
-            get => _isHeaterOn;
-            set => this.RaiseAndSetIfChanged(ref _isHeaterOn, value);
-        }
-
-        private bool _isVentilationOn;
-        public bool IsVentilationOn
-        {
-            get => _isVentilationOn;
-            set => this.RaiseAndSetIfChanged(ref _isVentilationOn, value);
-        }
-
-        private bool _isSprinklerOn;
-        public bool IsSprinklerOn
-        {
-            get => _isSprinklerOn;
-            set => this.RaiseAndSetIfChanged(ref _isSprinklerOn, value);
-        }
-
-        private string _currentTemperature;
-        public string CurrentTemperature
-        {
-            get => _currentTemperature;
-            set => this.RaiseAndSetIfChanged(ref _currentTemperature, value);
-        }
-
-        private string _currentHumidity;
-        public string CurrentHumidity
-        {
-            get => _currentHumidity;
-            set => this.RaiseAndSetIfChanged(ref _currentHumidity, value);
-        }
-
-        private string _currentSoilMoisture;
-        public string CurrentSoilMoisture
-        {
-            get => _currentSoilMoisture;
-            set => this.RaiseAndSetIfChanged(ref _currentSoilMoisture, value);
-        }
-        public ReactiveCommand<Unit, Unit> ToggleLightsCommand { get; set; }
-
-        public ReactiveCommand<Unit, Unit> ToggleHeaterCommand { get; set; }
-
-        public ReactiveCommand<Unit, Unit> ToggleVentilationCommand { get; set; }
-
-        public ReactiveCommand<Unit, Unit> ToggleSprinklerCommand { get; set; }
-
         public ObservableCollection<Pnl> TemperatureLogs { get; set; }
 
         public ObservableCollection<Pnl> HumidityLogs { get; set; }
 
-        public ObservableCollection<Pnl> SoilMoistureLogs { get; set; }
+        public ObservableCollection<Pnl> PressureLogs { get; set; }
+
+        private string _temperature;
+        public string Temperature
+        {
+            get => _temperature;
+            set => this.RaiseAndSetIfChanged(ref _temperature, value);
+        }
+
+        private string _rain;
+        public string Rain
+        {
+            get => _rain;
+            set => this.RaiseAndSetIfChanged(ref _rain, value);
+        }
+
+        private string _light;
+        public string Light
+        {
+            get => _light;
+            set => this.RaiseAndSetIfChanged(ref _light, value);
+        }
+
+        private string _solarVoltage;
+        public string SolarVoltage
+        {
+            get => _solarVoltage;
+            set => this.RaiseAndSetIfChanged(ref _solarVoltage, value);
+        }
+
+        private string _humidity;
+        public string Humidity
+        {
+            get => _humidity;
+            set => this.RaiseAndSetIfChanged(ref _humidity, value);
+        }
+
+        private string _windSpeed;
+        public string WindSpeed
+        {
+            get => _windSpeed;
+            set => this.RaiseAndSetIfChanged(ref _windSpeed, value);
+        }
+
+        private string _windDirection;
+        public string WindDirection
+        {
+            get => _windDirection;
+            set => this.RaiseAndSetIfChanged(ref _windDirection, value);
+        }
+
+        private string _pressure;
+        public string Pressure
+        {
+            get => _pressure;
+            set => this.RaiseAndSetIfChanged(ref _pressure, value);
+        }
+
+        private string _co2Level;
+        public string Co2Level
+        {
+            get => _co2Level;
+            set => this.RaiseAndSetIfChanged(ref _co2Level, value);
+        }
+
+        private string _batteryVoltage;
+        public string BatteryVoltage
+        {
+            get => _batteryVoltage;
+            set => this.RaiseAndSetIfChanged(ref _batteryVoltage, value);
+        }
 
         public MainWindowViewModel()
         {
-            ToggleLightsCommand = ReactiveCommand.Create(ToggleLights);
-
-            ToggleHeaterCommand = ReactiveCommand.Create(ToggleHeater);
-
-            ToggleVentilationCommand = ReactiveCommand.Create(ToggleVentilation);
-
-            ToggleSprinklerCommand = ReactiveCommand.Create(ToggleSprinkler);
-
             TemperatureLogs = new ObservableCollection<Pnl>();
 
             HumidityLogs = new ObservableCollection<Pnl>();
 
-            SoilMoistureLogs = new ObservableCollection<Pnl>();
+            PressureLogs = new ObservableCollection<Pnl>();
 
-            //_ = GetCurrentConditionsSimulated();
+            _ = GetCurrentConditionsSimulated();
             //_ = GetCurrentConditionsViaDigitalTwin();
-            _ = GetCurrentConditionsViaMeadowCloud();
+            //_ = GetCurrentConditionsViaMeadowCloud();
         }
 
         async Task GetCurrentConditionsSimulated()
@@ -102,24 +107,34 @@ namespace Clima_reTerminal.ViewModels
             {
                 var dateTime = DateTime.Now;
 
-                var sensorReading = new GreenhouseModel()
+                var sensorReading = new MeasurementData()
                 {
-                    TemperatureCelsius = random.Next(26, 28) + random.NextDouble(),
-                    HumidityPercentage = random.Next(95, 97),
-                    SoilMoisturePercentage = random.Next(75, 77) + random.NextDouble(),
-                    IsLightOn = true,
-                    IsHeaterOn = true,
-                    IsVentilationOn = true,
-                    IsSprinklerOn = true,
+                    Temperature = Math.Round(random.NextDouble() * 40 - 10, 2), // Random temperature between -10 and 30°C
+                    Rain = Math.Round(random.NextDouble() * 100, 2), // Random rainfall between 0 and 100 mm
+                    Light = Math.Round(random.NextDouble() * 1000, 2), // Random light level between 0 and 1000 lux
+                    SolarVoltage = Math.Round(random.NextDouble() * 20, 2), // Random solar voltage between 0 and 20 V
+                    Humidity = Math.Round(random.NextDouble() * 100, 2), // Random humidity between 0 and 100%
+                    WindSpeed = Math.Round(random.NextDouble() * 40, 2), // Random wind speed between 0 and 40 m/s
+                    WindDirection = Math.Round(random.NextDouble() * 360, 2), // Random wind direction between 0 and 360 degrees
+                    Pressure = Math.Round(random.NextDouble() * 50 + 950, 2), // Random pressure between 950 and 1000 hPa
+                    Co2Level = Math.Round(random.NextDouble() * 2000 + 300, 2), // Random CO2 level between 300 and 2300 ppm
+                    BatteryVoltage = Math.Round(random.NextDouble() * 12 + 1, 2) // Random battery voltage between 1 and 13 V
                 };
 
-                CurrentTemperature = $"{sensorReading.TemperatureCelsius:N0}°C";
-                CurrentHumidity = $"{sensorReading.HumidityPercentage}%";
-                CurrentSoilMoisture = $"{sensorReading.SoilMoisturePercentage:N0}%";
+                Temperature = $"{sensorReading.Temperature:N0}";
+                Rain = $"{sensorReading.Rain:N0}";
+                Light = $"{sensorReading.Light:N0}";
+                SolarVoltage = $"{sensorReading.SolarVoltage:N0}";
+                Humidity = $"{sensorReading.Humidity:N1}";
+                WindSpeed = $"{sensorReading.WindSpeed:N0}";
+                WindDirection = $"{sensorReading.WindDirection:N0}";
+                Pressure = $"{sensorReading.Pressure:N1}";
+                Co2Level = $"{sensorReading.Co2Level:N0}";
+                BatteryVoltage = $"{sensorReading.BatteryVoltage:N0}";
 
-                TemperatureLogs.Add(new Pnl(dateTime, sensorReading.TemperatureCelsius));
-                HumidityLogs.Add(new Pnl(dateTime, sensorReading.HumidityPercentage));
-                SoilMoistureLogs.Add(new Pnl(dateTime, sensorReading.SoilMoisturePercentage));
+                TemperatureLogs.Add(new Pnl(dateTime, sensorReading.Temperature));
+                HumidityLogs.Add(new Pnl(dateTime, sensorReading.Humidity));
+                PressureLogs.Add(new Pnl(dateTime, sensorReading.Pressure));
 
                 await Task.Delay(TimeSpan.FromSeconds(10));
 
@@ -127,7 +142,7 @@ namespace Clima_reTerminal.ViewModels
                 {
                     TemperatureLogs.RemoveAt(0);
                     HumidityLogs.RemoveAt(0);
-                    SoilMoistureLogs.RemoveAt(0);
+                    PressureLogs.RemoveAt(0);
                 }
             }
         }
@@ -143,22 +158,18 @@ namespace Clima_reTerminal.ViewModels
                 var sensorReading = await DigitalTwinClient.GetDigitalTwinData();
                 if (sensorReading != null)
                 {
-                    CurrentTemperature = $"{sensorReading.TemperatureCelsius:N0}°C";
-                    CurrentHumidity = $"{sensorReading.HumidityPercentage:N0}%";
-                    CurrentSoilMoisture = $"{sensorReading.SoilMoisturePercentage:N0}%";
-                    IsLightsOn = sensorReading.IsLightOn;
-                    IsHeaterOn = sensorReading.IsHeaterOn;
-                    IsSprinklerOn = sensorReading.IsSprinklerOn;
-                    IsVentilationOn = sensorReading.IsVentilationOn;
+                    Temperature = $"{sensorReading.Temperature:N0}°C";
+                    Humidity = $"{sensorReading.Humidity:N0}%";
+                    Pressure = $"{sensorReading.Pressure:N0}%";
                 }
 
-                CurrentTemperature = $"{sensorReading.TemperatureCelsius:N0}°C";
-                CurrentHumidity = $"{sensorReading.HumidityPercentage}%";
-                CurrentSoilMoisture = $"{sensorReading.SoilMoisturePercentage:N0}%";
+                Temperature = $"{sensorReading.Temperature:N0}°C";
+                Humidity = $"{sensorReading.Humidity}%";
+                Pressure = $"{sensorReading.Pressure:N0}%";
 
-                TemperatureLogs.Add(new Pnl(dateTime, sensorReading.TemperatureCelsius));
-                HumidityLogs.Add(new Pnl(dateTime, sensorReading.HumidityPercentage));
-                SoilMoistureLogs.Add(new Pnl(dateTime, sensorReading.SoilMoisturePercentage));
+                TemperatureLogs.Add(new Pnl(dateTime, sensorReading.Temperature));
+                HumidityLogs.Add(new Pnl(dateTime, sensorReading.Humidity));
+                PressureLogs.Add(new Pnl(dateTime, sensorReading.Pressure));
 
                 await Task.Delay(TimeSpan.FromSeconds(10));
 
@@ -166,7 +177,7 @@ namespace Clima_reTerminal.ViewModels
                 {
                     TemperatureLogs.RemoveAt(0);
                     HumidityLogs.RemoveAt(0);
-                    SoilMoistureLogs.RemoveAt(0);
+                    PressureLogs.RemoveAt(0);
                 }
             }
         }
@@ -183,60 +194,22 @@ namespace Clima_reTerminal.ViewModels
                 {
                     TemperatureLogs.Clear();
                     HumidityLogs.Clear();
-                    SoilMoistureLogs.Clear();
+                    PressureLogs.Clear();
 
                     foreach (var reading in sensorReadings.Take(10))
                     {
-                        TemperatureLogs.Add(new Pnl(reading.record.timestamp.AddHours(TIMEZONE_OFFSET), reading.record.measurements.TemperatureCelsius));
-                        HumidityLogs.Add(new Pnl(reading.record.timestamp.AddHours(TIMEZONE_OFFSET), reading.record.measurements.HumidityPercent));
-                        SoilMoistureLogs.Add(new Pnl(reading.record.timestamp.AddHours(TIMEZONE_OFFSET), reading.record.measurements.SoilMoistureDouble));
+                        TemperatureLogs.Add(new Pnl(reading.record.timestamp.AddHours(TIMEZONE_OFFSET), reading.record.measurements.Temperature));
+                        HumidityLogs.Add(new Pnl(reading.record.timestamp.AddHours(TIMEZONE_OFFSET), reading.record.measurements.Humidity));
+                        PressureLogs.Add(new Pnl(reading.record.timestamp.AddHours(TIMEZONE_OFFSET), reading.record.measurements.Pressure));
                     }
 
-                    CurrentTemperature = $"{TemperatureLogs[0].Value:N1}°C";
-                    CurrentHumidity = $"{HumidityLogs[0].Value:N1}%";
-                    CurrentSoilMoisture = $"{SoilMoistureLogs[0].Value:N1}%";
+                    Temperature = $"{TemperatureLogs[0].Value:N1}°C";
+                    Humidity = $"{HumidityLogs[0].Value:N1}%";
+                    Pressure = $"{PressureLogs[0].Value:N1}%";
                 }
 
 
                 await Task.Delay(TimeSpan.FromMinutes(1));
-            }
-        }
-
-        public async void ToggleLights()
-        {
-            await DigitalTwinClient.GetDigitalTwinData();
-
-            var res = await RestClient.SendCommand(CultivarCommands.LightControl, !IsLightsOn);
-            if (res)
-            {
-                IsLightsOn = !IsLightsOn;
-            }
-        }
-
-        public async void ToggleHeater()
-        {
-            var res = await RestClient.SendCommand(CultivarCommands.HeaterControl, !IsHeaterOn);
-            if (res)
-            {
-                IsHeaterOn = !IsHeaterOn;
-            }
-        }
-
-        public async void ToggleVentilation()
-        {
-            var res = await RestClient.SendCommand(CultivarCommands.FanControl, !IsVentilationOn);
-            if (res)
-            {
-                IsVentilationOn = !IsVentilationOn;
-            }
-        }
-
-        public async void ToggleSprinkler()
-        {
-            var res = await RestClient.SendCommand(CultivarCommands.ValveControl, !IsSprinklerOn);
-            if (res)
-            {
-                IsSprinklerOn = !IsSprinklerOn;
             }
         }
     }

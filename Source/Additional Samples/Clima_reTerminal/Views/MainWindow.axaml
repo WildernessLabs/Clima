@@ -111,7 +111,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1"
-                        Text="23.5"
+                        Text="{Binding Temperature}"
                         Foreground="#AFD8FF"
                         FontSize="55"
                         FontWeight="Bold"
@@ -189,7 +189,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
-                        Text="87.5"
+                        Text="{Binding Humidity}"
                         Foreground="#AFD8FF"
                         FontSize="55"
                         FontWeight="Bold"
@@ -248,7 +248,7 @@
 
                     <TextBlock
                         Grid.Column="1"
-                        Text="atm"
+                        Text="hPa"
                         Foreground="White"
                         FontSize="20"
                         FontWeight="SemiBold"
@@ -267,7 +267,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
-                        Text="0.98"
+                        Text="{Binding Pressure}"
                         Foreground="#AFD8FF"
                         FontSize="50"
                         FontWeight="Bold"
@@ -317,7 +317,7 @@
 
                     <TextBlock
                         Grid.Column="1"
-                        Text="Wind Dir/Speed"
+                        Text="Wind"
                         Foreground="White"
                         FontSize="20"
                         FontWeight="SemiBold"
@@ -370,7 +370,7 @@
                             Margin="0,10,5,10"
                             VerticalAlignment="Center" />
                         <TextBlock
-                            Text="10"
+                            Text="{Binding WindSpeed}"
                             Foreground="#A08EDC"
                             FontSize="40"
                             FontWeight="Bold"
@@ -448,7 +448,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
-                        Text="10"
+                        Text="{Binding Rain}"
                         Foreground="#AFD8FF"
                         FontSize="50"
                         FontWeight="Bold"
@@ -507,7 +507,7 @@
 
                     <TextBlock
                         Grid.Column="1"
-                        Text="lux"
+                        Text="Lux"
                         Foreground="White"
                         FontSize="20"
                         FontWeight="SemiBold"
@@ -526,7 +526,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
-                        Text="2000"
+                        Text="{Binding Light}"
                         Foreground="#D5A738"
                         FontSize="50"
                         FontWeight="Bold"
@@ -576,7 +576,7 @@
 
                     <TextBlock
                         Grid.Column="1"
-                        Text="Solar/Battery Voltage"
+                        Text="Power Supply"
                         Foreground="White"
                         FontSize="20"
                         FontWeight="SemiBold"
@@ -585,7 +585,7 @@
 
                     <TextBlock
                         Grid.Column="1"
-                        Text="v"
+                        Text="V"
                         Foreground="White"
                         FontSize="20"
                         FontWeight="SemiBold"
@@ -610,9 +610,9 @@
                             Margin="0,10,5,10"
                             VerticalAlignment="Center" />
                         <TextBlock
-                            Text="3.5"
+                            Text="{Binding SolarVoltage}"
                             Foreground="White"
-                            FontSize="30"
+                            FontSize="40"
                             FontWeight="Bold"
                             VerticalAlignment="Center"/>
                     </StackPanel>
@@ -626,9 +626,9 @@
                             Margin="0,10,10,10"
                             VerticalAlignment="Center" />
                         <TextBlock
-                            Text="3.5"
+                            Text="{Binding BatteryVoltage}"
                             Foreground="White"
-                            FontSize="30"
+                            FontSize="40"
                             FontWeight="Bold"
                             VerticalAlignment="Center"/>
                     </StackPanel>
