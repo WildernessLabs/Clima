@@ -47,9 +47,9 @@
         <Border
             Grid.Row="0"
             Grid.Column="0"
-            CornerRadius="5"
-            BorderThickness="2"
-            BorderBrush="#88888888" 
+            CornerRadius="2"
+            BorderThickness="1"
+            BorderBrush="#44888888" 
             Padding="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
@@ -57,14 +57,14 @@
             Margin="14,14,7,7">
             <Grid>
                 <Grid.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <LinearGradientBrush StartPoint="100%,100%" EndPoint="0%,0%">
                         <GradientStop Color="#061D44" Offset="0" />
                         <GradientStop Color="#11294F" Offset="1" />
                     </LinearGradientBrush>
                 </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="2" />
+                    <RowDefinition Height="1" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -76,7 +76,6 @@
                     <Image
                         Grid.Column="0"
                         Height="30"
-                        Opacity="0.6"
                         Source="/Assets/icon-temp.png"
                         Margin="10,10,10,10"
                         HorizontalAlignment="Right"
@@ -90,9 +89,19 @@
                         FontWeight="SemiBold"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="°C"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Margin="10,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right" />
                 </Grid>
                 
-                <Grid Grid.Row="1" Background="#88888888" />
+                <Grid Grid.Row="1" Background="#44888888" />
 
                 <StackPanel
                     Grid.Row="2"
@@ -101,9 +110,9 @@
                     
                     <TextBlock
                         Grid.Row="1"
-                        Grid.Column="1" LetterSpacing="-1"
-                        Text="23°"
-                        Foreground="White"
+                        Grid.Column="1"
+                        Text="23.5"
+                        Foreground="#AFD8FF"
                         FontSize="55"
                         FontWeight="Bold"
                         HorizontalAlignment="Left"
@@ -116,9 +125,9 @@
         <Border
             Grid.Row="1"
             Grid.Column="0"
-            CornerRadius="5"
-            BorderThickness="2"
-            BorderBrush="#88888888"
+            CornerRadius="2"
+            BorderThickness="1"
+            BorderBrush="#44888888"
             Padding="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
@@ -126,14 +135,14 @@
             Margin="14,7,7,7">
             <Grid>
                 <Grid.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <LinearGradientBrush StartPoint="100%,100%" EndPoint="0%,0%">
                         <GradientStop Color="#061D44" Offset="0" />
                         <GradientStop Color="#11294F" Offset="1" />
                     </LinearGradientBrush>
                 </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="2" />
+                    <RowDefinition Height="1" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -145,7 +154,6 @@
                     <Image
                         Grid.Column="0"
                         Height="30"
-                        Opacity="0.6"
                         Source="/Assets/icon-humidity.png"
                         Margin="10,10,10,10"
                         HorizontalAlignment="Right"
@@ -159,9 +167,19 @@
                         FontWeight="SemiBold"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="%"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Margin="10,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right" />
                 </Grid>
 
-                <Grid Grid.Row="1" Background="#88888888" />
+                <Grid Grid.Row="1" Background="#44888888" />
 
                 <StackPanel
                     Grid.Row="2"
@@ -171,8 +189,8 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
-                        Text="87%"
-                        Foreground="White"
+                        Text="87.5"
+                        Foreground="#AFD8FF"
                         FontSize="55"
                         FontWeight="Bold"
                         HorizontalAlignment="Left"
@@ -185,9 +203,9 @@
         <Border
             Grid.Row="2"
             Grid.Column="0"
-            CornerRadius="5"
-            BorderThickness="2"
-            BorderBrush="#88888888"
+            CornerRadius="2"
+            BorderThickness="1"
+            BorderBrush="#44888888"
             Padding="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
@@ -195,14 +213,14 @@
             Margin="14,7,7,7">
             <Grid>
                 <Grid.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <LinearGradientBrush StartPoint="100%,100%" EndPoint="0%,0%">
                         <GradientStop Color="#061D44" Offset="0" />
                         <GradientStop Color="#11294F" Offset="1" />
                     </LinearGradientBrush>
                 </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="2" />
+                    <RowDefinition Height="1" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -214,23 +232,32 @@
                     <Image
                         Grid.Column="0"
                         Height="30"
-                        Opacity="0.6"
-                        Source="/Assets/icon-humidity.png"
+                        Source="/Assets/icon-pressure.png"
                         Margin="10,10,10,10"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center" />
 
                     <TextBlock
                         Grid.Column="1"
-                        Text="Atmospheric Pressure"
+                        Text="Pressure"
                         Foreground="White"
                         FontSize="20"
                         FontWeight="SemiBold"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="atm"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Margin="10,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right" />
                 </Grid>
 
-                <Grid Grid.Row="1" Background="#88888888" />
+                <Grid Grid.Row="1" Background="#44888888" />
 
                 <StackPanel
                     Grid.Row="2"
@@ -240,8 +267,8 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
-                        Text="0.98atm"
-                        Foreground="White"
+                        Text="0.98"
+                        Foreground="#AFD8FF"
                         FontSize="50"
                         FontWeight="Bold"
                         HorizontalAlignment="Left"
@@ -254,9 +281,9 @@
         <Border
             Grid.Row="3"
             Grid.Column="0"
-            CornerRadius="5"
-            BorderThickness="2"
-            BorderBrush="#88888888"
+            CornerRadius="2"
+            BorderThickness="1"
+            BorderBrush="#44888888"
             Padding="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
@@ -264,14 +291,14 @@
             Margin="14,7,7,14">
             <Grid>
                 <Grid.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <LinearGradientBrush StartPoint="100%,100%" EndPoint="0%,0%">
                         <GradientStop Color="#061D44" Offset="0" />
                         <GradientStop Color="#11294F" Offset="1" />
                     </LinearGradientBrush>
                 </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="2" />
+                    <RowDefinition Height="1" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -283,23 +310,135 @@
                     <Image
                         Grid.Column="0"
                         Height="30"
-                        Opacity="0.6"
-                        Source="/Assets/icon-humidity.png"
+                        Source="/Assets/icon-wind.png"
                         Margin="10,10,10,10"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center" />
 
                     <TextBlock
                         Grid.Column="1"
-                        Text="Wind Conditions"
+                        Text="Wind Dir/Speed"
                         Foreground="White"
                         FontSize="20"
                         FontWeight="SemiBold"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="m/s"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Margin="10,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right" />
                 </Grid>
 
-                <Grid Grid.Row="1" Background="#88888888" />
+                <Grid Grid.Row="1" Background="#44888888" />
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="1" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel 
+                        Grid.Column="0" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Center" Margin="25,0" >
+                        <Image
+                            Height="30"
+                            Source="/Assets/icon-compass.png"
+                            Margin="0,10,5,10"
+                            VerticalAlignment="Center" />
+                        <TextBlock
+                            Text="SE"
+                            Foreground="#A08EDC"
+                            FontSize="40"
+                            FontWeight="Bold"
+                            VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Grid Grid.Column="1" Background="#44888888" Margin="0,10" />
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Image
+                            Height="30"
+                            Source="/Assets/icon-speed.png"
+                            Margin="0,10,5,10"
+                            VerticalAlignment="Center" />
+                        <TextBlock
+                            Text="10"
+                            Foreground="#A08EDC"
+                            FontSize="40"
+                            FontWeight="Bold"
+                            VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Rain -->
+        <Border
+            Grid.Row="3"
+            Grid.Column="1"
+            CornerRadius="2"
+            BorderThickness="1"
+            BorderBrush="#44888888"
+            Padding="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            BoxShadow="-5 5 20 #80000000"
+            Margin="7,7,7,14">
+            <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="100%,100%" EndPoint="0%,0%">
+                        <GradientStop Color="#061D44" Offset="0" />
+                        <GradientStop Color="#11294F" Offset="1" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image
+                        Grid.Column="0"
+                        Height="30"
+                        Source="/Assets/icon-rain.png"
+                        Margin="10,10,10,10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="Rain"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="mm"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Margin="10,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right" />
+                </Grid>
+
+                <Grid Grid.Row="1" Background="#44888888" />
 
                 <StackPanel
                     Grid.Row="2"
@@ -309,8 +448,86 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
-                        Text="0.98atm"
+                        Text="10"
+                        Foreground="#AFD8FF"
+                        FontSize="50"
+                        FontWeight="Bold"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <!-- Light -->
+        <Border
+            Grid.Row="3"
+            Grid.Column="2"
+            CornerRadius="2"
+            BorderThickness="1"
+            BorderBrush="#44888888"
+            Padding="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            BoxShadow="-5 5 20 #80000000"
+            Margin="7,7,7,14">
+            <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="100%,100%" EndPoint="0%,0%">
+                        <GradientStop Color="#061D44" Offset="0" />
+                        <GradientStop Color="#11294F" Offset="1" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image
+                        Grid.Column="0"
+                        Height="30"
+                        Source="/Assets/icon-light.png"
+                        Margin="10,10,10,10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="Illuminance"
                         Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="lux"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Margin="10,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right" />
+                </Grid>
+
+                <Grid Grid.Row="1" Background="#44888888" />
+
+                <StackPanel
+                    Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1" LetterSpacing="-1"
+                        Text="2000"
+                        Foreground="#D5A738"
                         FontSize="50"
                         FontWeight="Bold"
                         HorizontalAlignment="Left"
@@ -319,381 +536,175 @@
             </Grid>
         </Border>
 
-        <!-- Heater -->
-        <Border
-            Grid.Row="3"
-            Grid.Column="1"
-            CornerRadius="5"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Classes.IsUpdated="{Binding IsHeaterOn}"
-            Classes.NotUpdated="{Binding !IsHeaterOn}"
-            BoxShadow="-5 5 20 #80000000"
-            Margin="7,7,7,14">
-            <Border.Styles>
-                <Style Selector="Border.IsUpdated">
-                    <Style.Setters>
-                        <Setter Property="Background" Value="White"/>
-                    </Style.Setters>
-                </Style>
-                <Style Selector="Border.NotUpdated">
-                    <Style.Setters>
-                        <Setter Property="Background" Value="#EEE"/>
-                    </Style.Setters>
-                </Style>
-            </Border.Styles>
-            <Button
-                Command="{Binding ToggleHeaterCommand}"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="Transparent">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <TextBlock
-                        Grid.Row="0"
-                        Text="Heater"
-                        Foreground="Black"
-                        FontSize="32"
-                        FontWeight="SemiBold"
-                        Margin="5,5,0,0"
-                        Opacity="0.7"
-                        HorizontalAlignment="Left" />
-                    <StackPanel
-                        Grid.Row="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center">
-                        <Image
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Height="60"
-                            Opacity="0.7"
-                            Margin="0,0,12,0"
-                            Classes.IsUpdated="{Binding IsHeaterOn}"
-                            Classes.NotUpdated="{Binding !IsHeaterOn}"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center">
-                            <Image.Styles>
-                                <Style Selector="Image.IsUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Source" Value="/Assets/icon-heater_on.png"/>
-                                    </Style.Setters>
-                                </Style>
-                                <Style Selector="Image.NotUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Source" Value="/Assets/icon-heater.png"/>
-                                    </Style.Setters>
-                                </Style>
-                            </Image.Styles>
-                        </Image>
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            FontSize="30"
-                            FontWeight="Bold"
-                            Opacity="0.7"
-                            Classes.IsUpdated="{Binding IsHeaterOn}"
-                            Classes.NotUpdated="{Binding !IsHeaterOn}"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center">
-                            <TextBlock.Styles>
-                                <Style Selector="TextBlock.IsUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Text" Value="Active"/>
-                                        <Setter Property="Foreground" Value="#B35E2C" />
-                                    </Style.Setters>
-                                </Style>
-                                <Style Selector="TextBlock.NotUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Text" Value="Inactive"/>
-                                        <Setter Property="Foreground" Value="Black" />
-                                    </Style.Setters>
-                                </Style>
-                            </TextBlock.Styles>
-                        </TextBlock>
-                    </StackPanel>
-                </Grid>
-            </Button>
-        </Border>
-
-        <!-- Ventilation -->
-        <Border
-            Grid.Row="3"
-            Grid.Column="2"
-            CornerRadius="5"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Classes.IsUpdated="{Binding IsVentilationOn}"
-            Classes.NotUpdated="{Binding !IsVentilationOn}"
-            BoxShadow="-5 5 20 #80000000"
-            Margin="7,7,7,14">
-            <Border.Styles>
-                <Style Selector="Border.IsUpdated">
-                    <Style.Setters>
-                        <Setter Property="Background" Value="White"/>
-                    </Style.Setters>
-                </Style>
-                <Style Selector="Border.NotUpdated">
-                    <Style.Setters>
-                        <Setter Property="Background" Value="#EEE"/>
-                    </Style.Setters>
-                </Style>
-            </Border.Styles>
-            <Button
-                Command="{Binding ToggleVentilationCommand}"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="Transparent">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <TextBlock
-                        Grid.Row="0"
-                        Text="Ventilation"
-                        Foreground="Black"
-                        FontSize="32"
-                        FontWeight="SemiBold"
-                        Margin="5,5,0,0"
-                        Opacity="0.7"
-                        HorizontalAlignment="Left" />
-                    <StackPanel
-                        Grid.Row="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center">
-                        <Image
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Height="60"
-                            Opacity="0.7"
-                            Classes.IsUpdated="{Binding IsVentilationOn}"
-                            Classes.NotUpdated="{Binding !IsVentilationOn}"
-                            Margin="0,0,10,0">
-                            <Image.Styles>
-                                <Style Selector="Image.IsUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Source" Value="/Assets/icon-fans_on.png"/>
-                                    </Style.Setters>
-                                </Style>
-                                <Style Selector="Image.NotUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Source" Value="/Assets/icon-fans.png"/>
-                                    </Style.Setters>
-                                </Style>
-                            </Image.Styles>
-                        </Image>
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            FontSize="30"
-                            FontWeight="Bold"
-                            Opacity="0.7"
-                            Classes.IsUpdated="{Binding IsVentilationOn}"
-                            Classes.NotUpdated="{Binding !IsVentilationOn}"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center">
-                            <TextBlock.Styles>
-                                <Style Selector="TextBlock.IsUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Text" Value="Active"/>
-                                        <Setter Property="Foreground" Value="#1A80AA" />
-                                    </Style.Setters>
-                                </Style>
-                                <Style Selector="TextBlock.NotUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Text" Value="Inactive"/>
-                                        <Setter Property="Foreground" Value="Black" />
-                                    </Style.Setters>
-                                </Style>
-                            </TextBlock.Styles>
-                        </TextBlock>
-                    </StackPanel>
-                </Grid>
-            </Button>
-        </Border>
-
-        <!-- Sprinklers -->
+        <!-- Solar/Battery Voltage -->
         <Border
             Grid.Row="3"
             Grid.Column="3"
-            CornerRadius="5"
+            CornerRadius="2"
+            BorderThickness="1"
+            BorderBrush="#44888888"
+            Padding="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Classes.IsUpdated="{Binding IsSprinklerOn}"
-            Classes.NotUpdated="{Binding !IsSprinklerOn}"
             BoxShadow="-5 5 20 #80000000"
-            Margin="7,7,14,14">
-            <Border.Styles>
-                <Style Selector="Border.IsUpdated">
-                    <Style.Setters>
-                        <Setter Property="Background" Value="White"/>
-                    </Style.Setters>
-                </Style>
-                <Style Selector="Border.NotUpdated">
-                    <Style.Setters>
-                        <Setter Property="Background" Value="#EEE"/>
-                    </Style.Setters>
-                </Style>
-            </Border.Styles>
-            <Button
-                Command="{Binding ToggleSprinklerCommand}"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="Transparent">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+            Margin="7,7,7,14">
+            <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="100%,100%" EndPoint="0%,0%">
+                        <GradientStop Color="#061D44" Offset="0" />
+                        <GradientStop Color="#11294F" Offset="1" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image
+                        Grid.Column="0"
+                        Height="30"
+                        Source="/Assets/icon-voltage.png"
+                        Margin="10,10,10,10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" />
 
                     <TextBlock
-                        Grid.Row="0"
-                        Text="Sprinklers"
-                        Foreground="Black"
-                        FontSize="32"
+                        Grid.Column="1"
+                        Text="Solar/Battery Voltage"
+                        Foreground="White"
+                        FontSize="20"
                         FontWeight="SemiBold"
-                        Margin="5,5,0,0"
-                        Opacity="0.7"
+                        VerticalAlignment="Center"
                         HorizontalAlignment="Left" />
-                    <StackPanel
-                        Grid.Row="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center">
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="v"
+                        Foreground="White"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Margin="10,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right" />
+                </Grid>
+
+                <Grid Grid.Row="1" Background="#44888888" />
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="1" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" >
                         <Image
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Height="60"
-                            Opacity="0.7"
-                            Classes.IsUpdated="{Binding IsSprinklerOn}"
-                            Classes.NotUpdated="{Binding !IsSprinklerOn}"
-                            Margin="0,0,12,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center">
-                            <Image.Styles>
-                                <Style Selector="Image.IsUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Source" Value="/Assets/icon-sprinkler_on.png"/>
-                                    </Style.Setters>
-                                </Style>
-                                <Style Selector="Image.NotUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Source" Value="/Assets/icon-sprinkler.png"/>
-                                    </Style.Setters>
-                                </Style>
-                            </Image.Styles>
-                        </Image>
+                            Height="30"
+                            Source="/Assets/icon-solar.png"
+                            Margin="0,10,5,10"
+                            VerticalAlignment="Center" />
                         <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="1"
+                            Text="3.5"
+                            Foreground="White"
                             FontSize="30"
                             FontWeight="Bold"
-                            Opacity="0.7"
-                            Classes.IsUpdated="{Binding IsSprinklerOn}"
-                            Classes.NotUpdated="{Binding !IsSprinklerOn}"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center">
-                            <TextBlock.Styles>
-                                <Style Selector="TextBlock.IsUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Text" Value="Active"/>
-                                        <Setter Property="Foreground" Value="#737D45" />
-                                    </Style.Setters>
-                                </Style>
-                                <Style Selector="TextBlock.NotUpdated">
-                                    <Style.Setters>
-                                        <Setter Property="Text" Value="Inactive"/>
-                                        <Setter Property="Foreground" Value="Black" />
-                                    </Style.Setters>
-                                </Style>
-                            </TextBlock.Styles>
-                        </TextBlock>
+                            VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Grid Grid.Column="1" Background="#44888888" Margin="0,10" />
+                    
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Image
+                            Height="30"
+                            Source="/Assets/icon-battery.png"
+                            Margin="0,10,10,10"
+                            VerticalAlignment="Center" />
+                        <TextBlock
+                            Text="3.5"
+                            Foreground="White"
+                            FontSize="30"
+                            FontWeight="Bold"
+                            VerticalAlignment="Center"/>
                     </StackPanel>
                 </Grid>
-            </Button>
+            </Grid>
         </Border>
 
         <Border
-            Background="white"
             Grid.Row="0"
             Grid.RowSpan="3"
             Grid.Column="1"
             Grid.ColumnSpan="3"
-            CornerRadius="5"
+            CornerRadius="2"
             BoxShadow="-5 5 20 #80000000"
             Margin="7,14,14,7">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="100%,100%" EndPoint="0%,0%">
+                    <GradientStop Color="#061D44" Offset="0" />
+                    <GradientStop Color="#11294F" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
             <oxy:Plot
-                Title="Cultivar Logs"
-                TitleColor="#555"
+                Title="My Clima Logs"
+                TitleColor="White"
                 TitleFontSize="25"
                 Background="Transparent"
                 Margin="10">
                 <oxy:Plot.Axes>
-                    <!--<oxy:LinearAxis
-                        Title="Time (last X hours)"
-                        TitleColor="#555"
-                        TitleFontSize="25"
-                        Position="Bottom"
-                        AxislineColor="#555"
-                        AxislineThickness="3"
-                        AxislineStyle="Solid"
-                        AxisDistance="15" 
-                        TickStyle="Inside"
-                        FontSize="20"
-                        MajorGridlineStyle="Dash"
-                        MajorGridlineColor="#EEE"
-                        MinorGridlineStyle="None" />-->
                     <oxy:DateTimeAxis 
                         Title="Time"
-                        TitleColor="#555"
+                        TitleColor="White"
                         TitleFontSize="25"
+                        TextColor="White"
                         IntervalType="Minutes" 
-                        IntervalLength="60"
+                        IntervalLength="60" 
                         Position="Bottom"
-                        AxislineColor="#555"
+                        AxislineColor="White"
                         AxislineThickness="3"
                         AxislineStyle="Solid"
-                        AxisDistance="15" 
+                        AxisDistance="15"
                         TickStyle="Inside"
                         FontSize="20"
                         MajorGridlineStyle="Dash"
-                        MajorGridlineColor="#EEE"
+                        MajorGridlineColor="White"
                         MinorGridlineStyle="None"/>
                     <oxy:LinearAxis
                         Title="Temperature (°C)"
-                        TitleColor="#555"
+                        TitleColor="White"
                         TitleFontSize="25"
+                        TextColor="White"
                         Position="Left"
                         Key="Primary"
-                        AxislineColor="#555"
+                        AxislineColor="White"
                         AxislineThickness="3"
                         AxislineStyle="Solid"
                         AxisDistance="15"
                         TickStyle="Inside"
                         FontSize="20"
-                        TextColor="#555"
                         MajorGridlineStyle="Dash"
-                        MajorGridlineColor="#EEE"
+                        MajorGridlineColor="White"
                         MinorGridlineStyle="None" />
                     <oxy:LinearAxis
-                        Title="Humidity/Soil Moisture (%)"
-                        TitleColor="#555"
+                        Title="Humidity (%)"
+                        TitleColor="White"
                         TitleFontSize="25"
+                        TextColor="White"
                         Position="Right"
                         Key="Secondary"
-                        AxislineColor="#555"
+                        AxislineColor="White"
                         AxislineThickness="3"
                         AxislineStyle="Solid"
                         AxisDistance="15"
                         TickStyle="Inside"
                         FontSize="20"
-                        TextColor="#555"
                         MajorGridlineStyle="Dash"
-                        MajorGridlineColor="#EEE"
+                        MajorGridlineColor="White"
                         MinorGridlineStyle="None" />
                 </oxy:Plot.Axes>
                 <oxy:Plot.Series>
