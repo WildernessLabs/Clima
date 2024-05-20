@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using static Clima_Demo.NotificationController;
 
 namespace Meadow.Devices;
 
@@ -16,7 +17,7 @@ public class MainController
     private LocationController locationController;
     private NetworkController? networkController;
     private CloudController cloudController;
-    private Timer TelemetryTimer;
+    private Timer SystemTimer;
 
     public TimeSpan TelemetryPublicationPeriod { get; } = TimeSpan.FromMinutes(1);
 
@@ -72,9 +73,57 @@ public class MainController
         Resolver.MeadowCloudService.ConnectionStateChanged += OnMeadowCloudServiceConnectionStateChanged;
         cloudController.LogAppStartup(hardware.RevisionString);
 
-        TelemetryTimer = new Timer(TelemetryTimerProc, null, 0, -1);
+        Resolver.Device.PlatformOS.AfterWake += PlatformOS_AfterWake;
+
+        _ = SystemPreSleepStateProc();
 
         return Task.CompletedTask;
+    }
+
+    private void PlatformOS_AfterWake(object sender, WakeSource e)
+    {
+        Resolver.Log.Info("PlatformOS_AfterWake");
+        SystemPostWakeStateProc();
+    }
+
+    private async Task SystemPreSleepStateProc()
+    {
+        // connect to cloud
+        if (networkController != null)
+        {
+            notificationController.SetSystemStatus(SystemStatus.SearchingForNetwork);
+            var connected = await networkController.ConnectToCloud();
+            if (connected)
+            {
+                if (cloudController != null)
+                {
+                    await cloudController.WaitForDataToSend();
+                }
+
+                await networkController.ShutdownNetwork();
+            }
+        }
+
+        notificationController.SetSystemStatus(SystemStatus.LowPower);
+        powerController.TimedSleep(TimeSpan.FromSeconds(SensorReadPeriodSeconds));
+    }
+
+    private int tick;
+    private const int SensorReadPeriodSeconds = 10;
+    private const int PublicationPeriodMinutes = 5;
+
+    private void SystemPostWakeStateProc()
+    {
+        // collect data
+
+        if (++tick % PublicationPeriodMinutes * 60 / SensorReadPeriodSeconds == 0)
+        {
+            SystemPreSleepStateProc();
+        }
+        else
+        {
+            powerController.TimedSleep(TimeSpan.FromSeconds(SensorReadPeriodSeconds));
+        }
     }
 
     private void OnMeadowCloudServiceConnectionStateChanged(object sender, CloudConnectionState e)
@@ -90,12 +139,17 @@ public class MainController
         }
     }
 
-    private async void TelemetryTimerProc(object _)
+    private async void SystemTimerProc(object _)
     {
+        tick++;
+
+        // collect telemetry every tick
         Resolver.Log.Info($"Collecting telemetry");
+
 
         try
         {
+            // publish telemetry to the cloud every N ticks
             cloudController.LogTelemetry(
                 await sensorController.GetSensorData(),
                 await powerController.GetPowerData());
@@ -105,7 +159,7 @@ public class MainController
             Resolver.Log.Warn($"Failed to log telemetry: {ex.Message}");
         }
 
-        TelemetryTimer.Change(TelemetryPublicationPeriod, TimeSpan.FromMilliseconds(-1));
+        SystemTimer.Change(TelemetryPublicationPeriod, TimeSpan.FromMilliseconds(-1));
     }
 
     private void OnNetworkStillDown(object sender, System.TimeSpan e)

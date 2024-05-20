@@ -16,6 +16,7 @@ public class NotificationController
 
     public enum SystemStatus
     {
+        LowPower,
         Starting,
         SearchingForNetwork,
         NetworkConnected,
@@ -36,6 +37,13 @@ public class NotificationController
     {
         switch (status)
         {
+            case SystemStatus.LowPower:
+                if (rgbLed != null)
+                {
+                    rgbLed.StopAnimation();
+                    rgbLed.IsOn = false;
+                }
+                break;
             case SystemStatus.Starting:
                 rgbLed?.SetColor(RgbLedColors.Red);
                 break;

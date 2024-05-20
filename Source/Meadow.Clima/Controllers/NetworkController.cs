@@ -38,6 +38,36 @@ public class NetworkController
         downEventTimer = new Timer(DownEventTimerProc, null, -1, -1);
     }
 
+    public async Task<bool> ConnectToCloud()
+    {
+        if (networkAdapter is IWiFiNetworkAdapter wifi)
+        {
+            Resolver.Log.Info("Connecting to network...");
+            await wifi.Connect("interwebs", "1234567890");
+        }
+
+        Resolver.Log.Info($"Connecting to network {(networkAdapter.IsConnected ? "succeeded" : "FAILED")}");
+
+        return networkAdapter.IsConnected;
+    }
+
+    public async Task ShutdownNetwork()
+    {
+        if (networkAdapter is IWiFiNetworkAdapter wifi)
+        {
+            Resolver.Log.Info("Disconnecting network...");
+            try
+            {
+                await wifi.Disconnect(true);
+                Resolver.Log.Info("Network disconnected");
+            }
+            catch (Exception ex)
+            {
+                Resolver.Log.Info($"Network disconnect failed: {ex.Message}");
+            }
+        }
+    }
+
     private void DownEventTimerProc(object _)
     {
         if (networkAdapter.IsConnected)

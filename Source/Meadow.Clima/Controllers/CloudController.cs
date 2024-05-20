@@ -2,11 +2,23 @@
 using Meadow.Cloud;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Clima_Demo;
 
 public class CloudController
 {
+    public async Task WaitForDataToSend()
+    {
+        // TODO: add a timeout here
+        while (Resolver.MeadowCloudService.QueueCount > 0)
+        {
+            Resolver.Log.Info($"Waiting for {Resolver.MeadowCloudService.QueueCount} items to be delivered...");
+            await Task.Delay(1000);
+        }
+        Resolver.Log.Info($"All cloud data has been sent");
+    }
+
     public void LogAppStartupAfterCrash()
     {
         SendEvent(CloudEventIds.DeviceStarted, $"Device restarted after crash");
