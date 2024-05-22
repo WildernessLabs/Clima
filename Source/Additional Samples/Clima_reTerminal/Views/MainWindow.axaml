@@ -713,7 +713,8 @@
                     TitleColor="White"
                     TitleFontSize="25"
                     Background="Transparent"
-                    Margin="10">
+                    Margin="10"
+                    DefaultTrackerTemplate="{x:Null}">
                     <oxy:Plot.Axes>
                         <oxy:DateTimeAxis 
                             Title="Time" 
