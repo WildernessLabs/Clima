@@ -146,9 +146,8 @@ public class MainWindowViewModel : ViewModelBase
 
         SelectRightChartCommand = ReactiveCommand.Create(ShowMeasureTypeOnRightChart);
 
-        //_ = GetCurrentConditionsSimulated();
-        _ = GetCurrentConditionsViaMeadowCloud();
-        //_ = GetCurrentConditionsViaDigitalTwin();
+        _ = GetCurrentConditionsSimulated();
+        //_ = GetCurrentConditionsViaMeadowCloud();
     }
 
     private void MeasureTypeSelected(MeasureType type)
@@ -249,25 +248,32 @@ public class MainWindowViewModel : ViewModelBase
         var random = new Random();
         var today = DateTime.Now;
 
-        for (int i = 0; i < 50; i++)
+        while (true)
         {
-            climaLogs.Add(new Record()
+            for (int i = 0; i < 10; i++)
             {
-                timestamp = today.AddHours(i),
-                measurements = new MeasurementData()
+                climaLogs.Add(new Record()
                 {
-                    Temperature = Math.Round(random.NextDouble() * 40 - 10, 2), // Random temperature between -10 and 30°C
-                    Rain = Math.Round(random.NextDouble() * 100, 2), // Random rainfall between 0 and 100 mm
-                    Light = Math.Round(random.NextDouble() * 1000, 2), // Random light level between 0 and 1000 lux
-                    SolarVoltage = Math.Round(random.NextDouble() * 20, 2), // Random solar voltage between 0 and 20 V
-                    Humidity = Math.Round(random.NextDouble() * 100, 2), // Random humidity between 0 and 100%
-                    WindSpeed = Math.Round(random.NextDouble() * 40, 2), // Random wind speed between 0 and 40 m/s
-                    WindDirection = Math.Round(random.NextDouble() * 360, 2), // Random wind direction between 0 and 360 degrees
-                    Pressure = Math.Round(random.NextDouble() * 50 + 950, 2), // Random pressure between 950 and 1000 hPa
-                    Co2Level = Math.Round(random.NextDouble() * 2000 + 300, 2), // Random CO2 level between 300 and 2300 ppm
-                    BatteryVoltage = Math.Round(random.NextDouble() * 12 + 1, 2) // Random battery voltage between 1 and 13 V
-                },
-            });
+                    timestamp = today.AddHours(i),
+                    measurements = new MeasurementData()
+                    {
+                        Temperature = Math.Round(random.NextDouble() * 40 - 10, 2), // Random temperature between -10 and 30°C
+                        Rain = Math.Round(random.NextDouble() * 100, 2), // Random rainfall between 0 and 100 mm
+                        Light = Math.Round(random.NextDouble() * 1000, 2), // Random light level between 0 and 1000 lux
+                        SolarVoltage = Math.Round(random.NextDouble() * 20, 2), // Random solar voltage between 0 and 20 V
+                        Humidity = Math.Round(random.NextDouble() * 100, 2), // Random humidity between 0 and 100%
+                        WindSpeed = Math.Round(random.NextDouble() * 40, 2), // Random wind speed between 0 and 40 m/s
+                        WindDirection = Math.Round(random.NextDouble() * 360, 2), // Random wind direction between 0 and 360 degrees
+                        Pressure = Math.Round(random.NextDouble() * 50 + 950, 2), // Random pressure between 950 and 1000 hPa
+                        Co2Level = Math.Round(random.NextDouble() * 2000 + 300, 2), // Random CO2 level between 300 and 2300 ppm
+                        BatteryVoltage = Math.Round(random.NextDouble() * 12 + 1, 2) // Random battery voltage between 1 and 13 V
+                    },
+                });
+            }
+
+            UpdateDashboard();
+
+            await Task.Delay(TimeSpan.FromMinutes(1));
         }
     }
 
