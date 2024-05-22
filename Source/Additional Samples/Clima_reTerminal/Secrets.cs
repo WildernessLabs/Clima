@@ -2,6 +2,34 @@
 
 public class Secrets
 {
+    //////////////////////////
+    ////// Meadow.Cloud //////
+    //////////////////////////
+
+    /// <summary>
+    /// Meadow Cloud URL
+    /// </summary>
+    public const string MEADOW_CLOUD_URL = "MEADOW_CLOUD_URL";
+
+    /// <summary>
+    /// API KEY - Found under Your APY keys section
+    /// </summary>
+    public const string API_KEY = "API_KEY";
+
+    /// <summary>
+    /// Organization ID - Found in Your Organizations section
+    /// </summary>
+    public const string ORGANIZATION_ID = "ORGANIZATION_ID";
+
+    /// <summary>
+    /// Device ID - Found under Devices section
+    /// </summary>
+    public const string DEVICE_ID = "DEVICE_ID";
+
+    //////////////////////////
+    /// Azure Digital Twin ///
+    //////////////////////////
+
     /// <summary>
     /// Digital Twin Client Id
     /// </summary>
@@ -26,24 +54,4 @@ public class Secrets
     /// 
     /// </summary>
     public const string DIGITAL_TWIN_ID = "DIGITAL_TWIN_ID";
-
-    /// <summary>
-    /// Meadow Cloud URL
-    /// </summary>
-    public const string MEADOW_CLOUD_URL = "MEADOW_CLOUD_URL";
-
-    /// <summary>
-    /// Organization ID - Found in Your Organizations section
-    /// </summary>
-    public const string ORGANIZATION_ID = "ORGANIZATION_ID";
-
-    /// <summary>
-    /// Device ID - Found under Devices section
-    /// </summary>
-    public const string DEVICE_ID = "DEVICE_ID";
-
-    /// <summary>
-    /// API KEY - Found under Your APY keys section
-    /// </summary>
-    public const string API_KEY = "API_KEY";
 }

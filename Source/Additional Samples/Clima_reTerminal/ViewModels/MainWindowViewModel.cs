@@ -145,9 +145,9 @@ public class MainWindowViewModel : ViewModelBase
 
         SelectRightChartCommand = ReactiveCommand.Create(ShowMeasureTypeOnRightChart);
 
-        _ = GetCurrentConditionsSimulated();
+        //_ = GetCurrentConditionsSimulated();
         //_ = GetCurrentConditionsViaDigitalTwin();
-        //_ = GetCurrentConditionsViaMeadowCloud();
+        _ = GetCurrentConditionsViaMeadowCloud();
     }
 
     private void MeasureTypeSelected(MeasureType type)
@@ -313,42 +313,6 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    private async Task GetCurrentConditionsViaDigitalTwin()
-    {
-        var random = new Random();
-
-        while (true)
-        {
-            var dateTime = DateTime.Now;
-
-            var sensorReading = await DigitalTwinClient.GetDigitalTwinData();
-            if (sensorReading != null)
-            {
-                Temperature = $"{sensorReading.Temperature:N0}";
-                Rain = $"{sensorReading.Rain:N0}";
-                Light = $"{sensorReading.Light:N0}";
-                SolarVoltage = $"{sensorReading.SolarVoltage:N0}";
-                Humidity = $"{sensorReading.Humidity:N1}";
-                WindSpeed = $"{sensorReading.WindSpeed:N0}";
-                WindDirection = $"{sensorReading.WindDirection:N0}";
-                Pressure = $"{sensorReading.Pressure:N1}";
-                Co2Level = $"{sensorReading.Co2Level:N0}";
-                BatteryVoltage = $"{sensorReading.BatteryVoltage:N0}";
-            }
-
-            LeftSeries.Add(new Pnl(dateTime, sensorReading.Temperature));
-            RightSeries.Add(new Pnl(dateTime, sensorReading.Humidity));
-
-            await Task.Delay(TimeSpan.FromSeconds(10));
-
-            if (ClimaLogs.Count > 10)
-            {
-                LeftSeries.RemoveAt(0);
-                RightSeries.RemoveAt(0);
-            }
-        }
-    }
-
     private async Task GetCurrentConditionsViaMeadowCloud()
     {
         int TIMEZONE_OFFSET = -7;
@@ -404,6 +368,42 @@ public class MainWindowViewModel : ViewModelBase
             }
 
             await Task.Delay(TimeSpan.FromMinutes(1));
+        }
+    }
+
+    private async Task GetCurrentConditionsViaDigitalTwin()
+    {
+        var random = new Random();
+
+        while (true)
+        {
+            var dateTime = DateTime.Now;
+
+            var sensorReading = await DigitalTwinClient.GetDigitalTwinData();
+            if (sensorReading != null)
+            {
+                Temperature = $"{sensorReading.Temperature:N0}";
+                Rain = $"{sensorReading.Rain:N0}";
+                Light = $"{sensorReading.Light:N0}";
+                SolarVoltage = $"{sensorReading.SolarVoltage:N0}";
+                Humidity = $"{sensorReading.Humidity:N1}";
+                WindSpeed = $"{sensorReading.WindSpeed:N0}";
+                WindDirection = $"{sensorReading.WindDirection:N0}";
+                Pressure = $"{sensorReading.Pressure:N1}";
+                Co2Level = $"{sensorReading.Co2Level:N0}";
+                BatteryVoltage = $"{sensorReading.BatteryVoltage:N0}";
+            }
+
+            LeftSeries.Add(new Pnl(dateTime, sensorReading.Temperature));
+            RightSeries.Add(new Pnl(dateTime, sensorReading.Humidity));
+
+            await Task.Delay(TimeSpan.FromSeconds(10));
+
+            if (ClimaLogs.Count > 10)
+            {
+                LeftSeries.RemoveAt(0);
+                RightSeries.RemoveAt(0);
+            }
         }
     }
 }
