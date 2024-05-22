@@ -100,14 +100,6 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
-
-                    <Button 
-                        Grid.ColumnSpan="2"
-                        Background="Transparent"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static utils:MeasureType.Temperature}" />
                 </Grid>
                 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -127,6 +119,14 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"/>
                 </StackPanel>
+
+                <Button
+                    Grid.RowSpan="3"
+                    Background="Transparent"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding MeasureTypeCommand}"
+                    CommandParameter="{x:Static utils:MeasureType.Temperature}" />
             </Grid>
         </Border>
 
@@ -186,14 +186,6 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
-
-                    <Button
-                        Grid.ColumnSpan="2"
-                        Background="Transparent"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static utils:MeasureType.Humidity}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -213,6 +205,14 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"/>
                 </StackPanel>
+
+                <Button
+                    Grid.RowSpan="3"
+                    Background="Transparent"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding MeasureTypeCommand}"
+                    CommandParameter="{x:Static utils:MeasureType.Humidity}" />
             </Grid>
         </Border>
 
@@ -272,14 +272,6 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
-
-                    <Button
-                        Grid.ColumnSpan="2"
-                        Background="Transparent"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static utils:MeasureType.Pressure}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -299,6 +291,14 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"/>
                 </StackPanel>
+
+                <Button
+                    Grid.RowSpan="3"
+                    Background="Transparent"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding MeasureTypeCommand}"
+                    CommandParameter="{x:Static utils:MeasureType.Pressure}" />
             </Grid>
         </Border>
 
@@ -358,14 +358,6 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
-
-                    <Button
-                        Grid.ColumnSpan="2"
-                        Background="Transparent"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static utils:MeasureType.Wind}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -377,9 +369,9 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel 
-                        Grid.Column="0" 
-                        Orientation="Horizontal" 
+                    <StackPanel
+                        Grid.Column="0"
+                        Orientation="Horizontal"
                         HorizontalAlignment="Center" Margin="25,0" >
                         <Image
                             Height="30"
@@ -410,6 +402,14 @@
                             VerticalAlignment="Center"/>
                     </StackPanel>
                 </Grid>
+
+                <Button
+                    Grid.RowSpan="3"
+                    Background="Transparent"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding MeasureTypeCommand}"
+                    CommandParameter="{x:Static utils:MeasureType.Wind}" />
             </Grid>
         </Border>
 
@@ -469,14 +469,6 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
-
-                    <Button
-                        Grid.ColumnSpan="2"
-                        Background="Transparent"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static utils:MeasureType.Rain}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -496,6 +488,14 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"/>
                 </StackPanel>
+
+                <Button
+                    Grid.RowSpan="3"
+                    Background="Transparent"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding MeasureTypeCommand}"
+                    CommandParameter="{x:Static utils:MeasureType.Rain}" />
             </Grid>
         </Border>
         
@@ -555,14 +555,6 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
-
-                    <Button
-                        Grid.ColumnSpan="2"
-                        Background="Transparent"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static utils:MeasureType.Illuminance}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -582,6 +574,14 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"/>
                 </StackPanel>
+
+                <Button
+                    Grid.RowSpan="3"
+                    Background="Transparent"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding MeasureTypeCommand}"
+                    CommandParameter="{x:Static utils:MeasureType.Illuminance}" />
             </Grid>
         </Border>
 
@@ -641,14 +641,6 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
-
-                    <Button
-                        Grid.ColumnSpan="2"
-                        Background="Transparent"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static utils:MeasureType.PowerSupply}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -690,6 +682,14 @@
                             VerticalAlignment="Center"/>
                     </StackPanel>
                 </Grid>
+
+                <Button
+                    Grid.RowSpan="3"
+                    Background="Transparent"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding MeasureTypeCommand}"
+                    CommandParameter="{x:Static utils:MeasureType.PowerSupply}" />
             </Grid>
         </Border>
 
@@ -734,43 +734,43 @@
                             MinorGridlineStyle="None"/>
                         <oxy:LinearAxis
                             Title="{Binding LeftLinearAxisTitle}"
-                            TitleColor="#EBA77F"
+                            TitleColor="#EF7D3B"
                             TitleFontSize="25"
-                            TextColor="#EBA77F"
+                            TextColor="#EF7D3B"
                             Position="Left"
                             Key="Primary"
-                            AxislineColor="#EBA77F"
+                            AxislineColor="#EF7D3B"
                             AxislineThickness="3"
                             AxislineStyle="Solid"
                             AxisDistance="15"
                             TickStyle="Inside"
                             FontSize="20"
                             MajorGridlineStyle="Dash"
-                            MajorGridlineColor="#EBA77F"
+                            MajorGridlineColor="#EF7D3B"
                             MinorGridlineStyle="None" />
                         <oxy:LinearAxis
                             Title="{Binding RightLinearAxisTitle}"
-                            TitleColor="#71C3E4"
+                            TitleColor="#23ABE3"
                             TitleFontSize="25"
-                            TextColor="#71C3E4"
+                            TextColor="#23ABE3"
                             Position="Right"
                             Key="Secondary"
-                            AxislineColor="#71C3E4"
+                            AxislineColor="#23ABE3"
                             AxislineThickness="3"
                             AxislineStyle="Solid"
                             AxisDistance="15"
                             TickStyle="Inside"
                             FontSize="20"
                             MajorGridlineStyle="Dash"
-                            MajorGridlineColor="#71C3E4"
+                            MajorGridlineColor="#23ABE3"
                             MinorGridlineStyle="None" />
                     </oxy:Plot.Axes>
                     <oxy:Plot.Series>
                         <oxy:LineSeries
-                            Color="#EBA77F"
+                            Color="#EF7D3B"
                             StrokeThickness="5"
                             MarkerType="Circle"
-                            MarkerFill="#EBA77F"
+                            MarkerFill="#EF7D3B"
                             MarkerSize="6"
                             ItemsSource="{Binding LeftSeries}"
                             YAxisKey="Primary"
@@ -779,10 +779,10 @@
                     </oxy:Plot.Series>
                     <oxy:Plot.Series>
                         <oxy:LineSeries
-                            Color="#71C3E4"
+                            Color="#23ABE3"
                             StrokeThickness="5"
                             MarkerType="Circle"
-                            MarkerFill="#71C3E4"
+                            MarkerFill="#23ABE3"
                             MarkerSize="6"
                             ItemsSource="{Binding RightSeries}"
                             YAxisKey="Secondary"
@@ -791,20 +791,32 @@
                     </oxy:Plot.Series>
                 </oxy:Plot>
 
-                <Button
-                    Background="#88EBA77F" 
+                <Button 
                     Width="90"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Stretch"
                     IsVisible="{Binding IsSelectLeftButtonVisible}"
-                    Command="{Binding SelectLeftChartCommand}"/>
+                    Command="{Binding SelectLeftChartCommand}">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
+                            <GradientStop Color="#88EF7D3B" Offset="0" />
+                            <GradientStop Color="Transparent" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
                 <Button
-                    Background="#8871C3E4"
                     Width="90"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Stretch"
                     IsVisible="{Binding IsSelectRightButtonVisible}"
-                    Command="{Binding SelectRightChartCommand}" />
+                    Command="{Binding SelectRightChartCommand}">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="100%,0%" EndPoint="0%,0%">
+                            <GradientStop Color="#8823ABE3" Offset="0" />
+                            <GradientStop Color="Transparent" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
             </Grid>
         </Border>
     </Grid>
