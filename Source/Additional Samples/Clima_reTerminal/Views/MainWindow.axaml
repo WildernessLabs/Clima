@@ -1,6 +1,7 @@
 <Window 
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Clima_reTerminal.ViewModels"
     xmlns:vm="using:Clima_reTerminal.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -55,6 +56,9 @@
             VerticalAlignment="Stretch"
             BoxShadow="-5 5 20 #80000000"
             Margin="14,14,7,7">
+            <Border.Styles>
+                
+            </Border.Styles>
             <Grid>
                 <Grid.Background>
                     <LinearGradientBrush StartPoint="100%,100%" EndPoint="0%,0%">
@@ -99,6 +103,14 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
+
+                    <Button 
+                        Grid.ColumnSpan="2"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding MeasureTypeCommand}"
+                        CommandParameter="{x:Static vm:MeasureType.Temperature}" />
                 </Grid>
                 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -112,7 +124,7 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Text="{Binding Temperature}"
-                        Foreground="#AFD8FF"
+                        Foreground="White"
                         FontSize="55"
                         FontWeight="Bold"
                         HorizontalAlignment="Left"
@@ -177,6 +189,14 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
+
+                    <Button
+                        Grid.ColumnSpan="2"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding MeasureTypeCommand}"
+                        CommandParameter="{x:Static vm:MeasureType.Humidity}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -190,7 +210,7 @@
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
                         Text="{Binding Humidity}"
-                        Foreground="#AFD8FF"
+                        Foreground="White"
                         FontSize="55"
                         FontWeight="Bold"
                         HorizontalAlignment="Left"
@@ -255,6 +275,14 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
+
+                    <Button
+                        Grid.ColumnSpan="2"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding MeasureTypeCommand}"
+                        CommandParameter="{x:Static vm:MeasureType.Pressure}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -268,7 +296,7 @@
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
                         Text="{Binding Pressure}"
-                        Foreground="#AFD8FF"
+                        Foreground="White"
                         FontSize="50"
                         FontWeight="Bold"
                         HorizontalAlignment="Left"
@@ -333,6 +361,14 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
+
+                    <Button
+                        Grid.ColumnSpan="2"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding MeasureTypeCommand}"
+                        CommandParameter="{x:Static vm:MeasureType.Wind}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -355,7 +391,7 @@
                             VerticalAlignment="Center" />
                         <TextBlock
                             Text="SE"
-                            Foreground="#A08EDC"
+                            Foreground="White"
                             FontSize="40"
                             FontWeight="Bold"
                             VerticalAlignment="Center"/>
@@ -371,7 +407,7 @@
                             VerticalAlignment="Center" />
                         <TextBlock
                             Text="{Binding WindSpeed}"
-                            Foreground="#A08EDC"
+                            Foreground="White"
                             FontSize="40"
                             FontWeight="Bold"
                             VerticalAlignment="Center"/>
@@ -436,6 +472,14 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
+
+                    <Button
+                        Grid.ColumnSpan="2"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding MeasureTypeCommand}"
+                        CommandParameter="{x:Static vm:MeasureType.Rain}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -449,7 +493,7 @@
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
                         Text="{Binding Rain}"
-                        Foreground="#AFD8FF"
+                        Foreground="White"
                         FontSize="50"
                         FontWeight="Bold"
                         HorizontalAlignment="Left"
@@ -514,6 +558,14 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
+
+                    <Button
+                        Grid.ColumnSpan="2"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding MeasureTypeCommand}"
+                        CommandParameter="{x:Static vm:MeasureType.Illuminance}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -527,7 +579,7 @@
                         Grid.Row="1"
                         Grid.Column="1" LetterSpacing="-1"
                         Text="{Binding Light}"
-                        Foreground="#D5A738"
+                        Foreground="White"
                         FontSize="50"
                         FontWeight="Bold"
                         HorizontalAlignment="Left"
@@ -592,6 +644,14 @@
                         Margin="10,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
+
+                    <Button
+                        Grid.ColumnSpan="2"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding MeasureTypeCommand}"
+                        CommandParameter="{x:Static vm:MeasureType.PowerSupply}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -675,36 +735,36 @@
                         MajorGridlineColor="White"
                         MinorGridlineStyle="None"/>
                     <oxy:LinearAxis
-                        Title="Temperature (°C)"
-                        TitleColor="White"
+                        Title="{Binding LeftLinearAxisTitle}"
+                        TitleColor="#EBA77F"
                         TitleFontSize="25"
-                        TextColor="White"
+                        TextColor="#EBA77F"
                         Position="Left"
                         Key="Primary"
-                        AxislineColor="White"
+                        AxislineColor="#EBA77F"
                         AxislineThickness="3"
                         AxislineStyle="Solid"
                         AxisDistance="15"
                         TickStyle="Inside"
                         FontSize="20"
                         MajorGridlineStyle="Dash"
-                        MajorGridlineColor="White"
+                        MajorGridlineColor="#EBA77F"
                         MinorGridlineStyle="None" />
                     <oxy:LinearAxis
-                        Title="Humidity (%)"
-                        TitleColor="White"
+                        Title="{Binding RightLinearAxisTitle}"
+                        TitleColor="#71C3E4"
                         TitleFontSize="25"
-                        TextColor="White"
+                        TextColor="#71C3E4"
                         Position="Right"
                         Key="Secondary"
-                        AxislineColor="White"
+                        AxislineColor="#71C3E4"
                         AxislineThickness="3"
                         AxislineStyle="Solid"
                         AxisDistance="15"
                         TickStyle="Inside"
                         FontSize="20"
                         MajorGridlineStyle="Dash"
-                        MajorGridlineColor="White"
+                        MajorGridlineColor="#71C3E4"
                         MinorGridlineStyle="None" />
                 </oxy:Plot.Axes>
                 <oxy:Plot.Series>
@@ -714,7 +774,7 @@
                         MarkerType="Circle"
                         MarkerFill="#EBA77F"
                         MarkerSize="6"
-                        ItemsSource="{Binding TemperatureLogs}"
+                        ItemsSource="{Binding SeriesLeft}"
                         YAxisKey="Primary"
                         DataFieldX="Time"
                         DataFieldY="Value" />
@@ -726,19 +786,7 @@
                         MarkerType="Circle"
                         MarkerFill="#71C3E4"
                         MarkerSize="6"
-                        ItemsSource="{Binding HumidityLogs}"
-                        YAxisKey="Secondary"
-                        DataFieldX="Time"
-                        DataFieldY="Value" />
-                </oxy:Plot.Series>
-                <oxy:Plot.Series>
-                    <oxy:LineSeries
-                        Color="#B7C085"
-                        StrokeThickness="5"
-                        MarkerType="Circle"
-                        MarkerFill="#B7C085"
-                        MarkerSize="6"
-                        ItemsSource="{Binding SoilMoistureLogs}"
+                        ItemsSource="{Binding SeriesRight}"
                         YAxisKey="Secondary"
                         DataFieldX="Time"
                         DataFieldY="Value" />
