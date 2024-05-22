@@ -11,7 +11,7 @@
     d:DesignHeight="720"
     x:Class="Clima_reTerminal.Views.MainWindow"
     Icon="/Assets/avalonia-logo.ico"
-    Title="Meadow in Avalonia">
+    Title="My Clima Logs">
 
     <Grid>
         <Grid.Background>
