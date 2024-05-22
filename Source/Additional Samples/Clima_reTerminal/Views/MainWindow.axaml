@@ -1,7 +1,7 @@
 <Window 
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Clima_reTerminal.ViewModels"
+    xmlns:utils="using:Clima_reTerminal.Utils"
     xmlns:vm="using:Clima_reTerminal.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -56,9 +56,6 @@
             VerticalAlignment="Stretch"
             BoxShadow="-5 5 20 #80000000"
             Margin="14,14,7,7">
-            <Border.Styles>
-                
-            </Border.Styles>
             <Grid>
                 <Grid.Background>
                     <LinearGradientBrush StartPoint="100%,100%" EndPoint="0%,0%">
@@ -110,7 +107,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static vm:MeasureType.Temperature}" />
+                        CommandParameter="{x:Static utils:MeasureType.Temperature}" />
                 </Grid>
                 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -196,7 +193,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static vm:MeasureType.Humidity}" />
+                        CommandParameter="{x:Static utils:MeasureType.Humidity}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -282,7 +279,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static vm:MeasureType.Pressure}" />
+                        CommandParameter="{x:Static utils:MeasureType.Pressure}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -368,7 +365,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static vm:MeasureType.Wind}" />
+                        CommandParameter="{x:Static utils:MeasureType.Wind}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -392,7 +389,7 @@
                         <TextBlock
                             Text="SE"
                             Foreground="White"
-                            FontSize="40"
+                            FontSize="35"
                             FontWeight="Bold"
                             VerticalAlignment="Center"/>
                     </StackPanel>
@@ -408,7 +405,7 @@
                         <TextBlock
                             Text="{Binding WindSpeed}"
                             Foreground="White"
-                            FontSize="40"
+                            FontSize="35"
                             FontWeight="Bold"
                             VerticalAlignment="Center"/>
                     </StackPanel>
@@ -479,7 +476,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static vm:MeasureType.Rain}" />
+                        CommandParameter="{x:Static utils:MeasureType.Rain}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -565,7 +562,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static vm:MeasureType.Illuminance}" />
+                        CommandParameter="{x:Static utils:MeasureType.Illuminance}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -651,7 +648,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Command="{Binding MeasureTypeCommand}"
-                        CommandParameter="{x:Static vm:MeasureType.PowerSupply}" />
+                        CommandParameter="{x:Static utils:MeasureType.PowerSupply}" />
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#44888888" />
@@ -672,7 +669,7 @@
                         <TextBlock
                             Text="{Binding SolarVoltage}"
                             Foreground="White"
-                            FontSize="40"
+                            FontSize="35"
                             FontWeight="Bold"
                             VerticalAlignment="Center"/>
                     </StackPanel>
@@ -688,7 +685,7 @@
                         <TextBlock
                             Text="{Binding BatteryVoltage}"
                             Foreground="White"
-                            FontSize="40"
+                            FontSize="35"
                             FontWeight="Bold"
                             VerticalAlignment="Center"/>
                     </StackPanel>
@@ -710,88 +707,105 @@
                     <GradientStop Color="#11294F" Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
-            <oxy:Plot
-                Title="My Clima Logs"
-                TitleColor="White"
-                TitleFontSize="25"
-                Background="Transparent"
-                Margin="10">
-                <oxy:Plot.Axes>
-                    <oxy:DateTimeAxis 
-                        Title="Time"
-                        TitleColor="White"
-                        TitleFontSize="25"
-                        TextColor="White"
-                        IntervalType="Minutes" 
-                        IntervalLength="60" 
-                        Position="Bottom"
-                        AxislineColor="White"
-                        AxislineThickness="3"
-                        AxislineStyle="Solid"
-                        AxisDistance="15"
-                        TickStyle="Inside"
-                        FontSize="20"
-                        MajorGridlineStyle="Dash"
-                        MajorGridlineColor="White"
-                        MinorGridlineStyle="None"/>
-                    <oxy:LinearAxis
-                        Title="{Binding LeftLinearAxisTitle}"
-                        TitleColor="#EBA77F"
-                        TitleFontSize="25"
-                        TextColor="#EBA77F"
-                        Position="Left"
-                        Key="Primary"
-                        AxislineColor="#EBA77F"
-                        AxislineThickness="3"
-                        AxislineStyle="Solid"
-                        AxisDistance="15"
-                        TickStyle="Inside"
-                        FontSize="20"
-                        MajorGridlineStyle="Dash"
-                        MajorGridlineColor="#EBA77F"
-                        MinorGridlineStyle="None" />
-                    <oxy:LinearAxis
-                        Title="{Binding RightLinearAxisTitle}"
-                        TitleColor="#71C3E4"
-                        TitleFontSize="25"
-                        TextColor="#71C3E4"
-                        Position="Right"
-                        Key="Secondary"
-                        AxislineColor="#71C3E4"
-                        AxislineThickness="3"
-                        AxislineStyle="Solid"
-                        AxisDistance="15"
-                        TickStyle="Inside"
-                        FontSize="20"
-                        MajorGridlineStyle="Dash"
-                        MajorGridlineColor="#71C3E4"
-                        MinorGridlineStyle="None" />
-                </oxy:Plot.Axes>
-                <oxy:Plot.Series>
-                    <oxy:LineSeries
-                        Color="#EBA77F"
-                        StrokeThickness="5"
-                        MarkerType="Circle"
-                        MarkerFill="#EBA77F"
-                        MarkerSize="6"
-                        ItemsSource="{Binding SeriesLeft}"
-                        YAxisKey="Primary"
-                        DataFieldX="Time"
-                        DataFieldY="Value" />
-                </oxy:Plot.Series>
-                <oxy:Plot.Series>
-                    <oxy:LineSeries
-                        Color="#71C3E4"
-                        StrokeThickness="5"
-                        MarkerType="Circle"
-                        MarkerFill="#71C3E4"
-                        MarkerSize="6"
-                        ItemsSource="{Binding SeriesRight}"
-                        YAxisKey="Secondary"
-                        DataFieldX="Time"
-                        DataFieldY="Value" />
-                </oxy:Plot.Series>
-            </oxy:Plot>
+            <Grid>
+                <oxy:Plot
+                    Title="My Clima Logs"
+                    TitleColor="White"
+                    TitleFontSize="25"
+                    Background="Transparent"
+                    Margin="10">
+                    <oxy:Plot.Axes>
+                        <oxy:DateTimeAxis 
+                            Title="Time" 
+                            TitleColor="White"
+                            TitleFontSize="25"
+                            TextColor="White"
+                            IntervalType="Minutes" 
+                            IntervalLength="60" 
+                            Position="Bottom"
+                            AxislineColor="White"
+                            AxislineThickness="3"
+                            AxislineStyle="Solid"
+                            AxisDistance="15"
+                            TickStyle="Inside"
+                            FontSize="20"
+                            MajorGridlineStyle="Dash"
+                            MajorGridlineColor="White"
+                            MinorGridlineStyle="None"/>
+                        <oxy:LinearAxis
+                            Title="{Binding LeftLinearAxisTitle}"
+                            TitleColor="#EBA77F"
+                            TitleFontSize="25"
+                            TextColor="#EBA77F"
+                            Position="Left"
+                            Key="Primary"
+                            AxislineColor="#EBA77F"
+                            AxislineThickness="3"
+                            AxislineStyle="Solid"
+                            AxisDistance="15"
+                            TickStyle="Inside"
+                            FontSize="20"
+                            MajorGridlineStyle="Dash"
+                            MajorGridlineColor="#EBA77F"
+                            MinorGridlineStyle="None" />
+                        <oxy:LinearAxis
+                            Title="{Binding RightLinearAxisTitle}"
+                            TitleColor="#71C3E4"
+                            TitleFontSize="25"
+                            TextColor="#71C3E4"
+                            Position="Right"
+                            Key="Secondary"
+                            AxislineColor="#71C3E4"
+                            AxislineThickness="3"
+                            AxislineStyle="Solid"
+                            AxisDistance="15"
+                            TickStyle="Inside"
+                            FontSize="20"
+                            MajorGridlineStyle="Dash"
+                            MajorGridlineColor="#71C3E4"
+                            MinorGridlineStyle="None" />
+                    </oxy:Plot.Axes>
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries
+                            Color="#EBA77F"
+                            StrokeThickness="5"
+                            MarkerType="Circle"
+                            MarkerFill="#EBA77F"
+                            MarkerSize="6"
+                            ItemsSource="{Binding LeftSeries}"
+                            YAxisKey="Primary"
+                            DataFieldX="Time"
+                            DataFieldY="Value" />
+                    </oxy:Plot.Series>
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries
+                            Color="#71C3E4"
+                            StrokeThickness="5"
+                            MarkerType="Circle"
+                            MarkerFill="#71C3E4"
+                            MarkerSize="6"
+                            ItemsSource="{Binding RightSeries}"
+                            YAxisKey="Secondary"
+                            DataFieldX="Time"
+                            DataFieldY="Value" />
+                    </oxy:Plot.Series>
+                </oxy:Plot>
+
+                <Button
+                    Background="#88EBA77F" 
+                    Width="90"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Stretch"
+                    IsVisible="{Binding IsSelectLeftButtonVisible}"
+                    Command="{Binding SelectLeftChartCommand}"/>
+                <Button
+                    Background="#8871C3E4"
+                    Width="90"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Stretch"
+                    IsVisible="{Binding IsSelectRightButtonVisible}"
+                    Command="{Binding SelectRightChartCommand}" />
+            </Grid>
         </Border>
     </Grid>
 </Window>

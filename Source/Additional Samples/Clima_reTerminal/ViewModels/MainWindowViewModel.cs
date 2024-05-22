@@ -1,5 +1,6 @@
 ﻿using Clima_reTerminal.Client;
 using Clima_reTerminal.Models;
+using Clima_reTerminal.Utils;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -17,9 +18,23 @@ public class MainWindowViewModel : ViewModelBase
 
     public ObservableCollection<MeasurementData> ClimaLogs { get; set; }
 
-    public ObservableCollection<Pnl> SeriesLeft { get; set; }
+    public ObservableCollection<Pnl> LeftSeries { get; set; }
 
-    public ObservableCollection<Pnl> SeriesRight { get; set; }
+    public ObservableCollection<Pnl> RightSeries { get; set; }
+
+    private bool _isSelectLeftButtonVisible;
+    public bool IsSelectLeftButtonVisible
+    {
+        get => _isSelectLeftButtonVisible;
+        set => this.RaiseAndSetIfChanged(ref _isSelectLeftButtonVisible, value);
+    }
+
+    private bool _isSelectRightButtonVisible;
+    public bool IsSelectRightButtonVisible
+    {
+        get => _isSelectRightButtonVisible;
+        set => this.RaiseAndSetIfChanged(ref _isSelectRightButtonVisible, value);
+    }
 
     private string _leftLinearAxisTitle;
     public string LeftLinearAxisTitle
@@ -107,44 +122,130 @@ public class MainWindowViewModel : ViewModelBase
 
     public ReactiveCommand<MeasureType, Unit> MeasureTypeCommand { get; set; }
 
+    public ReactiveCommand<Unit, Unit> SelectLeftChartCommand { get; set; }
+
+    public ReactiveCommand<Unit, Unit> SelectRightChartCommand { get; set; }
+
     public MainWindowViewModel()
     {
         LeftLinearAxisTitle = "Temperature (°C)";
+        LeftSeriesSelected = MeasureType.Temperature;
+
         RightLinearAxisTitle = "Humidity (%)";
+        RightSeriesSelected = MeasureType.Humidity;
 
         ClimaLogs = new ObservableCollection<MeasurementData>();
 
-        SeriesLeft = new ObservableCollection<Pnl>();
-        SeriesRight = new ObservableCollection<Pnl>();
+        LeftSeries = new ObservableCollection<Pnl>();
+        RightSeries = new ObservableCollection<Pnl>();
 
         MeasureTypeCommand = ReactiveCommand.Create<MeasureType>(MeasureTypeSelected);
+
+        SelectLeftChartCommand = ReactiveCommand.Create(ShowMeasureTypeOnLeftChart);
+
+        SelectRightChartCommand = ReactiveCommand.Create(ShowMeasureTypeOnRightChart);
 
         _ = GetCurrentConditionsSimulated();
         //_ = GetCurrentConditionsViaDigitalTwin();
         //_ = GetCurrentConditionsViaMeadowCloud();
     }
 
-    public void MeasureTypeSelected(MeasureType type)
+    private void MeasureTypeSelected(MeasureType type)
     {
         if (LeftSeriesSelected == type || RightSeriesSelected == type)
         {
             return;
         }
 
-        SeriesSelected = type;
-
         if (type == MeasureType.PowerSupply)
         {
             LeftLinearAxisTitle = "Solar Voltage (V)";
-            RightLinearAxisTitle = "Battery Voltage (V)";
             LeftSeriesSelected = MeasureType.PowerSupply;
+            LeftSeries.Clear();
+
+            RightLinearAxisTitle = "Battery Voltage (V)";
             RightSeriesSelected = MeasureType.PowerSupply;
-            SeriesLeft.Clear();
-            SeriesRight.Clear();
+            RightSeries.Clear();
+        }
+        else
+        {
+            IsSelectLeftButtonVisible = true;
+            IsSelectRightButtonVisible = true;
+            SeriesSelected = type;
         }
     }
 
-    async Task GetCurrentConditionsSimulated()
+    private void ShowMeasureTypeOnLeftChart()
+    {
+        LeftSeries.Clear();
+        RightSeries.Clear();
+
+        IsSelectLeftButtonVisible = false;
+        IsSelectRightButtonVisible = false;
+        LeftSeriesSelected = SeriesSelected;
+
+        switch (SeriesSelected)
+        {
+            case MeasureType.Temperature:
+                LeftLinearAxisTitle = "Temperature (°C)";
+                break;
+            case MeasureType.Humidity:
+                LeftLinearAxisTitle = "Humidity (%)";
+                break;
+            case MeasureType.Pressure:
+                LeftLinearAxisTitle = "Pressure (hPa)";
+                break;
+            case MeasureType.Wind:
+                LeftLinearAxisTitle = "Wind Speed (m/s)";
+                break;
+            case MeasureType.Rain:
+                LeftLinearAxisTitle = "Rain Volume (mm)";
+                break;
+            case MeasureType.Illuminance:
+                LeftLinearAxisTitle = "Illuminance (Lux)";
+                break;
+            case MeasureType.PowerSupply:
+                LeftLinearAxisTitle = "Solar Power (V)";
+                break;
+        }
+    }
+
+    private void ShowMeasureTypeOnRightChart()
+    {
+        LeftSeries.Clear();
+        RightSeries.Clear();
+
+        IsSelectLeftButtonVisible = false;
+        IsSelectRightButtonVisible = false;
+        RightSeriesSelected = SeriesSelected;
+
+        switch (SeriesSelected)
+        {
+            case MeasureType.Temperature:
+                RightLinearAxisTitle = "Temperature (°C)";
+                break;
+            case MeasureType.Humidity:
+                RightLinearAxisTitle = "Humidity (%)";
+                break;
+            case MeasureType.Pressure:
+                RightLinearAxisTitle = "Pressure (hPa)";
+                break;
+            case MeasureType.Wind:
+                RightLinearAxisTitle = "Wind Speed (m/s)";
+                break;
+            case MeasureType.Rain:
+                RightLinearAxisTitle = "Rain Volume (mm)";
+                break;
+            case MeasureType.Illuminance:
+                RightLinearAxisTitle = "Illuminance (Lux)";
+                break;
+            case MeasureType.PowerSupply:
+                RightLinearAxisTitle = "Battery Voltage (V)";
+                break;
+        }
+    }
+
+    private async Task GetCurrentConditionsSimulated()
     {
         var random = new Random();
 
@@ -179,7 +280,7 @@ public class MainWindowViewModel : ViewModelBase
             Co2Level = $"{sensorReading.Co2Level:N0}";
             BatteryVoltage = $"{sensorReading.BatteryVoltage:N0}";
 
-            SeriesLeft.Add(new Pnl(dateTime, LeftSeriesSelected switch
+            LeftSeries.Add(new Pnl(dateTime, LeftSeriesSelected switch
             {
                 MeasureType.Temperature => sensorReading.Temperature,
                 MeasureType.Humidity => sensorReading.Humidity,
@@ -190,7 +291,7 @@ public class MainWindowViewModel : ViewModelBase
                 MeasureType.PowerSupply => sensorReading.SolarVoltage,
                 _ => throw new NotImplementedException()
             }));
-            SeriesRight.Add(new Pnl(dateTime, RightSeriesSelected switch
+            RightSeries.Add(new Pnl(dateTime, RightSeriesSelected switch
             {
                 MeasureType.Temperature => sensorReading.Temperature,
                 MeasureType.Humidity => sensorReading.Humidity,
@@ -206,13 +307,13 @@ public class MainWindowViewModel : ViewModelBase
 
             if (ClimaLogs.Count > 10)
             {
-                SeriesLeft.RemoveAt(0);
-                SeriesRight.RemoveAt(0);
+                LeftSeries.RemoveAt(0);
+                RightSeries.RemoveAt(0);
             }
         }
     }
 
-    async Task GetCurrentConditionsViaDigitalTwin()
+    private async Task GetCurrentConditionsViaDigitalTwin()
     {
         var random = new Random();
 
@@ -223,29 +324,32 @@ public class MainWindowViewModel : ViewModelBase
             var sensorReading = await DigitalTwinClient.GetDigitalTwinData();
             if (sensorReading != null)
             {
-                Temperature = $"{sensorReading.Temperature:N0}°C";
-                Humidity = $"{sensorReading.Humidity:N0}%";
-                Pressure = $"{sensorReading.Pressure:N0}%";
+                Temperature = $"{sensorReading.Temperature:N0}";
+                Rain = $"{sensorReading.Rain:N0}";
+                Light = $"{sensorReading.Light:N0}";
+                SolarVoltage = $"{sensorReading.SolarVoltage:N0}";
+                Humidity = $"{sensorReading.Humidity:N1}";
+                WindSpeed = $"{sensorReading.WindSpeed:N0}";
+                WindDirection = $"{sensorReading.WindDirection:N0}";
+                Pressure = $"{sensorReading.Pressure:N1}";
+                Co2Level = $"{sensorReading.Co2Level:N0}";
+                BatteryVoltage = $"{sensorReading.BatteryVoltage:N0}";
             }
 
-            Temperature = $"{sensorReading.Temperature:N0}°C";
-            Humidity = $"{sensorReading.Humidity}%";
-            Pressure = $"{sensorReading.Pressure:N0}%";
-
-            SeriesLeft.Add(new Pnl(dateTime, sensorReading.Temperature));
-            SeriesRight.Add(new Pnl(dateTime, sensorReading.Humidity));
+            LeftSeries.Add(new Pnl(dateTime, sensorReading.Temperature));
+            RightSeries.Add(new Pnl(dateTime, sensorReading.Humidity));
 
             await Task.Delay(TimeSpan.FromSeconds(10));
 
             if (ClimaLogs.Count > 10)
             {
-                SeriesLeft.RemoveAt(0);
-                SeriesRight.RemoveAt(0);
+                LeftSeries.RemoveAt(0);
+                RightSeries.RemoveAt(0);
             }
         }
     }
 
-    async Task GetCurrentConditionsViaMeadowCloud()
+    private async Task GetCurrentConditionsViaMeadowCloud()
     {
         int TIMEZONE_OFFSET = -7;
 
@@ -255,32 +359,51 @@ public class MainWindowViewModel : ViewModelBase
 
             if (sensorReadings != null && sensorReadings.Count > 0)
             {
-                SeriesLeft.Clear();
-                SeriesRight.Clear();
+                LeftSeries.Clear();
+                RightSeries.Clear();
 
                 foreach (var reading in sensorReadings.Take(10))
                 {
-                    SeriesLeft.Add(new Pnl(reading.record.timestamp.AddHours(TIMEZONE_OFFSET), reading.record.measurements.Temperature));
-                    SeriesRight.Add(new Pnl(reading.record.timestamp.AddHours(TIMEZONE_OFFSET), reading.record.measurements.Humidity));
+                    LeftSeries.Add(new Pnl(reading.record.timestamp.AddHours(TIMEZONE_OFFSET),
+                        LeftSeriesSelected switch
+                        {
+                            MeasureType.Temperature => reading.record.measurements.Temperature,
+                            MeasureType.Humidity => reading.record.measurements.Humidity,
+                            MeasureType.Pressure => reading.record.measurements.Pressure,
+                            MeasureType.Wind => reading.record.measurements.WindSpeed,
+                            MeasureType.Rain => reading.record.measurements.Rain,
+                            MeasureType.Illuminance => reading.record.measurements.Light,
+                            MeasureType.PowerSupply => reading.record.measurements.SolarVoltage,
+                            _ => throw new NotImplementedException()
+                        }));
+
+                    RightSeries.Add(new Pnl(reading.record.timestamp.AddHours(TIMEZONE_OFFSET),
+                        RightSeriesSelected switch
+                        {
+                            MeasureType.Temperature => reading.record.measurements.Temperature,
+                            MeasureType.Humidity => reading.record.measurements.Humidity,
+                            MeasureType.Pressure => reading.record.measurements.Pressure,
+                            MeasureType.Wind => reading.record.measurements.WindSpeed,
+                            MeasureType.Rain => reading.record.measurements.Rain,
+                            MeasureType.Illuminance => reading.record.measurements.Light,
+                            MeasureType.PowerSupply => reading.record.measurements.BatteryVoltage,
+                            _ => throw new NotImplementedException()
+                        }));
                 }
 
-                Temperature = $"{ClimaLogs[0].Temperature:N1}°C";
-                Humidity = $"{ClimaLogs[0].Humidity:N1}%";
+                Temperature = $"{ClimaLogs[0].Temperature:N1}";
+                Rain = $"{ClimaLogs[0].Rain:N0}";
+                Light = $"{ClimaLogs[0].Light:N0}";
+                SolarVoltage = $"{ClimaLogs[0].SolarVoltage:N1}";
+                Humidity = $"{ClimaLogs[0].Humidity:N1}";
+                WindSpeed = $"{ClimaLogs[0].WindSpeed:N0}";
+                WindDirection = $"{ClimaLogs[0].WindDirection:N0}";
+                Pressure = $"{ClimaLogs[0].Pressure:N1}";
+                Co2Level = $"{ClimaLogs[0].Co2Level:N0}";
+                BatteryVoltage = $"{ClimaLogs[0].BatteryVoltage:N1}";
             }
-
 
             await Task.Delay(TimeSpan.FromMinutes(1));
         }
     }
-}
-
-public enum MeasureType
-{
-    Temperature,
-    Humidity,
-    Pressure,
-    Wind,
-    Rain,
-    Illuminance,
-    PowerSupply
 }
