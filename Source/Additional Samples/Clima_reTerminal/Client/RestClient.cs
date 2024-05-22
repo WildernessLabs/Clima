@@ -18,12 +18,12 @@ namespace Clima_reTerminal.Client
             {
                 try
                 {
-                    client.DefaultRequestHeaders.Add("Authorization", $"apikey {CloudData.API_KEY}");
+                    client.DefaultRequestHeaders.Add("Authorization", $"apikey {Secrets.API_KEY}");
                     client.Timeout = new TimeSpan(0, 5, 0);
 
-                    HttpResponseMessage response = await client.GetAsync($"" +
-                        $"{CloudData.MEADOW_CLOUD_URL}/api/orgs/{CloudData.ORGANIZATION_ID}/search/source:event " +
-                        $"deviceId:{CloudData.DEVICE_ID} eventId:110 size:20 sortby:timestamp sortorder:desc");
+                    var response = await client.GetAsync($"" +
+                        $"{Secrets.MEADOW_CLOUD_URL}/api/orgs/{Secrets.ORGANIZATION_ID}/search/source:event " +
+                        $"deviceId:{Secrets.DEVICE_ID} eventId:100 size:20 sortby:timestamp sortorder:desc");
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -59,13 +59,13 @@ namespace Clima_reTerminal.Client
             {
                 try
                 {
-                    client.DefaultRequestHeaders.Add("Authorization", $"apikey {CloudData.API_KEY}");
+                    client.DefaultRequestHeaders.Add("Authorization", $"apikey {Secrets.API_KEY}");
                     client.Timeout = new TimeSpan(0, 5, 0);
 
                     string jsonString = $"" +
                         $"{{" +
                             $"\"deviceIds\": [" +
-                                $"\"{CloudData.DEVICE_ID}\"]," +
+                                $"\"{Secrets.DEVICE_ID}\"]," +
                             $"\"commandName\": \"{command}\"," +
                             $"\"args\": {{     " +
                                 $"\"relaystate\": {relayState}" +
@@ -75,7 +75,7 @@ namespace Clima_reTerminal.Client
 
                     var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-                    HttpResponseMessage response = await client.PostAsync($"{CloudData.MEADOW_CLOUD_URL}/api/devices/commands", content);
+                    HttpResponseMessage response = await client.PostAsync($"{Secrets.MEADOW_CLOUD_URL}/api/devices/commands", content);
 
                     if (response.IsSuccessStatusCode)
                     {
