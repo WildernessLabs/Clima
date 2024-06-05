@@ -13,7 +13,7 @@ public class CloudController
         // TODO: add a timeout here
         while (Resolver.MeadowCloudService.QueueCount > 0)
         {
-            Resolver.Log.Info($"Waiting for {Resolver.MeadowCloudService.QueueCount} items to be delivered...");
+            // Resolver.Log.Info($"Waiting for {Resolver.MeadowCloudService.QueueCount} items to be delivered...");
             await Task.Delay(1000);
         }
         Resolver.Log.Info($"All cloud data has been sent");

@@ -42,8 +42,11 @@ public class NetworkController
     {
         if (networkAdapter is IWiFiNetworkAdapter wifi)
         {
-            Resolver.Log.Info("Connecting to network...");
-            await wifi.Connect("interwebs", "1234567890");
+            if (!wifi.IsConnected)
+            {
+                Resolver.Log.Info("Connecting to network...");
+                await wifi.Connect("interwebs", "1234567890");
+            }
         }
 
         Resolver.Log.Info($"Connecting to network {(networkAdapter.IsConnected ? "succeeded" : "FAILED")}");

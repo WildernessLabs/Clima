@@ -17,7 +17,11 @@ public class MainController
     private LocationController locationController;
     private NetworkController? networkController;
     private CloudController cloudController;
-    private Timer SystemTimer;
+    private int tick;
+    private const int SensorReadPeriodSeconds = 10;
+    private const int PublicationPeriodMinutes = 1;
+    private bool lowPowerMode = false;
+    private Timer sleepSimulationTimer;
 
     public TimeSpan TelemetryPublicationPeriod { get; } = TimeSpan.FromMinutes(1);
 
@@ -75,6 +79,11 @@ public class MainController
 
         Resolver.Device.PlatformOS.AfterWake += PlatformOS_AfterWake;
 
+        if (!lowPowerMode)
+        {
+            sleepSimulationTimer = new Timer((_) => PlatformOS_AfterWake(null, WakeSource.Unknown), null, -1, -1);
+        }
+
         _ = SystemPreSleepStateProc();
 
         return Task.CompletedTask;
@@ -88,6 +97,8 @@ public class MainController
 
     private async Task SystemPreSleepStateProc()
     {
+        await CollectTelemetry();
+
         // connect to cloud
         if (networkController != null)
         {
@@ -100,17 +111,24 @@ public class MainController
                     await cloudController.WaitForDataToSend();
                 }
 
-                await networkController.ShutdownNetwork();
+                if (lowPowerMode)
+                {
+                    await networkController.ShutdownNetwork();
+                }
             }
         }
 
         notificationController.SetSystemStatus(SystemStatus.LowPower);
-        powerController.TimedSleep(TimeSpan.FromSeconds(SensorReadPeriodSeconds));
+        if (lowPowerMode)
+        {
+            powerController.TimedSleep(TimeSpan.FromSeconds(SensorReadPeriodSeconds));
+        }
+        else
+        {
+            Resolver.Log.Info("Simulating sleep");
+            sleepSimulationTimer.Change(TimeSpan.FromSeconds(SensorReadPeriodSeconds), TimeSpan.FromMilliseconds(-1));
+        }
     }
-
-    private int tick;
-    private const int SensorReadPeriodSeconds = 10;
-    private const int PublicationPeriodMinutes = 5;
 
     private void SystemPostWakeStateProc()
     {
@@ -118,11 +136,18 @@ public class MainController
 
         if (++tick % PublicationPeriodMinutes * 60 / SensorReadPeriodSeconds == 0)
         {
-            SystemPreSleepStateProc();
+            _ = SystemPreSleepStateProc();
         }
         else
         {
-            powerController.TimedSleep(TimeSpan.FromSeconds(SensorReadPeriodSeconds));
+            if (lowPowerMode)
+            {
+                powerController.TimedSleep(TimeSpan.FromSeconds(SensorReadPeriodSeconds));
+            }
+            else
+            {
+                sleepSimulationTimer.Change(TimeSpan.FromSeconds(SensorReadPeriodSeconds), TimeSpan.FromMilliseconds(-1));
+            }
         }
     }
 
@@ -139,13 +164,10 @@ public class MainController
         }
     }
 
-    private async void SystemTimerProc(object _)
+    private async Task CollectTelemetry()
     {
-        tick++;
-
         // collect telemetry every tick
         Resolver.Log.Info($"Collecting telemetry");
-
 
         try
         {
@@ -158,8 +180,6 @@ public class MainController
         {
             Resolver.Log.Warn($"Failed to log telemetry: {ex.Message}");
         }
-
-        SystemTimer.Change(TelemetryPublicationPeriod, TimeSpan.FromMilliseconds(-1));
     }
 
     private void OnNetworkStillDown(object sender, System.TimeSpan e)

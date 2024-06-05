@@ -10,8 +10,9 @@ public class SensorController
 {
     private IClimaHardware hardware;
     private CircularBuffer<Azimuth> windVaneBuffer = new CircularBuffer<Azimuth>(12);
+    private Length? startupRainValue;
 
-    public bool LogSensorData { get; set; } = false;
+    private bool LogSensorData { get; set; } = false;
     public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(5);
 
     public SensorController(IClimaHardware clima)
@@ -21,37 +22,48 @@ public class SensorController
         if (clima.TemperatureSensor is { } temperatureSensor)
         {
             temperatureSensor.Updated += TemperatureUpdated;
+            // atmospheric temp is slow to change
+            temperatureSensor.StartUpdating(TimeSpan.FromSeconds(15));
             temperatureSensor.StartUpdating(UpdateInterval);
         }
 
         if (clima.BarometricPressureSensor is { } pressureSensor)
         {
             pressureSensor.Updated += PressureUpdated;
-            pressureSensor.StartUpdating(UpdateInterval);
+            // barometric pressure is slow to change
+            pressureSensor.StartUpdating(TimeSpan.FromMinutes(1));
         }
 
         if (clima.HumiditySensor is { } humiditySensor)
         {
             humiditySensor.Updated += HumidityUpdated;
-            humiditySensor.StartUpdating(UpdateInterval);
+            // humidity is slow to change
+            humiditySensor.StartUpdating(TimeSpan.FromMinutes(1));
         }
 
         if (clima.CO2ConcentrationSensor is { } co2Sensor)
         {
             co2Sensor.Updated += Co2Updated;
-            co2Sensor.StartUpdating(UpdateInterval);
+            // CO2 levels are slow to change
+            co2Sensor.StartUpdating(TimeSpan.FromMinutes(5));
         }
 
         if (clima.WindVane is { } windVane)
         {
             windVane.Updated += WindvaneUpdated;
-            windVane.StartUpdating(TimeSpan.FromSeconds(2));
+            windVane.StartUpdating(TimeSpan.FromSeconds(1));
         }
 
         if (clima.RainGauge is { } rainGuage)
         {
-            rainGuage.Updated += RainGuageUpdated;
-            rainGuage.StartUpdating(UpdateInterval);
+            rainGuage.Updated += RainGaugeUpdated;
+
+            // TODO: if we're restarting, we need to rehydrate today's totals already collected
+            //            startupRainValue = rainGuage.Read().Result;
+            //            Resolver.Log.Info($"Startup rain value: {startupRainValue}");
+
+            // rain does not change frequently
+            rainGuage.StartUpdating(TimeSpan.FromMinutes(5));
         }
 
         if (clima.Anemometer is { } anemometer)
@@ -106,7 +118,7 @@ public class SensorController
         Resolver.Log.InfoIf(LogSensorData, $"Anemometer:      {e.New.MetersPerSecond:0.#} m/s");
     }
 
-    private void RainGuageUpdated(object sender, IChangeResult<Length> e)
+    private void RainGaugeUpdated(object sender, IChangeResult<Length> e)
     {
         Resolver.Log.InfoIf(LogSensorData, $"Rain Gauge:      {e.New.Millimeters:0.#} mm");
     }
