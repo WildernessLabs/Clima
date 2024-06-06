@@ -76,6 +76,7 @@ public class SensorController
 
         if (clima.LightSensor is { } lightSensor)
         {
+            lightSensor.Updated += LightSensorUpdated;
             lightSensor.StartUpdating(UpdateInterval);
         }
     }
@@ -90,6 +91,16 @@ public class SensorController
 
             return Task.FromResult(data);
         }
+    }
+
+    private void LightSensorUpdated(object sender, IChangeResult<Illuminance> e)
+    {
+        lock (latestData)
+        {
+            latestData.Light = e.New;
+        }
+
+        Resolver.Log.InfoIf(LogSensorData, $"Light:     {e.New.Lux:0.#} lux");
     }
 
     private void TemperatureUpdated(object sender, IChangeResult<Temperature> e)
