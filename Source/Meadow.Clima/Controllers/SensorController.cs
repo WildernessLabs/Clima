@@ -11,12 +11,14 @@ public class SensorController
     private IClimaHardware hardware;
     private CircularBuffer<Azimuth> windVaneBuffer = new CircularBuffer<Azimuth>(12);
     private Length? startupRainValue;
+    private SensorData latestData;
 
     private bool LogSensorData { get; set; } = false;
     public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(5);
 
     public SensorController(IClimaHardware clima)
     {
+        latestData = new SensorData();
         hardware = clima;
 
         if (clima.TemperatureSensor is { } temperatureSensor)
@@ -78,54 +80,85 @@ public class SensorController
         }
     }
 
-    public async Task<SensorData> GetSensorData()
+    public Task<SensorData> GetSensorData()
     {
-        return new SensorData
+        lock (latestData)
         {
-            Temperature = hardware.TemperatureSensor?.Temperature ?? null,
-            Pressure = hardware.BarometricPressureSensor?.Pressure ?? null,
-            Humidity = hardware.HumiditySensor?.Humidity ?? null,
-            Co2Level = hardware.CO2ConcentrationSensor?.CO2Concentration ?? null,
-            WindSpeed = hardware.Anemometer?.WindSpeed ?? null,
-            WindDirection = hardware.WindVane?.WindAzimuth ?? null,
-            Rain = hardware.RainGauge?.RainDepth ?? null,
-            Light = hardware.LightSensor?.Illuminance ?? null,
-        };
+            var data = latestData.Copy();
+
+            latestData.Clear();
+
+            return Task.FromResult(data);
+        }
     }
 
     private void TemperatureUpdated(object sender, IChangeResult<Temperature> e)
     {
+        lock (latestData)
+        {
+            latestData.Temperature = e.New;
+        }
+
         Resolver.Log.InfoIf(LogSensorData, $"Temperature:     {e.New.Celsius:0.#}C");
     }
 
     private void PressureUpdated(object sender, IChangeResult<Pressure> e)
     {
+        lock (latestData)
+        {
+            latestData.Pressure = e.New;
+        }
+
         Resolver.Log.InfoIf(LogSensorData, $"Pressure:        {e.New.Millibar:0.#}mbar");
     }
 
     private void HumidityUpdated(object sender, IChangeResult<RelativeHumidity> e)
     {
+        lock (latestData)
+        {
+            latestData.Humidity = e.New;
+        }
+
         Resolver.Log.InfoIf(LogSensorData, $"Humidity:        {e.New.Percent:0.#}%");
     }
 
     private void Co2Updated(object sender, IChangeResult<Concentration> e)
     {
+        lock (latestData)
+        {
+            latestData.Co2Level = e.New;
+        }
         Resolver.Log.InfoIf(LogSensorData, $"CO2:             {e.New.PartsPerMillion:0.#}ppm");
     }
 
     private void AnemometerUpdated(object sender, IChangeResult<Speed> e)
     {
+        lock (latestData)
+        {
+            latestData.WindSpeed = e.New;
+        }
+
         Resolver.Log.InfoIf(LogSensorData, $"Anemometer:      {e.New.MetersPerSecond:0.#} m/s");
     }
 
     private void RainGaugeUpdated(object sender, IChangeResult<Length> e)
     {
+        lock (latestData)
+        {
+            latestData.Rain = e.New;
+        }
+
         Resolver.Log.InfoIf(LogSensorData, $"Rain Gauge:      {e.New.Millimeters:0.#} mm");
     }
 
     private void WindvaneUpdated(object sender, IChangeResult<Azimuth> e)
     {
         windVaneBuffer.Append(e.New);
+
+        lock (latestData)
+        {
+            latestData.WindDirection = windVaneBuffer.Mean();
+        }
 
         Resolver.Log.InfoIf(LogSensorData, $"Wind Vane:       {e.New.DecimalDegrees} (mean: {windVaneBuffer.Mean().DecimalDegrees})");
     }
