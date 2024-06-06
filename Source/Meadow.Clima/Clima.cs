@@ -63,7 +63,9 @@ public class Clima
                 logger?.Info("Failed to instantiate version MCP23008");
             }
 
-            if (version > 4)
+            logger?.Info($"MCP Version: {version}");
+
+            if (version >= 4)
             {
                 logger?.Info("Instantiating Clima v4 specific hardware");
                 hardware = new ClimaHardwareV4(ccm, i2cBus, mcpVersion!);

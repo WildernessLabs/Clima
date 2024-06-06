@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Clima_Demo;
 
-public record SensorData
+public class SensorData
 {
     public Temperature? Temperature { get; set; }
     public Pressure? Pressure { get; set; }
@@ -12,6 +12,32 @@ public record SensorData
     public Speed? WindSpeed { get; set; }
     public Azimuth? WindDirection { get; set; }
     public Length? Rain { get; set; }
+    public Illuminance? Light { get; set; }
+
+    public void Clear()
+    {
+        Co2Level = null;
+        Temperature = null;
+        Pressure = null;
+        WindSpeed = null;
+        WindDirection = null;
+        Rain = null;
+        Light = null;
+    }
+
+    public SensorData Copy()
+    {
+        return new SensorData
+        {
+            Co2Level = Co2Level,
+            Temperature = Temperature,
+            Pressure = Pressure,
+            WindSpeed = WindSpeed,
+            WindDirection = WindDirection,
+            Rain = Rain,
+            Light = Light,
+        };
+    }
 
     public Dictionary<string, object> AsTelemetryDictionary()
     {
@@ -43,6 +69,10 @@ public record SensorData
         if (Rain != null)
         {
             d.Add(nameof(Rain), Rain.Value.Centimeters);
+        }
+        if (Light != null)
+        {
+            d.Add(nameof(Light), Light.Value.Lux);
         }
 
         return d;
