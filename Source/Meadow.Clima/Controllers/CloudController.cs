@@ -29,6 +29,28 @@ public class CloudController
         SendEvent(CloudEventIds.DeviceStarted, $"Device started (hardware {hardwareRevision})");
     }
 
+    public void LogDeviceInfo(string deviceName, double latitiude, double longitude)
+    {
+        // {
+        //      "description": "Clima Boot Telemetry",
+        //      "eventId": 109,
+        //      "timestamp": "2024-05-20T22:25:15.862Z",
+        //      "measurements": {
+        //          "lat": 34.2277472,
+        //          "long": -118.2273136
+        //      }
+        // }
+        var cloudEvent = new CloudEvent
+        {
+            Description = "Clima Position Telemetry",
+            Timestamp = DateTime.UtcNow,
+            EventId = 109,
+        };
+
+        cloudEvent.Measurements.Add("device_name", deviceName);
+        cloudEvent.Measurements.Add("lat", latitiude);
+        cloudEvent.Measurements.Add("long", longitude);
+    }
     public void LogWarning(string message)
     {
         SendLog(message, "warning");
