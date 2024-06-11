@@ -2,9 +2,9 @@
     Name: Clima
 
 Coprocessor:
-    AutomaticallyStartNetwork: true
-    AutomaticallyReconnect: true
-    MaximumRetryCount: 7
+    AutomaticallyStartNetwork: false
+    AutomaticallyReconnect: false
+    MaximumRetryCount: 0
 
 Network:
     DefaultInterface: WiFi

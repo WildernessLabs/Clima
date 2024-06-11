@@ -54,6 +54,15 @@ public class PowerController
         };
     }
 
+    public void TimedSleep(TimeSpan duration)
+    {
+        Resolver.Log.Info("Going to sleep...");
+
+        Resolver.Device.PlatformOS.Sleep(duration);
+
+        Resolver.Log.Info("PowerController completed sleep");
+    }
+
     private void SolarVoltageUpdated(object sender, IChangeResult<Voltage> e)
     {
         Resolver.Log.InfoIf(LogPowerData, $"Solar Voltage:   {e.New.Volts:0.#} volts");
