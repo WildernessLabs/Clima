@@ -44,7 +44,7 @@ public class LocationController
 
     private void GnssRmcReceived(object _, GnssPositionInfo e)
     {
-        if (e.Valid)
+        if (e.IsValid)
         {
             Resolver.Log.InfoIf(LogData, $"GNSS Position: lat: [{e.Position.Latitude}], long: [{e.Position.Longitude}]");
         }
@@ -52,7 +52,7 @@ public class LocationController
 
     private void GnssGllReceived(object _, GnssPositionInfo e)
     {
-        if (e.Valid)
+        if (e.IsValid)
         {
             Resolver.Log.InfoIf(LogData, $"GNSS Position: lat: [{e.Position.Latitude}], long: [{e.Position.Longitude}]");
         }
