@@ -12,7 +12,7 @@ namespace Meadow.Devices;
 /// <summary>
 /// Contract for the Clima hardware definitions
 /// </summary>
-public interface IClimaHardware
+public interface IClimaHardware : IMeadowAppEmbeddedHardware
 {
     /// <summary>
     /// The I2C Bus
@@ -20,6 +20,8 @@ public interface IClimaHardware
     public II2cBus I2cBus { get; }
 
     public ILightSensor? LightSensor { get; }
+
+    public IMeadowDevice ComputeModule { get; }
 
     /// <summary>
     /// Gets the ITemperatureSensor on the Clima board

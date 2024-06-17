@@ -64,6 +64,7 @@ public class ClimaHardwareV3 : ClimaHardwareBase
     /// <param name="i2cBus">The I2C bus</param>
     /// <param name="mcpVersion">The Mcp23008 used to read version information</param>
     public ClimaHardwareV3(IF7CoreComputeMeadowDevice device, II2cBus i2cBus, Mcp23008 mcpVersion)
+        : base(device)
     {
         McpVersion = mcpVersion;
 

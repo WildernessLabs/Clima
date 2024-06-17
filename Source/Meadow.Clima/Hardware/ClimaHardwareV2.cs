@@ -27,6 +27,7 @@ public class ClimaHardwareV2 : ClimaHardwareBase
     /// <param name="device">The meadow device</param>
     /// <param name="i2cBus">The I2C bus</param>
     public ClimaHardwareV2(IF7FeatherMeadowDevice device, II2cBus i2cBus)
+        : base(device)
     {
         _device = device;
 

@@ -87,6 +87,14 @@ public abstract class ClimaHardwareBase : IClimaHardware
     /// <inheritdoc/>
     public I2cConnector? Qwiic => (I2cConnector?)Connectors[0];
 
+    /// <inheritdoc/>
+    public IMeadowDevice ComputeModule { get; }
+
+    internal ClimaHardwareBase(IMeadowDevice device)
+    {
+        ComputeModule = device;
+    }
+
     internal virtual I2cConnector? CreateQwiicConnector()
     {
         return null;
