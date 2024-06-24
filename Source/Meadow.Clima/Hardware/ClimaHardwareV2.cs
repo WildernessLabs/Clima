@@ -32,7 +32,7 @@ public class ClimaHardwareV2 : ClimaHardwareBase
 
         I2cBus = i2cBus;
 
-        // See hack in Meadow.Core\source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
+        // See hack in Meadow.Core\Source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
         // Must initialise any PWM based I/O first
         GetRgbPwmLed();
 
