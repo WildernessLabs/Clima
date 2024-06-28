@@ -3,7 +3,6 @@
 Clima is a solar-powered, custom embedded-IoT solution that tracks climate from a suite of sensors, saves data locally for access via Bluetooth, uses a RESTful Web API, and synchronizes data to the cloud.
 
 ## Contents
-* [Clima Versions](#clima-versions)
 * [Assembly Instructions](#assembly-instructions)
 * [Getting Started](#getting-started)
 * [Hardware Specifications](#hardware-specifications)
@@ -12,37 +11,9 @@ Clima is a solar-powered, custom embedded-IoT solution that tracks climate from 
 * [Clima.HackKit](#climahackkit)
 * [Support](#support)
 
-## Clima Versions
+With this kit, it includes the complete package of sensors, PCB enclosure and mount to place this outdoors. You'll be able to measure wind speed/direction, rain volume, atmospheric conditions like temperature, pressure, humidity, CO2 levels and GPS Coordinates.
 
-We offer clima in two options, a full dedicated kit that it's fully solar powered build and ideal to measure weather outdoors, or a much simplified version that you can build with our Hack Kits.
-
-Both versions are 100% open source, including all of the enclosure design files, and PCB design of the pro version.
-
-<table width="100%">
-    <tr>
-        <td width="50%">
-            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit">Clima.Pro Version</a></strong>
-        </td>
-        <td width="50%">
-            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro">Clima.HackKit Version</a></strong></td>
-    </tr>
-    <tr>
-        <td>
-            <img src="Image_Assets/ClimaPro.jpg" />
-        </td>
-        <td>
-            <img src="Image_Assets/Clima.jpg" /> 
-        </td>
-    </tr>
-    <tr>
-        <td>
-            With this kit, it includes the complete package of sensors, PCB enclosure and mount to place this outdoors. You'll be able to measure wind speed/direction, rain volume, atmospheric conditions like temperature, pressure, humidity, CO2 levels and GPS Coordinates.
-        </td>
-        <td> 
-            With the Meadow Hack Kit, you can build this project to measure indoor room temperature with an analog temperature sensor, use a 240x240 TFT Spi display and three push buttons to build a simple UI using MicroGraphics to do things like change temperature units, and more.
-        </td>
-    </tr>
-</table>
+<img src="Image_Assets/ClimaPro.jpg" />
 
 ## Assembly Instructions
 
@@ -97,22 +68,6 @@ public class MeadowApp : App<F7CoreComputeV2>
 <img src="Image_Assets/wildernesslabs-clima-v3-specs.jpg" style="margin-top:10px;margin-bottom:10px" />
 
 You can find the schematics and other design files in the [Hardware_Design folder](Hardware_Design/).
-
-## Mobile Companion App
-
-This project also comes with a Xamarin.Forms Clima companion app (on Android and iOS) that shows you how to communicate with your Meadow device using [Bluetooth](http://developer.wildernesslabs.co/Meadow/Meadow.OS/Bluetooth/) and [Maple](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Libraries_and_Frameworks/Maple.Server/) for both kit versions.
-
-![Clima companion app](Image_Assets/Clima_android.png)
-
-## Get an API Key for OpenWeather
-
-Go to [Register for an OpenWeather API Key](https://blog.wildernesslabs.co/add-openweather-to-your-meadow-projects/)
-
-## Clima.HackKit
-
-![Clima hack kit](Image_Assets/Clima.jpg)
-
-Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
 
 ## Support
 
