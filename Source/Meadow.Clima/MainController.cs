@@ -38,7 +38,6 @@ public class MainController
 
         cloudController = new CloudController();
 
-        Resolver.Services.Get<CloudController>()?.LogAppStartup(hardware.RevisionString);
         Resolver.Log.Info($"Running on Clima Hardware {hardware.RevisionString}");
 
         sensorController = new SensorController(hardware);
@@ -48,6 +47,8 @@ public class MainController
         powerController.BatteryVoltageWarning += OnBatteryVoltageWarning;
 
         locationController = new LocationController(hardware);
+
+        locationController.PositionReceived += OnPositionReceived;
 
         if (networkAdapter == null)
         {
@@ -87,6 +88,18 @@ public class MainController
         _ = SystemPreSleepStateProc();
 
         return Task.CompletedTask;
+    }
+
+    private void OnPositionReceived(object sender, Peripherals.Sensors.Location.Gnss.GnssPositionInfo e)
+    {
+        if (e.Position != null)
+        {
+            // crop to 2 decimal places (~1km accuracy) for privacy
+            var lat = Math.Round(e.Position.Latitude, 2);
+            var lon = Math.Round(e.Position.Longitude, 2);
+
+            cloudController.LogDeviceInfo(Resolver.Device.Information.DeviceName, lat, lon);
+        }
     }
 
     private void PlatformOS_AfterWake(object sender, WakeSource e)

@@ -8,16 +8,24 @@ namespace Meadow.Devices;
 /// <summary>
 /// Represents the Clima hardware
 /// </summary>
-public class Clima
+public class ClimaHardwareProvider : IMeadowAppEmbeddedHardwareProvider<IClimaHardware>
 {
-    private Clima() { }
+    public ClimaHardwareProvider()
+    {
+    }
+
+    public static IClimaHardware Create()
+    {
+        return new ClimaHardwareProvider()
+            .Create(Resolver.Services.Get<IMeadowDevice>()!);
+    }
 
     /// <summary>
     /// Create an instance of the Clima class
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static IClimaHardware Create()
+    public IClimaHardware Create(IMeadowDevice device)
     {
         IClimaHardware hardware;
         Logger? logger = Resolver.Log;
@@ -25,9 +33,7 @@ public class Clima
 
         logger?.Debug("Initializing Clima...");
 
-        var device = Resolver.Device;
-
-        if (Resolver.Device == null)
+        if (device == null)
         {
             var msg = "Clima instance must be created no earlier than App.Initialize()";
             logger?.Error(msg);

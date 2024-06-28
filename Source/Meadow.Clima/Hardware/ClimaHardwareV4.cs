@@ -1,7 +1,9 @@
-﻿using Meadow.Foundation.ICs.IOExpanders;
+﻿using Meadow.Foundation;
+using Meadow.Foundation.ICs.IOExpanders;
 using Meadow.Foundation.Sensors.Light;
 using Meadow.Hardware;
 using Meadow.Peripherals.Sensors.Light;
+using Meadow.Units;
 
 namespace Meadow.Devices;
 
@@ -49,14 +51,19 @@ public class ClimaHardwareV4 : ClimaHardwareV3
             {
                 Logger?.Trace("Creating Light sensor");
                 _lightSensor = new Veml7700(_device.CreateI2cBus());
+                if (_lightSensor is PollingSensorBase<Illuminance> pollingSensor)
+                {
+                    pollingSensor.CommunicationError += (s, e) => { _lightSensor.StopUpdating(); };
+                }
             }
             catch
             {
                 Logger?.Warn("Light sensor not found on I2C bus");
+                _lightSensor = null;
             }
-        }
 
-        _firstLightQuery = false;
+            _firstLightQuery = false;
+        }
 
         return _lightSensor;
     }

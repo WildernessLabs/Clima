@@ -27,12 +27,13 @@ public class ClimaHardwareV2 : ClimaHardwareBase
     /// <param name="device">The meadow device</param>
     /// <param name="i2cBus">The I2C bus</param>
     public ClimaHardwareV2(IF7FeatherMeadowDevice device, II2cBus i2cBus)
+        : base(device)
     {
         _device = device;
 
         I2cBus = i2cBus;
 
-        // See hack in Meadow.Core\Source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
+        // See hack in Meadow.Core\source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
         // Must initialise any PWM based I/O first
         GetRgbPwmLed();
 

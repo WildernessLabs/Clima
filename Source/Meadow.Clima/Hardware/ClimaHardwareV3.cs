@@ -64,6 +64,7 @@ public class ClimaHardwareV3 : ClimaHardwareBase
     /// <param name="i2cBus">The I2C bus</param>
     /// <param name="mcpVersion">The Mcp23008 used to read version information</param>
     public ClimaHardwareV3(IF7CoreComputeMeadowDevice device, II2cBus i2cBus, Mcp23008 mcpVersion)
+        : base(device)
     {
         McpVersion = mcpVersion;
 
@@ -71,7 +72,7 @@ public class ClimaHardwareV3 : ClimaHardwareBase
 
         I2cBus = i2cBus;
 
-        // See hack in Meadow.Core\Source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
+        // See hack in Meadow.Core\source\implementations\f7\Meadow.F7\Devices\DeviceChannelManager.cs
         // Must initialise any PWM based I/O first
         GetRgbPwmLed();
 
