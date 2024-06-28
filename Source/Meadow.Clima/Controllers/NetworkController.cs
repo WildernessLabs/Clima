@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Meadow.Devices;
+namespace Meadow.Devices.Clima.Controllers;
 
 public class NetworkController
 {

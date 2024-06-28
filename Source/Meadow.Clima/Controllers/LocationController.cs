@@ -1,9 +1,8 @@
-﻿using Meadow;
-using Meadow.Devices;
+﻿using Meadow.Devices.Clima.Hardware;
 using Meadow.Peripherals.Sensors.Location.Gnss;
 using System;
 
-namespace Clima_Demo;
+namespace Meadow.Devices.Clima.Controllers;
 
 public class LocationController
 {

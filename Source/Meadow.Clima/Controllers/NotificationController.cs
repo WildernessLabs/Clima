@@ -1,7 +1,7 @@
 ﻿using Meadow.Peripherals.Leds;
 using System;
 
-namespace Clima_Demo;
+namespace Meadow.Devices.Clima.Controllers;
 
 public class NotificationController
 {

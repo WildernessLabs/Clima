@@ -5,7 +5,7 @@ using Meadow.Hardware;
 using Meadow.Peripherals.Sensors.Light;
 using Meadow.Units;
 
-namespace Meadow.Devices;
+namespace Meadow.Devices.Clima.Hardware;
 
 /// <summary>
 /// Represents the Clima v4.x hardware

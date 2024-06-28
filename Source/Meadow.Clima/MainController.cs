@@ -1,10 +1,11 @@
-﻿using Clima_Demo;
+﻿using Meadow.Devices.Clima.Controllers;
+using Meadow.Devices.Clima.Hardware;
 using Meadow.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using static Clima_Demo.NotificationController;
+using static Meadow.Devices.Clima.Controllers.NotificationController;
 
 namespace Meadow.Devices;
 
