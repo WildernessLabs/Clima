@@ -1,4 +1,5 @@
-﻿using Meadow.Foundation.ICs.IOExpanders;
+﻿using Meadow.Devices.Clima.Hardware;
+using Meadow.Foundation.ICs.IOExpanders;
 using Meadow.Hardware;
 using Meadow.Logging;
 using System;

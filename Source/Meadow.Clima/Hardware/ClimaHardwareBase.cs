@@ -10,7 +10,7 @@ using Meadow.Peripherals.Sensors.Light;
 using Meadow.Peripherals.Sensors.Weather;
 using System;
 
-namespace Meadow.Devices;
+namespace Meadow.Devices.Clima.Hardware;
 
 /// <summary>
 /// Contains common elements of Clima hardware

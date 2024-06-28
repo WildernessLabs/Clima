@@ -7,7 +7,7 @@ using Meadow.Peripherals.Sensors.Environmental;
 using Meadow.Peripherals.Sensors.Light;
 using Meadow.Peripherals.Sensors.Weather;
 
-namespace Meadow.Devices;
+namespace Meadow.Devices.Clima.Hardware;
 
 /// <summary>
 /// Contract for the Clima hardware definitions

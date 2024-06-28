@@ -1,10 +1,10 @@
-﻿using Meadow;
-using Meadow.Devices;
+﻿using Meadow.Devices.Clima.Hardware;
+using Meadow.Devices.Clima.Models;
 using Meadow.Units;
 using System;
 using System.Threading.Tasks;
 
-namespace Clima_Demo;
+namespace Meadow.Devices.Clima.Controllers;
 
 public class SensorController
 {

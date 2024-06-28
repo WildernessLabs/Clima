@@ -1,10 +1,11 @@
-﻿using Meadow;
-using Meadow.Cloud;
+﻿using Meadow.Cloud;
+using Meadow.Devices.Clima.Constants;
+using Meadow.Devices.Clima.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Clima_Demo;
+namespace Meadow.Devices.Clima.Controllers;
 
 public class CloudController
 {
