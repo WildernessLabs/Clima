@@ -6,7 +6,7 @@ using Meadow.Peripherals.Leds;
 using Meadow.Peripherals.Sensors.Weather;
 using System;
 
-namespace Meadow.Devices;
+namespace Meadow.Devices.Clima.Hardware;
 
 /// <summary>
 /// Represents the Clima v2.x hardware
@@ -27,6 +27,7 @@ public class ClimaHardwareV2 : ClimaHardwareBase
     /// <param name="device">The meadow device</param>
     /// <param name="i2cBus">The I2C bus</param>
     public ClimaHardwareV2(IF7FeatherMeadowDevice device, II2cBus i2cBus)
+        : base(device)
     {
         _device = device;
 

@@ -1,7 +1,7 @@
 ﻿using Meadow.Peripherals.Leds;
 using System;
 
-namespace Clima_Demo;
+namespace Meadow.Devices.Clima.Controllers;
 
 public class NotificationController
 {
@@ -14,6 +14,17 @@ public class NotificationController
         BatteryLow = 1 << 2,
     }
 
+    public enum SystemStatus
+    {
+        LowPower,
+        Starting,
+        SearchingForNetwork,
+        NetworkConnected,
+        ConnectingToCloud,
+        Connected,
+
+    }
+
     private readonly IRgbPwmLed? rgbLed;
     private Warnings activeWarnings = Warnings.None;
 
@@ -22,14 +33,36 @@ public class NotificationController
         this.rgbLed = rgbLed;
     }
 
-    public void SystemStarting()
+    public void SetSystemStatus(SystemStatus status)
     {
-        rgbLed?.SetColor(RgbLedColors.Red);
-    }
+        switch (status)
+        {
+            case SystemStatus.LowPower:
+                if (rgbLed != null)
+                {
+                    rgbLed.StopAnimation();
+                    rgbLed.IsOn = false;
+                }
+                break;
+            case SystemStatus.Starting:
+                rgbLed?.SetColor(RgbLedColors.Red);
+                break;
+            case SystemStatus.SearchingForNetwork:
+                rgbLed?.StartBlink(RgbLedColors.Red);
+                break;
+            case SystemStatus.NetworkConnected:
+                rgbLed?.StopAnimation();
+                rgbLed?.SetColor(RgbLedColors.Magenta);
+                break;
+            case SystemStatus.ConnectingToCloud:
+                rgbLed?.StartBlink(RgbLedColors.Cyan);
+                break;
+            case SystemStatus.Connected:
+                rgbLed?.StopAnimation();
+                rgbLed?.SetColor(RgbLedColors.Green);
+                break;
 
-    public void SystemUp()
-    {
-        ReportWarnings();
+        }
     }
 
     public void SetWarning(Warnings warning)

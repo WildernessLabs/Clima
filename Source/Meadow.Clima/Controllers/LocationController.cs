@@ -1,60 +1,38 @@
-﻿using Meadow;
-using Meadow.Devices;
+﻿using Meadow.Devices.Clima.Hardware;
 using Meadow.Peripherals.Sensors.Location.Gnss;
+using System;
 
-namespace Clima_Demo;
+namespace Meadow.Devices.Clima.Controllers;
 
 public class LocationController
 {
+    private IGnssSensor gnss;
+
     public bool LogData { get; set; } = false;
+
+    public event EventHandler<GnssPositionInfo> PositionReceived;
 
     public LocationController(IClimaHardware clima)
     {
         if (clima.Gnss is { } gnss)
         {
-            //gnss.GsaReceived += GnssGsaReceived;
-            //gnss.GsvReceived += GnssGsvReceived;
-            //gnss.VtgReceived += GnssVtgReceived;
-            gnss.RmcReceived += GnssRmcReceived;
-            gnss.GllReceived += GnssGllReceived;
-            gnss.StartUpdating();
-        }
-
-    }
-    private void GnssGsaReceived(object _, ActiveSatellites e)
-    {
-        if (e.SatellitesUsedForFix is { } sats)
-        {
-            Resolver.Log.Info($"Number of active satellites: {sats.Length}");
+            this.gnss = gnss;
+            this.gnss.GnssDataReceived += OnGnssDataReceived;
+            this.gnss.StartUpdating();
         }
     }
 
-    private void GnssGsvReceived(object _, SatellitesInView e)
+    private void OnGnssDataReceived(object sender, IGnssResult e)
     {
-        Resolver.Log.Info($"Satellites in view: {e.Satellites.Length}");
-    }
-
-    private void GnssVtgReceived(object _, CourseOverGround e)
-    {
-        if (e is { } cv)
+        if (e is GnssPositionInfo pi)
         {
-            Resolver.Log.Info($"{cv}");
-        };
-    }
-
-    private void GnssRmcReceived(object _, GnssPositionInfo e)
-    {
-        if (e.Valid)
-        {
-            Resolver.Log.InfoIf(LogData, $"GNSS Position: lat: [{e.Position.Latitude}], long: [{e.Position.Longitude}]");
-        }
-    }
-
-    private void GnssGllReceived(object _, GnssPositionInfo e)
-    {
-        if (e.Valid)
-        {
-            Resolver.Log.InfoIf(LogData, $"GNSS Position: lat: [{e.Position.Latitude}], long: [{e.Position.Longitude}]");
+            if (pi.IsValid && pi.Position != null)
+            {
+                // we only need one position fix - weather stations don't move
+                Resolver.Log.InfoIf(LogData, $"GNSS Position: lat: [{pi.Position.Latitude}], long: [{pi.Position.Longitude}]");
+                PositionReceived?.Invoke(this, pi);
+                gnss.StopUpdating();
+            }
         }
     }
 }

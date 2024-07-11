@@ -1,4 +1,4 @@
-﻿namespace Clima_Demo;
+﻿namespace Meadow.Devices.Clima.Constants;
 
 public enum CloudEventIds
 {

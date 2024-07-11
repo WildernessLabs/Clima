@@ -6,10 +6,11 @@ using Meadow.Peripherals.Leds;
 using Meadow.Peripherals.Sensors;
 using Meadow.Peripherals.Sensors.Atmospheric;
 using Meadow.Peripherals.Sensors.Environmental;
+using Meadow.Peripherals.Sensors.Light;
 using Meadow.Peripherals.Sensors.Weather;
 using System;
 
-namespace Meadow.Devices;
+namespace Meadow.Devices.Clima.Hardware;
 
 /// <summary>
 /// Contains common elements of Clima hardware
@@ -64,6 +65,9 @@ public abstract class ClimaHardwareBase : IClimaHardware
     public IAnemometer? Anemometer => GetAnemometer();
 
     /// <inheritdoc/>
+    public ILightSensor? LightSensor => GetLightSensor();
+
+    /// <inheritdoc/>
     public IAnalogInputPort? SolarVoltageInput { get; protected set; }
 
     /// <inheritdoc/>
@@ -82,6 +86,14 @@ public abstract class ClimaHardwareBase : IClimaHardware
 
     /// <inheritdoc/>
     public I2cConnector? Qwiic => (I2cConnector?)Connectors[0];
+
+    /// <inheritdoc/>
+    public IMeadowDevice ComputeModule { get; }
+
+    internal ClimaHardwareBase(IMeadowDevice device)
+    {
+        ComputeModule = device;
+    }
 
     internal virtual I2cConnector? CreateQwiicConnector()
     {
@@ -154,6 +166,8 @@ public abstract class ClimaHardwareBase : IClimaHardware
 
         return _gasResistanceSensor;
     }
+
+    protected virtual ILightSensor? GetLightSensor() => null;
 
     /// <summary>
     /// Get the Wind Vane on the Clima board

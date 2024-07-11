@@ -9,7 +9,7 @@ using Meadow.Peripherals.Sensors.Environmental;
 using Meadow.Peripherals.Sensors.Weather;
 using System;
 
-namespace Meadow.Devices;
+namespace Meadow.Devices.Clima.Hardware;
 
 /// <summary>
 /// Represents the Clima v3.x hardware
@@ -64,6 +64,7 @@ public class ClimaHardwareV3 : ClimaHardwareBase
     /// <param name="i2cBus">The I2C bus</param>
     /// <param name="mcpVersion">The Mcp23008 used to read version information</param>
     public ClimaHardwareV3(IF7CoreComputeMeadowDevice device, II2cBus i2cBus, Mcp23008 mcpVersion)
+        : base(device)
     {
         McpVersion = mcpVersion;
 
