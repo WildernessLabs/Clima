@@ -51,6 +51,8 @@ public class CloudController
         cloudEvent.Measurements.Add("device_name", deviceName);
         cloudEvent.Measurements.Add("lat", latitiude);
         cloudEvent.Measurements.Add("long", longitude);
+        
+        SendEvent(cloudEvent);
     }
     public void LogWarning(string message)
     {
