@@ -1,12 +1,25 @@
-﻿using Meadow;
-using Meadow.Cloud;
+﻿using Meadow.Cloud;
+using Meadow.Devices.Clima.Constants;
+using Meadow.Devices.Clima.Models;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Clima_Demo;
+namespace Meadow.Devices.Clima.Controllers;
 
 public class CloudController
 {
+    public async Task WaitForDataToSend()
+    {
+        // TODO: add a timeout here
+        while (Resolver.MeadowCloudService.QueueCount > 0)
+        {
+            // Resolver.Log.Info($"Waiting for {Resolver.MeadowCloudService.QueueCount} items to be delivered...");
+            await Task.Delay(1000);
+        }
+        Resolver.Log.Info($"All cloud data has been sent");
+    }
+
     public void LogAppStartupAfterCrash()
     {
         SendEvent(CloudEventIds.DeviceStarted, $"Device restarted after crash");
@@ -17,6 +30,30 @@ public class CloudController
         SendEvent(CloudEventIds.DeviceStarted, $"Device started (hardware {hardwareRevision})");
     }
 
+    public void LogDeviceInfo(string deviceName, double latitiude, double longitude)
+    {
+        // {
+        //      "description": "Clima Boot Telemetry",
+        //      "eventId": 109,
+        //      "timestamp": "2024-05-20T22:25:15.862Z",
+        //      "measurements": {
+        //          "lat": 34.2277472,
+        //          "long": -118.2273136
+        //      }
+        // }
+        var cloudEvent = new CloudEvent
+        {
+            Description = "Clima Position Telemetry",
+            Timestamp = DateTime.UtcNow,
+            EventId = 109,
+        };
+
+        cloudEvent.Measurements.Add("device_name", deviceName);
+        cloudEvent.Measurements.Add("lat", latitiude);
+        cloudEvent.Measurements.Add("long", longitude);
+        
+        SendEvent(cloudEvent);
+    }
     public void LogWarning(string message)
     {
         SendLog(message, "warning");

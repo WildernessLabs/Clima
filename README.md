@@ -3,46 +3,17 @@
 Clima is a solar-powered, custom embedded-IoT solution that tracks climate from a suite of sensors, saves data locally for access via Bluetooth, uses a RESTful Web API, and synchronizes data to the cloud.
 
 ## Contents
-* [Clima Versions](#clima-versions)
+* [Clima Pro](#clima)
 * [Assembly Instructions](#assembly-instructions)
 * [Getting Started](#getting-started)
 * [Hardware Specifications](#hardware-specifications)
-* [Mobile Companion App](#mobile-companion-app)
-* [Get an API Key for OpenWeather](#get-an-api-key-for-openweather)
-* [Clima.HackKit](#climahackkit)
 * [Support](#support)
 
-## Clima Versions
+## Clima
 
-We offer clima in two options, a full dedicated kit that it's fully solar powered build and ideal to measure weather outdoors, or a much simplified version that you can build with our Hack Kits.
+With this kit, it includes the complete package of sensors, PCB enclosure and mount to place this outdoors. You'll be able to measure wind speed/direction, rain volume, atmospheric conditions like temperature, pressure, humidity, CO2 levels and GPS Coordinates.
 
-Both versions are 100% open source, including all of the enclosure design files, and PCB design of the pro version.
-
-<table width="100%">
-    <tr>
-        <td width="50%">
-            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/clima-weather-station-kit">Clima.Pro Version</a></strong>
-        </td>
-        <td width="50%">
-            <strong><a href="https://store.wildernesslabs.co/collections/frontpage/products/meadow-f7-micro-development-board-w-hack-kit-pro">Clima.HackKit Version</a></strong></td>
-    </tr>
-    <tr>
-        <td>
-            <img src="Image_Assets/ClimaPro.jpg" />
-        </td>
-        <td>
-            <img src="Image_Assets/Clima.jpg" /> 
-        </td>
-    </tr>
-    <tr>
-        <td>
-            With this kit, it includes the complete package of sensors, PCB enclosure and mount to place this outdoors. You'll be able to measure wind speed/direction, rain volume, atmospheric conditions like temperature, pressure, humidity, CO2 levels and GPS Coordinates.
-        </td>
-        <td> 
-            With the Meadow Hack Kit, you can build this project to measure indoor room temperature with an analog temperature sensor, use a 240x240 TFT Spi display and three push buttons to build a simple UI using MicroGraphics to do things like change temperature units, and more.
-        </td>
-    </tr>
-</table>
+<img src="Image_Assets/ClimaPro.jpg" />
 
 ## Assembly Instructions
 
@@ -60,59 +31,34 @@ To simplify the way to use this Meadow-powered reference IoT product, we've crea
     - `dotnet add package Meadow.Clima`, or
     - [Meadow.Clima Nuget Package](https://www.nuget.org/packages/Meadow.Clima/)
 
-2. Instantiate the `IClimaHardware` object:  
-```csharp
-public class MeadowApp : App<F7CoreComputeV2>
-{
-    IClimaHardware clima;
+2. Change the App type on your MeadowApp class to `ClimaAppBase` and initialize Clima's `MainController` passing the `Hardware` and a `INetworkAdapter` such as your WiFi adapter onboard the Meadow Core Compute Module:  
 
+```csharp
+public class ClimaApp : ClimaAppBase
+{
     public override Task Initialize()
     {
-        clima = Clima.Create();
-        ...
+        Resolver.Log.Info($"Initialize...");
+
+        var mainController = new MainController();
+
+        var wifi = Hardware.ComputeModule.NetworkAdapters.Primary<IWiFiNetworkAdapter>();
+
+        mainController.Initialize(
+            hardware: Hardware,
+            networkAdapter: wifi);
+            .
+            .
+            .
 ```
 
-3. To Access the `Clima` onboard peripherals (AtmosphericSensor, for example):
-```csharp
-    if (clima.AtmosphericSensor is { } bme688)
-    {
-        bme688.Updated += Bme688Updated;
-        bme688.StartUpdating();
-    }
-```
-
-4. Like on step 3, you can also access the rest of peripherals:
-    - `EnvironmentalSensor` - Access the SCD40 sensor
-    - `WindVane` - Access the Wind Vane to check wind direction
-    - `RainGauge` - Access the Rain Gauge to check rain volume
-    - `Anemometer` - Access the Anemometer to get wind speed
-    - `SolarVoltageInput` - Access the voltage input from the Solar Add-on
-    - `Gnss` - Access the NEO-M8 GNSS/GPS module
-    - `ColorLed` - Access an RGB LED
-
-5. Run the [Clima_Demo](Source/Clima_Demo/) project that uses all the peripherals onboard and outputs readings every few seconds.
+3. Run the [Clima_Demo](Source/Clima_Demo/) project that does periodic readings of all its sensors and sends them to [Meadow.Cloud](https://www.meadowcloud.co) if you have a Wilderness Labs account and have provisioned your device.
 
 ## Hardware Specifications
 
 <img src="Image_Assets/wildernesslabs-clima-v3-specs.jpg" style="margin-top:10px;margin-bottom:10px" />
 
 You can find the schematics and other design files in the [Hardware_Design folder](Hardware_Design/).
-
-## Mobile Companion App
-
-This project also comes with a Xamarin.Forms Clima companion app (on Android and iOS) that shows you how to communicate with your Meadow device using [Bluetooth](http://developer.wildernesslabs.co/Meadow/Meadow.OS/Bluetooth/) and [Maple](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Libraries_and_Frameworks/Maple.Server/) for both kit versions.
-
-![Clima companion app](Image_Assets/Clima_android.png)
-
-## Get an API Key for OpenWeather
-
-Go to [Register for an OpenWeather API Key](https://blog.wildernesslabs.co/add-openweather-to-your-meadow-projects/)
-
-## Clima.HackKit
-
-![Clima hack kit](Image_Assets/Clima.jpg)
-
-Instructions on how to assemble the Clima Hack Kit Version can be found [here](/Docs/Clima.HackKit/readme.md)
 
 ## Support
 
