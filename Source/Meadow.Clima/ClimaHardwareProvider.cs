@@ -1,4 +1,5 @@
-﻿using Meadow.Foundation.ICs.IOExpanders;
+﻿using Meadow.Devices.Clima.Hardware;
+using Meadow.Foundation.ICs.IOExpanders;
 using Meadow.Hardware;
 using Meadow.Logging;
 using System;
@@ -8,16 +9,24 @@ namespace Meadow.Devices;
 /// <summary>
 /// Represents the Clima hardware
 /// </summary>
-public class Clima
+public class ClimaHardwareProvider : IMeadowAppEmbeddedHardwareProvider<IClimaHardware>
 {
-    private Clima() { }
+    public ClimaHardwareProvider()
+    {
+    }
+
+    public static IClimaHardware Create()
+    {
+        return new ClimaHardwareProvider()
+            .Create(Resolver.Services.Get<IMeadowDevice>()!);
+    }
 
     /// <summary>
     /// Create an instance of the Clima class
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static IClimaHardware Create()
+    public IClimaHardware Create(IMeadowDevice device)
     {
         IClimaHardware hardware;
         Logger? logger = Resolver.Log;
@@ -25,9 +34,7 @@ public class Clima
 
         logger?.Debug("Initializing Clima...");
 
-        var device = Resolver.Device;
-
-        if (Resolver.Device == null)
+        if (device == null)
         {
             var msg = "Clima instance must be created no earlier than App.Initialize()";
             logger?.Error(msg);
@@ -63,7 +70,9 @@ public class Clima
                 logger?.Info("Failed to instantiate version MCP23008");
             }
 
-            if (version > 4)
+            logger?.Info($"MCP Version: {version}");
+
+            if (version >= 4)
             {
                 logger?.Info("Instantiating Clima v4 specific hardware");
                 hardware = new ClimaHardwareV4(ccm, i2cBus, mcpVersion!);

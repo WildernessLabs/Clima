@@ -24,7 +24,7 @@ namespace Clima_SQLite_Demo
 
         public async Task Initialize()
         {
-            clima = Meadow.Devices.Clima.Create();
+            clima = Meadow.Devices.ClimaHardwareProvider.Create();
 
             await StartUpdating(TimeSpan.FromSeconds(30));
         }

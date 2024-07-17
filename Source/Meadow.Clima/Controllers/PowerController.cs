@@ -1,10 +1,10 @@
-﻿using Meadow;
-using Meadow.Devices;
+﻿using Meadow.Devices.Clima.Hardware;
+using Meadow.Devices.Clima.Models;
 using Meadow.Units;
 using System;
 using System.Threading.Tasks;
 
-namespace Clima_Demo;
+namespace Meadow.Devices.Clima.Controllers;
 
 public class PowerController
 {
@@ -52,6 +52,15 @@ public class PowerController
             BatteryVoltage = clima.BatteryVoltageInput?.Voltage ?? null,
             SolarVoltage = clima.SolarVoltageInput?.Voltage ?? null,
         };
+    }
+
+    public void TimedSleep(TimeSpan duration)
+    {
+        Resolver.Log.Info("Going to sleep...");
+
+        Resolver.Device.PlatformOS.Sleep(duration);
+
+        Resolver.Log.Info("PowerController completed sleep");
     }
 
     private void SolarVoltageUpdated(object sender, IChangeResult<Voltage> e)

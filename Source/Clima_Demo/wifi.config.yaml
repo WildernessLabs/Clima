@@ -4,5 +4,5 @@
 
 # # To enable automatically connecting to a default network, make sure to enable the Coprocessor > AutomaticallyStartNetwork value in meadow.config.yaml.
 Credentials:
-    Ssid: interwebs
-    Password: 1234567890
+    Ssid: SSID
+    Password: PASSWORD
