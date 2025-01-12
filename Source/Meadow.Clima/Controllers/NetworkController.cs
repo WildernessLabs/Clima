@@ -40,6 +40,30 @@ public class NetworkController
     public TimeSpan DownEventPeriod { get; private set; }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="NetworkController"/> class.
+    /// </summary>
+    /// <param name="networkAdapter">The network adapter</param>
+    public NetworkController(INetworkAdapter networkAdapter)
+    {
+        if (networkAdapter is IWiFiNetworkAdapter wifi)
+        {
+            if (wifi.IsConnected)
+            {
+                _ = ReportWiFiScan(wifi);
+            }
+
+            // TODO: make this configurable
+            wifi.SetAntenna(AntennaType.External);
+        }
+        this.networkAdapter = networkAdapter;
+
+        networkAdapter.NetworkConnected += OnNetworkConnected;
+        networkAdapter.NetworkDisconnected += OnNetworkDisconnected;
+
+        downEventTimer = new Timer(DownEventTimerProc, null, -1, -1);
+    }
+
+    /// <summary>
     /// Connects to the cloud.
     /// </summary>
     /// <returns>A task representing the asynchronous operation.</returns>
