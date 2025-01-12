@@ -48,32 +48,5 @@ public class ClimaApp : ClimaAppBase
         }
 
         forceReset = recommendReset;
-
-        // override the reset recommendation
-        //forceReset = false;
-    }
-
-    private void OnMeadowSystemError(object sender, MeadowSystemErrorInfo e)
-    {
-        Resolver.Log.Error($"App has detected a system error: {e.Message}");
-
-        if (e is Esp32SystemErrorInfo esp)
-        {
-            Resolver.Log.Error($"ESP function: {esp.Function}");
-            Resolver.Log.Error($"ESP status code: {esp.StatusCode}");
-        }
-
-        if (e.Exception != null)
-        {
-            Resolver.Log.Error($"Exception: {e.Exception.Message}");
-            Resolver.Log.Error($"ErrorNumber: {e.ErrorNumber}");
-            Resolver.Log.Error($"HResult: {e.Exception.HResult}");
-
-            if (e.Exception.InnerException != null)
-            {
-                Resolver.Log.Error($"InnerException: {e.Exception.InnerException.Message}");
-                Resolver.Log.Error($"HResult: {e.Exception.InnerException.HResult}");
-            }
-        }
     }
 }

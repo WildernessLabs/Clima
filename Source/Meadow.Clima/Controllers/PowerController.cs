@@ -6,24 +6,57 @@ using System.Threading.Tasks;
 
 namespace Meadow.Devices.Clima.Controllers;
 
+/// <summary>
+/// Controls the power management for the Clima device, including monitoring
+/// solar and battery voltages and issuing warnings when levels are low.
+/// </summary>
 public class PowerController
 {
     private readonly IClimaHardware clima;
 
+    /// <summary>
+    /// Event triggered when the solar voltage is below the warning level.
+    /// </summary>
     public event EventHandler<bool>? SolarVoltageWarning;
+
+    /// <summary>
+    /// Event triggered when the battery voltage is below the warning level.
+    /// </summary>
     public event EventHandler<bool>? BatteryVoltageWarning;
 
     private bool inBatteryWarningState = false;
     private bool inSolarWarningState = false;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether power data should be logged.
+    /// </summary>
     public bool LogPowerData { get; set; } = false;
+
+    /// <summary>
+    /// Gets the interval at which power data is updated.
+    /// </summary>
     public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(5);
+
+    /// <summary>
+    /// Gets the voltage level below which a battery warning is issued.
+    /// </summary>
     public Voltage LowBatteryWarningLevel { get; } = 3.3.Volts();
+
+    /// <summary>
+    /// Gets the voltage level below which a solar warning is issued.
+    /// </summary>
     public Voltage LowSolarWarningLevel { get; } = 3.0.Volts();
+
+    /// <summary>
+    /// Gets the voltage deadband for resetting warnings.
+    /// </summary>
     public Voltage WarningDeadband { get; } = 0.25.Volts();
 
-    public PowerController(
-        IClimaHardware clima)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PowerController"/> class.
+    /// </summary>
+    /// <param name="clima">The Clima hardware interface.</param>
+    public PowerController(IClimaHardware clima)
     {
         this.clima = clima;
 
@@ -45,15 +78,25 @@ public class PowerController
         }
     }
 
-    public async Task<PowerData> GetPowerData()
+    /// <summary>
+    /// Gets the current power data including battery and solar voltages.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the power data.</returns>
+    public Task<PowerData> GetPowerData()
     {
-        return new PowerData
+        var data = new PowerData
         {
             BatteryVoltage = clima.BatteryVoltageInput?.Voltage ?? null,
             SolarVoltage = clima.SolarVoltageInput?.Voltage ?? null,
         };
+
+        return new Task<PowerData>(() => data);
     }
 
+    /// <summary>
+    /// Puts the device to sleep for the specified duration.
+    /// </summary>
+    /// <param name="duration">The duration to sleep.</param>
     public void TimedSleep(TimeSpan duration)
     {
         Resolver.Log.Info("Going to sleep...");

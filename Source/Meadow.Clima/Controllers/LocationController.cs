@@ -4,14 +4,27 @@ using System;
 
 namespace Meadow.Devices.Clima.Controllers;
 
+/// <summary>
+/// Controller for handling GNSS location data.
+/// </summary>
 public class LocationController
 {
     private IGnssSensor gnss;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether to log data.
+    /// </summary>
     public bool LogData { get; set; } = false;
 
+    /// <summary>
+    /// Event that is triggered when a GNSS position is received.
+    /// </summary>
     public event EventHandler<GnssPositionInfo> PositionReceived;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LocationController"/> class.
+    /// </summary>
+    /// <param name="clima">The Clima hardware interface.</param>
     public LocationController(IClimaHardware clima)
     {
         if (clima.Gnss is { } gnss)
