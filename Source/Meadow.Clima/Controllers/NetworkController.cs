@@ -67,40 +67,95 @@ public class NetworkController
     /// Connects to the cloud.
     /// </summary>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public Task<bool> ConnectToCloud()
+    public async Task<bool> ConnectToCloud()
     {
-        // Implementation here
-        return Task.FromResult(false);
+        if (networkAdapter is IWiFiNetworkAdapter wifi)
+        {
+            if (!wifi.IsConnected)
+            {
+                Resolver.Log.Info("Connecting to network...");
+                await wifi.Connect("interwebs", "1234567890");
+            }
+        }
+
+        Resolver.Log.Info($"Connecting to network {(networkAdapter.IsConnected ? "succeeded" : "FAILED")}");
+
+        return networkAdapter.IsConnected;
     }
 
     /// <summary>
     /// Shuts down the network.
     /// </summary>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public Task ShutdownNetwork()
+    public async Task ShutdownNetwork()
     {
-        // Implementation here
-        return Task.CompletedTask;
+        if (networkAdapter is IWiFiNetworkAdapter wifi)
+        {
+            Resolver.Log.Info("Disconnecting network...");
+            try
+            {
+                await wifi.Disconnect(true);
+                Resolver.Log.Info("Network disconnected");
+            }
+            catch (Exception ex)
+            {
+                Resolver.Log.Info($"Network disconnect failed: {ex.Message}");
+            }
+        }
     }
 
     private void DownEventTimerProc(object _)
     {
-        // Implementation here
+        if (networkAdapter.IsConnected)
+        {
+            downEventTimer.Change(-1, -1);
+            return;
+        }
+
+        NetworkDown?.Invoke(this, DownTime);
+        downEventTimer.Change(DownEventPeriod, TimeSpan.FromMilliseconds(-1));
     }
 
     private void OnNetworkDisconnected(INetworkAdapter sender, NetworkDisconnectionEventArgs args)
     {
-        // Implementation here
+        lastDown = DateTimeOffset.UtcNow;
+        downEventTimer.Change(DownEventPeriod, TimeSpan.FromMilliseconds(-1));
+        ConnectionStateChanged?.Invoke(this, false);
     }
 
-    private Task ReportWiFiScan(IWiFiNetworkAdapter wifi)
+    private async Task ReportWiFiScan(IWiFiNetworkAdapter wifi)
     {
-        // Implementation here
-        return Task.CompletedTask;
+        var networks = await wifi.Scan();
+
+        Resolver.Log.Info("WiFi Scan Results");
+        if (networks.Count == 0)
+        {
+            Resolver.Log.Info("No networks found");
+        }
+        else
+        {
+            foreach (var network in networks)
+            {
+                if (string.IsNullOrEmpty(network.Ssid))
+                {
+                    Resolver.Log.Info($"[no ssid]: {network.SignalDbStrength}dB");
+                }
+                else
+                {
+                    Resolver.Log.Info($"{network.Ssid}: {network.SignalDbStrength}dB");
+                }
+            }
+        }
     }
 
     private void OnNetworkConnected(INetworkAdapter sender, NetworkConnectionEventArgs args)
     {
-        // Implementation here
+        if (sender is IWiFiNetworkAdapter wifi)
+        {
+            _ = ReportWiFiScan(wifi);
+        }
+
+        lastDown = null;
+        ConnectionStateChanged?.Invoke(this, true);
     }
 }
