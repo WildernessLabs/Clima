@@ -11,9 +11,8 @@ namespace Meadow.Devices.Clima.Controllers;
 /// </summary>
 public class SensorController
 {
-    private readonly IClimaHardware hardware;
-    private CircularBuffer<Azimuth> windVaneBuffer = new CircularBuffer<Azimuth>(12);
-    private SensorData latestData;
+    private readonly CircularBuffer<Azimuth> windVaneBuffer = new CircularBuffer<Azimuth>(12);
+    private readonly SensorData latestData;
 
     /// <summary>
     /// Gets or sets a value indicating whether to log sensor data.
@@ -32,7 +31,6 @@ public class SensorController
     public SensorController(IClimaHardware clima)
     {
         latestData = new SensorData();
-        hardware = clima;
 
         if (clima.TemperatureSensor is { } temperatureSensor)
         {

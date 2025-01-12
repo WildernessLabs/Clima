@@ -9,7 +9,7 @@ namespace Meadow.Devices.Clima.Controllers;
 /// </summary>
 public class LocationController
 {
-    private IGnssSensor gnss;
+    private readonly IGnssSensor gnss;
 
     /// <summary>
     /// Gets or sets a value indicating whether to log data.

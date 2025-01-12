@@ -22,7 +22,7 @@ public class NetworkController
 
     private readonly INetworkAdapter networkAdapter;
     private DateTimeOffset? lastDown;
-    private Timer downEventTimer;
+    private readonly Timer downEventTimer;
 
     /// <summary>
     /// Gets a value indicating whether the network is connected.
