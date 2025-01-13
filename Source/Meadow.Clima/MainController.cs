@@ -91,7 +91,7 @@ public class MainController
 
         if (!lowPowerMode)
         {
-            sleepSimulationTimer = new Timer((_) => PlatformOS_AfterWake(null, WakeSource.Unknown), null, -1, -1);
+            sleepSimulationTimer = new Timer((_) => PlatformOS_AfterWake(this, WakeSource.Unknown), null, -1, -1);
         }
 
         _ = SystemPreSleepStateProc();
