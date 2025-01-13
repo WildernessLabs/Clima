@@ -22,7 +22,7 @@ public class SensorController
     /// <summary>
     /// Gets the interval at which sensor data is updated.
     /// </summary>
-    public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(5);
+    public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(15);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SensorController"/> class.
@@ -35,51 +35,44 @@ public class SensorController
         if (clima.TemperatureSensor is { } temperatureSensor)
         {
             temperatureSensor.Updated += TemperatureUpdated;
-            temperatureSensor.StartUpdating(TimeSpan.FromSeconds(15));
             temperatureSensor.StartUpdating(UpdateInterval);
         }
 
         if (clima.BarometricPressureSensor is { } pressureSensor)
         {
             pressureSensor.Updated += PressureUpdated;
-            pressureSensor.StartUpdating(TimeSpan.FromMinutes(1));
+            pressureSensor.StartUpdating(UpdateInterval);
         }
 
         if (clima.HumiditySensor is { } humiditySensor)
         {
             humiditySensor.Updated += HumidityUpdated;
-            humiditySensor.StartUpdating(TimeSpan.FromMinutes(1));
+            humiditySensor.StartUpdating(UpdateInterval);
         }
 
         if (clima.CO2ConcentrationSensor is { } co2Sensor)
         {
             co2Sensor.Updated += Co2Updated;
-            co2Sensor.StartUpdating(TimeSpan.FromMinutes(5));
+            co2Sensor.StartUpdating(UpdateInterval);
         }
 
         if (clima.WindVane is { } windVane)
         {
             windVane.Updated += WindvaneUpdated;
-            windVane.StartUpdating(TimeSpan.FromSeconds(1));
+            windVane.StartUpdating(UpdateInterval);
         }
 
         if (clima.RainGauge is { } rainGuage)
         {
             rainGuage.Updated += RainGaugeUpdated;
 
-            rainGuage.StartUpdating(TimeSpan.FromMinutes(5));
+            rainGuage.StartUpdating(UpdateInterval);
         }
 
         if (clima.Anemometer is { } anemometer)
         {
             anemometer.Updated += AnemometerUpdated;
             anemometer.StartUpdating(UpdateInterval);
-        }
-
-        if (clima.LightSensor is { } lightSensor)
-        {
-            lightSensor.Updated += LightSensorUpdated;
-            lightSensor.StartUpdating(UpdateInterval);
         }
     }
 
@@ -97,16 +90,6 @@ public class SensorController
 
             return Task.FromResult(data);
         }
-    }
-
-    private void LightSensorUpdated(object sender, IChangeResult<Illuminance> e)
-    {
-        lock (latestData)
-        {
-            latestData.Light = e.New;
-        }
-
-        Resolver.Log.InfoIf(LogSensorData, $"Light:     {e.New.Lux:0.#} lux");
     }
 
     private void TemperatureUpdated(object sender, IChangeResult<Temperature> e)

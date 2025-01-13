@@ -9,7 +9,7 @@ namespace Meadow.Devices.Clima.Controllers;
 /// </summary>
 public class LocationController
 {
-    private readonly IGnssSensor gnss;
+    private readonly IGnssSensor? gnss = null;
 
     /// <summary>
     /// Gets or sets a value indicating whether to log data.
@@ -19,7 +19,7 @@ public class LocationController
     /// <summary>
     /// Event that is triggered when a GNSS position is received.
     /// </summary>
-    public event EventHandler<GnssPositionInfo> PositionReceived;
+    public event EventHandler<GnssPositionInfo>? PositionReceived = null;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LocationController"/> class.
@@ -44,7 +44,7 @@ public class LocationController
                 // we only need one position fix - weather stations don't move
                 Resolver.Log.InfoIf(LogData, $"GNSS Position: lat: [{pi.Position.Latitude}], long: [{pi.Position.Longitude}]");
                 PositionReceived?.Invoke(this, pi);
-                gnss.StopUpdating();
+                gnss?.StopUpdating();
             }
         }
     }

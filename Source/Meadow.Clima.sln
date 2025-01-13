@@ -42,8 +42,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MQTTnet", "..\..\MQTTnet\So
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization.MicroJson", "..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Serialization.MicroJson\Driver\Serialization.MicroJson.csproj", "{6300EAB4-806F-4C18-8FE0-57C45A2C0C58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensors.Light.Veml7700", "..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Light.Veml7700\Driver\Sensors.Light.Veml7700.csproj", "{C5925D96-F9F4-4F42-AC8D-97E464252A4D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -366,18 +364,6 @@ Global
 		{6300EAB4-806F-4C18-8FE0-57C45A2C0C58}.Release|iPhone.Build.0 = Release|Any CPU
 		{6300EAB4-806F-4C18-8FE0-57C45A2C0C58}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{6300EAB4-806F-4C18-8FE0-57C45A2C0C58}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Release|iPhone.Build.0 = Release|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -400,7 +386,6 @@ Global
 		{85DC9E85-3472-418A-8065-5EF99323E6FE} = {2889A476-F914-49E8-9F97-4CC6CA34A901}
 		{F6EB1347-3926-4308-BE20-70AC53BEBF1D} = {2889A476-F914-49E8-9F97-4CC6CA34A901}
 		{6300EAB4-806F-4C18-8FE0-57C45A2C0C58} = {2889A476-F914-49E8-9F97-4CC6CA34A901}
-		{C5925D96-F9F4-4F42-AC8D-97E464252A4D} = {2889A476-F914-49E8-9F97-4CC6CA34A901}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA61E123-F783-4CB3-8EB2-099EE930ADD4}
