@@ -9,9 +9,11 @@ using static Meadow.Devices.Clima.Controllers.NotificationController;
 
 namespace Meadow.Devices;
 
+/// <summary>
+/// Main controller for Clima.
+/// </summary>
 public class MainController
 {
-    private IClimaHardware hardware;
     private NotificationController notificationController;
     private SensorController sensorController;
     private PowerController powerController;
@@ -24,12 +26,18 @@ public class MainController
     private bool lowPowerMode = false;
     private Timer sleepSimulationTimer;
 
+    /// <summary>
+    /// Gets the telemetry publication period.
+    /// </summary>
     public TimeSpan TelemetryPublicationPeriod { get; } = TimeSpan.FromMinutes(1);
 
+    /// <summary>
+    /// Initializes the MainController with the clima hardware and network adapter.
+    /// </summary>
+    /// <param name="hardware">The Clima hardware to use.</param>
+    /// <param name="networkAdapter">The network adapter to use, or null if no network adapter is available.</param>
     public Task Initialize(IClimaHardware hardware, INetworkAdapter? networkAdapter)
     {
-        this.hardware = hardware;
-
         Resolver.Log.Info("Initialize hardware...");
 
         notificationController = new NotificationController(hardware.RgbLed);
@@ -263,11 +271,10 @@ public class MainController
         }
     }
 
-    public Task Run()
-    {
-        return Task.CompletedTask;
-    }
-
+    /// <summary>
+    /// Logs the application startup after a crash.
+    /// </summary>
+    /// <param name="crashReports">Crash report data</param>
     public void LogAppStartupAfterCrash(IEnumerable<string> crashReports)
     {
         // the cloud service's health reporter will log this for us automatically, so no need to manually do so
@@ -278,5 +285,4 @@ public class MainController
             Resolver.Log.Info(report);
         }
     }
-
 }
