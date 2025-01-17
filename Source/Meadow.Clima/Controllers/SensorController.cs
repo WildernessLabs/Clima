@@ -197,10 +197,15 @@ public class SensorController
     {
         lock (latestData)
         {
-            latestData.WindSpeed = e.New;
+			// sanity check on windspeed to avoid reporting Infinity
+            if (e.New.KilometersPerHour <= 250)
+            {
+                latestData.WindSpeed = e.New;
+            }
         }
 
         Resolver.Log.InfoIf(LogSensorData, $"Anemometer:      {e.New.MetersPerSecond:0.#} m/s");
+        Resolver.Log.InfoIf(LogSensorData, $"Anemometer:      {e.New.KilometersPerHour:0.#} km/hr");
     }
 
     private void RainGaugeUpdated(object sender, IChangeResult<Length> e)
