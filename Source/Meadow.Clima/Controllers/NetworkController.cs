@@ -1,4 +1,5 @@
 ﻿using Meadow.Hardware;
+using Meadow.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -150,6 +151,9 @@ public class NetworkController
 
     private void OnNetworkConnected(INetworkAdapter sender, NetworkConnectionEventArgs args)
     {
+        Resolver.Log.Info("Add UdpLogger");
+        Resolver.Log.AddProvider(new UdpLogger(/*port = */5100));
+
         if (sender is IWiFiNetworkAdapter wifi)
         {
             _ = ReportWiFiScan(wifi);

@@ -81,6 +81,7 @@ public class NotificationController
     /// <param name="status">The system status to set.</param>
     public void SetSystemStatus(SystemStatus status)
     {
+        Resolver.Log.Info($"SetSystemStatus = {status}");
         switch (status)
         {
             case SystemStatus.LowPower:
