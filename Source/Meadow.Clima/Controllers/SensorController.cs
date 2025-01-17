@@ -11,6 +11,7 @@ namespace Meadow.Devices.Clima.Controllers;
 /// </summary>
 public class SensorController
 {
+    private readonly IClimaHardware clima;
     private readonly CircularBuffer<Azimuth> windVaneBuffer = new CircularBuffer<Azimuth>(12);
     private readonly SensorData latestData;
 
@@ -22,7 +23,7 @@ public class SensorController
     /// <summary>
     /// Gets the interval at which sensor data is updated.
     /// </summary>
-    public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(15);
+    public TimeSpan UpdateInterval { get; private set; } = TimeSpan.FromSeconds(15);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SensorController"/> class.
@@ -31,6 +32,67 @@ public class SensorController
     public SensorController(IClimaHardware clima)
     {
         latestData = new SensorData();
+        this.clima = clima;
+    }
+
+    /// <summary>
+    /// Stop the update events and remove event handler.
+    /// </summary>
+    public void StopUpdating()
+    {
+        if (clima.TemperatureSensor is { } temperatureSensor)
+        {
+            temperatureSensor.Updated -= TemperatureUpdated;
+            temperatureSensor.StopUpdating();
+        }
+        if (clima.BarometricPressureSensor is { } pressureSensor)
+        {
+            pressureSensor.Updated -= PressureUpdated;
+            // barometric pressure is slow to change
+            pressureSensor.StopUpdating();
+        }
+
+        if (clima.HumiditySensor is { } humiditySensor)
+        {
+            humiditySensor.Updated -= HumidityUpdated;
+            // humidity is slow to change
+            humiditySensor.StopUpdating();
+        }
+
+        if (clima.CO2ConcentrationSensor is { } co2Sensor)
+        {
+            co2Sensor.Updated -= Co2Updated;
+            // CO2 levels are slow to change
+            co2Sensor.StopUpdating();
+        }
+
+        if (clima.WindVane is { } windVane)
+        {
+            windVane.Updated -= WindvaneUpdated;
+            windVane.StopUpdating();
+        }
+
+        if (clima.RainGauge is { } rainGuage)
+        {
+            rainGuage.Updated -= RainGaugeUpdated;
+            // rain does not change frequently
+            rainGuage.StopUpdating();
+        }
+
+        if (clima.Anemometer is { } anemometer)
+        {
+            anemometer.Updated -= AnemometerUpdated;
+            anemometer.StopUpdating();
+        }
+    }
+
+    /// <summary>
+    /// Add event handlers and start updating
+    /// </summary>
+    /// <param name="updateInterval"></param>
+    public void StartUpdating(TimeSpan updateInterval)
+    {
+        UpdateInterval = updateInterval;
 
         if (clima.TemperatureSensor is { } temperatureSensor)
         {

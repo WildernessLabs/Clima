@@ -35,7 +35,7 @@ public class PowerController
     /// <summary>
     /// Gets the interval at which power data is updated.
     /// </summary>
-    public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(5);
+    public TimeSpan UpdateInterval { get; private set; } = TimeSpan.FromSeconds(10);
 
     /// <summary>
     /// Gets the voltage level below which a battery warning is issued.
@@ -59,12 +59,35 @@ public class PowerController
     public PowerController(IClimaHardware clima)
     {
         this.clima = clima;
-
-        Initialize();
     }
 
-    private void Initialize()
+    /// <summary>
+    /// Remove event handler and stop updating
+    /// </summary>
+    public void StopUpdating()
     {
+        Resolver.Log.Info($"PowerController: Stop Updating");
+        if (clima.SolarVoltageInput is { } solarVoltage)
+        {
+            solarVoltage.Updated -= SolarVoltageUpdated;
+            solarVoltage.StopUpdating();
+        }
+
+        if (clima.BatteryVoltageInput is { } batteryVoltage)
+        {
+            batteryVoltage.Updated -= BatteryVoltageUpdated;
+            batteryVoltage.StopUpdating();
+        }
+    }
+
+    /// <summary>
+    /// Add event handler and start updating
+    /// </summary>
+    /// <param name="powerControllerUpdateInterval"></param>
+    public void StartUpdating(TimeSpan powerControllerUpdateInterval)
+    {
+        UpdateInterval = powerControllerUpdateInterval;
+
         if (clima.SolarVoltageInput is { } solarVoltage)
         {
             solarVoltage.Updated += SolarVoltageUpdated;

@@ -43,6 +43,10 @@ public class ClimaApp : ClimaAppBase
         svc.StateChanged += (sender, updateState) =>
         {
             Resolver.Log.Info($"UpdateState {updateState}");
+            if (updateState == UpdateState.DownloadingFile)
+            {
+                mainController?.StopUpdating();
+            }
         };
 
         svc.RetrieveProgress += (updateService, info) =>

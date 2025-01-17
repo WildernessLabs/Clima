@@ -50,8 +50,11 @@ public class MainController
         Resolver.Log.Info($"Running on Clima Hardware {hardware.RevisionString}");
 
         sensorController = new SensorController(hardware);
+        sensorController.StartUpdating(sensorController.UpdateInterval); // TODO: consider calling after network, time etc are ready?
 
         powerController = new PowerController(hardware);
+        powerController.StartUpdating(powerController.UpdateInterval);   // TODO: consider calling after network, time
+
         powerController.SolarVoltageWarning += OnSolarVoltageWarning;
         powerController.BatteryVoltageWarning += OnBatteryVoltageWarning;
 
@@ -76,6 +79,7 @@ public class MainController
             }
             else
             {
+                Resolver.Log.Info("Network is connected.");
                 notificationController.SetSystemStatus(NotificationController.SystemStatus.NetworkConnected);
                 if (Resolver.MeadowCloudService.ConnectionState == CloudConnectionState.Connecting)
                 {
@@ -96,7 +100,30 @@ public class MainController
 
         _ = SystemPreSleepStateProc();
 
+        Resolver.Log.Info($"Initialize hardware Task.CompletedTask");
+
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Start sensor and power controller updates
+    /// </summary>
+    public void StartUpdating()
+    {
+        Resolver.Log.Info($"Start Updating");
+        sensorController.StartUpdating(sensorController.UpdateInterval);
+        powerController.StartUpdating(powerController.UpdateInterval);
+    }
+
+    /// <summary>
+    /// Stop sensor and power controller updates
+    /// </summary>
+    public void StopUpdating()
+    {
+        Resolver.Log.Info($"Stop Updating");
+        sensorController.StopUpdating();
+        powerController.StopUpdating();
+        sleepSimulationTimer.Change(-1, -1); // stop timer
     }
 
     private void OnPositionReceived(object sender, Peripherals.Sensors.Location.Gnss.GnssPositionInfo e)
