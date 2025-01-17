@@ -107,13 +107,11 @@ public class PowerController
     /// <returns>A task that represents the asynchronous operation. The task result contains the power data.</returns>
     public Task<PowerData> GetPowerData()
     {
-        var data = new PowerData
+        return Task.FromResult(new PowerData
         {
             BatteryVoltage = clima.BatteryVoltageInput?.Voltage ?? null,
             SolarVoltage = clima.SolarVoltageInput?.Voltage ?? null,
-        };
-
-        return new Task<PowerData>(() => data);
+        });
     }
 
     /// <summary>
