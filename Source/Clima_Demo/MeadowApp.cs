@@ -71,6 +71,8 @@ public class ClimaApp : ClimaAppBase
             updateService.ApplyUpdate(info);
         };
 
+        RestartCommand.Initialise();
+
         return Task.CompletedTask;
     }
 
