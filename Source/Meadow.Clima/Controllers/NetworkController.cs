@@ -5,19 +5,44 @@ using System.Threading.Tasks;
 
 namespace Meadow.Devices.Clima.Controllers;
 
+/// <summary>
+/// Controller for managing network connections and reporting network status.
+/// </summary>
 public class NetworkController
 {
+    /// <summary>
+    /// Event triggered when the connection state changes.
+    /// </summary>
     public event EventHandler<bool>? ConnectionStateChanged;
+
+    /// <summary>
+    /// Event triggered when the network is down for a specified period.
+    /// </summary>
     public event EventHandler<TimeSpan>? NetworkDown;
 
     private readonly INetworkAdapter networkAdapter;
     private DateTimeOffset? lastDown;
-    private Timer downEventTimer;
+    private readonly Timer downEventTimer;
 
-    public bool IsConnected => networkAdapter.IsConnected;
-    public TimeSpan DownTime => lastDown == null ? TimeSpan.Zero : DateTime.UtcNow - lastDown.Value;
-    public TimeSpan DownEventPeriod { get; } = TimeSpan.FromSeconds(30);
+    /// <summary>
+    /// Gets a value indicating whether the network is connected.
+    /// </summary>
+    public bool IsConnected { get; private set; }
 
+    /// <summary>
+    /// Gets the total time the network has been down.
+    /// </summary>
+    public TimeSpan DownTime { get; private set; }
+
+    /// <summary>
+    /// Gets the period for triggering network down events.
+    /// </summary>
+    public TimeSpan DownEventPeriod { get; private set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NetworkController"/> class.
+    /// </summary>
+    /// <param name="networkAdapter">The network adapter</param>
     public NetworkController(INetworkAdapter networkAdapter)
     {
         if (networkAdapter is IWiFiNetworkAdapter wifi)
@@ -38,6 +63,10 @@ public class NetworkController
         downEventTimer = new Timer(DownEventTimerProc, null, -1, -1);
     }
 
+    /// <summary>
+    /// Connects to the cloud.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task<bool> ConnectToCloud()
     {
         if (networkAdapter is IWiFiNetworkAdapter wifi)
@@ -54,6 +83,10 @@ public class NetworkController
         return networkAdapter.IsConnected;
     }
 
+    /// <summary>
+    /// Shuts down the network.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task ShutdownNetwork()
     {
         if (networkAdapter is IWiFiNetworkAdapter wifi)
