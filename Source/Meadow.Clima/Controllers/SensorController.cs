@@ -6,66 +6,67 @@ using System.Threading.Tasks;
 
 namespace Meadow.Devices.Clima.Controllers;
 
+/// <summary>
+/// Controller for managing sensor data from various sensors in the Clima hardware.
+/// </summary>
 public class SensorController
 {
-    private IClimaHardware hardware;
-    private CircularBuffer<Azimuth> windVaneBuffer = new CircularBuffer<Azimuth>(12);
-    private Length? startupRainValue;
-    private SensorData latestData;
+    private readonly CircularBuffer<Azimuth> windVaneBuffer = new CircularBuffer<Azimuth>(12);
+    private readonly SensorData latestData;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether to log sensor data.
+    /// </summary>
     private bool LogSensorData { get; set; } = false;
-    public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(5);
 
+    /// <summary>
+    /// Gets the interval at which sensor data is updated.
+    /// </summary>
+    public TimeSpan UpdateInterval { get; } = TimeSpan.FromSeconds(15);
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SensorController"/> class.
+    /// </summary>
+    /// <param name="clima">The Clima hardware interface.</param>
     public SensorController(IClimaHardware clima)
     {
         latestData = new SensorData();
-        hardware = clima;
 
         if (clima.TemperatureSensor is { } temperatureSensor)
         {
             temperatureSensor.Updated += TemperatureUpdated;
-            // atmospheric temp is slow to change
-            temperatureSensor.StartUpdating(TimeSpan.FromSeconds(15));
             temperatureSensor.StartUpdating(UpdateInterval);
         }
 
         if (clima.BarometricPressureSensor is { } pressureSensor)
         {
             pressureSensor.Updated += PressureUpdated;
-            // barometric pressure is slow to change
-            pressureSensor.StartUpdating(TimeSpan.FromMinutes(1));
+            pressureSensor.StartUpdating(UpdateInterval);
         }
 
         if (clima.HumiditySensor is { } humiditySensor)
         {
             humiditySensor.Updated += HumidityUpdated;
-            // humidity is slow to change
-            humiditySensor.StartUpdating(TimeSpan.FromMinutes(1));
+            humiditySensor.StartUpdating(UpdateInterval);
         }
 
         if (clima.CO2ConcentrationSensor is { } co2Sensor)
         {
             co2Sensor.Updated += Co2Updated;
-            // CO2 levels are slow to change
-            co2Sensor.StartUpdating(TimeSpan.FromMinutes(5));
+            co2Sensor.StartUpdating(UpdateInterval);
         }
 
         if (clima.WindVane is { } windVane)
         {
             windVane.Updated += WindvaneUpdated;
-            windVane.StartUpdating(TimeSpan.FromSeconds(1));
+            windVane.StartUpdating(UpdateInterval);
         }
 
         if (clima.RainGauge is { } rainGuage)
         {
             rainGuage.Updated += RainGaugeUpdated;
 
-            // TODO: if we're restarting, we need to rehydrate today's totals already collected
-            //            startupRainValue = rainGuage.Read().Result;
-            //            Resolver.Log.Info($"Startup rain value: {startupRainValue}");
-
-            // rain does not change frequently
-            rainGuage.StartUpdating(TimeSpan.FromMinutes(5));
+            rainGuage.StartUpdating(UpdateInterval);
         }
 
         if (clima.Anemometer is { } anemometer)
@@ -73,14 +74,12 @@ public class SensorController
             anemometer.Updated += AnemometerUpdated;
             anemometer.StartUpdating(UpdateInterval);
         }
-
-        if (clima.LightSensor is { } lightSensor)
-        {
-            lightSensor.Updated += LightSensorUpdated;
-            lightSensor.StartUpdating(UpdateInterval);
-        }
     }
 
+    /// <summary>
+    /// Gets the latest sensor data.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the latest sensor data.</returns>
     public Task<SensorData> GetSensorData()
     {
         lock (latestData)
@@ -91,16 +90,6 @@ public class SensorController
 
             return Task.FromResult(data);
         }
-    }
-
-    private void LightSensorUpdated(object sender, IChangeResult<Illuminance> e)
-    {
-        lock (latestData)
-        {
-            latestData.Light = e.New;
-        }
-
-        Resolver.Log.InfoIf(LogSensorData, $"Light:     {e.New.Lux:0.#} lux");
     }
 
     private void TemperatureUpdated(object sender, IChangeResult<Temperature> e)
