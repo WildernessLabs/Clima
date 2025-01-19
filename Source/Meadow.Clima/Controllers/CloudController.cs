@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Meadow.Devices.Clima.Controllers;
 
+/// <summary>
+/// Controller for handling cloud-related operations.
+/// </summary>
 public class CloudController
 {
+    /// <summary>
+    /// Waits for all data to be sent to the cloud.
+    /// </summary>
     public async Task WaitForDataToSend()
     {
         // TODO: add a timeout here
@@ -20,27 +26,31 @@ public class CloudController
         Resolver.Log.Info($"All cloud data has been sent");
     }
 
+    /// <summary>
+    /// Logs the application startup after a crash.
+    /// </summary>
     public void LogAppStartupAfterCrash()
     {
         SendEvent(CloudEventIds.DeviceStarted, $"Device restarted after crash");
     }
 
+    /// <summary>
+    /// Logs the application startup with the specified hardware revision.
+    /// </summary>
+    /// <param name="hardwareRevision">The hardware revision of the device.</param>
     public void LogAppStartup(string hardwareRevision)
     {
         SendEvent(CloudEventIds.DeviceStarted, $"Device started (hardware {hardwareRevision})");
     }
 
+    /// <summary>
+    /// Logs the device information including name and location.
+    /// </summary>
+    /// <param name="deviceName">The name of the device.</param>
+    /// <param name="latitiude">The latitude of the device location.</param>
+    /// <param name="longitude">The longitude of the device location.</param>
     public void LogDeviceInfo(string deviceName, double latitiude, double longitude)
     {
-        // {
-        //      "description": "Clima Boot Telemetry",
-        //      "eventId": 109,
-        //      "timestamp": "2024-05-20T22:25:15.862Z",
-        //      "measurements": {
-        //          "lat": 34.2277472,
-        //          "long": -118.2273136
-        //      }
-        // }
         var cloudEvent = new CloudEvent
         {
             Description = "Clima Position Telemetry",
@@ -51,19 +61,33 @@ public class CloudController
         cloudEvent.Measurements.Add("device_name", deviceName);
         cloudEvent.Measurements.Add("lat", latitiude);
         cloudEvent.Measurements.Add("long", longitude);
-        
+
         SendEvent(cloudEvent);
     }
+
+    /// <summary>
+    /// Logs a warning message.
+    /// </summary>
+    /// <param name="message">The warning message to log.</param>
     public void LogWarning(string message)
     {
         SendLog(message, "warning");
     }
 
+    /// <summary>
+    /// Logs an informational message.
+    /// </summary>
+    /// <param name="message">The informational message to log.</param>
     public void LogMessage(string message)
     {
         SendLog(message, "information");
     }
 
+    /// <summary>
+    /// Logs telemetry data from sensors and power data.
+    /// </summary>
+    /// <param name="sensorData">The sensor data to log.</param>
+    /// <param name="powerData">The power data to log.</param>
     public void LogTelemetry(SensorData sensorData, PowerData powerData)
     {
         var measurements = sensorData

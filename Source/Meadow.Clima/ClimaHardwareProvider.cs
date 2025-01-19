@@ -11,10 +11,16 @@ namespace Meadow.Devices;
 /// </summary>
 public class ClimaHardwareProvider : IMeadowAppEmbeddedHardwareProvider<IClimaHardware>
 {
+    /// <summary>
+    /// Initializes a new instance of the ClimaHardwareProvider class.
+    /// </summary>
     public ClimaHardwareProvider()
-    {
-    }
+    { }
 
+    /// <summary>
+    /// Creates an instance of the Clima hardware.
+    /// </summary>
+    /// <returns>An instance of IClimaHardware.</returns>
     public static IClimaHardware Create()
     {
         return new ClimaHardwareProvider()

@@ -4,14 +4,27 @@ using System;
 
 namespace Meadow.Devices.Clima.Controllers;
 
+/// <summary>
+/// Controller for handling GNSS location data.
+/// </summary>
 public class LocationController
 {
-    private IGnssSensor gnss;
+    private readonly IGnssSensor? gnss = null;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether to log data.
+    /// </summary>
     public bool LogData { get; set; } = false;
 
-    public event EventHandler<GnssPositionInfo> PositionReceived;
+    /// <summary>
+    /// Event that is triggered when a GNSS position is received.
+    /// </summary>
+    public event EventHandler<GnssPositionInfo>? PositionReceived = null;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LocationController"/> class.
+    /// </summary>
+    /// <param name="clima">The Clima hardware interface.</param>
     public LocationController(IClimaHardware clima)
     {
         if (clima.Gnss is { } gnss)
@@ -31,7 +44,7 @@ public class LocationController
                 // we only need one position fix - weather stations don't move
                 Resolver.Log.InfoIf(LogData, $"GNSS Position: lat: [{pi.Position.Latitude}], long: [{pi.Position.Longitude}]");
                 PositionReceived?.Invoke(this, pi);
-                gnss.StopUpdating();
+                gnss?.StopUpdating();
             }
         }
     }
