@@ -1,4 +1,5 @@
 ﻿using Meadow.Hardware;
+using Meadow.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,18 +28,18 @@ public class NetworkController
     /// <summary>
     /// Gets a value indicating whether the network is connected.
     /// </summary>
-    public bool IsConnected { get; private set; }
+    public bool IsConnected => networkAdapter.IsConnected;
 
     /// <summary>
     /// Gets the total time the network has been down.
     /// </summary>
-    public TimeSpan DownTime { get; private set; }
+    public TimeSpan DownTime => lastDown == null ? TimeSpan.Zero : DateTime.UtcNow - lastDown.Value;
 
     /// <summary>
     /// Gets the period for triggering network down events.
     /// </summary>
-    public TimeSpan DownEventPeriod { get; private set; }
-
+    public TimeSpan DownEventPeriod { get; } = TimeSpan.FromSeconds(30);
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="NetworkController"/> class.
     /// </summary>
@@ -150,6 +151,9 @@ public class NetworkController
 
     private void OnNetworkConnected(INetworkAdapter sender, NetworkConnectionEventArgs args)
     {
+        Resolver.Log.Info("Add UdpLogger");
+        Resolver.Log.AddProvider(new UdpLogger(/*port = */5100));
+
         if (sender is IWiFiNetworkAdapter wifi)
         {
             _ = ReportWiFiScan(wifi);
