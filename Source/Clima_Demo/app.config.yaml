@@ -30,3 +30,8 @@ MeadowCloud:
 
     # How often to send metrics to Meadow.Cloud
     HealthMetricsIntervalMinutes: 5
+
+
+# Settings for Clima
+Clima:
+  OffsetToNorth: 0.0

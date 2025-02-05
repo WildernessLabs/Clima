@@ -3,6 +3,7 @@ using Meadow.Devices.Clima.Models;
 using Meadow.Units;
 using System;
 using System.Threading.Tasks;
+using YamlDotNet.Core.Tokens;
 
 namespace Meadow.Devices.Clima.Controllers;
 
@@ -33,6 +34,14 @@ public class SensorController
     {
         latestData = new SensorData();
         this.clima = clima;
+
+        if (Resolver.App.Settings.TryGetValue("Clima.OffsetToNorth", out string offsetToNorthSetting))
+        {
+            if (Double.TryParse(offsetToNorthSetting, out double trueNorth))
+            {
+                OffsetToNorth = new Azimuth(trueNorth);
+            }
+        }
     }
 
     /// <summary>
@@ -218,15 +227,33 @@ public class SensorController
         Resolver.Log.InfoIf(LogSensorData, $"Rain Gauge:      {e.New.Millimeters:0.#} mm");
     }
 
+    /// <summary>
+    /// 0 to 360 degree offset to true north updated from app.config.yaml
+    /// </summary>
+    /// <remarks>
+    /// After install of Clima, point wind vane at true north, run Clima_Demo and record uncalibrated WindDirection.
+    /// Update app.config.yaml with the uncalibrated WindDirection.
+    /// Deploy the updated app.config.yaml and this direction will be reported as 0 Degrees. 
+    /// </remarks>
+    /// <example>
+    /// # Settings for Clima
+    /// Clima:
+    ///   OffsetToNorth: 0.0
+    /// </example>
+    public Azimuth OffsetToNorth { get; private set; } = new Azimuth(0.0);
+
     private void WindvaneUpdated(object sender, IChangeResult<Azimuth> e)
     {
-        windVaneBuffer.Append(e.New);
+        Azimuth newAzimuth = e.New - OffsetToNorth;
+        windVaneBuffer.Append(newAzimuth);
+
+        Azimuth mean = windVaneBuffer.Mean();
 
         lock (latestData)
         {
-            latestData.WindDirection = windVaneBuffer.Mean();
+            latestData.WindDirection = mean;
         }
 
-        Resolver.Log.InfoIf(LogSensorData, $"Wind Vane:       {e.New.DecimalDegrees} (mean: {windVaneBuffer.Mean().DecimalDegrees})");
+        Resolver.Log.InfoIf(LogSensorData, $"Wind Vane:       {newAzimuth}, Average: {mean.DecimalDegrees} (uncalibrated: {e.New})");
     }
 }
