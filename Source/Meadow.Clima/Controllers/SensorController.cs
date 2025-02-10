@@ -14,6 +14,7 @@ public class SensorController
 {
     private readonly IClimaHardware clima;
     private readonly CircularBuffer<Azimuth> windVaneBuffer = new CircularBuffer<Azimuth>(12);
+    private readonly CircularBuffer<Speed> windSpeedBuffer = new CircularBuffer<Speed>(12);
     private readonly SensorData latestData;
 
     /// <summary>
@@ -204,17 +205,22 @@ public class SensorController
 
     private void AnemometerUpdated(object sender, IChangeResult<Speed> e)
     {
+        Speed? mean = new Speed(0);
         lock (latestData)
         {
 			// sanity check on windspeed to avoid reporting Infinity
             if (e.New.KilometersPerHour <= 250)
             {
                 latestData.WindSpeed = e.New;
+
+                windSpeedBuffer.Append(e.New);
+                latestData.WindSpeedAverage = mean = windSpeedBuffer.Mean();
             }
         }
 
-        Resolver.Log.InfoIf(LogSensorData, $"Anemometer:      {e.New.MetersPerSecond:0.#} m/s");
-        Resolver.Log.InfoIf(LogSensorData, $"Anemometer:      {e.New.KilometersPerHour:0.#} km/hr");
+        //Resolver.Log.InfoIf(true, $"Anemometer:      {e.New.MetersPerSecond:0.#} m/s");
+        Resolver.Log.InfoIf(LogSensorData, $"Anemometer:      {e.New.KilometersPerHour:0.#} km/hr, Average = {mean?.KilometersPerHour:0.#} km/hr");
+
     }
 
     private void RainGaugeUpdated(object sender, IChangeResult<Length> e)
