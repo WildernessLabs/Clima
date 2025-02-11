@@ -126,7 +126,7 @@ public class SensorData
         }
         if (Rain != null)
         {
-            d.Add(nameof(Rain), Rain.Value.Centimeters);
+            d.Add(nameof(Rain), Rain.Value.Millimeters);
         }
         if (Light != null)
         {
