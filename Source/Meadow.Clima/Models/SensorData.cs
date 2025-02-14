@@ -58,9 +58,10 @@ public class SensorData
     /// </summary>
     public void Clear()
     {
-        Co2Level = null;
         Temperature = null;
         Pressure = null;
+        Humidity = null;
+        Co2Level = null;
         WindSpeed = null;
         WindSpeedAverage = null;
         WindDirection = null;
@@ -75,9 +76,10 @@ public class SensorData
     {
         return new SensorData
         {
-            Co2Level = Co2Level,
             Temperature = Temperature,
             Pressure = Pressure,
+            Humidity = Humidity,
+            Co2Level = Co2Level,
             WindSpeed = WindSpeed,
             WindSpeedAverage = WindSpeedAverage,
             WindDirection = WindDirection,
@@ -124,7 +126,7 @@ public class SensorData
         }
         if (Rain != null)
         {
-            d.Add(nameof(Rain), Rain.Value.Centimeters);
+            d.Add(nameof(Rain), Rain.Value.Millimeters);
         }
         if (Light != null)
         {
