@@ -1,4 +1,5 @@
 ﻿using Meadow.Hardware;
+using Meadow.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,17 +28,35 @@ public class NetworkController
     /// <summary>
     /// Gets a value indicating whether the network is connected.
     /// </summary>
-    public bool IsConnected { get; private set; }
+    public bool IsConnected => networkAdapter.IsConnected;
 
     /// <summary>
     /// Gets the total time the network has been down.
     /// </summary>
-    public TimeSpan DownTime { get; private set; }
+    public TimeSpan DownTime => lastDown == null ? TimeSpan.Zero : DateTime.UtcNow - lastDown.Value;
 
     /// <summary>
     /// Gets the period for triggering network down events.
     /// </summary>
-    public TimeSpan DownEventPeriod { get; private set; }
+    public TimeSpan DownEventPeriod { get; } = TimeSpan.FromSeconds(30);
+
+
+    /// <summary>
+    /// Port used for UdpLogging. 
+    /// </summary>
+    /// <remarks>
+    /// Default set in constructor is port 5100
+    /// </remarks>
+    private int UdpLoggingPort { get; set; }
+
+    /// <summary>
+    /// Instance of UdpLogger. Use to remove UdpLogger if the network disconnects
+    /// </summary>
+    private UdpLogger? UdpLogger { get; set; }
+
+    private string WifiSsid { get; set; } = "SSID";
+    private string WifiPassword { get; set; } = "PASSWORD";
+
 
     /// <summary>
     /// Initializes a new instance of the <see cref="NetworkController"/> class.
@@ -73,8 +92,8 @@ public class NetworkController
         {
             if (!wifi.IsConnected)
             {
-                Resolver.Log.Info("Connecting to network...");
-                await wifi.Connect("interwebs", "1234567890");
+                Resolver.Log.Info($"Connecting to network: {WifiSsid}");
+                await wifi.Connect(WifiSsid, WifiPassword);
             }
         }
 
@@ -118,6 +137,14 @@ public class NetworkController
 
     private void OnNetworkDisconnected(INetworkAdapter sender, NetworkDisconnectionEventArgs args)
     {
+        // Remove the UdpLogger if it's in the LogProviderCollection.
+        if (UdpLogger != null)
+        {
+            Resolver.Log.RemoveProvider(UdpLogger);
+            UdpLogger.Dispose();
+            UdpLogger = null;
+        }
+
         lastDown = DateTimeOffset.UtcNow;
         downEventTimer.Change(DownEventPeriod, TimeSpan.FromMilliseconds(-1));
         ConnectionStateChanged?.Invoke(this, false);
@@ -150,6 +177,9 @@ public class NetworkController
 
     private void OnNetworkConnected(INetworkAdapter sender, NetworkConnectionEventArgs args)
     {
+        Resolver.Log.Info("Add UdpLogger");
+        Resolver.Log.AddProvider(UdpLogger = new UdpLogger(UdpLoggingPort));
+
         if (sender is IWiFiNetworkAdapter wifi)
         {
             _ = ReportWiFiScan(wifi);

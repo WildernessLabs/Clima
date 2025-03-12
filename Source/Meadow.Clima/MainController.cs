@@ -50,14 +50,17 @@ public class MainController
         Resolver.Log.Info($"Running on Clima Hardware {hardware.RevisionString}");
 
         sensorController = new SensorController(hardware);
+        sensorController.StartUpdating(sensorController.UpdateInterval); // TODO: consider calling after network, time etc are ready?
 
         powerController = new PowerController(hardware);
+        powerController.StartUpdating(powerController.UpdateInterval);   // TODO: consider calling after network, time
+
         powerController.SolarVoltageWarning += OnSolarVoltageWarning;
         powerController.BatteryVoltageWarning += OnBatteryVoltageWarning;
 
-        locationController = new LocationController(hardware);
 
-        locationController.PositionReceived += OnPositionReceived;
+
+
 
         if (networkAdapter == null)
         {
@@ -76,6 +79,7 @@ public class MainController
             }
             else
             {
+                Resolver.Log.Info("Network is connected.");
                 notificationController.SetSystemStatus(NotificationController.SystemStatus.NetworkConnected);
                 if (Resolver.MeadowCloudService.ConnectionState == CloudConnectionState.Connecting)
                 {
@@ -87,6 +91,9 @@ public class MainController
         Resolver.MeadowCloudService.ConnectionStateChanged += OnMeadowCloudServiceConnectionStateChanged;
         cloudController.LogAppStartup(hardware.RevisionString);
 
+        locationController = new LocationController(hardware);
+        locationController.PositionReceived += OnPositionReceived;
+
         Resolver.Device.PlatformOS.AfterWake += PlatformOS_AfterWake;
 
         if (!lowPowerMode)
@@ -96,7 +103,32 @@ public class MainController
 
         _ = SystemPreSleepStateProc();
 
+        Resolver.Log.Info($"Initialize hardware Task.CompletedTask");
+
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Start sensor and power controller updates
+    /// </summary>
+    public void StartUpdating()
+    {
+        Resolver.Log.Info($"Start Updating");
+        sensorController.StartUpdating(sensorController.UpdateInterval);
+        powerController.StartUpdating(powerController.UpdateInterval);
+        locationController.StartUpdating();
+    }
+
+    /// <summary>
+    /// Stop sensor and power controller updates
+    /// </summary>
+    public void StopUpdating()
+    {
+        Resolver.Log.Info($"Stop Updating");
+        sensorController.StopUpdating();
+        powerController.StopUpdating();
+        locationController.StopUpdating();
+        sleepSimulationTimer.Change(-1, -1); // stop timer
     }
 
     private void OnPositionReceived(object sender, Peripherals.Sensors.Location.Gnss.GnssPositionInfo e)
@@ -179,7 +211,15 @@ public class MainController
         {
             case CloudConnectionState.Connected:
                 notificationController.SetSystemStatus(NotificationController.SystemStatus.Connected);
+
+                locationController.StartUpdating();
                 break;
+
+            case CloudConnectionState.Disconnected:
+            case CloudConnectionState.Unknown:
+                locationController.StopUpdating();
+                break;
+
             default:
                 notificationController.SetSystemStatus(NotificationController.SystemStatus.ConnectingToCloud);
                 break;

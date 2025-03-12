@@ -34,6 +34,11 @@ public class SensorData
     public Speed? WindSpeed { get; set; }
 
     /// <summary>
+    /// Gets or sets the average wind speed.
+    /// </summary>
+    public Speed? WindSpeedAverage { get; set; }
+
+    /// <summary>
     /// Gets or sets the wind direction.
     /// </summary>
     public Azimuth? WindDirection { get; set; }
@@ -53,10 +58,12 @@ public class SensorData
     /// </summary>
     public void Clear()
     {
-        Co2Level = null;
         Temperature = null;
         Pressure = null;
+        Humidity = null;
+        Co2Level = null;
         WindSpeed = null;
+        WindSpeedAverage = null;
         WindDirection = null;
         Rain = null;
         Light = null;
@@ -69,10 +76,12 @@ public class SensorData
     {
         return new SensorData
         {
-            Co2Level = Co2Level,
             Temperature = Temperature,
             Pressure = Pressure,
+            Humidity = Humidity,
+            Co2Level = Co2Level,
             WindSpeed = WindSpeed,
+            WindSpeedAverage = WindSpeedAverage,
             WindDirection = WindDirection,
             Rain = Rain,
             Light = Light,
@@ -107,13 +116,17 @@ public class SensorData
         {
             d.Add(nameof(WindSpeed), WindSpeed.Value.KilometersPerHour);
         }
+        if (WindSpeedAverage != null)
+        {
+            d.Add(nameof(WindSpeedAverage), WindSpeedAverage.Value.KilometersPerHour);
+        }
         if (WindDirection != null)
         {
             d.Add(nameof(WindDirection), WindDirection.Value.DecimalDegrees);
         }
         if (Rain != null)
         {
-            d.Add(nameof(Rain), Rain.Value.Centimeters);
+            d.Add(nameof(Rain), Rain.Value.Millimeters);
         }
         if (Light != null)
         {

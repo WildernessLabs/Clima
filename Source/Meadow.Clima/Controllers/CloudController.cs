@@ -2,6 +2,7 @@
 using Meadow.Devices.Clima.Constants;
 using Meadow.Devices.Clima.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,21 +48,19 @@ public class CloudController
     /// Logs the device information including name and location.
     /// </summary>
     /// <param name="deviceName">The name of the device.</param>
-    /// <param name="latitiude">The latitude of the device location.</param>
+    /// <param name="latitude">The latitude of the device location.</param>
     /// <param name="longitude">The longitude of the device location.</param>
-    public void LogDeviceInfo(string deviceName, double latitiude, double longitude)
+    public void LogDeviceInfo(string deviceName, double latitude, double longitude)
     {
-        var cloudEvent = new CloudEvent
+        Resolver.Log.Info("LogDeviceInfo: Create CloudEvent");
+        CloudEvent cloudEvent = new CloudEvent
         {
             Description = "Clima Position Telemetry",
             Timestamp = DateTime.UtcNow,
             EventId = 109,
+            Measurements = new Dictionary<string, object> { { "device_name", deviceName }, { "lat", latitude }, { "long", longitude } }
         };
-
-        cloudEvent.Measurements.Add("device_name", deviceName);
-        cloudEvent.Measurements.Add("lat", latitiude);
-        cloudEvent.Measurements.Add("long", longitude);
-
+        
         SendEvent(cloudEvent);
     }
 
