@@ -64,10 +64,10 @@ public abstract class ClimaHardwareBase : IClimaHardware
     public IAnemometer? Anemometer => GetAnemometer();
 
     /// <inheritdoc/>
-    public IAnalogInputPort? SolarVoltageInput { get; protected set; }
+    public IObservableAnalogInputPort? SolarVoltageInput { get; protected set; }
 
     /// <inheritdoc/>
-    public IAnalogInputPort? BatteryVoltageInput { get; protected set; }
+    public IObservableAnalogInputPort? BatteryVoltageInput { get; protected set; }
 
     /// <inheritdoc/>
     public IRgbPwmLed? RgbLed => GetRgbPwmLed();

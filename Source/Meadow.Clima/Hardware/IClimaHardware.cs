@@ -66,12 +66,12 @@ public interface IClimaHardware : IMeadowAppEmbeddedHardware
     /// <summary>
     /// The Solar Voltage Input on the Clima board
     /// </summary>
-    public IAnalogInputPort? SolarVoltageInput { get; }
+    public IObservableAnalogInputPort? SolarVoltageInput { get; }
 
     /// <summary>
     /// The Battery Voltage Input on the Clima board
     /// </summary>
-    public IAnalogInputPort? BatteryVoltageInput { get; }
+    public IObservableAnalogInputPort? BatteryVoltageInput { get; }
 
     /// <summary>
     /// The RGB PWM LED on the Clima board
