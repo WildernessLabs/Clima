@@ -18,7 +18,7 @@ public abstract class ClimaHardwareBase : IClimaHardware
 {
     private IConnector?[]? _connectors;
     private Bme688? _atmosphericSensor;
-    private ITemperatureSensor? _temperatureSensor;
+    private ISamplingTemperatureSensor? _temperatureSensor;
     private IHumiditySensor? _humiditySensor;
     private IBarometricPressureSensor? _barometricPressureSensor;
     private IGasResistanceSensor? _gasResistanceSensor;
@@ -40,7 +40,7 @@ public abstract class ClimaHardwareBase : IClimaHardware
     public Bme688? AtmosphericSensor => GetAtmosphericSensor();
 
     /// <inheritdoc/>
-    public ITemperatureSensor? TemperatureSensor => GetTemperatureSensor();
+    public ISamplingTemperatureSensor? TemperatureSensor => GetTemperatureSensor();
 
     /// <inheritdoc/>
     public IHumiditySensor? HumiditySensor => GetHumiditySensor();
@@ -123,7 +123,7 @@ public abstract class ClimaHardwareBase : IClimaHardware
         return _atmosphericSensor;
     }
 
-    private ITemperatureSensor? GetTemperatureSensor()
+    private ISamplingTemperatureSensor? GetTemperatureSensor()
     {
         if (_temperatureSensor == null)
         {
