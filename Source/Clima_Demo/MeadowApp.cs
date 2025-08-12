@@ -49,30 +49,21 @@ public class ClimaApp : ClimaAppBase
             }
         };
 
-        svc.RetrieveProgress += (updateService, info) =>
+        svc.RetrieveProgress += (updateService, info, token) =>
         {
             short percentage = (short)((double)info.DownloadProgress / info.FileSize * 100);
 
             Resolver.Log.Info($"Downloading... {percentage}%");
         };
 
-        svc.UpdateAvailable += async (updateService, info) =>
+        svc.UpdateAvailable += async (updateService, info, token) =>
         {
             Resolver.Log.Info($"Update available!");
-
-            // Queue update for retrieval "later"
-            await Task.Delay(5000);
-
-            updateService.RetrieveUpdate(info);
         };
 
-        svc.UpdateRetrieved += async (updateService, info) =>
+        svc.UpdateRetrieved += async (updateService, info, token) =>
         {
             Resolver.Log.Info($"Update retrieved!");
-
-            await Task.Delay(5000);
-
-            updateService.ApplyUpdate(info);
         };
 
         RestartCommand.Initialise();
