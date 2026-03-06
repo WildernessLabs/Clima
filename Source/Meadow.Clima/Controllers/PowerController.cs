@@ -144,7 +144,7 @@ public class PowerController
         {
             if (inSolarWarningState)
             {
-                var resetVoltage = LowBatteryWarningLevel + WarningDeadband;
+                var resetVoltage = LowSolarWarningLevel + WarningDeadband;
 
                 if (e.New > resetVoltage)
                 {

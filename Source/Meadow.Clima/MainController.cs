@@ -188,7 +188,7 @@ public class MainController
     {
         // collect data
 
-        if (++tick % PublicationPeriodMinutes * 60 / SensorReadPeriodSeconds == 0)
+        if (++tick % (PublicationPeriodMinutes * 60 / SensorReadPeriodSeconds) == 0)
         {
             _ = SystemPreSleepStateProc();
         }
