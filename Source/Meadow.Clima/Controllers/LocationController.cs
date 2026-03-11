@@ -76,11 +76,11 @@ public class LocationController
     /// </remarks>
     public void StartUpdating(bool forced = false)
     {
-        // start updating if forced to find new data or we don;t have current location
+        // start updating if forced to find new data or we don't have current location
         if (forced || !positionReceived.WaitOne(0))
         {
             gnss?.StartUpdating();
-        };
+        }
     }
 
     /// <summary>

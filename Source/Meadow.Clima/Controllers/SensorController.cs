@@ -3,7 +3,6 @@ using Meadow.Devices.Clima.Models;
 using Meadow.Units;
 using System;
 using System.Threading.Tasks;
-using YamlDotNet.Core.Tokens;
 
 namespace Meadow.Devices.Clima.Controllers;
 
@@ -205,7 +204,7 @@ public class SensorController
 
     private void AnemometerUpdated(object sender, IChangeResult<Speed> e)
     {
-        Speed? mean = new Speed(0);
+        Speed? mean = null;
         lock (latestData)
         {
 			// sanity check on windspeed to avoid reporting Infinity

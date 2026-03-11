@@ -103,7 +103,7 @@ public class MainController
 
         _ = SystemPreSleepStateProc();
 
-        Resolver.Log.Info($"Initialize hardware Task.CompletedTask");
+        Resolver.Log.Info("Initialize hardware complete");
 
         return Task.CompletedTask;
     }

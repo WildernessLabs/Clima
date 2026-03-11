@@ -81,12 +81,12 @@ public class ClimaHardwareProvider : IMeadowAppEmbeddedHardwareProvider<IClimaHa
             if (version >= 4)
             {
                 logger?.Info("Instantiating Clima v4 specific hardware");
-                hardware = new ClimaHardwareV4(ccm, i2cBus, mcpVersion!);
+                hardware = new ClimaHardwareV4(ccm, i2cBus, mcpVersion);
             }
             else
             {
                 logger?.Info("Instantiating Clima v3 specific hardware");
-                hardware = new ClimaHardwareV3(ccm, i2cBus, mcpVersion!);
+                hardware = new ClimaHardwareV3(ccm, i2cBus, mcpVersion);
             }
         }
         else
