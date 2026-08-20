@@ -7,7 +7,7 @@
     <LangVersion>12</LangVersion>
     <Nullable>enable</Nullable>
     <PackageIcon>icon.png</PackageIcon>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <OutputType>Library</OutputType>
     <AssemblyName>Clima</AssemblyName>
     <PackageProjectUrl>https://github.com/WildernessLabs/Clima</PackageProjectUrl>
